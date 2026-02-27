@@ -14,38 +14,30 @@
 <!-- Three.js for WebGL hero -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r152/three.min.js"></script>
 
-<!-- Chart.js for Dashboard demo -->
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:'Inter',sans-serif}
 body{background:#050505;color:#fff;overflow-x:hidden}
 
-/* Glow animated background */
+/* Animated background glow */
 body::before{
 content:"";
 position:fixed;
-width:700px;height:700px;
-background:radial-gradient(circle,#D4AF37 0%,transparent 70%);
-top:-300px;left:-300px;
-filter:blur(180px);
+width:600px;height:600px;
+background:radial-gradient(circle,#D4AF37 0%, transparent 70%);
+top:-200px;left:-200px;
+filter:blur(120px);
 opacity:.15;
-animation:moveGlow 15s infinite alternate ease-in-out;
+animation:moveGlow 12s infinite alternate ease-in-out;
 z-index:-1;
 }
-@keyframes moveGlow{0%{transform:translate(0,0)}100%{transform:translate(500px,350px)}}
+@keyframes moveGlow{0%{transform:translate(0,0)}100%{transform:translate(400px,300px)}}
 
 section{padding:160px 10%}
-h1,h2{font-weight:900;letter-spacing:-1px}
+h1,h2{font-weight:900;letter-spacing:-2px}
 p{color:#C9C9C9;line-height:1.8;font-size:18px;margin-top:20px}
-.gold{color:#D4AF37}
 
-header{
-position:fixed;width:100%;display:flex;justify-content:space-between;align-items:center;
-padding:25px 10%;background:rgba(0,0,0,.6);backdrop-filter:blur(20px);
-z-index:1000;border-bottom:1px solid rgba(212,175,55,.15);
-}
-header h2{color:#D4AF37;font-weight:900;font-size:22px;letter-spacing:2px}
+header{position:fixed;width:100%;display:flex;justify-content:space-between;align-items:center;padding:25px 10%;background:rgba(0,0,0,.6);backdrop-filter:blur(20px);z-index:1000;border-bottom:1px solid rgba(212,175,55,.15);}
+header h2{color:#D4AF37;font-weight:900;font-size:22px;letter-spacing:2px;}
 nav a{color:#aaa;margin-left:40px;text-decoration:none;transition:.3s}
 nav a:hover{color:#D4AF37}
 
@@ -75,9 +67,6 @@ footer{padding:60px;text-align:center;background:#000;color:#777}
 
 @keyframes fadeIn{0%{opacity:0;transform:translateY(50px)}100%{opacity:1;transform:translateY(0)}}
 
-.reveal{opacity:0;transform:translateY(60px);transition:1.2s ease}
-.reveal.active{opacity:1;transform:translateY(0)}
-
 @media(max-width:900px){.split{grid-template-columns:1fr}.hero h1{font-size:42px}.hero p{font-size:18px}}
 </style>
 </head>
@@ -87,8 +76,8 @@ footer{padding:60px;text-align:center;background:#000;color:#777}
 <header>
 <h2>ELEVATE AI</h2>
 <nav>
-<a href="#automation">Automation</a>
-<a href="#growth">Growth</a>
+<a href="#systems">Systems</a>
+<a href="#impact">Impact</a>
 <a href="#enterprise">Enterprise</a>
 <a href="#contact">Consult</a>
 </nav>
@@ -98,74 +87,111 @@ footer{padding:60px;text-align:center;background:#000;color:#777}
 <section class="hero">
 <canvas id="heroCanvas"></canvas>
 <div class="hero-content">
-<h1>Enterprise AI Systems That Multiply Revenue</h1>
-<p>We design AI infrastructures that automate growth, optimize operations, and increase profitability for any business.</p>
-<a href="#contact" class="btn">Request Executive Consultation</a>
+<h1>AI Infrastructure That Multiplies Revenue</h1>
+<p>We design enterprise-grade artificial intelligence systems that automate growth, increase profit margins and eliminate operational inefficiencies.</p>
+<a href="#contact" class="btn">Request Private Consultation</a>
 </div>
 </section>
 
-<!-- Nivel 1 - AI Automation Suite -->
-<section id="automation" class="reveal">
+<!-- Systems Section -->
+<section id="systems" class="reveal">
 <div class="split">
 <div class="card">
-<h2>AI Automation Suite</h2>
-<ul>
-<li>Automatización administrativa</li>
-<li>Chatbots web & WhatsApp</li>
-<li>Voice AI agents 24/7</li>
-<li>Marketing Automation</li>
-<li>Contenido & Branding con IA</li>
-</ul>
+<h2>Advanced Automation Systems</h2>
+<p>Custom AI applications, predictive dashboards, and fully automated CRM ecosystems engineered for high-growth companies ready to scale beyond traditional limits.</p>
 </div>
 <img src="assets/ai-dashboard.png" alt="AI Dashboard">
 </div>
-</section>
 
-<!-- Nivel 2 - AI Growth Transformation -->
-<section id="growth" class="dark reveal">
-<div class="split">
+<div class="split reveal">
 <img src="assets/voice-ai.png" alt="Voice AI">
 <div class="card">
-<h2>AI Growth Transformation</h2>
-<ul>
-<li>Revenue Intelligence</li>
-<li>Customer Journey Automation</li>
-<li>AI Lead Scoring</li>
-<li>Smart Pricing AI</li>
-<li>AI Executive Dashboards</li>
-</ul>
+<h2>AI Voice & Intelligent Sales Engines</h2>
+<p>24/7 autonomous AI agents that answer calls, qualify prospects and schedule revenue-generating appointments automatically.</p>
 </div>
 </div>
-</section>
 
-<!-- Nivel 3 - Enterprise AI Infrastructure -->
-<section id="enterprise" class="reveal">
-<div class="split">
+<div class="split reveal">
 <div class="card">
-<h2>Enterprise AI Infrastructure</h2>
-<ul>
-<li>AI Operating Layer</li>
-<li>Predictive Inventory Intelligence</li>
-<li>AI Financial Intelligence</li>
-<li>AI for HR & Talent</li>
-<li>Security & Compliance Automation</li>
-<li>Digital Twin & Strategic Expansion</li>
-</ul>
+<h2>Predictive Inventory Intelligence</h2>
+<p>AI-powered forecasting systems that reduce waste, eliminate downtime, and maximize operational efficiency.</p>
 </div>
 <img src="assets/inventory-ai.png" alt="Inventory AI">
 </div>
 </section>
 
-<!-- Casos de éxito / Impacto -->
-<section class="dark reveal">
+<!-- Impact Section -->
+<section id="impact" class="dark reveal">
 <div class="center">
 <h2>The Revenue Gap Most Businesses Ignore</h2>
 <div class="big-stat">$300K+</div>
-<p>Average annual revenue lost due to manual processes, missed leads, and inefficient systems.</p>
+<p>Average annual loss caused by manual processes, missed leads, and inefficient systems.</p>
 </div>
 </section>
 
-<!-- Posicionamiento -->
-<section class="reveal">
+<!-- Enterprise Section -->
+<section id="enterprise" class="reveal">
 <div class="center">
-<h2>Built for 7 & 8 Figure Companies</h
+<h2>Built for 7 & 8 Figure Companies</h2>
+<p>We partner with executives serious about digital transformation and long-term AI implementation strategies.</p>
+</div>
+</section>
+
+<!-- Contact Form -->
+<section id="contact" class="dark reveal">
+<div class="center">
+<h2>Apply for Executive Strategy Session</h2>
+<form>
+<input type="text" placeholder="Full Name" required>
+<input type="text" placeholder="Company Name" required>
+<input type="email" placeholder="Corporate Email" required>
+<input type="tel" placeholder="Phone Number" required>
+<textarea rows="4" placeholder="Describe your revenue stage and automation goals"></textarea>
+<button>Submit Application</button>
+</form>
+</div>
+</section>
+
+<footer>
+© 2026 Elevate AI Solutions — Enterprise AI Infrastructure
+</footer>
+
+<script>
+// Scroll reveal animations using GSAP
+gsap.utils.toArray('.reveal').forEach(elem => {
+  gsap.fromTo(elem, {opacity:0, y:60}, {
+    opacity:1, y:0,
+    scrollTrigger:{trigger:elem, start:"top 80%", toggleActions:"play none none none"},
+    duration:1.2
+  });
+});
+
+// WebGL hero particles
+const canvas = document.getElementById('heroCanvas');
+const renderer = new THREE.WebGLRenderer({canvas:canvas, alpha:true});
+renderer.setSize(window.innerWidth, window.innerHeight);
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight,0.1,1000);
+camera.position.z=30;
+
+// Particles
+const particles = new THREE.BufferGeometry();
+const particleCount = 500;
+const positions = new Float32Array(particleCount*3);
+for(let i=0;i<particleCount*3;i++){positions[i]=(Math.random()-0.5)*50;}
+particles.setAttribute('position', new THREE.BufferAttribute(positions,3));
+const material = new THREE.PointsMaterial({color:0xD4AF37,size:0.2});
+const points = new THREE.Points(particles, material);
+scene.add(points);
+
+function animate(){requestAnimationFrame(animate);points.rotation.y+=0.002;renderer.render(scene,camera);}
+animate();
+window.addEventListener('resize',()=>{
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  camera.aspect = window.innerWidth/window.innerHeight;
+  camera.updateProjectionMatrix();
+});
+</script>
+
+</body>
+</html>
