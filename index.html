@@ -7,17 +7,17 @@
 
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/gsap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/ScrollTrigger.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r152/three.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.3.0/dist/chart.umd.min.js"></script>
 
     <style>
         :root {
             --bg-base: #000000;
             --bg-surface: #0a0a0a;
-            --bg-elevated: #151515;
-            --text-primary: #f5f5f7;
+            --bg-elevated: #121212;
+            --text-primary: #ffffff;
             --text-secondary: #86868b;
             --gold-accent: #D4AF37;
             --border-subtle: rgba(255, 255, 255, 0.08);
@@ -48,12 +48,8 @@
 
         /* Hero - Centered Perfectly */
         .hero { 
-            height: 100vh; 
-            display: flex; 
-            align-items: center; 
-            justify-content: center; 
-            text-align: center; 
-            padding-top: var(--nav-height); /* Prevents nav from eating the text */
+            height: 100vh; display: flex; align-items: center; justify-content: center; 
+            text-align: center; padding-top: var(--nav-height);
         }
         #heroCanvas { position: absolute; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 0; pointer-events: none; }
         .hero-content { position: relative; z-index: 2; max-width: 1000px; }
@@ -67,16 +63,10 @@
         }
         .btn:hover { background: var(--gold-accent); transform: scale(1.02); }
 
-        /* Full Services Bento Box */
-        .bento-section .center { text-align: center; margin-bottom: 60px; max-width: 800px; margin-inline: auto; }
+        /* Bento Box Grid */
+        .bento-section .center { text-align: center; margin-bottom: 80px; max-width: 800px; margin-inline: auto; }
         .bento-section h2 { font-size: 52px; }
-        
-        .bento-grid { 
-            display: grid; 
-            grid-template-columns: repeat(3, 1fr); 
-            gap: 24px; 
-            auto-rows: minmax(320px, auto); 
-        }
+        .bento-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; auto-rows: minmax(320px, auto); }
         .bento-card { 
             background: var(--bg-surface); border: 1px solid var(--border-subtle); border-radius: 32px; 
             padding: 40px; display: flex; flex-direction: column; justify-content: flex-start;
@@ -86,20 +76,27 @@
         .bento-card.large { grid-column: span 2; }
         .bento-card h3 { font-size: 26px; color: var(--text-primary); margin-bottom: 12px; }
         .bento-card p { font-size: 16px; margin-top: 0; }
-        
-        /* SVG Icons */
         .bento-icon { margin-bottom: 24px; }
         .bento-icon svg { width: 36px; height: 36px; stroke: var(--gold-accent); stroke-width: 1.5; fill: none; stroke-linecap: round; stroke-linejoin: round; }
 
-        /* Split Sections */
+        /* Split Sections (Images & Text) */
         .split { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; margin-top: 100px; }
         .split h2 { font-size: 44px; }
-        .image-container { width: 100%; aspect-ratio: 4/3; border-radius: 32px; overflow: hidden; background: var(--bg-surface); }
+        .image-container { 
+            width: 100%; aspect-ratio: 4/3; border-radius: 32px; overflow: hidden; 
+            background: var(--bg-surface); border: 1px solid var(--border-subtle);
+        }
         .image-container img { width: 100%; height: 100%; object-fit: cover; transition: transform 1.5s cubic-bezier(0.2, 0.8, 0.2, 1); filter: grayscale(20%); }
         .split:hover img { transform: scale(1.03); filter: grayscale(0%); }
 
-        /* Metrics Chart */
-        .metrics-card { background: var(--bg-surface); border: 1px solid var(--border-subtle); border-radius: 32px; padding: 60px; margin-top: 60px; }
+        /* Metrics Chart Section - FIX APPLIED HERE */
+        .chart-container-fix {
+            position: relative;
+            height: 50vh;
+            min-height: 400px; /* Crucial fix: ensures height before JS loads */
+            width: 100%;
+        }
+        .metrics-card { background: var(--bg-surface); border: 1px solid var(--border-subtle); border-radius: 32px; padding: 40px; margin-top: 60px; }
         .center-title { text-align: center; max-width: 800px; margin: 0 auto; }
         .center-title h2 { font-size: 52px; }
 
@@ -115,7 +112,6 @@
         footer { border-top: 1px solid var(--border-subtle); padding: 80px 5% 40px; background: var(--bg-base); max-width: 1400px; margin: 0 auto; }
         .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 40px; margin-bottom: 60px; }
         .footer-brand h2 { font-size: 24px; color: var(--text-primary); margin-bottom: 15px; }
-        .footer-brand p { font-size: 14px; }
         .footer-links h4 { color: var(--text-primary); margin-bottom: 20px; font-size: 14px; }
         .footer-links a { display: block; color: var(--text-secondary); text-decoration: none; margin-bottom: 12px; font-size: 14px; transition: 0.3s; }
         .footer-links a:hover { color: var(--gold-accent); }
@@ -126,6 +122,7 @@
             .bento-grid { grid-template-columns: 1fr 1fr; }
             .bento-card.large { grid-column: span 2; }
             .split { grid-template-columns: 1fr; gap: 40px; }
+            .split:nth-child(even) .image-container { order: -1; }
         }
         @media(max-width: 768px) {
             .bento-grid { grid-template-columns: 1fr; }
@@ -143,7 +140,7 @@
         <h2>ELEVATE</h2>
         <nav>
             <a href="#ecosystem">Ecosystem</a>
-            <a href="#integration">Integration</a>
+            <a href="#security">Security</a>
             <a href="#metrics">Performance</a>
             <a href="#contact">Contact</a>
         </nav>
@@ -164,69 +161,61 @@
             <p>A unified suite of AI solutions engineered for high-growth businesses and 7-to-8 figure enterprises.</p>
         </div>
         <div class="bento-grid">
-            
             <div class="bento-card large">
-                <div class="bento-icon">
-                    <svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 1 0 10 10H12V2z"/><path d="M21.18 8.02c-1-2.3-2.85-4.17-5.16-5.18"/></svg>
-                </div>
+                <div class="bento-icon"><svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 1 0 10 10H12V2z"/><path d="M21.18 8.02c-1-2.3-2.85-4.17-5.16-5.18"/></svg></div>
                 <h3>Predictive Dashboards & Analytics</h3>
-                <p>Gain absolute clarity over your data. Our custom dashboards visualize revenue, lead flow, and operational efficiency in real-time, predicting trends before they happen.</p>
+                <p>Gain absolute clarity over your data. Our custom dashboards visualize revenue, lead flow, and operational efficiency in real-time.</p>
             </div>
-
             <div class="bento-card">
-                <div class="bento-icon">
-                    <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-                </div>
+                <div class="bento-icon"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
                 <h3>Automated CRM Ecosystems</h3>
-                <p>Fully autonomous CRM systems that track, nurture, and segment your leads without manual data entry, ensuring zero opportunities fall through the cracks.</p>
+                <p>Fully autonomous CRM systems that track, nurture, and segment your leads without manual data entry.</p>
             </div>
-
             <div class="bento-card">
-                <div class="bento-icon">
-                    <svg viewBox="0 0 24 24"><path d="M2 12h4l2-9 5 18 4-10h5"/></svg>
-                </div>
+                <div class="bento-icon"><svg viewBox="0 0 24 24"><path d="M2 12h4l2-9 5 18 4-10h5"/></svg></div>
                 <h3>AI Voice & Sales Engines</h3>
-                <p>24/7 autonomous agents that process natural language, answer calls, qualify inbound leads, and schedule appointments with human-like nuance.</p>
+                <p>24/7 autonomous agents that process natural language, qualify inbound leads, and schedule appointments.</p>
             </div>
-
             <div class="bento-card">
-                <div class="bento-icon">
-                    <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><path d="M3 9h18"/><path d="M9 21V9"/></svg>
-                </div>
+                <div class="bento-icon"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><path d="M3 9h18"/><path d="M9 21V9"/></svg></div>
                 <h3>Predictive Inventory Intelligence</h3>
-                <p>AI-powered demand forecasting that reduces waste, eliminates downtime, and optimizes production cycles based on historical and market data.</p>
+                <p>AI-powered demand forecasting that reduces waste and optimizes production cycles based on historical data.</p>
             </div>
-
             <div class="bento-card large">
-                <div class="bento-icon">
-                    <svg viewBox="0 0 24 24"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
-                </div>
+                <div class="bento-icon"><svg viewBox="0 0 24 24"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></div>
                 <h3>Custom AI Applications</h3>
-                <p>We build proprietary AI tools tailored strictly to your operational bottlenecks. From internal communication bots to automated document processing, we build what off-the-shelf software can't.</p>
+                <p>We build proprietary AI tools tailored strictly to your operational bottlenecks. From internal communication bots to automated processing.</p>
             </div>
-
         </div>
     </section>
 
-    <section id="integration">
-        <div class="split reveal">
-            <div>
-                <h2>Fluid integration.</h2>
-                <p>Plug Elevate AI directly into your existing infrastructure. No complex migrations, zero downtime. Just instant intelligence applied to your current workflows.</p>
-            </div>
-            <div class="image-container">
-                <img src="https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&q=80&w=1000" alt="Tech Chip" loading="lazy">
-            </div>
+    <section class="split reveal">
+        <div>
+            <h2>Fluid integration.</h2>
+            <p>Plug Elevate AI directly into your existing infrastructure. No complex migrations, zero downtime. Just instant intelligence applied to your current workflows, designed to work alongside your current team.</p>
+        </div>
+        <div class="image-container">
+            <img src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&q=80&w=1000" alt="AI Integration" loading="lazy">
+        </div>
+    </section>
+
+    <section id="security" class="split reveal">
+        <div class="image-container">
+            <img src="https://images.unsplash.com/photo-1487058792275-0ad3070bee7e?auto=format&fit=crop&q=80&w=1000" alt="Enterprise Security" loading="lazy">
+        </div>
+        <div>
+            <h2>Enterprise-grade security.</h2>
+            <p>Your data sovereignty is paramount. We utilize military-grade encryption and offer on-premise deployment options for clients requiring absolute control over their information architecture.</p>
         </div>
     </section>
 
     <section id="metrics" class="reveal">
         <div class="center-title">
             <h2>The numbers speak.</h2>
-            <p>Visualizing the 12-month impact on Revenue, Leads, and Inventory Optimization.</p>
+            <p>Visualizing the 12-month impact on Revenue, Leads, and Inventory Optimization post-deployment.</p>
         </div>
         <div class="metrics-card">
-            <div style="position: relative; height:50vh; width:100%;">
+            <div class="chart-container-fix">
                 <canvas id="dashboardChart"></canvas>
             </div>
         </div>
@@ -302,11 +291,7 @@
         const particlesGeometry = new THREE.BufferGeometry();
         const particleCount = 350; 
         const positions = new Float32Array(particleCount * 3);
-        
-        for(let i = 0; i < particleCount * 3; i++) {
-            positions[i] = (Math.random() - 0.5) * 60;
-        }
-        
+        for(let i = 0; i < particleCount * 3; i++) { positions[i] = (Math.random() - 0.5) * 60; }
         particlesGeometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
         const material = new THREE.PointsMaterial({ color: 0xffffff, size: 0.06, transparent: true, opacity: 0.3 });
         const points = new THREE.Points(particlesGeometry, material);
@@ -328,40 +313,62 @@
             camera.updateProjectionMatrix();
         });
 
-        // Chart.js Setup
-        Chart.defaults.color = '#86868b';
-        Chart.defaults.font.family = "'Inter', sans-serif";
-        const ctx = document.getElementById('dashboardChart').getContext('2d');
-        
-        let gradient = ctx.createLinearGradient(0, 0, 0, 400);
-        gradient.addColorStop(0, '#ffffff');
-        gradient.addColorStop(1, 'rgba(255, 255, 255, 0.05)');
+        // --- CHART.JS FIX ---
+        // Wrap in DOMContentLoaded to ensure elements exist before drawing
+        document.addEventListener("DOMContentLoaded", function() {
+            Chart.defaults.color = '#86868b';
+            Chart.defaults.font.family = "'Inter', sans-serif";
+            
+            const chartCanvas = document.getElementById('dashboardChart');
+            if (chartCanvas) {
+                const ctx = chartCanvas.getContext('2d');
+                
+                let gradient = ctx.createLinearGradient(0, 0, 0, 400);
+                gradient.addColorStop(0, '#ffffff');
+                gradient.addColorStop(1, 'rgba(255, 255, 255, 0.02)');
 
-        new Chart(ctx, {
-            type: 'line', 
-            data: {
-                labels: ['Month 1', 'Month 3', 'Month 6', 'Month 9', 'Month 12'],
-                datasets: [{
-                    label: 'Overall Efficiency & Revenue Impact',
-                    data: [15, 35, 60, 82, 95],
-                    borderColor: '#ffffff',
-                    backgroundColor: gradient,
-                    borderWidth: 2,
-                    fill: true,
-                    tension: 0.4,
-                    pointBackgroundColor: '#000',
-                    pointBorderColor: '#fff',
-                    pointRadius: 4
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: { legend: { display: false } },
-                scales: {
-                    y: { beginAtZero: true, max: 100, grid: { color: 'rgba(255, 255, 255, 0.05)', drawBorder: false } },
-                    x: { grid: { display: false, drawBorder: false } }
-                }
+                new Chart(ctx, {
+                    type: 'line', 
+                    data: {
+                        labels: ['Month 1', 'Month 3', 'Month 6', 'Month 9', 'Month 12'],
+                        datasets: [{
+                            label: 'Efficiency & Revenue Impact Index',
+                            data: [15, 35, 60, 82, 95],
+                            borderColor: '#ffffff',
+                            backgroundColor: gradient,
+                            borderWidth: 2,
+                            fill: true,
+                            tension: 0.4,
+                            pointBackgroundColor: '#000',
+                            pointBorderColor: '#fff',
+                            pointRadius: 4,
+                            pointHoverRadius: 6
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: { 
+                            legend: { display: false },
+                            tooltip: {
+                                backgroundColor: 'rgba(0,0,0,0.8)',
+                                titleColor: '#fff',
+                                bodyColor: '#fff',
+                                padding: 12,
+                                displayColors: false
+                            }
+                        },
+                        scales: {
+                            y: { 
+                                beginAtZero: true, 
+                                max: 100, 
+                                grid: { color: 'rgba(255, 255, 255, 0.05)', drawBorder: false },
+                                ticks: { callback: function(value) { return value + '%'; } }
+                            },
+                            x: { grid: { display: false, drawBorder: false } }
+                        }
+                    }
+                });
             }
         });
     </script>
