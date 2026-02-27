@@ -844,7 +844,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 // ── FORM SUBMISSION ──────────────────────────────────────────
 // ⚠️ REEMPLAZA ESTA URL con la de tu Google Apps Script desplegado
-const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxM8YhllmpsxDIWVoiqzthIIWWBQSxxI_gNUpkhTplCDH4b5x4IOJjCOS-SuFscy2Q/exec";
+const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzoCRfcliprBXxWZN-kLgAb6rLFXrwrXeqory191RylV2Rip9mkgJixtAzMRf5CHqw/exec";
 
 const form       = document.getElementById("elevate-form");
 const submitBtn  = document.getElementById("submit-btn");
@@ -917,11 +917,18 @@ form?.addEventListener("submit", async function(e) {
     setLoading(true);
 
     try {
-        const res = await fetch(APPS_SCRIPT_URL, {
+        const formData = new FormData();
+        formData.append("fullName", data.fullName);
+        formData.append("company",  data.company);
+        formData.append("email",    data.email);
+        formData.append("phone",    data.phone);
+        formData.append("revenue",  data.revenue);
+        formData.append("message",  data.message);
+
+        await fetch(APPS_SCRIPT_URL, {
             method: "POST",
-            mode: "no-cors",   // Google Apps Script requiere no-cors
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(data),
+            mode: "no-cors",
+            body: formData,
         });
 
         // no-cors siempre retorna opaque response — asumimos éxito si no hubo error de red
