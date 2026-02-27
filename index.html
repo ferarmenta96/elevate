@@ -1,219 +1,324 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Elevate AI Solutions | Enterprise AI</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Elevate AI | Enterprise AI Infrastructure</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800;900&display=swap" rel="stylesheet">
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r152/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --gold: #D4AF37;
+            --gold-bright: #f5d76e;
+            --dark-bg: #050505;
+            --glass: rgba(255, 255, 255, 0.03);
+            --border: rgba(212, 175, 55, 0.2);
+        }
 
-<!-- GSAP & ScrollTrigger -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/gsap.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/ScrollTrigger.min.js"></script>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; scroll-behavior: smooth; }
+        body { background: var(--dark-bg); color: #fff; overflow-x: hidden; line-height: 1.6; }
 
-<!-- Three.js for WebGL hero -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r152/three.min.js"></script>
+        /* Background Glow */
+        .glow {
+            position: fixed; width: 60vw; height: 60vw;
+            background: radial-gradient(circle, rgba(212, 175, 55, 0.07) 0%, transparent 70%);
+            top: -10%; left: -10%; z-index: -1; pointer-events: none;
+        }
 
-<!-- Chart.js for Dashboard demo -->
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        section { padding: 120px 10%; position: relative; }
+        .reveal { opacity: 0; transform: translateY(30px); }
 
-<style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:'Inter',sans-serif}
-body{background:#050505;color:#fff;overflow-x:hidden}
+        /* Header */
+        header {
+            position: fixed; width: 100%; display: flex; justify-content: space-between;
+            padding: 20px 10%; background: rgba(0,0,0,0.8); backdrop-filter: blur(15px);
+            z-index: 1000; border-bottom: 1px solid var(--border);
+        }
+        .logo { color: var(--gold); font-weight: 900; font-size: 20px; letter-spacing: 3px; text-decoration: none; }
+        nav a { color: #aaa; margin-left: 30px; text-decoration: none; font-size: 14px; font-weight: 600; transition: 0.3s; }
+        nav a:hover { color: var(--gold); }
 
-/* Animated background glow */
-body::before{
-content:"";
-position:fixed;
-width:600px;height:600px;
-background:radial-gradient(circle,#D4AF37 0%, transparent 70%);
-top:-200px;left:-200px;
-filter:blur(120px);
-opacity:.15;
-animation:moveGlow 12s infinite alternate ease-in-out;
-z-index:-1;
-}
-@keyframes moveGlow{0%{transform:translate(0,0)}100%{transform:translate(400px,300px)}}
+        /* Hero Section */
+        .hero { height: 100vh; display: flex; align-items: center; justify-content: center; text-align: center; overflow: hidden; }
+        #heroCanvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0.6; }
+        .hero-content { position: relative; z-index: 10; max-width: 1000px; }
+        .hero h1 { font-size: clamp(40px, 6vw, 85px); font-weight: 900; line-height: 1.1; margin-bottom: 25px; 
+                    background: linear-gradient(to bottom, #fff 40%, var(--gold)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .hero p { font-size: 20px; color: #ccc; max-width: 700px; margin: 0 auto 40px; }
 
-section{padding:160px 10%}
-h1,h2{font-weight:900;letter-spacing:-2px}
-p{color:#C9C9C9;line-height:1.8;font-size:18px;margin-top:20px}
+        /* Buttons */
+        .btn { display: inline-block; padding: 20px 45px; border-radius: 50px; background: linear-gradient(135deg, var(--gold), var(--gold-bright));
+               color: #000; font-weight: 800; text-decoration: none; transition: 0.4s; text-transform: uppercase; letter-spacing: 1px; }
+        .btn:hover { transform: translateY(-5px); box-shadow: 0 20px 40px rgba(212, 175, 55, 0.3); }
 
-header{position:fixed;width:100%;display:flex;justify-content:space-between;align-items:center;padding:25px 10%;background:rgba(0,0,0,.6);backdrop-filter:blur(20px);z-index:1000;border-bottom:1px solid rgba(212,175,55,.15);}
-header h2{color:#D4AF37;font-weight:900;font-size:22px;letter-spacing:2px;}
-nav a{color:#aaa;margin-left:40px;text-decoration:none;transition:.3s}
-nav a:hover{color:#D4AF37}
+        /* Pain Section */
+        .pain-box { background: var(--glass); border: 1px solid var(--border); padding: 60px; border-radius: 30px; text-align: center; }
+        .stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 40px; margin-top: 50px; }
+        .stat-item h3 { font-size: 50px; color: var(--gold); font-weight: 900; }
 
-.hero{height:100vh;display:flex;align-items:center;justify-content:center;text-align:center;position:relative;}
-#heroCanvas{position:absolute;top:0;left:0;width:100%;height:100%;z-index:0;}
-.hero-content{position:relative;z-index:2;max-width:900px;text-align:center;}
-.hero h1{font-size:72px;background:linear-gradient(to right,#fff,#D4AF37);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
-.hero p{font-size:22px;margin-top:20px;}
-.btn{display:inline-block;margin-top:50px;padding:18px 40px;border-radius:50px;background:linear-gradient(135deg,#D4AF37,#f5d76e);color:#000;font-weight:700;text-decoration:none;transition:.4s;}
-.btn:hover{transform:translateY(-6px);box-shadow:0 30px 60px rgba(212,175,55,.4);}
+        /* Service Levels */
+        .level-tag { color: var(--gold); font-weight: 800; font-size: 14px; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 10px; display: block; }
+        .service-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; margin-bottom: 120px; }
+        .service-grid.reverse { direction: rtl; }
+        .service-grid.reverse * { direction: ltr; }
+        .card { background: var(--glass); border: 1px solid var(--border); padding: 45px; border-radius: 25px; backdrop-filter: blur(10px); }
+        .card ul { list-style: none; margin: 25px 0; }
+        .card li { margin-bottom: 12px; color: #bbb; display: flex; align-items: center; }
+        .card li::before { content: "→"; color: var(--gold); margin-right: 10px; font-weight: bold; }
 
-.split{display:grid;grid-template-columns:1fr 1fr;gap:100px;align-items:center;margin-top:120px;}
-.card{background:rgba(255,255,255,.03);border:1px solid rgba(212,175,55,.15);padding:50px;border-radius:25px;backdrop-filter:blur(20px);transition:.6s;}
-.card:hover{transform:translateY(-10px);border-color:#D4AF37;}
-.split img{width:100%;border-radius:25px;box-shadow:0 40px 100px rgba(0,0,0,.8);transition:.6s;}
-.split img:hover{transform:scale(1.05);}
+        .img-container { position: relative; border-radius: 25px; overflow: hidden; border: 1px solid var(--border); }
+        .img-container img { width: 100%; display: block; filter: grayscale(0.5) contrast(1.2); transition: 0.5s; }
+        .img-container:hover img { filter: grayscale(0); transform: scale(1.05); }
 
-.dark{background:#0b0b0b}
-.big-stat{font-size:90px;font-weight:900;color:#D4AF37;text-align:center;}
-.center{text-align:center;max-width:800px;margin:auto}
+        /* Contact Form */
+        form { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; max-width: 900px; margin: 50px auto 0; }
+        input, textarea, select { background: #111; border: 1px solid var(--border); padding: 20px; border-radius: 15px; color: #fff; font-size: 16px; width: 100%; }
+        textarea { grid-column: span 2; }
+        .form-btn { grid-column: span 2; cursor: pointer; border: none; }
+        .confidential { font-size: 12px; color: #666; text-align: center; margin-top: 20px; grid-column: span 2; }
 
-form{margin-top:60px;display:flex;flex-direction:column;gap:20px;max-width:600px;margin-left:auto;margin-right:auto;}
-input,textarea{padding:18px;border-radius:12px;border:1px solid rgba(255,255,255,.1);background:#111;color:#fff;font-size:16px;}
-button{padding:18px;border-radius:50px;background:linear-gradient(135deg,#D4AF37,#f5d76e);border:none;font-weight:700;cursor:pointer}
+        /* Footer */
+        footer { padding: 80px 10%; background: #000; border-top: 1px solid var(--border); text-align: center; color: #555; }
 
-footer{padding:60px;text-align:center;background:#000;color:#777}
-
-@keyframes fadeIn{0%{opacity:0;transform:translateY(50px)}100%{opacity:1;transform:translateY(0)}}
-
-@media(max-width:900px){.split{grid-template-columns:1fr}.hero h1{font-size:42px}.hero p{font-size:18px}}
-</style>
+        @media (max-width: 900px) {
+            .service-grid, form { grid-template-columns: 1fr; }
+            .hero h1 { font-size: 45px; }
+            textarea { grid-column: span 1; }
+            .form-btn { grid-column: span 1; }
+        }
+    </style>
 </head>
-
 <body>
 
+<div class="glow"></div>
+
 <header>
-<h2>ELEVATE AI</h2>
-<nav>
-<a href="#systems">Systems</a>
-<a href="#growth">Growth</a>
-<a href="#enterprise">Enterprise</a>
-<a href="#contact">Consult</a>
-</nav>
+    <a href="#" class="logo">ELEVATE AI</a>
+    <nav>
+        <a href="#problem">Insight</a>
+        <a href="#solutions">Solutions</a>
+        <a href="#enterprise">Enterprise</a>
+        <a href="#contact">Consultation</a>
+    </nav>
 </header>
 
-<!-- Hero -->
 <section class="hero">
-<canvas id="heroCanvas"></canvas>
-<div class="hero-content">
-<h1>AI Infrastructure That Multiplies Revenue</h1>
-<p>We design enterprise-grade artificial intelligence systems that automate growth, increase profit margins and eliminate operational inefficiencies.</p>
-<a href="#contact" class="btn">Request Private Consultation</a>
-</div>
+    <canvas id="heroCanvas"></canvas>
+    <div class="hero-content">
+        <h1>Enterprise AI Systems That Multiply Revenue</h1>
+        <p>We design AI infrastructures that automate growth, optimize operations, and increase profitability for clinics, law firms, and high-growth companies.</p>
+        <a href="#contact" class="btn">Request Executive Consultation</a>
+    </div>
 </section>
 
-<!-- Systems Section -->
-<section id="systems" class="reveal">
-<div class="split">
-<div class="card">
-<h2>Advanced Automation Systems</h2>
-<p>Custom AI applications, predictive dashboards, fully automated CRM ecosystems, and inventory control systems engineered for high-growth businesses.</p>
-</div>
-<img src="assets/ai-dashboard.png" alt="AI Dashboard">
-</div>
-
-<div class="split reveal">
-<img src="assets/voice-ai.png" alt="Voice AI">
-<div class="card">
-<h2>AI Voice & Intelligent Sales Engines</h2>
-<p>24/7 autonomous AI agents that answer calls, qualify leads, schedule appointments, and increase conversion rates automatically.</p>
-</div>
-</div>
-
-<div class="split reveal">
-<div class="card">
-<h2>Predictive Inventory Intelligence</h2>
-<p>AI-powered inventory and demand forecasting systems that reduce waste, eliminate downtime, and optimize production cycles.</p>
-</div>
-<img src="assets/inventory-ai.png" alt="Inventory AI">
-</div>
+<section id="problem">
+    <div class="pain-box reveal">
+        <span class="level-tag">The Challenge</span>
+        <h2>The Revenue Gap Most Businesses Ignore</h2>
+        <p>Manual processes, missed leads, and inefficient systems cost businesses thousands every month. In the age of intelligence, staying manual is a financial choice.</p>
+        <div class="stat-grid">
+            <div class="stat-item">
+                <h3 class="counter" data-target="300">0</h3>
+                <p>k USD Lost Annually in Manual Tasks</p>
+            </div>
+            <div class="stat-item">
+                <h3 class="counter" data-target="65">0</h3>
+                <p>% Increase in Operational Speed</p>
+            </div>
+            <div class="stat-item">
+                <h3 class="counter" data-target="24">0</h3>
+                <p>/7 Autonomous Coverage</p>
+            </div>
+        </div>
+    </div>
 </section>
 
-<!-- Growth Section with Dashboard -->
-<section id="growth" class="dark reveal">
-<div class="center">
-<h2>AI Growth Metrics Demo</h2>
-<canvas id="dashboardChart" style="max-width:700px;margin-top:40px;"></canvas>
-<p>Visualizing Revenue, Leads, and Inventory Optimization impact from AI systems.</p>
-</div>
+<section id="solutions">
+    <div class="service-grid reveal">
+        <div class="card">
+            <span class="level-tag">Level 1 — AI Automation Suite</span>
+            <h2>Automate Operations & Sales</h2>
+            <ul>
+                <li>Administrative Automation & CRM Sync</li>
+                <li>Web & WhatsApp Conversational AI</li>
+                <li>Voice AI Agents (24/7 Outbound/Inbound)</li>
+                <li>AI Content & Branding Engines</li>
+            </ul>
+            <a href="#contact" class="btn" style="padding: 12px 25px; font-size: 12px;">Get Your Automation Audit</a>
+        </div>
+        <div class="img-container">
+            <img src="https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop&q=80&w=800" alt="Automation">
+        </div>
+    </div>
+
+    <div class="service-grid reverse reveal">
+        <div class="card">
+            <span class="level-tag">Level 2 — AI Growth Transformation</span>
+            <h2>Scale Your Revenue With Intelligence</h2>
+            <ul>
+                <li>Revenue Intelligence Dashboards</li>
+                <li>Customer Journey Hyper-Automation</li>
+                <li>Predictive AI Lead Scoring</li>
+                <li>Dynamic Smart Pricing AI</li>
+            </ul>
+            <a href="#contact" class="btn" style="padding: 12px 25px; font-size: 12px;">Schedule Strategy Session</a>
+        </div>
+        <div class="img-container">
+            <img src="https://images.unsplash.com/photo-1551288049-bbbda5366392?auto=format&fit=crop&q=80&w=800" alt="Growth">
+        </div>
+    </div>
+
+    <div class="service-grid reveal">
+        <div class="card">
+            <span class="level-tag">Level 3 — Enterprise AI Infrastructure</span>
+            <h2>Enterprise-Grade AI Infrastructure</h2>
+            <ul>
+                <li>Custom AI Operating Layer</li>
+                <li>Predictive Inventory & Supply Chain</li>
+                <li>AI Financial Intelligence & Risk</li>
+                <li>Digital Twin Strategic Expansion</li>
+            </ul>
+            <a href="#contact" class="btn" style="padding: 12px 25px; font-size: 12px;">Apply for Executive Partnership</a>
+        </div>
+        <div class="img-container">
+            <img src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&q=80&w=800" alt="Enterprise">
+        </div>
+    </div>
 </section>
 
-<!-- Enterprise Section -->
-<section id="enterprise" class="reveal">
-<div class="center">
-<h2>Built for 7 & 8 Figure Companies</h2>
-<p>We partner with executives serious about digital transformation and long-term AI implementation strategies. Optimize operations and multiply revenue at enterprise scale.</p>
-</div>
+<section id="impact" style="background: #080808;">
+    <div style="text-align: center; margin-bottom: 60px;">
+        <span class="level-tag">Impact Report</span>
+        <h2>What Enterprise Clients Achieve</h2>
+    </div>
+    <div style="max-width: 800px; margin: 0 auto;">
+        <canvas id="impactChart"></canvas>
+    </div>
 </section>
 
-<!-- Contact Form -->
-<section id="contact" class="dark reveal">
-<div class="center">
-<h2>Apply for Executive Strategy Session</h2>
-<form>
-<input type="text" placeholder="Full Name" required>
-<input type="text" placeholder="Company Name" required>
-<input type="email" placeholder="Corporate Email" required>
-<input type="tel" placeholder="Phone Number" required>
-<textarea rows="4" placeholder="Describe your revenue stage and automation goals"></textarea>
-<button>Submit Application</button>
-</form>
-</div>
+<section id="contact">
+    <div style="text-align: center; max-width: 800px; margin: 0 auto;">
+        <span class="level-tag">Private Access</span>
+        <h2>Apply for Executive Strategy Session</h2>
+        <p>We work exclusively with businesses ready to scale with enterprise AI infrastructure. High-value partnerships only.</p>
+    </div>
+    <form>
+        <input type="text" placeholder="Full Name" required>
+        <input type="text" placeholder="Company Name" required>
+        <input type="email" placeholder="Corporate Email" required>
+        <input type="tel" placeholder="Phone Number" required>
+        <textarea rows="5" placeholder="Describe your revenue stage and specific automation goals..."></textarea>
+        <button type="submit" class="btn form-btn">Submit Application</button>
+        <p class="confidential">NDA protected. Your data is handled with enterprise-grade security.</p>
+    </form>
 </section>
 
 <footer>
-© 2026 Elevate AI Solutions — Enterprise AI Infrastructure
+    <p>© 2026 Elevate AI Solutions — Enterprise AI Infrastructure</p>
+    <div style="margin-top: 20px; font-size: 12px; letter-spacing: 1px;">
+        LONDON | NEW YORK | DUBAI
+    </div>
 </footer>
 
 <script>
-// GSAP scroll reveal animations
-gsap.utils.toArray('.reveal').forEach(elem => {
-  gsap.fromTo(elem, {opacity:0, y:60}, {
-    opacity:1, y:0,
-    scrollTrigger:{trigger:elem, start:"top 80%", toggleActions:"play none none none"},
-    duration:1.2
-  });
-});
+    // Register GSAP ScrollTrigger
+    gsap.registerPlugin(ScrollTrigger);
 
-// WebGL hero particles
-const canvas = document.getElementById('heroCanvas');
-const renderer = new THREE.WebGLRenderer({canvas:canvas, alpha:true});
-renderer.setSize(window.innerWidth, window.innerHeight);
-const scene = new THREE.Scene();
-const camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight,0.1,1000);
-camera.position.z=30;
-const particles = new THREE.BufferGeometry();
-const particleCount = 600;
-const positions = new Float32Array(particleCount*3);
-for(let i=0;i<particleCount*3;i++){positions[i]=(Math.random()-0.5)*50;}
-particles.setAttribute('position', new THREE.BufferAttribute(positions,3));
-const material = new THREE.PointsMaterial({color:0xD4AF37,size:0.3});
-const points = new THREE.Points(particles, material);
-scene.add(points);
-function animate(){requestAnimationFrame(animate);points.rotation.y+=0.002;renderer.render(scene,camera);}
-animate();
-window.addEventListener('resize',()=>{
-  renderer.setSize(window.innerWidth, window.innerHeight);
-  camera.aspect = window.innerWidth/window.innerHeight;
-  camera.updateProjectionMatrix();
-});
+    // Initial Reveals
+    gsap.utils.toArray('.reveal').forEach(el => {
+        gsap.to(el, {
+            scrollTrigger: { trigger: el, start: "top 85%" },
+            opacity: 1, y: 0, duration: 1, ease: "power4.out"
+        });
+    });
 
-// Dashboard demo with Chart.js
-const ctx = document.getElementById('dashboardChart').getContext('2d');
-new Chart(ctx, {
-    type:'bar',
-    data:{
-        labels:['Revenue','Leads','Inventory Efficiency'],
-        datasets:[{
-            label:'AI Impact Metrics',
-            data:[75,90,85],
-            backgroundColor:['#D4AF37','#f5d76e','#D4AF37']
-        }]
-    },
-    options:{
-        responsive:true,
-        plugins:{
-            legend:{display:false}
-        },
-        scales:{
-            y:{beginAtZero:true,max:100}
-        }
+    // Numbers Counter Animation
+    const counters = document.querySelectorAll('.counter');
+    counters.forEach(counter => {
+        const target = +counter.getAttribute('data-target');
+        ScrollTrigger.create({
+            trigger: counter,
+            onEnter: () => {
+                let count = 0;
+                const updateCount = () => {
+                    const inc = target / 100;
+                    if (count < target) {
+                        count += inc;
+                        counter.innerText = Math.ceil(count) + (target > 100 ? 'k+' : '%');
+                        setTimeout(updateCount, 20);
+                    } else {
+                        counter.innerText = target + (target > 100 ? 'k+' : '%');
+                    }
+                };
+                updateCount();
+            }
+        });
+    });
+
+    // Three.js Particle System (Background)
+    const canvas = document.getElementById('heroCanvas');
+    const renderer = new THREE.WebGLRenderer({canvas, alpha: true, antialias: true});
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
+    camera.position.z = 50;
+
+    const geometry = new THREE.BufferGeometry();
+    const vertices = [];
+    for (let i = 0; i < 2000; i++) {
+        vertices.push(THREE.MathUtils.randFloatSpread(100)); // x
+        vertices.push(THREE.MathUtils.randFloatSpread(100)); // y
+        vertices.push(THREE.MathUtils.randFloatSpread(100)); // z
     }
-});
+    geometry.setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3));
+    const material = new THREE.PointsMaterial({ color: 0xD4AF37, size: 0.15, transparent: true, opacity: 0.8 });
+    const points = new THREE.Points(geometry, material);
+    scene.add(points);
+
+    function animate() {
+        requestAnimationFrame(animate);
+        points.rotation.y += 0.001;
+        points.rotation.x += 0.0005;
+        renderer.render(scene, camera);
+    }
+    animate();
+
+    // Impact Chart
+    const ctx = document.getElementById('impactChart').getContext('2d');
+    new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: ['Month 1', 'Month 3', 'Month 6', 'Month 12'],
+            datasets: [{
+                label: 'Revenue Multiplier',
+                data: [1, 1.4, 2.1, 3.8],
+                borderColor: '#D4AF37',
+                backgroundColor: 'rgba(212, 175, 55, 0.1)',
+                fill: true,
+                tension: 0.4
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: { ticks: { color: '#666' }, grid: { color: 'rgba(255,255,255,0.05)' } },
+                x: { ticks: { color: '#666' }, grid: { display: false } }
+            },
+            plugins: { legend: { display: false } }
+        }
+    });
+
+    window.addEventListener('resize', () => {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+    });
 </script>
 
 </body>
