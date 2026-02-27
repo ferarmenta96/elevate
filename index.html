@@ -13,10 +13,11 @@ body{background:#0A0A0A;color:#fff;overflow-x:hidden}
 section{padding:120px 8%}
 h1,h2,h3{font-weight:800}
 .gold{color:#D4AF37}
+
 .btn{
 background:#D4AF37;
 color:#000;
-padding:14px 26px;
+padding:14px 28px;
 border-radius:8px;
 font-weight:700;
 text-decoration:none;
@@ -28,6 +29,7 @@ background:#F5D76E;
 transform:translateY(-3px);
 box-shadow:0 10px 30px rgba(212,175,55,0.3)
 }
+
 header{
 position:fixed;
 width:100%;
@@ -52,7 +54,18 @@ flex-direction:column;
 justify-content:center;
 align-items:center;
 text-align:center;
-position:relative
+background:url('assets/hero-ai-growth.png') center/cover no-repeat;
+position:relative;
+}
+.hero::before{
+content:"";
+position:absolute;
+top:0;left:0;width:100%;height:100%;
+background:rgba(0,0,0,0.75);
+}
+.hero-content{
+position:relative;
+z-index:2;
 }
 .hero h1{
 font-size:60px;
@@ -61,35 +74,22 @@ margin-bottom:20px;
 line-height:1.1
 }
 .hero p{
-color:#A1A1AA;
+color:#D1D5DB;
 max-width:600px;
+margin:auto;
 margin-bottom:40px
-}
-.glow{
-position:absolute;
-width:600px;
-height:600px;
-background:radial-gradient(circle,#D4AF3720,transparent);
-top:50%;
-left:50%;
-transform:translate(-50%,-50%);
-z-index:-1;
-animation:pulse 6s infinite
-}
-@keyframes pulse{
-0%{transform:translate(-50%,-50%) scale(1)}
-50%{transform:translate(-50%,-50%) scale(1.2)}
-100%{transform:translate(-50%,-50%) scale(1)}
 }
 
 /* STATS */
 .stats{
 display:flex;
 gap:80px;
-margin-top:50px
+margin-top:50px;
+justify-content:center;
+flex-wrap:wrap;
 }
 .stat{
-font-size:40px;
+font-size:42px;
 font-weight:800;
 color:#D4AF37
 }
@@ -99,75 +99,50 @@ color:#A1A1AA;
 margin-top:5px
 }
 
-/* CARDS */
+/* IMAGE BLOCK */
+.image-block{
+margin-top:60px;
+border-radius:20px;
+overflow:hidden;
+box-shadow:0 25px 70px rgba(0,0,0,0.7);
+}
+.image-block img{
+width:100%;
+display:block;
+transition:0.6s ease;
+}
+.image-block img:hover{
+transform:scale(1.05);
+}
+
+/* GRID */
 .grid{
 display:grid;
 grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
 gap:40px;
 margin-top:60px
 }
-.card{
-background:#111;
-padding:35px;
-border-radius:16px;
-border:1px solid #222;
-transition:0.4s;
-opacity:0;
-transform:translateY(40px)
-}
-.card.show{
-opacity:1;
-transform:translateY(0)
-}
-.card:hover{
-border:1px solid #D4AF37;
-transform:translateY(-8px)
-}
-.card h3{
-color:#D4AF37;
-margin-bottom:15px
-}
-.card p{
-color:#A1A1AA;
-font-size:14px
-}
 
-/* SECTION DARK */
+/* DARK SECTION */
 .dark{background:#111}
 
-/* TIMELINE */
-.timeline div{
-background:#0F0F0F;
-padding:25px;
-margin-bottom:20px;
-border-left:4px solid #D4AF37;
-opacity:0;
-transform:translateX(-40px);
-transition:0.6s
+/* BRAND SECTION */
+.brand-section{
+background:url('assets/ai-branding.png') center/cover no-repeat;
+position:relative;
+text-align:center;
 }
-.timeline div.show{
-opacity:1;
-transform:translateX(0)
+.brand-section::before{
+content:"";
+position:absolute;
+top:0;left:0;width:100%;height:100%;
+background:rgba(0,0,0,0.85);
 }
-
-/* CONTACT */
-form{
-max-width:500px;
+.brand-section-content{
+position:relative;
+z-index:2;
+max-width:800px;
 margin:auto;
-margin-top:40px
-}
-input,textarea{
-width:100%;
-padding:14px;
-margin-bottom:18px;
-background:#0F0F0F;
-border:1px solid #222;
-color:#fff;
-border-radius:8px
-}
-input:focus,textarea:focus{
-border-color:#D4AF37;
-outline:none
 }
 
 footer{
@@ -179,7 +154,7 @@ background:#000
 
 @media(max-width:768px){
 .hero h1{font-size:36px}
-.stats{flex-direction:column;gap:30px}
+.stats{gap:30px}
 }
 </style>
 </head>
@@ -198,9 +173,9 @@ background:#000
 </header>
 
 <section class="hero">
-<div class="glow"></div>
-<h1>AI That <span class="gold">Scales</span> Your Revenue Automatically</h1>
-<p>We design advanced automation systems and intelligent applications that increase sales, optimize inventory and convert leads 24/7.</p>
+<div class="hero-content">
+<h1>AI That <span class="gold">Scales</span> Your Revenue</h1>
+<p>Advanced automation systems and intelligent applications designed to increase sales, optimize operations and maximize profit margins.</p>
 <a href="#contact" class="btn">Book Executive Strategy Call</a>
 
 <div class="stats">
@@ -217,65 +192,40 @@ background:#000
 <div class="stat-label">% Automated Follow-Up</div>
 </div>
 </div>
+</div>
 </section>
 
 <section id="solutions">
 <h2>Revenue Acceleration Systems</h2>
-<div class="grid">
-<div class="card">
-<h3>AI Sales Automation</h3>
-<p>Lead capture, CRM automation and smart sales conversion workflows.</p>
+
+<div class="image-block">
+<img src="assets/ai-dashboard.png" alt="AI Dashboard">
 </div>
-<div class="card">
-<h3>Chatbots & Voice AI</h3>
-<p>24/7 appointment booking and missed call recovery systems.</p>
-</div>
-<div class="card">
-<h3>Marketing Intelligence</h3>
-<p>Funnels, predictive targeting and ROI optimization.</p>
-</div>
-</div>
+
 </section>
 
 <section id="apps" class="dark">
-<h2>Custom AI Applications</h2>
-<div class="grid">
-<div class="card">
-<h3>Web & SaaS Platforms</h3>
-<p>We build scalable business platforms tailored to your company.</p>
+<h2>Voice AI & Automation</h2>
+
+<div class="image-block">
+<img src="assets/voice-ai.png" alt="Voice AI System">
 </div>
-<div class="card">
-<h3>Executive Dashboards</h3>
-<p>Real-time revenue tracking and forecasting.</p>
-</div>
-</div>
+
 </section>
 
 <section id="inventory">
 <h2>AI Inventory Optimization</h2>
-<div class="grid">
-<div class="card">
-<h3>Demand Forecasting</h3>
-<p>Predict stock needs before shortages happen.</p>
+
+<div class="image-block">
+<img src="assets/inventory-ai.png" alt="AI Inventory">
 </div>
-<div class="card">
-<h3>Smart Reordering</h3>
-<p>Automated restock recommendations.</p>
-</div>
-<div class="card">
-<h3>Multi-Location Sync</h3>
-<p>Real-time tracking across warehouses.</p>
-</div>
-</div>
+
 </section>
 
-<section>
-<h2>Implementation Framework</h2>
-<div class="timeline">
-<div>Executive Strategy & Revenue Mapping</div>
-<div>Custom AI Development</div>
-<div>Deployment & System Integration</div>
-<div>Continuous Optimization & Scaling</div>
+<section class="brand-section">
+<div class="brand-section-content">
+<h2>Premium Artificial Intelligence Solutions</h2>
+<p>We build enterprise-level AI systems that transform businesses, automate growth and maximize profitability.</p>
 </div>
 </section>
 
@@ -296,22 +246,7 @@ background:#000
 </footer>
 
 <script>
-// Scroll reveal
-const cards = document.querySelectorAll('.card');
-const timelineItems = document.querySelectorAll('.timeline div');
-
-const observer = new IntersectionObserver(entries=>{
-entries.forEach(entry=>{
-if(entry.isIntersecting){
-entry.target.classList.add('show');
-}
-});
-},{threshold:0.2});
-
-cards.forEach(card=>observer.observe(card));
-timelineItems.forEach(item=>observer.observe(item));
-
-// Animated counters
+// Animated Counters
 const counters = document.querySelectorAll('.stat');
 counters.forEach(counter=>{
 const updateCount=()=>{
