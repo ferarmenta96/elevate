@@ -3,56 +3,35 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Elevate AI Solutions</title>
+<title>Elevate AI Solutions | Enterprise AI Systems</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&display=swap" rel="stylesheet">
 
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:'Inter',sans-serif}
 body{background:#0A0A0A;color:#fff;overflow-x:hidden}
-section{padding:120px 8%}
-h1,h2,h3{font-weight:800}
+section{padding:140px 10%}
+h1,h2,h3{font-weight:800;letter-spacing:-1px}
+p{color:#CFCFCF;line-height:1.8;margin-top:20px;font-size:18px}
 .gold{color:#D4AF37}
 
-.btn{
-background:#D4AF37;
-color:#000;
-padding:14px 28px;
-border-radius:8px;
-font-weight:700;
-text-decoration:none;
-transition:0.3s;
-display:inline-block
-}
-.btn:hover{
-background:#F5D76E;
-transform:translateY(-3px);
-box-shadow:0 10px 30px rgba(212,175,55,0.3)
-}
-
 header{
-position:fixed;
-width:100%;
-top:0;
-display:flex;
-justify-content:space-between;
-align-items:center;
-padding:20px 8%;
-background:rgba(10,10,10,0.85);
-backdrop-filter:blur(10px);
+position:fixed;width:100%;top:0;
+display:flex;justify-content:space-between;align-items:center;
+padding:25px 10%;
+background:rgba(0,0,0,0.7);
+backdrop-filter:blur(15px);
 z-index:1000
 }
-header h2{color:#D4AF37}
-nav a{color:#fff;margin-left:25px;text-decoration:none;font-weight:500}
+header h2{color:#D4AF37;font-weight:900}
+nav a{color:#fff;margin-left:35px;text-decoration:none;font-weight:500;transition:.3s}
 nav a:hover{color:#D4AF37}
 
-/* HERO */
 .hero{
 height:100vh;
 display:flex;
-flex-direction:column;
-justify-content:center;
 align-items:center;
+justify-content:center;
 text-align:center;
 background:url('assets/hero-ai-growth.png') center/cover no-repeat;
 position:relative;
@@ -60,101 +39,133 @@ position:relative;
 .hero::before{
 content:"";
 position:absolute;
-top:0;left:0;width:100%;height:100%;
-background:rgba(0,0,0,0.75);
+inset:0;
+background:linear-gradient(to bottom,rgba(0,0,0,0.85),rgba(0,0,0,0.95));
 }
 .hero-content{
 position:relative;
 z-index:2;
-}
-.hero h1{
-font-size:60px;
 max-width:900px;
-margin-bottom:20px;
-line-height:1.1
+animation:fadeUp 1.5s ease forwards;
+opacity:0
 }
-.hero p{
-color:#D1D5DB;
-max-width:600px;
-margin:auto;
-margin-bottom:40px
+.hero h1{font-size:64px;line-height:1.1}
+.btn{
+display:inline-block;
+margin-top:40px;
+padding:16px 32px;
+background:#D4AF37;
+color:#000;
+font-weight:700;
+border-radius:10px;
+text-decoration:none;
+transition:.4s
 }
-
-/* STATS */
-.stats{
-display:flex;
-gap:80px;
-margin-top:50px;
-justify-content:center;
-flex-wrap:wrap;
-}
-.stat{
-font-size:42px;
-font-weight:800;
-color:#D4AF37
-}
-.stat-label{
-text-align:center;
-color:#A1A1AA;
-margin-top:5px
+.btn:hover{
+transform:translateY(-5px);
+box-shadow:0 20px 50px rgba(212,175,55,.4)
 }
 
-/* IMAGE BLOCK */
-.image-block{
-margin-top:60px;
-border-radius:20px;
-overflow:hidden;
-box-shadow:0 25px 70px rgba(0,0,0,0.7);
-}
-.image-block img{
-width:100%;
-display:block;
-transition:0.6s ease;
-}
-.image-block img:hover{
-transform:scale(1.05);
-}
-
-/* GRID */
-.grid{
+.split{
 display:grid;
-grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
-gap:40px;
-margin-top:60px
+grid-template-columns:1fr 1fr;
+gap:80px;
+align-items:center;
+margin-top:100px
+}
+.split img{
+width:100%;
+border-radius:20px;
+box-shadow:0 30px 80px rgba(0,0,0,.7);
+transition:.6s
+}
+.split img:hover{
+transform:scale(1.04)
 }
 
-/* DARK SECTION */
 .dark{background:#111}
 
-/* BRAND SECTION */
+.highlight-box{
+margin-top:60px;
+padding:60px;
+border-radius:20px;
+background:linear-gradient(145deg,#111,#0a0a0a);
+box-shadow:0 30px 80px rgba(0,0,0,.8)
+}
+
+.big-number{
+font-size:72px;
+font-weight:900;
+color:#D4AF37
+}
+
 .brand-section{
 background:url('assets/ai-branding.png') center/cover no-repeat;
 position:relative;
-text-align:center;
+text-align:center
 }
 .brand-section::before{
 content:"";
 position:absolute;
-top:0;left:0;width:100%;height:100%;
-background:rgba(0,0,0,0.85);
+inset:0;
+background:rgba(0,0,0,.9)
 }
-.brand-section-content{
+.brand-content{
 position:relative;
 z-index:2;
 max-width:800px;
-margin:auto;
+margin:auto
+}
+
+form{
+max-width:650px;
+margin:60px auto 0;
+display:flex;
+flex-direction:column;
+gap:20px
+}
+input,textarea{
+padding:16px;
+border:none;
+border-radius:8px;
+background:#1F1F1F;
+color:#fff;
+font-size:16px
+}
+button{
+padding:16px;
+background:#D4AF37;
+border:none;
+font-weight:700;
+border-radius:8px;
+cursor:pointer
 }
 
 footer{
+padding:60px;
 text-align:center;
-padding:50px;
-color:#777;
-background:#000
+background:#000;
+color:#777
 }
 
-@media(max-width:768px){
-.hero h1{font-size:36px}
-.stats{gap:30px}
+@keyframes fadeUp{
+0%{transform:translateY(40px);opacity:0}
+100%{transform:translateY(0);opacity:1}
+}
+
+.reveal{
+opacity:0;
+transform:translateY(60px);
+transition:1.2s ease
+}
+.reveal.active{
+opacity:1;
+transform:translateY(0)
+}
+
+@media(max-width:900px){
+.split{grid-template-columns:1fr}
+.hero h1{font-size:38px}
 }
 </style>
 </head>
@@ -164,104 +175,94 @@ background:#000
 <header>
 <h2>Elevate AI Solutions</h2>
 <nav>
-<a href="#solutions">Solutions</a>
-<a href="#apps">Applications</a>
-<a href="#inventory">Inventory AI</a>
-<a href="#contact">Contact</a>
-<a class="btn" href="#contact">Strategy Call</a>
+<a href="#systems">Systems</a>
+<a href="#impact">Impact</a>
+<a href="#enterprise">Enterprise</a>
+<a href="#contact">Consultation</a>
 </nav>
 </header>
 
 <section class="hero">
 <div class="hero-content">
-<h1>AI That <span class="gold">Scales</span> Your Revenue</h1>
-<p>Advanced automation systems and intelligent applications designed to increase sales, optimize operations and maximize profit margins.</p>
-<a href="#contact" class="btn">Book Executive Strategy Call</a>
+<h1>Enterprise AI Systems That <span class="gold">Scale Revenue</span></h1>
+<p>We design advanced artificial intelligence infrastructures that transform growing companies into automated revenue engines.</p>
+<a href="#contact" class="btn">Request Executive Consultation</a>
+</div>
+</section>
 
-<div class="stats">
+<section id="systems" class="reveal">
+<div class="split">
 <div>
-<div class="stat" data-target="40">0</div>
-<div class="stat-label">% Avg Sales Growth</div>
+<h2>Advanced Automation & AI Infrastructure</h2>
+<p>From predictive sales systems to intelligent CRM automation and AI-powered applications, we build scalable ecosystems that eliminate inefficiencies and multiply output.</p>
+<p>Designed for organizations ready to operate at enterprise level.</p>
 </div>
+<img src="assets/ai-dashboard.png">
+</div>
+</section>
+
+<section id="impact" class="dark reveal">
+<div class="highlight-box">
+<h2>The Cost of Inaction</h2>
+<div class="big-number">$250K+</div>
+<p>Average revenue lost annually due to manual processes, missed leads and operational inefficiencies in mid-sized businesses.</p>
+</div>
+</section>
+
+<section class="reveal">
+<div class="split">
+<img src="assets/voice-ai.png">
 <div>
-<div class="stat" data-target="35">0</div>
-<div class="stat-label">% More Appointments</div>
+<h2>AI Voice & Intelligent Customer Acquisition</h2>
+<p>24/7 AI receptionists, automated qualification, intelligent follow-ups and CRM-integrated booking systems designed to increase appointment volume and close rate.</p>
 </div>
+</div>
+</section>
+
+<section class="reveal">
+<div class="split">
 <div>
-<div class="stat" data-target="100">0</div>
-<div class="stat-label">% Automated Follow-Up</div>
+<h2>Predictive Inventory & Operational Intelligence</h2>
+<p>AI-driven inventory forecasting and operational monitoring systems that reduce waste, eliminate downtime and maximize profit margins.</p>
 </div>
-</div>
-</div>
-</section>
-
-<section id="solutions">
-<h2>Revenue Acceleration Systems</h2>
-
-<div class="image-block">
-<img src="assets/ai-dashboard.png" alt="AI Dashboard">
-</div>
-
-</section>
-
-<section id="apps" class="dark">
-<h2>Voice AI & Automation</h2>
-
-<div class="image-block">
-<img src="assets/voice-ai.png" alt="Voice AI System">
-</div>
-
-</section>
-
-<section id="inventory">
-<h2>AI Inventory Optimization</h2>
-
-<div class="image-block">
-<img src="assets/inventory-ai.png" alt="AI Inventory">
-</div>
-
-</section>
-
-<section class="brand-section">
-<div class="brand-section-content">
-<h2>Premium Artificial Intelligence Solutions</h2>
-<p>We build enterprise-level AI systems that transform businesses, automate growth and maximize profitability.</p>
+<img src="assets/inventory-ai.png">
 </div>
 </section>
 
-<section id="contact" class="dark">
-<h2>Ready to Scale?</h2>
-<form action="https://formspree.io/f/yourID" method="POST">
-<input type="text" placeholder="Name" required>
+<section id="enterprise" class="brand-section reveal">
+<div class="brand-content">
+<h2>Built for Companies Scaling Beyond 7 Figures</h2>
+<p>We partner with growth-focused executives seeking long-term AI transformation, not short-term automation hacks.</p>
+<a href="#contact" class="btn">Start Strategic Partnership</a>
+</div>
+</section>
+
+<section id="contact" class="dark reveal">
+<h2 style="text-align:center">Executive Strategy Consultation</h2>
+<form>
+<input type="text" placeholder="Full Name" required>
 <input type="text" placeholder="Company" required>
-<input type="email" placeholder="Email" required>
-<input type="tel" placeholder="Phone" required>
-<textarea rows="4" placeholder="What revenue goal do you want to achieve?" required></textarea>
-<button class="btn">Schedule Executive Call</button>
+<input type="email" placeholder="Corporate Email" required>
+<input type="tel" placeholder="Phone Number" required>
+<textarea rows="4" placeholder="Describe your current revenue stage and growth objective"></textarea>
+<button>Apply for Consultation</button>
 </form>
 </section>
 
 <footer>
-© 2026 Elevate AI Solutions — Premium AI Revenue Systems
+© 2026 Elevate AI Solutions — Enterprise AI Infrastructure
 </footer>
 
 <script>
-// Animated Counters
-const counters = document.querySelectorAll('.stat');
-counters.forEach(counter=>{
-const updateCount=()=>{
-const target=+counter.getAttribute('data-target');
-const count=+counter.innerText;
-const speed=50;
-const increment=target/speed;
-if(count<target){
-counter.innerText=Math.ceil(count+increment);
-setTimeout(updateCount,40);
-}else{
-counter.innerText=target;
+const reveals=document.querySelectorAll('.reveal');
+window.addEventListener('scroll',()=>{
+reveals.forEach(r=>{
+const windowHeight=window.innerHeight;
+const elementTop=r.getBoundingClientRect().top;
+if(elementTop<windowHeight-100){
+r.classList.add('active');
 }
-};
-updateCount();
+});
 });
 </script>
 
