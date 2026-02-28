@@ -1,349 +1,60 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HORUS | Enterprise AI Systems That Multiply Revenue</title>
-    <meta name="description" content="We design AI infrastructures that automate growth, optimize operations, and increase profitability for any business.">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,600&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.3.0/dist/chart.umd.min.js"></script>
-    <style>
-        :root {
-            --bg:#020202; --bg-card:#0a0a0a; --bg-elevated:#111;
-            --text:#f5f0e8; --text-muted:#5a5550;
-            --gold:#C9A84C; --gold-light:#E8CC7A; --gold-dim:rgba(201,168,76,0.1);
-            --border:rgba(201,168,76,0.14); --border-dim:rgba(255,255,255,0.04);
-            --nav-h:72px;
-            --font-d:'Cormorant Garamond',serif; --font-b:'DM Sans',sans-serif;
-        }
-        *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
-        html{scroll-behavior:smooth;background:var(--bg);}
-        body{background:var(--bg);color:var(--text);overflow-x:hidden;-webkit-font-smoothing:antialiased;font-family:var(--font-b);cursor:none;}
-        ::-webkit-scrollbar{width:2px;}
-        ::-webkit-scrollbar-track{background:var(--bg);}
-        ::-webkit-scrollbar-thumb{background:var(--gold);}
-
-        /* ── CUSTOM CURSOR ── */
-        #cursor{position:fixed;width:8px;height:8px;background:var(--gold);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:width .2s,height .2s,opacity .2s;}
-        #cursor-ring{position:fixed;width:32px;height:32px;border:1px solid rgba(201,168,76,0.4);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:transform .12s ease,width .3s,height .3s,border-color .3s;mix-blend-mode:difference;}
-        body:hover #cursor{opacity:1;}
-
-        /* ── GRAIN OVERLAY ── */
-        body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");pointer-events:none;z-index:9990;opacity:.35;}
-
-        /* ── HEADER ── */
-        header{position:fixed;top:0;width:100%;height:var(--nav-h);display:flex;justify-content:space-between;align-items:center;padding:0 6%;z-index:1000;background:rgba(2,2,2,0.8);backdrop-filter:blur(32px);-webkit-backdrop-filter:blur(32px);border-bottom:1px solid var(--border);}
-        .logo{font-family:var(--font-d);font-size:21px;font-weight:600;letter-spacing:5px;color:var(--text);display:flex;align-items:center;gap:0;}
-        .logo span{color:var(--gold);}
-        .logo-eye{display:inline-flex;align-items:center;justify-content:center;width:16px;height:16px;border:1.5px solid var(--gold);border-radius:50%;position:relative;flex-shrink:0;margin:0 5px 0 5px;box-shadow:0 0 8px rgba(201,168,76,0.5);animation:eyeGlow 3s ease-in-out infinite;}
-        .logo-eye::after{content:'';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:6px;height:6px;background:var(--gold);border-radius:50%;box-shadow:0 0 6px var(--gold);}
-        @keyframes eyeGlow{0%,100%{box-shadow:0 0 8px rgba(201,168,76,0.5);}50%{box-shadow:0 0 16px rgba(201,168,76,0.9),0 0 30px rgba(201,168,76,0.3);}}
-        nav{display:flex;gap:36px;align-items:center;}
-        nav a{color:var(--text-muted);text-decoration:none;font-size:10px;font-weight:500;text-transform:uppercase;letter-spacing:2px;transition:color .3s;position:relative;}
-        nav a::after{content:'';position:absolute;bottom:-2px;left:0;width:0;height:1px;background:var(--gold);transition:width .3s;}
-        nav a:hover{color:var(--gold);}
-        nav a:hover::after{width:100%;}
-        .nav-cta{background:var(--gold)!important;color:#000!important;padding:10px 24px;border-radius:1px;font-weight:700!important;letter-spacing:2px!important;}
-        .nav-cta::after{display:none!important;}
-        .nav-cta:hover{background:var(--gold-light)!important;color:#000!important;}
-
-        /* ── UTILITY ── */
-        .sw{max-width:1360px;margin:0 auto;padding:140px 6%;}
-        .label{font-size:9px;font-weight:600;letter-spacing:4px;text-transform:uppercase;color:var(--gold);margin-bottom:20px;display:flex;align-items:center;gap:12px;}
-        .label::before{content:'';width:24px;height:1px;background:var(--gold);display:inline-block;flex-shrink:0;}
-        .display{font-family:var(--font-d);font-weight:600;line-height:.95;letter-spacing:-.02em;}
-        .body-text{color:var(--text-muted);line-height:1.8;font-size:15px;margin-top:20px;font-weight:300;}
-        .gold-line{width:1px;height:60px;background:linear-gradient(to bottom,var(--gold),transparent);display:block;margin:28px 0;}
-        .reveal{opacity:0;transform:translateY(40px);}
-        .revealed{opacity:1!important;transform:translateY(0)!important;transition:opacity .9s cubic-bezier(.2,.8,.2,1),transform .9s cubic-bezier(.2,.8,.2,1);}
-
-        .btn-gold{display:inline-flex;align-items:center;gap:12px;padding:16px 38px;background:var(--gold);color:#000;font-family:var(--font-b);font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;text-decoration:none;border:none;cursor:pointer;transition:all .3s;position:relative;overflow:hidden;}
-        .btn-gold::before{content:'';position:absolute;inset:0;background:var(--gold-light);transform:scaleX(0);transform-origin:left;transition:transform .4s cubic-bezier(.2,.8,.2,1);}
-        .btn-gold:hover::before{transform:scaleX(1);}
-        .btn-gold span{position:relative;z-index:1;}
-        .btn-ghost{display:inline-flex;align-items:center;gap:12px;padding:15px 37px;background:transparent;color:var(--gold);font-family:var(--font-b);font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;text-decoration:none;border:1px solid rgba(201,168,76,0.4);cursor:pointer;transition:all .3s;}
-        .btn-ghost:hover{border-color:var(--gold);background:var(--gold-dim);transform:translateY(-2px);}
-
-        /* ── HERO ── */
-        .hero{min-height:100vh;position:relative;display:flex;align-items:center;justify-content:center;text-align:center;overflow:hidden;padding-top:var(--nav-h);}
-        #heroCanvas{position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;}
-        .hero-overlay{position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 50% 20%,rgba(201,168,76,0.06) 0%,transparent 70%),linear-gradient(to bottom,transparent 50%,var(--bg) 100%);z-index:1;}
-        .hero-content{position:relative;z-index:2;max-width:1000px;padding:0 24px;}
-        .hero-eyebrow{display:inline-flex;align-items:center;gap:10px;padding:9px 22px;border:1px solid var(--border);font-size:10px;font-weight:500;letter-spacing:2px;color:var(--gold);margin-bottom:50px;background:rgba(201,168,76,0.04);text-transform:uppercase;}
-        .hero-eyebrow-dot{width:5px;height:5px;border-radius:50%;background:var(--gold);animation:pulse 2s infinite;}
-        @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.3;transform:scale(.8)}}
-        .hero h1{font-size:clamp(56px,8vw,104px);font-family:var(--font-d);font-weight:600;line-height:.92;margin-bottom:32px;letter-spacing:-.02em;}
-        .hero h1 em{font-style:italic;color:var(--gold);font-weight:400;}
-        .hero h1 .thin{font-weight:300;color:rgba(245,240,232,0.6);}
-        .hero-sub{font-size:clamp(15px,1.6vw,18px);max-width:620px;margin:0 auto;color:var(--text-muted);line-height:1.75;font-weight:300;}
-        .hero-ctas{display:flex;gap:16px;justify-content:center;margin-top:54px;flex-wrap:wrap;}
-        .hero-scroll{position:absolute;bottom:40px;left:50%;transform:translateX(-50%);z-index:2;display:flex;flex-direction:column;align-items:center;gap:8px;}
-        .hero-scroll span{font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--text-muted);}
-        .scroll-line{width:1px;height:50px;background:linear-gradient(to bottom,var(--gold),transparent);animation:scrollLine 2s ease infinite;}
-        @keyframes scrollLine{0%{transform:scaleY(0);transform-origin:top}50%{transform:scaleY(1);transform-origin:top}51%{transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}
-        .trusted-bar{margin-top:100px;display:flex;flex-direction:column;align-items:center;gap:22px;}
-        .trusted-label{font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--text-muted);}
-        .trusted-logos{display:flex;gap:48px;align-items:center;flex-wrap:wrap;justify-content:center;opacity:.22;filter:grayscale(1);}
-        .trusted-logos span{font-family:var(--font-d);font-size:14px;font-weight:600;letter-spacing:3px;text-transform:uppercase;}
-
-        /* ── PAIN ── */
-        .pain-center{text-align:center;max-width:740px;margin:0 auto;}
-        .pain-grid{display:grid;grid-template-columns:1fr 1fr;margin-top:80px;}
-        .pain-stat{padding:56px 50px;border:1px solid var(--border);margin:-1px 0 0 -1px;position:relative;overflow:hidden;transition:background .4s;}
-        .pain-stat::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(201,168,76,0.04) 0%,transparent 60%);opacity:0;transition:opacity .4s;}
-        .pain-stat:hover{background:rgba(201,168,76,0.02);}
-        .pain-stat:hover::after{opacity:1;}
-        .pain-accent{position:absolute;top:0;left:0;width:0;height:2px;background:linear-gradient(to right,var(--gold),transparent);transition:width .6s cubic-bezier(.2,.8,.2,1);}
-        .pain-stat:hover .pain-accent{width:100%;}
-        .pain-number{font-family:var(--font-d);font-size:clamp(60px,7vw,88px);font-weight:700;color:var(--gold);line-height:1;display:block;}
-        .pain-unit{font-size:14px;color:rgba(201,168,76,0.7);font-family:var(--font-d);font-style:italic;margin-top:4px;display:block;}
-        .pain-stat h3{font-family:var(--font-d);font-size:20px;margin-top:20px;font-weight:600;letter-spacing:.5px;}
-        .pain-stat p{font-size:13px;color:var(--text-muted);margin-top:10px;line-height:1.7;font-weight:300;}
-
-        /* ── SERVICES ── */
-        .tier{margin-bottom:120px;}
-        .tier-header{display:flex;align-items:flex-start;gap:60px;margin-bottom:50px;}
-        .tier-num{font-family:var(--font-d);font-size:100px;font-weight:700;color:rgba(201,168,76,0.08);line-height:1;flex-shrink:0;margin-top:-10px;}
-        .tier-title-block h2{font-size:clamp(32px,4vw,54px);font-family:var(--font-d);font-weight:600;}
-        .tier-grid{display:grid;grid-template-columns:1.3fr 1fr;gap:1px;background:rgba(201,168,76,0.08);}
-        .tier-image{grid-row:span 2;overflow:hidden;min-height:440px;position:relative;}
-        .tier-image img{width:100%;height:100%;object-fit:cover;filter:grayscale(50%) brightness(0.65);transition:all 1.4s cubic-bezier(.2,.8,.2,1);display:block;}
-        .tier-image::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(201,168,76,0.08) 0%,transparent 50%);}
-        .tier:hover .tier-image img{filter:grayscale(0%) brightness(0.85);transform:scale(1.06);}
-        .service-item{background:var(--bg-card);padding:26px 30px;display:flex;align-items:center;gap:16px;transition:background .25s,padding-left .25s;}
-        .service-item:hover{background:var(--bg-elevated);padding-left:36px;}
-        .service-dot{width:5px;height:5px;border-radius:50%;background:var(--gold);flex-shrink:0;transition:transform .25s;}
-        .service-item:hover .service-dot{transform:scale(1.6);}
-        .service-item span{font-size:13px;font-weight:400;color:var(--text-muted);letter-spacing:.3px;transition:color .25s;}
-        .service-item:hover span{color:var(--text);}
-        .tier-cta-block{background:var(--bg-card);padding:30px;display:flex;align-items:center;justify-content:space-between;gap:20px;border-top:1px solid var(--border);}
-
-        /* ── RESULTS ── */
-        .results-header{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:end;margin-bottom:70px;}
-        .results-header h2{font-size:clamp(40px,5vw,68px);font-family:var(--font-d);font-weight:600;}
-        .results-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);margin-bottom:2px;}
-        .result-card{background:var(--bg-card);padding:48px 36px;transition:background .3s;position:relative;overflow:hidden;}
-        .result-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(to right,transparent,var(--gold),transparent);opacity:0;transition:opacity .4s;}
-        .result-card:hover{background:var(--bg-elevated);}
-        .result-card:hover::before{opacity:1;}
-        .result-kpi{font-family:var(--font-d);font-size:60px;font-weight:700;color:var(--gold);line-height:1;display:block;}
-        .result-card h3{font-size:15px;font-weight:600;margin-top:16px;letter-spacing:.3px;}
-        .result-card p{font-size:13px;color:var(--text-muted);margin-top:10px;line-height:1.7;font-weight:300;}
-        .testimonials-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--border);}
-        .testimonial{background:var(--bg-card);padding:44px;position:relative;transition:background .3s;}
-        .testimonial:hover{background:var(--bg-elevated);}
-        .testimonial::before{content:'\201C';font-family:var(--font-d);font-size:120px;color:var(--gold);opacity:.08;position:absolute;top:10px;left:24px;line-height:1;}
-        .testimonial p{font-size:15px;line-height:1.8;color:rgba(245,240,232,0.8);font-weight:300;margin:0;position:relative;z-index:1;font-style:italic;}
-        .testimonial-author{margin-top:28px;display:flex;align-items:center;gap:14px;}
-        .author-avatar{width:44px;height:44px;border-radius:50%;background:var(--gold-dim);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-family:var(--font-d);font-weight:600;color:var(--gold);font-size:18px;flex-shrink:0;}
-        .author-info strong{display:block;font-size:13px;font-weight:600;letter-spacing:.3px;}
-        .author-info span{font-size:11px;color:var(--text-muted);letter-spacing:.5px;}
-
-        /* ── FULL BANNER ── */
-        .full-banner{width:100%;height:460px;overflow:hidden;position:relative;border-top:1px solid var(--border);border-bottom:1px solid var(--border);}
-        .full-banner img{width:100%;height:130%;object-fit:cover;filter:grayscale(70%) brightness(0.45);display:block;}
-        .banner-overlay{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(2,2,2,0.5);}
-        .banner-text{text-align:center;padding:0 24px;}
-        .banner-text h2{font-family:var(--font-d);font-size:clamp(32px,5vw,68px);font-weight:600;line-height:.95;}
-        .banner-text h2 em{font-style:italic;color:var(--gold);}
-        .banner-text p{font-size:14px;color:rgba(245,240,232,0.5);margin-top:18px;letter-spacing:1px;text-transform:uppercase;}
-
-        /* ── METRICS ── */
-        .metrics-title{text-align:center;max-width:760px;margin:0 auto 60px;}
-        .metrics-title h2{font-size:clamp(40px,5vw,64px);}
-        .chart-wrap{background:var(--bg-card);border:1px solid var(--border);padding:50px;position:relative;overflow:hidden;}
-        .chart-wrap::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(to right,transparent,var(--gold),transparent);}
-        .chart-container-fix{position:relative;height:45vh;min-height:380px;}
-
-        /* ── INFRA ── */
-        .infra-grid{display:grid;grid-template-columns:1fr 1fr;gap:100px;align-items:center;}
-        .infra-image-wrap{overflow:hidden;position:relative;}
-        .infra-image-wrap::after{content:'';position:absolute;inset:0;border:1px solid var(--border);pointer-events:none;}
-        .infra-image-wrap img{width:100%;display:block;filter:grayscale(40%) brightness(0.7);transition:all 1.4s cubic-bezier(.2,.8,.2,1);}
-        .infra-grid:hover .infra-image-wrap img{filter:grayscale(0%) brightness(.9);transform:scale(1.04);}
-
-        /* ── AUTHORITY ── */
-        .authority-inner{text-align:center;max-width:820px;margin:0 auto;}
-        .authority-badges{display:flex;justify-content:center;gap:12px;margin-top:64px;flex-wrap:wrap;}
-        .badge{border:1px solid var(--border);padding:18px 26px;display:flex;flex-direction:column;align-items:center;gap:10px;transition:border-color .3s,background .3s;cursor:pointer;position:relative;overflow:hidden;}
-        .badge::before{content:'';position:absolute;inset:0;background:var(--gold-dim);transform:scaleY(0);transform-origin:bottom;transition:transform .4s cubic-bezier(.2,.8,.2,1);}
-        .badge:hover::before{transform:scaleY(1);}
-        .badge:hover{border-color:var(--gold);}
-        .badge-icon{color:var(--gold);font-size:18px;position:relative;}
-        .badge span{font-size:9px;letter-spacing:2px;text-transform:uppercase;font-weight:600;color:var(--text-muted);position:relative;}
-        .split-authority{display:grid;grid-template-columns:1fr 1fr;gap:100px;align-items:center;margin-top:110px;}
-        .split-authority img{width:100%;aspect-ratio:4/3;object-fit:cover;filter:grayscale(40%) brightness(0.7);transition:all 1.4s;display:block;}
-        .split-authority:hover img{filter:grayscale(0%) brightness(.9);}
-        .img-frame{overflow:hidden;position:relative;}
-        .img-frame::after{content:'';position:absolute;inset:0;border:1px solid var(--border);pointer-events:none;}
-
-        /* ── CONTACT ── */
-        .contact-inner{display:grid;grid-template-columns:1fr 1.2fr;gap:100px;}
-        .contact-info h2{font-size:clamp(36px,5vw,60px);}
-        .contact-disclaimer{margin-top:40px;padding:24px;border-left:2px solid var(--gold);background:rgba(201,168,76,0.04);font-size:12px;line-height:1.75;color:var(--text-muted);}
-        .contact-disclaimer strong{color:var(--gold);display:block;margin-bottom:8px;font-size:9px;letter-spacing:3px;text-transform:uppercase;}
-        .contact-detail{display:flex;align-items:center;gap:14px;margin-top:16px;}
-        .contact-detail-icon{width:36px;height:36px;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;color:var(--gold);font-size:14px;flex-shrink:0;}
-        .contact-detail span{font-size:13px;color:var(--text-muted);}
-        .form-card{background:var(--bg-card);border:1px solid var(--border);padding:52px;position:relative;overflow:hidden;}
-        .form-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(to right,transparent,var(--gold),transparent);}
-
-        /* Form success */
-        .form-success{display:none;text-align:center;padding:60px 30px;}
-        .success-icon{font-family:var(--font-d);font-size:56px;color:var(--gold);margin-bottom:24px;display:block;}
-        .form-success h3{font-family:var(--font-d);font-size:36px;font-weight:600;margin-bottom:14px;}
-        .form-success p{color:var(--text-muted);font-size:14px;line-height:1.7;font-weight:300;}
-        .form-success .divider{width:1px;height:40px;background:linear-gradient(to bottom,var(--gold),transparent);margin:28px auto;}
-
-        /* Form fields */
-        .form-fields{display:flex;flex-direction:column;gap:12px;}
-        .form-row-2{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
-        .field-wrap{display:flex;flex-direction:column;gap:4px;}
-        .field-error{font-size:10px;color:#e05c5c;min-height:14px;padding-left:2px;letter-spacing:.3px;}
-        input,textarea,select{padding:15px 18px;border:1px solid var(--border-dim);background:rgba(20,20,20,0.8);color:var(--text);font-family:var(--font-b);font-size:13px;transition:border-color .3s,background .3s;outline:none;width:100%;border-radius:0;}
-        input:focus,textarea:focus,select:focus{border-color:rgba(201,168,76,0.5);background:rgba(12,8,0,0.9);}
-        input::placeholder,textarea::placeholder{color:rgba(90,85,80,0.8);}
-        textarea{resize:vertical;min-height:110px;}
-        select option{background:#111;color:var(--text);}
-        #submit-btn{width:100%;padding:18px;background:var(--gold);color:#000;border:none;font-family:var(--font-b);font-weight:700;font-size:11px;letter-spacing:2.5px;text-transform:uppercase;cursor:pointer;transition:all .3s;margin-top:8px;position:relative;overflow:hidden;}
-        #submit-btn::before{content:'';position:absolute;inset:0;background:var(--gold-light);transform:scaleX(0);transform-origin:left;transition:transform .4s cubic-bezier(.2,.8,.2,1);}
-        #submit-btn:hover::before{transform:scaleX(1);}
-        #submit-btn span{position:relative;z-index:1;}
-        #submit-btn:disabled{opacity:.6;cursor:not-allowed;}
-
-        /* ── LANG SWITCHER ── */
-        .lang-switcher{display:flex;align-items:center;gap:6px;margin-left:16px;padding-left:16px;border-left:1px solid var(--border);}
-        .lang-btn{background:none;border:none;color:var(--text-muted);font-family:var(--font-b);font-size:10px;font-weight:700;letter-spacing:2px;cursor:pointer;padding:6px 4px;transition:color .3s;position:relative;}
-        .lang-btn::after{content:'';position:absolute;bottom:2px;left:0;right:0;height:1px;background:var(--gold);transform:scaleX(0);transition:transform .3s;}
-        .lang-btn.active{color:var(--gold);}
-        .lang-btn.active::after{transform:scaleX(1);}
-        .lang-btn:hover{color:var(--gold);}
-        .lang-divider{color:var(--border);font-size:10px;}
-
-        /* ── FOOTER ── */
-        footer{border-top:1px solid var(--border);background:var(--bg);}
-        .footer-main{max-width:1360px;margin:0 auto;padding:90px 6% 56px;display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:60px;}
-        .footer-brand .logo{font-size:22px;}
-        .footer-brand p{font-size:13px;color:var(--text-muted);margin-top:18px;line-height:1.75;font-weight:300;max-width:260px;}
-        .footer-social{display:flex;gap:10px;margin-top:32px;}
-        .social-link{width:34px;height:34px;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;color:var(--text-muted);text-decoration:none;font-size:11px;font-weight:700;transition:all .3s;cursor:pointer;}
-        .social-link:hover{border-color:var(--gold);color:var(--gold);}
-        .footer-col h4{font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--text-muted);margin-bottom:26px;font-weight:600;}
-        .footer-col a{display:block;color:var(--text-muted);text-decoration:none;font-size:13px;margin-bottom:14px;transition:color .3s;font-weight:300;}
-        .footer-col a:hover{color:var(--gold);}
-        .footer-bottom{border-top:1px solid var(--border-dim);padding:28px 6%;max-width:1360px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;}
-        .footer-bottom p{font-size:11px;color:rgba(90,85,80,0.7);font-weight:300;letter-spacing:.5px;}
-
-        /* ── RESPONSIVE ── */
-        @media(max-width:1024px){
-            .pain-grid,.tier-grid,.infra-grid,.contact-inner,.split-authority,.results-header{grid-template-columns:1fr;gap:50px;}
-            .tier-image{grid-row:auto;min-height:280px;}
-            .results-grid{grid-template-columns:1fr 1fr;}
-            .footer-main{grid-template-columns:1fr 1fr;}
-        }
-        @media(max-width:768px){
-            nav a:not(.nav-cta){display:none;}
-            .testimonials-grid,.results-grid,.form-row-2{grid-template-columns:1fr;}
-            .tier-header{flex-direction:column;gap:16px;}
-            .tier-num{font-size:60px;}
-            .footer-main{grid-template-columns:1fr;gap:40px;}
-            .footer-bottom{flex-direction:column;gap:12px;text-align:center;}
-            .full-banner{height:320px;}
-            body{cursor:auto;}
-            #cursor,#cursor-ring{display:none;}
-        }
-        /* ── LANG SWITCHER ── */
-        .lang-switcher{display:flex;align-items:center;gap:6px;margin-left:16px;padding-left:16px;border-left:1px solid var(--border);}
-        .lang-btn{background:none;border:none;color:var(--text-muted);font-family:var(--font-b);font-size:10px;font-weight:700;letter-spacing:2px;cursor:pointer;padding:6px 2px;transition:color .3s;position:relative;}
-        .lang-btn::after{content:'';position:absolute;bottom:0;left:0;right:0;height:1px;background:var(--gold);transform:scaleX(0);transition:transform .3s;}
-        .lang-btn.active{color:var(--gold);}
-        .lang-btn.active::after{transform:scaleX(1);}
-        .lang-btn:hover{color:var(--gold);}
-        .lang-divider{color:var(--border);font-size:10px;user-select:none;}
-    </style>
-</head>
-<body>
-
-<div id="cursor"></div>
-<div id="cursor-ring"></div>
-
-<!-- ── HEADER ── -->
+<!DOCTYPE html><html lang="en"><head>    <meta charset="UTF-8">    <meta name="viewport" content="width=device-width, initial-scale=1.0">    <title>HORUS | Enterprise AI Systems That Multiply Revenue</title>    <meta name="description" content="We design AI infrastructures that automate growth, optimize operations, and increase profitability for any business.">    <link rel="preconnect" href="https://fonts.googleapis.com">    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,600&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.3.0/dist/chart.umd.min.js"></script>    <style>        :root {            --bg:#020202; --bg-card:#0a0a0a; --bg-elevated:#111;            --text:#f5f0e8; --text-muted:#5a5550;            --gold:#C9A84C; --gold-light:#E8CC7A; --gold-dim:rgba(201,168,76,0.1);            --border:rgba(201,168,76,0.14); --border-dim:rgba(255,255,255,0.04);            --nav-h:72px;            --font-d:'Cormorant Garamond',serif; --font-b:'DM Sans',sans-serif;        }        *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}        html{scroll-behavior:smooth;background:var(--bg);}        body{background:var(--bg);color:var(--text);overflow-x:hidden;-webkit-font-smoothing:antialiased;font-family:var(--font-b);cursor:none;}        ::-webkit-scrollbar{width:2px;}        ::-webkit-scrollbar-track{background:var(--bg);}        ::-webkit-scrollbar-thumb{background:var(--gold);}        #cursor{position:fixed;width:8px;height:8px;background:var(--gold);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:width .2s,height .2s,opacity .2s;}        #cursor-ring{position:fixed;width:32px;height:32px;border:1px solid rgba(201,168,76,0.4);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:transform .12s ease,width .3s,height .3s,border-color .3s;mix-blend-mode:difference;}        body:hover #cursor{opacity:1;}        body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");pointer-events:none;z-index:9990;opacity:.35;}        header{position:fixed;top:0;width:100%;height:var(--nav-h);display:flex;justify-content:space-between;align-items:center;padding:0 6%;z-index:1000;background:rgba(2,2,2,0.8);backdrop-filter:blur(32px);-webkit-backdrop-filter:blur(32px);border-bottom:1px solid var(--border);}        .logo{font-family:var(--font-d);font-size:21px;font-weight:600;letter-spacing:5px;color:var(--text);display:flex;align-items:center;gap:0;}        .logo span{color:var(--gold);}        .logo-eye{display:inline-flex;align-items:center;justify-content:center;width:16px;height:16px;border:1.5px solid var(--gold);border-radius:50%;position:relative;flex-shrink:0;margin:0 5px 0 5px;box-shadow:0 0 8px rgba(201,168,76,0.5);animation:eyeGlow 3s ease-in-out infinite;}        .logo-eye::after{content:'';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:6px;height:6px;background:var(--gold);border-radius:50%;box-shadow:0 0 6px var(--gold);}        @keyframes eyeGlow{0%,100%{box-shadow:0 0 8px rgba(201,168,76,0.5);}50%{box-shadow:0 0 16px rgba(201,168,76,0.9),0 0 30px rgba(201,168,76,0.3);}}        nav{display:flex;gap:36px;align-items:center;}        nav a{color:var(--text-muted);text-decoration:none;font-size:10px;font-weight:500;text-transform:uppercase;letter-spacing:2px;transition:color .3s;position:relative;}        nav a::after{content:'';position:absolute;bottom:-2px;left:0;width:0;height:1px;background:var(--gold);transition:width .3s;}        nav a:hover{color:var(--gold);}        nav a:hover::after{width:100%;}        .nav-cta{background:var(--gold)!important;color:#000!important;padding:10px 24px;border-radius:1px;font-weight:700!important;letter-spacing:2px!important;}        .nav-cta::after{display:none!important;}        .nav-cta:hover{background:var(--gold-light)!important;color:#000!important;}        .sw{max-width:1360px;margin:0 auto;padding:140px 6%;}        .label{font-size:9px;font-weight:600;letter-spacing:4px;text-transform:uppercase;color:var(--gold);margin-bottom:20px;display:flex;align-items:center;gap:12px;}        .label::before{content:'';width:24px;height:1px;background:var(--gold);display:inline-block;flex-shrink:0;}        .display{font-family:var(--font-d);font-weight:600;line-height:.95;letter-spacing:-.02em;}        .body-text{color:var(--text-muted);line-height:1.8;font-size:15px;margin-top:20px;font-weight:300;}        .gold-line{width:1px;height:60px;background:linear-gradient(to bottom,var(--gold),transparent);display:block;margin:28px 0;}        .reveal{opacity:0;transform:translateY(40px);}        .revealed{opacity:1!important;transform:translateY(0)!important;transition:opacity .9s cubic-bezier(.2,.8,.2,1),transform .9s cubic-bezier(.2,.8,.2,1);}        .btn-gold{display:inline-flex;align-items:center;gap:12px;padding:16px 38px;background:var(--gold);color:#000;font-family:var(--font-b);font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;text-decoration:none;border:none;cursor:pointer;transition:all .3s;position:relative;overflow:hidden;}        .btn-gold::before{content:'';position:absolute;inset:0;background:var(--gold-light);transform:scaleX(0);transform-origin:left;transition:transform .4s cubic-bezier(.2,.8,.2,1);}        .btn-gold:hover::before{transform:scaleX(1);}        .btn-gold span{position:relative;z-index:1;}        .btn-ghost{display:inline-flex;align-items:center;gap:12px;padding:15px 37px;background:transparent;color:var(--gold);font-family:var(--font-b);font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;text-decoration:none;border:1px solid rgba(201,168,76,0.4);cursor:pointer;transition:all .3s;}        .btn-ghost:hover{border-color:var(--gold);background:var(--gold-dim);transform:translateY(-2px);}        .hero{min-height:100vh;position:relative;display:flex;align-items:center;justify-content:center;text-align:center;overflow:hidden;padding-top:var(--nav-h);}        #heroCanvas{position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;}        .hero-overlay{position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 50% 20%,rgba(201,168,76,0.06) 0%,transparent 70%),linear-gradient(to bottom,transparent 50%,var(--bg) 100%);z-index:1;}        .hero-content{position:relative;z-index:2;max-width:1000px;padding:0 24px;}        .hero-eyebrow{display:inline-flex;align-items:center;gap:10px;padding:9px 22px;border:1px solid var(--border);font-size:10px;font-weight:500;letter-spacing:2px;color:var(--gold);margin-bottom:50px;background:rgba(201,168,76,0.04);text-transform:uppercase;}        .hero-eyebrow-dot{width:5px;height:5px;border-radius:50%;background:var(--gold);animation:pulse 2s infinite;}        @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.3;transform:scale(.8)}}        .hero h1{font-size:clamp(56px,8vw,104px);font-family:var(--font-d);font-weight:600;line-height:.92;margin-bottom:32px;letter-spacing:-.02em;}        .hero h1 em{font-style:italic;color:var(--gold);font-weight:400;}        .hero h1 .thin{font-weight:300;color:rgba(245,240,232,0.6);}        .hero-sub{font-size:clamp(15px,1.6vw,18px);max-width:620px;margin:0 auto;color:var(--text-muted);line-height:1.75;font-weight:300;}        .hero-ctas{display:flex;gap:16px;justify-content:center;margin-top:54px;flex-wrap:wrap;}        .hero-scroll{position:absolute;bottom:40px;left:50%;transform:translateX(-50%);z-index:2;display:flex;flex-direction:column;align-items:center;gap:8px;}        .hero-scroll span{font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--text-muted);}        .scroll-line{width:1px;height:50px;background:linear-gradient(to bottom,var(--gold),transparent);animation:scrollLine 2s ease infinite;}        @keyframes scrollLine{0%{transform:scaleY(0);transform-origin:top}50%{transform:scaleY(1);transform-origin:top}51%{transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}        .trusted-bar{margin-top:100px;display:flex;flex-direction:column;align-items:center;gap:22px;}        .trusted-label{font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--text-muted);}        .trusted-logos{display:flex;gap:48px;align-items:center;flex-wrap:wrap;justify-content:center;opacity:.22;filter:grayscale(1);}        .trusted-logos span{font-family:var(--font-d);font-size:14px;font-weight:600;letter-spacing:3px;text-transform:uppercase;}        .pain-center{text-align:center;max-width:740px;margin:0 auto;}        .pain-grid{display:grid;grid-template-columns:1fr 1fr;margin-top:80px;}        .pain-stat{padding:56px 50px;border:1px solid var(--border);margin:-1px 0 0 -1px;position:relative;overflow:hidden;transition:background .4s;}        .pain-stat::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(201,168,76,0.04) 0%,transparent 60%);opacity:0;transition:opacity .4s;}        .pain-stat:hover{background:rgba(201,168,76,0.02);}        .pain-stat:hover::after{opacity:1;}        .pain-accent{position:absolute;top:0;left:0;width:0;height:2px;background:linear-gradient(to right,var(--gold),transparent);transition:width .6s cubic-bezier(.2,.8,.2,1);}        .pain-stat:hover .pain-accent{width:100%;}        .pain-number{font-family:var(--font-d);font-size:clamp(60px,7vw,88px);font-weight:700;color:var(--gold);line-height:1;display:block;}        .pain-unit{font-size:14px;color:rgba(201,168,76,0.7);font-family:var(--font-d);font-style:italic;margin-top:4px;display:block;}        .pain-stat h3{font-family:var(--font-d);font-size:20px;margin-top:20px;font-weight:600;letter-spacing:.5px;}        .pain-stat p{font-size:13px;color:var(--text-muted);margin-top:10px;line-height:1.7;font-weight:300;}        .tier{margin-bottom:120px;}        .tier-header{display:flex;align-items:flex-start;gap:60px;margin-bottom:50px;}        .tier-num{font-family:var(--font-d);font-size:100px;font-weight:700;color:rgba(201,168,76,0.08);line-height:1;flex-shrink:0;margin-top:-10px;}        .tier-title-block h2{font-size:clamp(32px,4vw,54px);font-family:var(--font-d);font-weight:600;}        .tier-grid{display:grid;grid-template-columns:1.3fr 1fr;gap:1px;background:rgba(201,168,76,0.08);}        .tier-image{grid-row:span 2;overflow:hidden;min-height:440px;position:relative;}        .tier-image img{width:100%;height:100%;object-fit:cover;filter:grayscale(50%) brightness(0.65);transition:all 1.4s cubic-bezier(.2,.8,.2,1);display:block;}        .tier-image::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(201,168,76,0.08) 0%,transparent 50%);}        .tier:hover .tier-image img{filter:grayscale(0%) brightness(0.85);transform:scale(1.06);}        .service-item{background:var(--bg-card);padding:26px 30px;display:flex;align-items:center;gap:16px;transition:background .25s,padding-left .25s;}        .service-item:hover{background:var(--bg-elevated);padding-left:36px;}        .service-dot{width:5px;height:5px;border-radius:50%;background:var(--gold);flex-shrink:0;transition:transform .25s;}        .service-item:hover .service-dot{transform:scale(1.6);}        .service-item span{font-size:13px;font-weight:400;color:var(--text-muted);letter-spacing:.3px;transition:color .25s;}        .service-item:hover span{color:var(--text);}        .tier-cta-block{background:var(--bg-card);padding:30px;display:flex;align-items:center;justify-content:space-between;gap:20px;border-top:1px solid var(--border);}        .results-header{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:end;margin-bottom:70px;}        .results-header h2{font-size:clamp(40px,5vw,68px);font-family:var(--font-d);font-weight:600;}        .results-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);margin-bottom:2px;}        .result-card{background:var(--bg-card);padding:48px 36px;transition:background .3s;position:relative;overflow:hidden;}        .result-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(to right,transparent,var(--gold),transparent);opacity:0;transition:opacity .4s;}        .result-card:hover{background:var(--bg-elevated);}        .result-card:hover::before{opacity:1;}        .result-kpi{font-family:var(--font-d);font-size:60px;font-weight:700;color:var(--gold);line-height:1;display:block;}        .result-card h3{font-size:15px;font-weight:600;margin-top:16px;letter-spacing:.3px;}        .result-card p{font-size:13px;color:var(--text-muted);margin-top:10px;line-height:1.7;font-weight:300;}        .testimonials-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--border);}        .testimonial{background:var(--bg-card);padding:44px;position:relative;transition:background .3s;}        .testimonial:hover{background:var(--bg-elevated);}        .testimonial::before{content:'\201C';font-family:var(--font-d);font-size:120px;color:var(--gold);opacity:.08;position:absolute;top:10px;left:24px;line-height:1;}        .testimonial p{font-size:15px;line-height:1.8;color:rgba(245,240,232,0.8);font-weight:300;margin:0;position:relative;z-index:1;font-style:italic;}        .testimonial-author{margin-top:28px;display:flex;align-items:center;gap:14px;}        .author-avatar{width:44px;height:44px;border-radius:50%;background:var(--gold-dim);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-family:var(--font-d);font-weight:600;color:var(--gold);font-size:18px;flex-shrink:0;}        .author-info strong{display:block;font-size:13px;font-weight:600;letter-spacing:.3px;}        .author-info span{font-size:11px;color:var(--text-muted);letter-spacing:.5px;}        .full-banner{width:100%;height:460px;overflow:hidden;position:relative;border-top:1px solid var(--border);border-bottom:1px solid var(--border);}        .full-banner img{width:100%;height:130%;object-fit:cover;filter:grayscale(70%) brightness(0.45);display:block;}        .banner-overlay{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(2,2,2,0.5);}        .banner-text{text-align:center;padding:0 24px;}        .banner-text h2{font-family:var(--font-d);font-size:clamp(32px,5vw,68px);font-weight:600;line-height:.95;}        .banner-text h2 em{font-style:italic;color:var(--gold);}        .banner-text p{font-size:14px;color:rgba(245,240,232,0.5);margin-top:18px;letter-spacing:1px;text-transform:uppercase;}        .metrics-title{text-align:center;max-width:760px;margin:0 auto 60px;}        .metrics-title h2{font-size:clamp(40px,5vw,64px);}        .chart-wrap{background:var(--bg-card);border:1px solid var(--border);padding:50px;position:relative;overflow:hidden;}        .chart-wrap::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(to right,transparent,var(--gold),transparent);}        .chart-container-fix{position:relative;height:45vh;min-height:380px;}        .infra-grid{display:grid;grid-template-columns:1fr 1fr;gap:100px;align-items:center;}        .infra-image-wrap{overflow:hidden;position:relative;}        .infra-image-wrap::after{content:'';position:absolute;inset:0;border:1px solid var(--border);pointer-events:none;}        .infra-image-wrap img{width:100%;display:block;filter:grayscale(40%) brightness(0.7);transition:all 1.4s cubic-bezier(.2,.8,.2,1);}        .infra-grid:hover .infra-image-wrap img{filter:grayscale(0%) brightness(.9);transform:scale(1.04);}        .authority-inner{text-align:center;max-width:820px;margin:0 auto;}        .authority-badges{display:flex;justify-content:center;gap:12px;margin-top:64px;flex-wrap:wrap;}        .badge{border:1px solid var(--border);padding:18px 26px;display:flex;flex-direction:column;align-items:center;gap:10px;transition:border-color .3s,background .3s;cursor:pointer;position:relative;overflow:hidden;}        .badge::before{content:'';position:absolute;inset:0;background:var(--gold-dim);transform:scaleY(0);transform-origin:bottom;transition:transform .4s cubic-bezier(.2,.8,.2,1);}        .badge:hover::before{transform:scaleY(1);}        .badge:hover{border-color:var(--gold);}        .badge-icon{color:var(--gold);font-size:18px;position:relative;}        .badge span{font-size:9px;letter-spacing:2px;text-transform:uppercase;font-weight:600;color:var(--text-muted);position:relative;}        .split-authority{display:grid;grid-template-columns:1fr 1fr;gap:100px;align-items:center;margin-top:110px;}        .split-authority img{width:100%;aspect-ratio:4/3;object-fit:cover;filter:grayscale(40%) brightness(0.7);transition:all 1.4s;display:block;}        .split-authority:hover img{filter:grayscale(0%) brightness(.9);}        .img-frame{overflow:hidden;position:relative;}        .img-frame::after{content:'';position:absolute;inset:0;border:1px solid var(--border);pointer-events:none;}        .contact-inner{display:grid;grid-template-columns:1fr 1.2fr;gap:100px;}        .contact-info h2{font-size:clamp(36px,5vw,60px);}        .contact-disclaimer{margin-top:40px;padding:24px;border-left:2px solid var(--gold);background:rgba(201,168,76,0.04);font-size:12px;line-height:1.75;color:var(--text-muted);}        .contact-disclaimer strong{color:var(--gold);display:block;margin-bottom:8px;font-size:9px;letter-spacing:3px;text-transform:uppercase;}        .contact-detail{display:flex;align-items:center;gap:14px;margin-top:16px;}        .contact-detail-icon{width:36px;height:36px;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;color:var(--gold);font-size:14px;flex-shrink:0;}        .contact-detail span{font-size:13px;color:var(--text-muted);}        .form-card{background:var(--bg-card);border:1px solid var(--border);padding:52px;position:relative;overflow:hidden;}        .form-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(to right,transparent,var(--gold),transparent);}        .form-success{display:none;text-align:center;padding:60px 30px;}        .success-icon{font-family:var(--font-d);font-size:56px;color:var(--gold);margin-bottom:24px;display:block;}        .form-success h3{font-family:var(--font-d);font-size:36px;font-weight:600;margin-bottom:14px;}        .form-success p{color:var(--text-muted);font-size:14px;line-height:1.7;font-weight:300;}        .form-success .divider{width:1px;height:40px;background:linear-gradient(to bottom,var(--gold),transparent);margin:28px auto;}        .form-fields{display:flex;flex-direction:column;gap:12px;}        .form-row-2{display:grid;grid-template-columns:1fr 1fr;gap:12px;}        .field-wrap{display:flex;flex-direction:column;gap:4px;}        .field-error{font-size:10px;color:#e05c5c;min-height:14px;padding-left:2px;letter-spacing:.3px;}        input,textarea,select{padding:15px 18px;border:1px solid var(--border-dim);background:rgba(20,20,20,0.8);color:var(--text);font-family:var(--font-b);font-size:13px;transition:border-color .3s,background .3s;outline:none;width:100%;border-radius:0;}        input:focus,textarea:focus,select:focus{border-color:rgba(201,168,76,0.5);background:rgba(12,8,0,0.9);}        input::placeholder,textarea::placeholder{color:rgba(90,85,80,0.8);}        textarea{resize:vertical;min-height:110px;}        select option{background:#111;color:var(--text);}        #submit-btn{width:100%;padding:18px;background:var(--gold);color:#000;border:none;font-family:var(--font-b);font-weight:700;font-size:11px;letter-spacing:2.5px;text-transform:uppercase;cursor:pointer;transition:all .3s;margin-top:8px;position:relative;overflow:hidden;}        #submit-btn::before{content:'';position:absolute;inset:0;background:var(--gold-light);transform:scaleX(0);transform-origin:left;transition:transform .4s cubic-bezier(.2,.8,.2,1);}        #submit-btn:hover::before{transform:scaleX(1);}        #submit-btn span{position:relative;z-index:1;}        #submit-btn:disabled{opacity:.6;cursor:not-allowed;}        footer{border-top:1px solid var(--border);background:var(--bg);}        .footer-main{max-width:1360px;margin:0 auto;padding:90px 6% 56px;display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:60px;}        .footer-brand .logo{font-size:22px;}        .footer-brand p{font-size:13px;color:var(--text-muted);margin-top:18px;line-height:1.75;font-weight:300;max-width:260px;}        .footer-social{display:flex;gap:10px;margin-top:32px;}        .social-link{width:34px;height:34px;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;color:var(--text-muted);text-decoration:none;font-size:11px;font-weight:700;transition:all .3s;cursor:pointer;}        .social-link:hover{border-color:var(--gold);color:var(--gold);}        .footer-col h4{font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--text-muted);margin-bottom:26px;font-weight:600;}        .footer-col a{display:block;color:var(--text-muted);text-decoration:none;font-size:13px;margin-bottom:14px;transition:color .3s;font-weight:300;}        .footer-col a:hover{color:var(--gold);}        .footer-bottom{border-top:1px solid var(--border-dim);padding:28px 6%;max-width:1360px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;}        .footer-bottom p{font-size:11px;color:rgba(90,85,80,0.7);font-weight:300;letter-spacing:.5px;}        @media(max-width:1024px){.pain-grid,.tier-grid,.infra-grid,.contact-inner,.split-authority,.results-header{grid-template-columns:1fr;gap:50px;}.tier-image{grid-row:auto;min-height:280px;}.results-grid{grid-template-columns:1fr 1fr;}.footer-main{grid-template-columns:1fr 1fr;}}        @media(max-width:768px){nav a:not(.nav-cta){display:none;}.testimonials-grid,.results-grid,.form-row-2{grid-template-columns:1fr;}.tier-header{flex-direction:column;gap:16px;}.tier-num{font-size:60px;}.footer-main{grid-template-columns:1fr;gap:40px;}.footer-bottom{flex-direction:column;gap:12px;text-align:center;}.full-banner{height:320px;}body{cursor:auto;}#cursor,#cursor-ring{display:none;}}    </style></head><body>
+<div id="cursor"></div><div id="cursor-ring"></div>
 <header>
     <div class="logo"><span style="letter-spacing:5px;">H</span><span class="logo-eye"></span><span style="letter-spacing:5px;">RUS</span></div>
     <nav>
-        <a href="#services" id="nav-services">Services</a>
-        <a href="#results" id="nav-results">Results</a>
-        <a href="#infrastructure" id="nav-infra">Infrastructure</a>
-        <a href="#contact" class="nav-cta" id="nav-cta">Consult</a>
-        <div class="lang-switcher">
-            <button class="lang-btn active" onclick="setLang('en')">EN</button>
-            <span class="lang-divider">|</span>
-            <button class="lang-btn" onclick="setLang('es')">ES</button>
-        </div>
+        <a href="#services">Services</a>
+        <a href="#results">Results</a>
+        <a href="#infrastructure">Infrastructure</a>
+        <a href="#contact" class="nav-cta">Consult</a>
     </nav>
 </header>
 
-<!-- ── HERO ── -->
 <section class="hero">
     <canvas id="heroCanvas"></canvas>
     <div class="hero-overlay"></div>
     <div class="hero-content reveal">
-        <div class="hero-eyebrow"><span class="hero-eyebrow-dot"></span><span id="t-hero-badge">The All-Seeing Enterprise Intelligence</span></div>
-        <h1 id="t-hero-h1">See Everything.<br><em>Miss Nothing.</em><br><span class='thin'>Scale Without Limits.</span></h1>
-        <p class="hero-sub" id="t-hero-sub">HORUS is the AI operating system that sees what your business is losing — and eliminates it. Revenue leaks, missed leads, operational drag. We see it all, and we fix it.</p>
+        <div class="hero-eyebrow"><span class="hero-eyebrow-dot"></span>The All-Seeing Enterprise Intelligence</div>
+        <h1>See Everything.<br><em>Miss Nothing.</em><br><span class="thin">Scale Without Limits.</span></h1>
+        <p class="hero-sub">HORUS is the AI operating system that sees what your business is losing — and eliminates it. Revenue leaks, missed leads, operational drag. We see it all, and we fix it.</p>
         <div class="hero-ctas">
-            <a href="#contact" class="btn-gold"><span id="t-hero-cta1">Request Executive Consultation →</span></a>
-            <a href="#services" class="btn-ghost" id="t-hero-cta2">Explore Solutions</a>
+            <a href="#contact" class="btn-gold"><span>Request Executive Consultation →</span></a>
+            <a href="#services" class="btn-ghost">Explore Solutions</a>
         </div>
         <div class="trusted-bar">
-            <span class="trusted-label" id="t-trusted">Trusted by Enterprises</span>
+            <span class="trusted-label">Trusted by Enterprises</span>
             <div class="trusted-logos">
                 <span>Meridian Corp</span><span>Nexus Health</span><span>Vantage Law</span><span>Arcadia Capital</span><span>Sterling Group</span>
             </div>
         </div>
     </div>
-    <div class="hero-scroll">
-        <span>Scroll</span>
-        <div class="scroll-line"></div>
-    </div>
+    <div class="hero-scroll"><span>Scroll</span><div class="scroll-line"></div></div>
 </section>
 
-<!-- ── PAIN ── -->
 <div class="sw" id="problem">
     <div class="pain-center reveal">
-        <span class="label" id="t-pain-label">The Revenue Gap</span>
-        <h2 class="display" style="font-size:clamp(42px,5.5vw,68px);" id="t-pain-h2">The Cost of Doing Nothing</h2>
-        <div class="gold-line" style="margin:28px auto;width:1px;height:60px;background:linear-gradient(to bottom,var(--gold),transparent);"></div>
-        <p class="body-text" id="t-pain-body">Manual processes, missed leads, and inefficient systems cost businesses thousands every month. The gap between where you are and where AI can take you is the most expensive problem you're not solving.</p>
-        <div style="margin-top:40px;"><a href="#contact" class="btn-ghost" id="t-pain-cta">See How We Can Help →</a></div>
+        <span class="label">The Revenue Gap</span>
+        <h2 class="display" style="font-size:clamp(42px,5.5vw,68px);">The Cost of Doing Nothing</h2>
+        <div class="gold-line" style="margin:28px auto;"></div>
+        <p class="body-text">Manual processes, missed leads, and inefficient systems cost businesses thousands every month. The gap between where you are and where AI can take you is the most expensive problem you're not solving.</p>
+        <div style="margin-top:40px;"><a href="#contact" class="btn-ghost">See How We Can Help →</a></div>
     </div>
     <div class="pain-grid reveal">
-        <div class="pain-stat"><div class="pain-accent"></div><span class="pain-number counter" data-target="300">0</span><span class="pain-unit" id="t-p1-unit">thousand lost annually</span><h3 id="t-p1-h3">Revenue Leakage</h3><p id="t-p1-p">The average enterprise loses over $300K per year to manual processes and missed automation opportunities.</p></div>
-        <div class="pain-stat"><div class="pain-accent"></div><span class="pain-number counter" data-target="67">0</span><span class="pain-unit" id="t-p2-unit">percent of leads ignored</span><h3 id="t-p2-h3">Lead Response Failure</h3><p id="t-p2-p">67% of inbound leads never receive a timely follow-up, falling through the cracks of overwhelmed teams.</p></div>
-        <div class="pain-stat"><div class="pain-accent"></div><span class="pain-number counter" data-target="40">0</span><span class="pain-unit" id="t-p3-unit">hours per week wasted</span><h3 id="t-p3-h3">Operational Drag</h3><p id="t-p3-p">Mid-size businesses waste 40+ hours weekly on tasks that AI can handle autonomously in minutes.</p></div>
-        <div class="pain-stat"><div class="pain-accent"></div><span class="pain-number counter" data-target="3">0</span><span class="pain-unit" id="t-p4-unit">times the competitive gap</span><h3 id="t-p4-h3">AI-Adoption Divide</h3><p id="t-p4-p">AI-first companies are scaling 3× faster than those still relying on legacy tools and manual operations.</p></div>
+        <div class="pain-stat"><div class="pain-accent"></div><span class="pain-number counter" data-target="300">0</span><span class="pain-unit">thousand lost annually</span><h3>Revenue Leakage</h3><p>The average enterprise loses over $300K per year to manual processes and missed automation opportunities.</p></div>
+        <div class="pain-stat"><div class="pain-accent"></div><span class="pain-number counter" data-target="67">0</span><span class="pain-unit">percent of leads ignored</span><h3>Lead Response Failure</h3><p>67% of inbound leads never receive a timely follow-up, falling through the cracks of overwhelmed teams.</p></div>
+        <div class="pain-stat"><div class="pain-accent"></div><span class="pain-number counter" data-target="40">0</span><span class="pain-unit">hours per week wasted</span><h3>Operational Drag</h3><p>Mid-size businesses waste 40+ hours weekly on tasks that AI can handle autonomously in minutes.</p></div>
+        <div class="pain-stat"><div class="pain-accent"></div><span class="pain-number counter" data-target="3">0</span><span class="pain-unit">times the competitive gap</span><h3>AI-Adoption Divide</h3><p>AI-first companies are scaling 3× faster than those still relying on legacy tools and manual operations.</p></div>
     </div>
 </div>
 
-<!-- ── SERVICES ── -->
 <div class="sw" id="services">
     <div style="text-align:center;max-width:700px;margin:0 auto 90px;" class="reveal">
-        <span class="label" id="t-srv-label">Our Solutions</span>
-        <h2 class="display" style="font-size:clamp(42px,5.5vw,70px);" id="t-srv-h2">Three Levels<br>of Intelligence</h2>
-        <p class="body-text" id="t-srv-body">A tiered system engineered for every stage of enterprise growth — from automation to full AI operating infrastructure.</p>
+        <span class="label">Our Solutions</span>
+        <h2 class="display" style="font-size:clamp(42px,5.5vw,70px);">Three Levels<br>of Intelligence</h2>
+        <p class="body-text">A tiered system engineered for every stage of enterprise growth — from automation to full AI operating infrastructure.</p>
     </div>
-
     <div class="tier reveal">
-        <div class="tier-header">
-            <span class="tier-num">01</span>
-            <div class="tier-title-block">
-                <span class="label" id="t-t1-label">Level 1 — AI Automation Suite</span>
-                <h2 class="display" id="t-t1-h2">Automate Operations<br>& Sales</h2>
-                <p class="body-text" style="max-width:480px;" id="t-t1-body">The foundation layer. Eliminate repetitive work, activate 24/7 lead handling, and deploy intelligent marketing systems from day one.</p>
-            </div>
-        </div>
+        <div class="tier-header"><span class="tier-num">01</span><div class="tier-title-block"><span class="label">Level 1 — AI Automation Suite</span><h2 class="display">Automate Operations<br>& Sales</h2><p class="body-text" style="max-width:480px;">The foundation layer. Eliminate repetitive work, activate 24/7 lead handling, and deploy intelligent marketing systems from day one.</p></div></div>
         <div class="tier-grid">
             <div class="tier-image"><img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&q=80&w=900" alt="AI Automation" loading="lazy"></div>
             <div class="service-item"><span class="service-dot"></span><span>Administrative Process Automation</span></div>
@@ -351,19 +62,11 @@
             <div class="service-item"><span class="service-dot"></span><span>Voice AI Agents — 24/7 Autonomous</span></div>
             <div class="service-item"><span class="service-dot"></span><span>End-to-End Marketing Automation</span></div>
             <div class="service-item"><span class="service-dot"></span><span>AI Content & Brand Generation</span></div>
-            <div class="tier-cta-block"><span style="font-size:12px;color:var(--text-muted);" id="t-t1-note">Starting point for any enterprise</span><a href="#contact" class="btn-gold"><span id="t-t1-cta">Get Your Automation Audit →</span></a></div>
+            <div class="tier-cta-block"><span style="font-size:12px;color:var(--text-muted);">Starting point for any enterprise</span><a href="#contact" class="btn-gold"><span>Get Your Automation Audit →</span></a></div>
         </div>
     </div>
-
     <div class="tier reveal">
-        <div class="tier-header">
-            <span class="tier-num">02</span>
-            <div class="tier-title-block">
-                <span class="label" id="t-t2-label">Level 2 — AI Growth Transformation</span>
-                <h2 class="display" id="t-t2-h2">Scale Your Revenue<br>With Intelligence</h2>
-                <p class="body-text" style="max-width:480px;" id="t-t2-body">Advanced revenue intelligence and customer journey systems that actively find and close growth opportunities in your existing operations.</p>
-            </div>
-        </div>
+        <div class="tier-header"><span class="tier-num">02</span><div class="tier-title-block"><span class="label">Level 2 — AI Growth Transformation</span><h2 class="display">Scale Your Revenue<br>With Intelligence</h2><p class="body-text" style="max-width:480px;">Advanced revenue intelligence and customer journey systems that actively find and close growth opportunities in your existing operations.</p></div></div>
         <div class="tier-grid">
             <div class="tier-image"><img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&q=80&w=900" alt="Revenue Intelligence" loading="lazy"></div>
             <div class="service-item"><span class="service-dot"></span><span>Revenue Intelligence Systems</span></div>
@@ -371,19 +74,11 @@
             <div class="service-item"><span class="service-dot"></span><span>Customer Journey Automation</span></div>
             <div class="service-item"><span class="service-dot"></span><span>AI Lead Scoring & Prioritization</span></div>
             <div class="service-item"><span class="service-dot"></span><span>Smart Pricing AI & Margin Optimization</span></div>
-            <div class="tier-cta-block"><span style="font-size:12px;color:var(--text-muted);" id="t-t2-note">For scaling 7-figure businesses</span><a href="#contact" class="btn-gold"><span id="t-t2-cta">Schedule Growth Strategy Session →</span></a></div>
+            <div class="tier-cta-block"><span style="font-size:12px;color:var(--text-muted);">For scaling 7-figure businesses</span><a href="#contact" class="btn-gold"><span>Schedule Growth Strategy Session →</span></a></div>
         </div>
     </div>
-
     <div class="tier reveal">
-        <div class="tier-header">
-            <span class="tier-num">03</span>
-            <div class="tier-title-block">
-                <span class="label" id="t-t3-label">Level 3 — Enterprise AI Infrastructure</span>
-                <h2 class="display" id="t-t3-h2">Enterprise-Grade<br>AI Infrastructure</h2>
-                <p class="body-text" style="max-width:480px;" id="t-t3-body">Full-stack enterprise AI deployment. We architect your complete AI operating system — from financial intelligence to security compliance and digital twin modeling.</p>
-            </div>
-        </div>
+        <div class="tier-header"><span class="tier-num">03</span><div class="tier-title-block"><span class="label">Level 3 — Enterprise AI Infrastructure</span><h2 class="display">Enterprise-Grade<br>AI Infrastructure</h2><p class="body-text" style="max-width:480px;">Full-stack enterprise AI deployment. We architect your complete AI operating system — from financial intelligence to security compliance and digital twin modeling.</p></div></div>
         <div class="tier-grid">
             <div class="tier-image"><img src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&q=80&w=900" alt="Enterprise Infrastructure" loading="lazy"></div>
             <div class="service-item"><span class="service-dot"></span><span>AI Operating Layer — Full Business OS</span></div>
@@ -392,41 +87,33 @@
             <div class="service-item"><span class="service-dot"></span><span>AI for HR & Talent Acquisition</span></div>
             <div class="service-item"><span class="service-dot"></span><span>Security & Compliance Automation</span></div>
             <div class="service-item"><span class="service-dot"></span><span>Digital Twin & Strategic Expansion</span></div>
-            <div class="tier-cta-block"><span style="font-size:12px;color:var(--text-muted);" id="t-t3-note">For 8-figure enterprise transformation</span><a href="#contact" class="btn-gold"><span id="t-t3-cta">Apply for Executive Partnership →</span></a></div>
+            <div class="tier-cta-block"><span style="font-size:12px;color:var(--text-muted);">For 8-figure enterprise transformation</span><a href="#contact" class="btn-gold"><span>Apply for Executive Partnership →</span></a></div>
         </div>
     </div>
 </div>
 
-<!-- ── RESULTS ── -->
 <div class="sw" id="results">
     <div class="results-header reveal">
-        <div><span class="label" id="t-res-label">Client Impact</span><h2 class="display" id="t-res-h2">What Enterprise<br>Clients Achieve</h2></div>
-        <p class="body-text" id="t-res-body">Every system we build is measured by revenue impact, efficiency gains, and automation of human work. These are not projections — these are client outcomes.</p>
+        <div><span class="label">Client Impact</span><h2 class="display">What Enterprise<br>Clients Achieve</h2></div>
+        <p class="body-text">Every system we build is measured by revenue impact, efficiency gains, and automation of human work. These are not projections — these are client outcomes.</p>
     </div>
     <div class="results-grid reveal">
-        <div class="result-card"><span class="result-kpi counter" data-target="312">0</span><span style="font-size:12px;color:var(--gold);letter-spacing:1px;text-transform:uppercase;">% Revenue Increase</span><h3 id="t-r1-h3">Regional Insurance Agency</h3><p id="t-r1-p">Deployed AI lead scoring and automated follow-up sequences. Tripled policy closings within 8 months of deployment.</p></div>
-        <div class="result-card"><span class="result-kpi counter" data-target="68">0</span><span style="font-size:12px;color:var(--gold);letter-spacing:1px;text-transform:uppercase;">% Cost Reduction</span><h3 id="t-r2-h3">Multi-Location Medical Clinic</h3><p id="t-r2-p">Automated patient intake, scheduling, and billing workflows. Reduced administrative overhead while improving patient satisfaction scores.</p></div>
-        <div class="result-card"><span class="result-kpi counter" data-target="4">0</span><span style="font-size:12px;color:var(--gold);letter-spacing:1px;text-transform:uppercase;">× Faster Client Acquisition</span><h3 id="t-r3-h3">Boutique Law Firm</h3><p id="t-r3-p">AI-driven intake qualification and CRM automation converted 4× more inbound inquiries into retained clients in the first quarter.</p></div>
+        <div class="result-card"><span class="result-kpi counter" data-target="312">0</span><span style="font-size:12px;color:var(--gold);letter-spacing:1px;text-transform:uppercase;">% Revenue Increase</span><h3>Regional Insurance Agency</h3><p>Deployed AI lead scoring and automated follow-up sequences. Tripled policy closings within 8 months of deployment.</p></div>
+        <div class="result-card"><span class="result-kpi counter" data-target="68">0</span><span style="font-size:12px;color:var(--gold);letter-spacing:1px;text-transform:uppercase;">% Cost Reduction</span><h3>Multi-Location Medical Clinic</h3><p>Automated patient intake, scheduling, and billing workflows. Reduced administrative overhead while improving patient satisfaction scores.</p></div>
+        <div class="result-card"><span class="result-kpi counter" data-target="4">0</span><span style="font-size:12px;color:var(--gold);letter-spacing:1px;text-transform:uppercase;">× Faster Client Acquisition</span><h3>Boutique Law Firm</h3><p>AI-driven intake qualification and CRM automation converted 4× more inbound inquiries into retained clients in the first quarter.</p></div>
     </div>
     <div class="testimonials-grid reveal">
-        <div class="testimonial"><p id="t-q1">The AI infrastructure HORUS built didn't just automate our workflows — it fundamentally restructured how our revenue engine operates. We went from guessing to knowing exactly where every dollar was going and coming from.</p><div class="testimonial-author"><div class="author-avatar">M</div><div class="author-info"><strong>Marcus D.</strong><span>CEO, Meridian Capital Group</span></div></div></div>
-        <div class="testimonial"><p id="t-q2">Within 90 days, our patient scheduling was fully automated, our staff was freed from data entry, and our clinic's throughput increased by 40%. The ROI calculation was a no-brainer within the first month.</p><div class="testimonial-author"><div class="author-avatar">S</div><div class="author-info"><strong>Dr. Sofia R.</strong><span>Managing Director, Nexus Health Systems</span></div></div></div>
+        <div class="testimonial"><p>The AI infrastructure HORUS built didn't just automate our workflows — it fundamentally restructured how our revenue engine operates. We went from guessing to knowing exactly where every dollar was going and coming from.</p><div class="testimonial-author"><div class="author-avatar">M</div><div class="author-info"><strong>Marcus D.</strong><span>CEO, Meridian Capital Group</span></div></div></div>
+        <div class="testimonial"><p>Within 90 days, our patient scheduling was fully automated, our staff was freed from data entry, and our clinic's throughput increased by 40%. The ROI calculation was a no-brainer within the first month.</p><div class="testimonial-author"><div class="author-avatar">S</div><div class="author-info"><strong>Dr. Sofia R.</strong><span>Managing Director, Nexus Health Systems</span></div></div></div>
     </div>
-    <div style="text-align:center;margin-top:60px;" class="reveal"><a href="#contact" class="btn-ghost" id="t-res-cta">Request Full Case Study →</a></div>
+    <div style="text-align:center;margin-top:60px;" class="reveal"><a href="#contact" class="btn-ghost">Request Full Case Study →</a></div>
 </div>
 
-<!-- ── FULL BANNER ── -->
 <div class="full-banner reveal">
     <img src="https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop&q=80&w=1600" alt="AI Systems">
-    <div class="banner-overlay">
-        <div class="banner-text">
-            <h2 class="display" id="t-ban-h2"><em>HORUS</em> Sees What<br>Others Miss</h2>
-            <p id="t-ban-p">The all-seeing AI operating system for enterprise revenue</p>
-        </div>
-    </div>
+    <div class="banner-overlay"><div class="banner-text"><h2 class="display"><em>HORUS</em> Sees What<br>Others Miss</h2><p>The all-seeing AI operating system for enterprise revenue</p></div></div>
 </div>
 
-<!-- ── METRICS ── -->
 <div class="sw" id="metrics">
     <div class="metrics-title reveal">
         <span class="label">Performance Data</span>
@@ -436,30 +123,17 @@
     <div class="chart-wrap reveal"><div class="chart-container-fix"><canvas id="dashboardChart"></canvas></div></div>
 </div>
 
-<!-- ── INFRASTRUCTURE ── -->
 <div class="sw" id="infrastructure">
     <div class="infra-grid reveal">
         <div class="infra-image-wrap"><img src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&q=80&w=1000" alt="Global AI Infrastructure" loading="lazy"></div>
-        <div>
-            <span class="label">Global Infrastructure</span>
-            <h2 class="display" style="font-size:clamp(36px,4.5vw,58px);">Built for global scale.</h2>
-            <div class="gold-line"></div>
-            <p class="body-text">Our infrastructure handles enterprise workloads across borders. Low-latency distributed processing ensures consistent performance regardless of user location or operational volume.</p>
-            <div style="margin-top:40px;"><a href="#contact" class="btn-ghost">Explore Infrastructure →</a></div>
-        </div>
+        <div><span class="label">Global Infrastructure</span><h2 class="display" style="font-size:clamp(36px,4.5vw,58px);">Built for global scale.</h2><div class="gold-line"></div><p class="body-text">Our infrastructure handles enterprise workloads across borders. Low-latency distributed processing ensures consistent performance regardless of user location or operational volume.</p><div style="margin-top:40px;"><a href="#contact" class="btn-ghost">Explore Infrastructure →</a></div></div>
     </div>
     <div class="infra-grid reveal" style="margin-top:120px;">
-        <div>
-            <span class="label">Zero-Friction Deployment</span>
-            <h2 class="display" style="font-size:clamp(36px,4.5vw,58px);">Fluid integration.</h2>
-            <div class="gold-line"></div>
-            <p class="body-text">Plug HORUS AI directly into your existing infrastructure. No complex migrations, zero downtime. Instant intelligence layered onto your current workflows from day one.</p>
-        </div>
+        <div><span class="label">Zero-Friction Deployment</span><h2 class="display" style="font-size:clamp(36px,4.5vw,58px);">Fluid integration.</h2><div class="gold-line"></div><p class="body-text">Plug HORUS AI directly into your existing infrastructure. No complex migrations, zero downtime. Instant intelligence layered onto your current workflows from day one.</p></div>
         <div class="infra-image-wrap"><img src="https://images.unsplash.com/photo-1639322537228-f710d846310a?auto=format&fit=crop&q=80&w=1000" alt="AI Integration" loading="lazy"></div>
     </div>
 </div>
 
-<!-- ── AUTHORITY ── -->
 <div class="sw" id="authority">
     <div class="authority-inner reveal">
         <span class="label">Why HORUS</span>
@@ -476,30 +150,23 @@
     </div>
     <div class="split-authority reveal">
         <div class="img-frame"><img src="https://images.unsplash.com/photo-1563986768609-322da13575f3?auto=format&fit=crop&q=80&w=1000" alt="Enterprise Security" loading="lazy"></div>
-        <div>
-            <span class="label">Continuous Learning</span>
-            <h2 class="display" style="font-size:clamp(36px,4.5vw,58px);">Compounding competitive advantage.</h2>
-            <div class="gold-line"></div>
-            <p class="body-text">Unlike static software, our AI models learn from every interaction. The longer the system runs, the more efficient your operations become — creating an ever-widening moat against competitors.</p>
-            <div style="margin-top:40px;"><a href="#contact" class="btn-gold"><span>Work With Us →</span></a></div>
-        </div>
+        <div><span class="label">Continuous Learning</span><h2 class="display" style="font-size:clamp(36px,4.5vw,58px);">Compounding competitive advantage.</h2><div class="gold-line"></div><p class="body-text">Unlike static software, our AI models learn from every interaction. The longer the system runs, the more efficient your operations become — creating an ever-widening moat against competitors.</p><div style="margin-top:40px;"><a href="#contact" class="btn-gold"><span>Work With Us →</span></a></div></div>
     </div>
 </div>
 
-<!-- ── CONTACT ── -->
 <div class="sw" id="contact">
     <div class="contact-inner">
         <div class="contact-info reveal">
-            <span class="label" id="t-con-label">Executive Consultation</span>
-            <h2 class="display" style="font-size:clamp(36px,5vw,58px);" id="t-con-h2">Apply for Executive Strategy Session</h2>
+            <span class="label">Executive Consultation</span>
+            <h2 class="display" style="font-size:clamp(36px,5vw,58px);">Apply for Executive Strategy Session</h2>
             <div class="gold-line"></div>
-            <p class="body-text" id="t-con-body">We work only with businesses ready to scale with enterprise AI infrastructure. This is not a sales call — it is a strategic audit of your operations.</p>
+            <p class="body-text">We work only with businesses ready to scale with enterprise AI infrastructure. This is not a sales call — it is a strategic audit of your operations.</p>
             <div class="contact-disclaimer">
                 <strong>Confidential & Selective</strong>
-                <span id="t-dis-body">We accept a limited number of new clients per quarter. Only serious inquiries from high-value businesses seeking transformational growth will receive a response.</span>
+                We accept a limited number of new clients per quarter. Only serious inquiries from high-value businesses seeking transformational growth will receive a response.
             </div>
             <div style="margin-top:36px;">
-                <div class="contact-detail"><div class="contact-detail-icon">◎</div><span><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="badfc2dfd9cfced3ccdffadfd6dfccdbcedf97dbd394d9d5d7">[email&#160;protected]</a></span></div>
+                <div class="contact-detail"><div class="contact-detail-icon">◎</div><span>executive@horus-ai.com</span></div>
                 <div class="contact-detail"><div class="contact-detail-icon">◎</div><span>+1 (800) HORUS-AI</span></div>
             </div>
         </div>
@@ -520,19 +187,18 @@
                 <div class="field-wrap"><input type="tel" id="phone" placeholder="Phone Number" required><span class="field-error" id="err-phone"></span></div>
                 <select id="revenue"><option value="" disabled selected>Annual Revenue Range</option><option>$1M – $3M</option><option>$3M – $10M</option><option>$10M – $50M</option><option>$50M+</option></select>
                 <div class="field-wrap"><textarea id="message" placeholder="Describe your business and what you want to automate or optimize..." required></textarea><span class="field-error" id="err-message"></span></div>
-                <button type="button" id="submit-btn" onclick="submitForm()"><span id="t-submit">Submit Application →</span></button>
+                <button type="button" id="submit-btn" onclick="submitForm()"><span>Submit Application →</span></button>
                 <p style="font-size:10px;color:var(--text-muted);text-align:center;margin-top:8px;letter-spacing:.3px;">By submitting you agree to our <a href="#" style="color:var(--gold);text-decoration:none;">Privacy Policy</a>. All information is strictly confidential.</p>
             </form>
         </div>
     </div>
 </div>
 
-<!-- ── FOOTER ── -->
 <footer>
     <div class="footer-main">
         <div class="footer-brand">
             <div class="logo"><span style="letter-spacing:5px;">H</span><span class="logo-eye"></span><span style="letter-spacing:5px;">RUS</span></div>
-            <p id="t-footer-tag">The all-seeing AI operating system for the next generation of enterprise intelligence.</p>
+            <p>The all-seeing AI operating system for the next generation of enterprise intelligence.</p>
             <div class="footer-social">
                 <a href="#" class="social-link">in</a><a href="#" class="social-link">tw</a><a href="#" class="social-link">yt</a><a href="#" class="social-link">ig</a>
             </div>
@@ -547,11 +213,9 @@
     </div>
 </footer>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+<script>
 // ── CUSTOM CURSOR ──
-const cur = document.getElementById('cursor');
-const ring = document.getElementById('cursor-ring');
-let mx=0,my=0,rx=0,ry=0;
+const cur=document.getElementById('cursor');const ring=document.getElementById('cursor-ring');let mx=0,my=0,rx=0,ry=0;
 document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.left=mx+'px';cur.style.top=my+'px';});
 function animRing(){rx+=(mx-rx)*.12;ry+=(my-ry)*.12;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(animRing);}
 animRing();
@@ -559,123 +223,52 @@ document.querySelectorAll('a,button,[onclick]').forEach(el=>{
     el.addEventListener('mouseenter',()=>{cur.style.width='14px';cur.style.height='14px';ring.style.width='48px';ring.style.height='48px';ring.style.borderColor='rgba(201,168,76,0.7)';});
     el.addEventListener('mouseleave',()=>{cur.style.width='8px';cur.style.height='8px';ring.style.width='32px';ring.style.height='32px';ring.style.borderColor='rgba(201,168,76,0.4)';});
 });
-
 // ── SCROLL ANIMATIONS ──
-const revealObs = new IntersectionObserver((entries)=>{
-    entries.forEach(el=>{
-        if(el.isIntersecting) el.target.classList.add('revealed');
-    });
-},{threshold:0.06});
-document.querySelectorAll('.reveal').forEach((el,i)=>{
-    el.style.transitionDelay = (i % 3) * 0.1 + 's';
-    revealObs.observe(el);
-});
-
+const revealObs=new IntersectionObserver((entries)=>{entries.forEach(el=>{if(el.isIntersecting)el.target.classList.add('revealed');});},{threshold:0.06});
+document.querySelectorAll('.reveal').forEach((el,i)=>{el.style.transitionDelay=(i%3)*0.1+'s';revealObs.observe(el);});
 // ── THREE.JS HERO ──
-try {
+try{
     const canvas=document.getElementById('heroCanvas');
     const renderer=new THREE.WebGLRenderer({canvas,alpha:true,antialias:true});
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio,2));
-    renderer.setSize(window.innerWidth,window.innerHeight);
-    const scene=new THREE.Scene();
-    const camera=new THREE.PerspectiveCamera(70,window.innerWidth/window.innerHeight,0.1,1000);
-    camera.position.z=28;
-    const count=600;
-    const pos=new Float32Array(count*3);
-    for(let i=0;i<count*3;i++) pos[i]=(Math.random()-.5)*75;
-    const geo=new THREE.BufferGeometry();
-    geo.setAttribute('position',new THREE.BufferAttribute(pos,3));
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio,2));renderer.setSize(window.innerWidth,window.innerHeight);
+    const scene=new THREE.Scene();const camera=new THREE.PerspectiveCamera(70,window.innerWidth/window.innerHeight,0.1,1000);camera.position.z=28;
+    const count=600;const pos=new Float32Array(count*3);for(let i=0;i<count*3;i++)pos[i]=(Math.random()-.5)*75;
+    const geo=new THREE.BufferGeometry();geo.setAttribute('position',new THREE.BufferAttribute(pos,3));
     const mat=new THREE.PointsMaterial({color:0xC9A84C,size:.07,transparent:true,opacity:.22});
-    const pts=new THREE.Points(geo,mat);
-    scene.add(pts);
-    for(let i=0;i<10;i++){
-        const lg=new THREE.BufferGeometry().setFromPoints([
-            new THREE.Vector3((Math.random()-.5)*65,(Math.random()-.5)*65,(Math.random()-.5)*20),
-            new THREE.Vector3((Math.random()-.5)*65,(Math.random()-.5)*65,(Math.random()-.5)*20)
-        ]);
-        scene.add(new THREE.Line(lg,new THREE.LineBasicMaterial({color:0xC9A84C,transparent:true,opacity:.04})));
-    }
+    const pts=new THREE.Points(geo,mat);scene.add(pts);
+    for(let i=0;i<10;i++){const lg=new THREE.BufferGeometry().setFromPoints([new THREE.Vector3((Math.random()-.5)*65,(Math.random()-.5)*65,(Math.random()-.5)*20),new THREE.Vector3((Math.random()-.5)*65,(Math.random()-.5)*65,(Math.random()-.5)*20)]);scene.add(new THREE.Line(lg,new THREE.LineBasicMaterial({color:0xC9A84C,transparent:true,opacity:.04})));}
     const clk=new THREE.Clock();
-    (function anim(){
-        requestAnimationFrame(anim);
-        const t=clk.getElapsedTime();
-        pts.rotation.y=t*.022;
-        pts.rotation.x=Math.sin(t*.07)*.05;
-        renderer.render(scene,camera);
-    })();
+    (function anim(){requestAnimationFrame(anim);const t=clk.getElapsedTime();pts.rotation.y=t*.022;pts.rotation.x=Math.sin(t*.07)*.05;renderer.render(scene,camera);})();
     window.addEventListener('resize',()=>{renderer.setSize(window.innerWidth,window.innerHeight);camera.aspect=window.innerWidth/window.innerHeight;camera.updateProjectionMatrix();});
-} catch(e){console.warn('WebGL unavailable');}
-
+}catch(e){console.warn('WebGL unavailable');}
 // ── COUNTERS ──
 document.querySelectorAll('.counter').forEach(el=>{
     const obs=new IntersectionObserver(entries=>{
         if(entries[0].isIntersecting){
-            const target=parseFloat(el.dataset.target);
-            const dur=2400,start=performance.now();
-            function upd(now){
-                const p=Math.min((now-start)/dur,1);
-                const e=1-Math.pow(1-p,4);
-                el.textContent=target%1!==0?(target*e).toFixed(1):Math.floor(target*e);
-                if(p<1)requestAnimationFrame(upd);else el.textContent=target%1!==0?target.toFixed(1):target;
-            }
-            requestAnimationFrame(upd);
-            obs.disconnect();
+            const target=parseFloat(el.dataset.target);const dur=2400,start=performance.now();
+            function upd(now){const p=Math.min((now-start)/dur,1);const e=1-Math.pow(1-p,4);el.textContent=target%1!==0?(target*e).toFixed(1):Math.floor(target*e);if(p<1)requestAnimationFrame(upd);else el.textContent=target%1!==0?target.toFixed(1):target;}
+            requestAnimationFrame(upd);obs.disconnect();
         }
-    },{threshold:.5});
-    obs.observe(el);
+    },{threshold:.5});obs.observe(el);
 });
-
 // ── CHART ──
 document.addEventListener("DOMContentLoaded",function(){
-    Chart.defaults.color='#5a5550';
-    Chart.defaults.font.family="'DM Sans',sans-serif";
-    const ctx=document.getElementById('dashboardChart')?.getContext('2d');
-    if(!ctx) return;
-    const g1=ctx.createLinearGradient(0,0,0,380);
-    g1.addColorStop(0,'rgba(201,168,76,0.28)');g1.addColorStop(1,'rgba(201,168,76,0)');
-    const g2=ctx.createLinearGradient(0,0,0,380);
-    g2.addColorStop(0,'rgba(245,240,232,0.07)');g2.addColorStop(1,'rgba(245,240,232,0)');
-    new Chart(ctx,{
-        type:'line',
-        data:{
-            labels:['Month 1','Month 2','Month 3','Month 6','Month 9','Month 12'],
-            datasets:[
-                {label:'Revenue Impact',data:[12,22,38,62,84,97],borderColor:'#C9A84C',backgroundColor:g1,borderWidth:1.5,fill:true,tension:.45,pointBackgroundColor:'#000',pointBorderColor:'#C9A84C',pointRadius:4,pointHoverRadius:6},
-                {label:'Operational Efficiency',data:[8,18,30,55,72,89],borderColor:'rgba(245,240,232,0.3)',backgroundColor:g2,borderWidth:1,fill:true,tension:.45,pointBackgroundColor:'#000',pointBorderColor:'rgba(245,240,232,0.3)',pointRadius:3}
-            ]
-        },
-        options:{
-            responsive:true,maintainAspectRatio:false,
-            plugins:{
-                legend:{display:true,labels:{color:'#5a5550',font:{size:11},usePointStyle:true,padding:28}},
-                tooltip:{backgroundColor:'rgba(10,10,10,0.96)',titleColor:'#C9A84C',bodyColor:'#f5f0e8',padding:16,displayColors:false,borderColor:'rgba(201,168,76,0.2)',borderWidth:1}
-            },
-            scales:{
-                y:{beginAtZero:true,max:100,grid:{color:'rgba(255,255,255,0.03)'},ticks:{callback:v=>v+'%',color:'#5a5550'},border:{display:false}},
-                x:{grid:{display:false},ticks:{color:'#5a5550'},border:{display:false}}
-            },
-            interaction:{mode:'index',intersect:false}
-        }
-    });
+    Chart.defaults.color='#5a5550';Chart.defaults.font.family="'DM Sans',sans-serif";
+    const ctx=document.getElementById('dashboardChart')?.getContext('2d');if(!ctx)return;
+    const g1=ctx.createLinearGradient(0,0,0,380);g1.addColorStop(0,'rgba(201,168,76,0.28)');g1.addColorStop(1,'rgba(201,168,76,0)');
+    const g2=ctx.createLinearGradient(0,0,0,380);g2.addColorStop(0,'rgba(245,240,232,0.07)');g2.addColorStop(1,'rgba(245,240,232,0)');
+    new Chart(ctx,{type:'line',data:{labels:['Month 1','Month 2','Month 3','Month 6','Month 9','Month 12'],datasets:[{label:'Revenue Impact',data:[12,22,38,62,84,97],borderColor:'#C9A84C',backgroundColor:g1,borderWidth:1.5,fill:true,tension:.45,pointBackgroundColor:'#000',pointBorderColor:'#C9A84C',pointRadius:4,pointHoverRadius:6},{label:'Operational Efficiency',data:[8,18,30,55,72,89],borderColor:'rgba(245,240,232,0.3)',backgroundColor:g2,borderWidth:1,fill:true,tension:.45,pointBackgroundColor:'#000',pointBorderColor:'rgba(245,240,232,0.3)',pointRadius:3}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:true,labels:{color:'#5a5550',font:{size:11},usePointStyle:true,padding:28}},tooltip:{backgroundColor:'rgba(10,10,10,0.96)',titleColor:'#C9A84C',bodyColor:'#f5f0e8',padding:16,displayColors:false,borderColor:'rgba(201,168,76,0.2)',borderWidth:1}},scales:{y:{beginAtZero:true,max:100,grid:{color:'rgba(255,255,255,0.03)'},ticks:{callback:v=>v+'%',color:'#5a5550'},border:{display:false}},x:{grid:{display:false},ticks:{color:'#5a5550'},border:{display:false}}},interaction:{mode:'index',intersect:false}}});
 });
-
 // ── PARALLAX BANNER ──
 const bannerImg=document.querySelector('.full-banner img');
-if(bannerImg){
-    window.addEventListener('scroll',()=>{
-        const r=bannerImg.closest('.full-banner').getBoundingClientRect();
-        const o=(r.top/window.innerHeight)*35;
-        bannerImg.style.transform=`translateY(${o}px)`;
-    });
-}
+if(bannerImg){window.addEventListener('scroll',()=>{const r=bannerImg.closest('.full-banner').getBoundingClientRect();const o=(r.top/window.innerHeight)*35;bannerImg.style.transform=`translateY(${o}px)`;});}
 </script>
 
-<!-- ── FORM SCRIPT ── -->
 <script>
 var FORM_URL = "https://script.google.com/macros/s/AKfycbyRNuutnEnnVyITG1prwLtOd98S41avkQ6MIO8XWuANmycFAJVuyOgUSTGU1YlrgkA/exec";
 
 function showFieldError(id,msg){var e=document.getElementById("err-"+id);var i=document.getElementById(id);if(e)e.textContent=msg;if(i)i.style.borderColor="#e05c5c";}
-function clearErrors(){["fullName","company","email","phone","message"].forEach(function(id){var e=document.getElementById("err-"+id);var i=document.getElementById(id);if(e)e.textContent="";if(i)i.style.borderColor="";}); }
+function clearErrors(){["fullName","company","email","phone","message"].forEach(function(id){var e=document.getElementById("err-"+id);var i=document.getElementById(id);if(e)e.textContent="";if(i)i.style.borderColor="";});}
 
 function submitForm(){
     clearErrors();
@@ -686,15 +279,12 @@ function submitForm(){
     var revenue=document.getElementById("revenue").value;
     var message=document.getElementById("message").value.trim();
     var valid=true;
-    var errs = window._lang==='es'
-        ? {fullName:"Nombre completo requerido",company:"Nombre de empresa requerido",email:"Ingresa un correo válido",phone:"Número de teléfono requerido",message:"Describe tu negocio"}
-        : {fullName:"Full name is required",company:"Company name is required",email:"Enter a valid email",phone:"Phone number is required",message:"Please describe your business"};
-    if(!fullName){showFieldError("fullName",errs.fullName);valid=false;}
-    if(!company){showFieldError("company",errs.company);valid=false;}
-    if(!email||!email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)){showFieldError("email",errs.email);valid=false;}
-    if(!phone){showFieldError("phone",errs.phone);valid=false;}
-    if(!message){showFieldError("message",errs.message);valid=false;}
-    if(!valid) return;
+    if(!fullName){showFieldError("fullName","Full name is required");valid=false;}
+    if(!company){showFieldError("company","Company name is required");valid=false;}
+    if(!email||!email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)){showFieldError("email","Enter a valid email");valid=false;}
+    if(!phone){showFieldError("phone","Phone number is required");valid=false;}
+    if(!message){showFieldError("message","Please describe your business");valid=false;}
+    if(!valid)return;
     var btn=document.getElementById("submit-btn");
     btn.disabled=true;btn.querySelector('span').textContent="Sending...";
     fetch(FORM_URL,{method:"POST",mode:"no-cors",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify({fullName:fullName,company:company,email:email,phone:phone,revenue:revenue,message:message})})
@@ -704,128 +294,16 @@ function submitForm(){
         document.getElementById("success-msg").textContent="Thank you, "+fullName.split(" ")[0]+". Your application is under review. We've sent a confirmation to "+email+".";
         s.scrollIntoView({behavior:"smooth",block:"center"});
     })
-    .catch(function(){btn.disabled=false;btn.querySelector('span').textContent="Submit Application →";alert("Network error. Please try again or email us at executive@horus-ai.com");});
+    .catch(function(){
+        btn.disabled=false;btn.querySelector('span').textContent="Submit Application →";
+        alert("Network error. Please try again or email us at executive@horus-ai.com");
+    });
 }
 
-<!-- ── LANG SCRIPT ── -->
-<script>
-var T = {
-  en: {
-    "nav-services":"Services","nav-results":"Results","nav-infra":"Infrastructure","nav-cta":"Consult",
-    "hero-badge":"The All-Seeing Enterprise Intelligence",
-    "hero-h1":"See Everything.<br><em>Miss Nothing.</em><br><span class='thin'>Scale Without Limits.</span>",
-    "hero-sub":"HORUS is the AI operating system that sees what your business is losing — and eliminates it. Revenue leaks, missed leads, operational drag. We see it all, and we fix it.",
-    "hero-cta1":"Request Executive Consultation →","hero-cta2":"Explore Solutions","trusted":"Trusted by Enterprises",
-    "pain-label":"The Revenue Gap","pain-h2":"The Cost of Doing Nothing",
-    "pain-body":"Manual processes, missed leads, and inefficient systems cost businesses thousands every month. The gap between where you are and where AI can take you is the most expensive problem you're not solving.",
-    "pain-cta":"See How We Can Help →",
-    "p1-unit":"thousand lost annually","p1-h3":"Revenue Leakage","p1-p":"The average enterprise loses over $300K per year to manual processes and missed automation opportunities.",
-    "p2-unit":"percent of leads ignored","p2-h3":"Lead Response Failure","p2-p":"67% of inbound leads never receive a timely follow-up, falling through the cracks of overwhelmed teams.",
-    "p3-unit":"hours per week wasted","p3-h3":"Operational Drag","p3-p":"Mid-size businesses waste 40+ hours weekly on tasks that AI can handle autonomously in minutes.",
-    "p4-unit":"times the competitive gap","p4-h3":"AI-Adoption Divide","p4-p":"AI-first companies are scaling 3× faster than those still relying on legacy tools and manual operations.",
-    "srv-label":"Our Solutions","srv-h2":"Three Levels<br>of Intelligence","srv-body":"A tiered system engineered for every stage of enterprise growth — from automation to full AI operating infrastructure.",
-    "t1-label":"Level 1 — AI Automation Suite","t1-h2":"Automate Operations<br>& Sales","t1-body":"The foundation layer. Eliminate repetitive work, activate 24/7 lead handling, and deploy intelligent marketing systems from day one.","t1-note":"Starting point for any enterprise","t1-cta":"Get Your Automation Audit →",
-    "t2-label":"Level 2 — AI Growth Transformation","t2-h2":"Scale Your Revenue<br>With Intelligence","t2-body":"Advanced revenue intelligence and customer journey systems that actively find and close growth opportunities in your existing operations.","t2-note":"For scaling 7-figure businesses","t2-cta":"Schedule Growth Strategy Session →",
-    "t3-label":"Level 3 — Enterprise AI Infrastructure","t3-h2":"Enterprise-Grade<br>AI Infrastructure","t3-body":"Full-stack enterprise AI deployment. We architect your complete AI operating system — from financial intelligence to security compliance and digital twin modeling.","t3-note":"For 8-figure enterprise transformation","t3-cta":"Apply for Executive Partnership →",
-    "res-label":"Client Impact","res-h2":"What Enterprise<br>Clients Achieve","res-body":"Every system we build is measured by revenue impact, efficiency gains, and automation of human work. These are not projections — these are client outcomes.",
-    "r1-h3":"Regional Insurance Agency","r1-p":"Deployed AI lead scoring and automated follow-up sequences. Tripled policy closings within 8 months of deployment.",
-    "r2-h3":"Multi-Location Medical Clinic","r2-p":"Automated patient intake, scheduling, and billing workflows. Reduced administrative overhead while improving patient satisfaction scores.",
-    "r3-h3":"Boutique Law Firm","r3-p":"AI-driven intake qualification and CRM automation converted 4× more inbound inquiries into retained clients in the first quarter.",
-    "q1":"The AI infrastructure HORUS built didn't just automate our workflows — it fundamentally restructured how our revenue engine operates. We went from guessing to knowing exactly where every dollar was going and coming from.",
-    "q2":"Within 90 days, our patient scheduling was fully automated, our staff was freed from data entry, and our clinic's throughput increased by 40%. The ROI calculation was a no-brainer within the first month.",
-    "res-cta":"Request Full Case Study →",
-    "ban-h2":"<em>HORUS</em> Sees What<br>Others Miss","ban-p":"The all-seeing AI operating system for enterprise revenue",
-    "con-label":"Executive Consultation","con-h2":"Apply for Executive Strategy Session","con-body":"We work only with businesses ready to scale with enterprise AI infrastructure. This is not a sales call — it is a strategic audit of your operations.",
-    "dis-title":"Confidential &amp; Selective","dis-body":"We accept a limited number of new clients per quarter. Only serious inquiries from high-value businesses seeking transformational growth will receive a response.",
-    "f-name":"Full Name","f-company":"Company Name","f-email":"Corporate Email","f-phone":"Phone Number","f-revenue":"Annual Revenue Range","f-msg":"Describe your business and what you want to automate or optimize...",
-    "submit":"Submit Application →",
-    "footer-tag":"The all-seeing AI operating system for the next generation of enterprise intelligence."
-  },
-  es: {
-    "nav-services":"Servicios","nav-results":"Resultados","nav-infra":"Infraestructura","nav-cta":"Consultar",
-    "hero-badge":"La Inteligencia Empresarial que Todo lo Ve",
-    "hero-h1":"Ve Todo.<br><em>No Pierdas Nada.</em><br><span class='thin'>Escala Sin Límites.</span>",
-    "hero-sub":"HORUS es el sistema operativo de IA que detecta lo que tu negocio está perdiendo — y lo elimina. Fugas de ingresos, leads perdidos, ineficiencias operativas. Lo vemos todo y lo resolvemos.",
-    "hero-cta1":"Solicitar Consulta Ejecutiva →","hero-cta2":"Explorar Soluciones","trusted":"Confiado por Empresas Líderes",
-    "pain-label":"La Brecha de Ingresos","pain-h2":"El Costo de No Hacer Nada",
-    "pain-body":"Procesos manuales, leads perdidos y sistemas ineficientes le cuestan a las empresas miles cada mes. La brecha entre donde estás y donde la IA puede llevarte es el problema más costoso que no estás resolviendo.",
-    "pain-cta":"Ver Cómo Podemos Ayudar →",
-    "p1-unit":"mil perdidos anualmente","p1-h3":"Fuga de Ingresos","p1-p":"La empresa promedio pierde más de $300K al año en procesos manuales y oportunidades de automatización perdidas.",
-    "p2-unit":"% de leads ignorados","p2-h3":"Falla en Respuesta de Leads","p2-p":"El 67% de los leads entrantes nunca reciben seguimiento oportuno, perdiéndose entre equipos saturados.",
-    "p3-unit":"horas semanales desperdiciadas","p3-h3":"Ineficiencia Operativa","p3-p":"Las empresas medianas desperdician 40+ horas semanales en tareas que la IA puede manejar de forma autónoma.",
-    "p4-unit":"veces la brecha competitiva","p4-h3":"Divide de Adopción de IA","p4-p":"Las empresas que lideran con IA escalan 3× más rápido que quienes siguen dependiendo de herramientas obsoletas.",
-    "srv-label":"Nuestras Soluciones","srv-h2":"Tres Niveles<br>de Inteligencia","srv-body":"Un sistema escalonado diseñado para cada etapa del crecimiento empresarial — desde automatización hasta infraestructura de IA completa.",
-    "t1-label":"Nivel 1 — Suite de Automatización IA","t1-h2":"Automatiza Operaciones<br>y Ventas","t1-body":"La capa base. Elimina el trabajo repetitivo, activa la gestión de leads 24/7 y despliega sistemas de marketing inteligente desde el primer día.","t1-note":"Punto de partida para cualquier empresa","t1-cta":"Obtener Auditoría de Automatización →",
-    "t2-label":"Nivel 2 — Transformación de Crecimiento IA","t2-h2":"Escala Tus Ingresos<br>Con Inteligencia","t2-body":"Sistemas avanzados de inteligencia de ingresos que detectan y cierran oportunidades de crecimiento en tus operaciones actuales.","t2-note":"Para empresas de 7 cifras en expansión","t2-cta":"Agendar Sesión de Estrategia →",
-    "t3-label":"Nivel 3 — Infraestructura IA Empresarial","t3-h2":"Infraestructura IA<br>de Alto Rendimiento","t3-body":"Despliegue completo de IA empresarial. Diseñamos tu sistema operativo de IA completo — desde inteligencia financiera hasta seguridad y cumplimiento.","t3-note":"Para transformación empresarial de 8 cifras","t3-cta":"Aplicar para Asociación Ejecutiva →",
-    "res-label":"Impacto en Clientes","res-h2":"Lo que Logran<br>Nuestros Clientes","res-body":"Cada sistema que construimos se mide por impacto en ingresos, ganancias en eficiencia y automatización. Estos son resultados reales de clientes.",
-    "r1-h3":"Agencia Regional de Seguros","r1-p":"Implementamos IA de calificación de leads y secuencias automatizadas. Las pólizas cerradas se triplicaron en 8 meses.",
-    "r2-h3":"Clínica Médica Multi-Sede","r2-p":"Automatizamos admisión, citas y facturación. Reducimos la carga administrativa mejorando la satisfacción del paciente.",
-    "r3-h3":"Firma Legal Boutique","r3-p":"La automatización del CRM y la calificación IA convirtieron 4× más consultas en clientes retenidos en el primer trimestre.",
-    "q1":"La infraestructura de IA que HORUS construyó no solo automatizó nuestros flujos — reestructuró fundamentalmente cómo opera nuestro motor de ingresos. Pasamos de adivinar a saber exactamente a dónde iba cada dólar.",
-    "q2":"En 90 días, la agenda de pacientes estaba completamente automatizada, el personal se liberó de la captura de datos y el rendimiento de nuestra clínica aumentó un 40%.",
-    "res-cta":"Solicitar Caso de Estudio →",
-    "ban-h2":"HORUS Ve Lo que<br><em>Otros No Ven</em>","ban-p":"El sistema operativo IA que todo lo ve para ingresos empresariales",
-    "con-label":"Consulta Ejecutiva","con-h2":"Aplica para Sesión de Estrategia Ejecutiva","con-body":"Solo trabajamos con empresas listas para escalar con IA de nivel empresarial. Esta no es una llamada de ventas — es una auditoría estratégica de tus operaciones.",
-    "dis-title":"Confidencial y Selectivo","dis-body":"Aceptamos un número limitado de nuevos clientes por trimestre. Solo las consultas serias de empresas de alto valor recibirán respuesta.",
-    "f-name":"Nombre Completo","f-company":"Nombre de la Empresa","f-email":"Correo Corporativo","f-phone":"Número de Teléfono","f-revenue":"Rango de Ingresos Anuales","f-msg":"Describe tu negocio y qué quieres automatizar u optimizar...",
-    "submit":"Enviar Solicitud →",
-    "footer-tag":"El sistema operativo IA que todo lo ve para la próxima generación de inteligencia empresarial."
-  }
-};
-
-function setLang(lang) {
-    var t = T[lang];
-    // Toggle active button
-    document.querySelectorAll('.lang-btn').forEach(function(b){
-        b.classList.toggle('active', b.textContent.trim().toLowerCase()===lang);
-    });
-    // Helper
-    function tx(id,val,html){ var e=document.getElementById(id); if(!e||!val) return; if(html) e.innerHTML=val; else e.textContent=val; }
-    function ph(id,val){ var e=document.getElementById(id); if(e&&val) e.setAttribute('placeholder',val); }
-    // Nav
-    tx('nav-services',t['nav-services']); tx('nav-results',t['nav-results']);
-    tx('nav-infra',t['nav-infra']); tx('nav-cta',t['nav-cta']);
-    // Hero
-    tx('t-hero-badge',t['hero-badge']);
-    tx('t-hero-h1',t['hero-h1'],true);
-    tx('t-hero-sub',t['hero-sub']);
-    tx('t-hero-cta1',t['hero-cta1']);
-    tx('t-hero-cta2',t['hero-cta2']);
-    tx('t-trusted',t['trusted']);
-    // Pain
-    tx('t-pain-label',t['pain-label']); tx('t-pain-h2',t['pain-h2'],true);
-    tx('t-pain-body',t['pain-body']); tx('t-pain-cta',t['pain-cta'],true);
-    ['1','2','3','4'].forEach(function(n){
-        tx('t-p'+n+'-unit',t['p'+n+'-unit']); tx('t-p'+n+'-h3',t['p'+n+'-h3']); tx('t-p'+n+'-p',t['p'+n+'-p']);
-    });
-    // Services
-    tx('t-srv-label',t['srv-label']); tx('t-srv-h2',t['srv-h2'],true); tx('t-srv-body',t['srv-body']);
-    ['1','2','3'].forEach(function(n){
-        tx('t-t'+n+'-label',t['t'+n+'-label']); tx('t-t'+n+'-h2',t['t'+n+'-h2'],true);
-        tx('t-t'+n+'-body',t['t'+n+'-body']); tx('t-t'+n+'-note',t['t'+n+'-note']); tx('t-t'+n+'-cta',t['t'+n+'-cta']);
-    });
-    // Results
-    tx('t-res-label',t['res-label']); tx('t-res-h2',t['res-h2'],true); tx('t-res-body',t['res-body']);
-    tx('t-r1-h3',t['r1-h3']); tx('t-r1-p',t['r1-p']);
-    tx('t-r2-h3',t['r2-h3']); tx('t-r2-p',t['r2-p']);
-    tx('t-r3-h3',t['r3-h3']); tx('t-r3-p',t['r3-p']);
-    tx('t-q1',t['q1']); tx('t-q2',t['q2']); tx('t-res-cta',t['res-cta'],true);
-    // Banner
-    tx('t-ban-h2',t['ban-h2'],true); tx('t-ban-p',t['ban-p']);
-    // Contact
-    tx('t-con-label',t['con-label']); tx('t-con-h2',t['con-h2'],true); tx('t-con-body',t['con-body']);
-    tx('t-dis-title',t['dis-title'],true); tx('t-dis-body',t['dis-body']);
-    ph('fullName',t['f-name']); ph('company',t['f-company']); ph('email',t['f-email']);
-    ph('phone',t['f-phone']); ph('message',t['f-msg']);
-    var revOpt = document.querySelector('#revenue option[disabled]'); if(revOpt) revOpt.textContent=t['f-revenue'];
-    tx('t-submit',t['submit']);
-    // Footer
-    tx('t-footer-tag',t['footer-tag']);
-    // Update form validation messages language
-    window._lang = lang;
-}
-window._lang = 'en';
+["fullName","company","email","phone","message"].forEach(function(id){
+    var el=document.getElementById(id);
+    if(el)el.addEventListener("input",function(){var e=document.getElementById("err-"+id);if(e)e.textContent="";el.style.borderColor="";});
+});
 </script>
 </body>
 </html>
