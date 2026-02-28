@@ -858,12 +858,55 @@ async function submitForm() {
 
     alert("Application submitted! We will contact you within 48 hours.");
 
-    // Limpiar formulario
     document.querySelectorAll("#elevate-form input, #elevate-form textarea, #elevate-form select")
         .forEach(el => el.value = "");
     document.getElementById("submit-btn").innerText = "Submit Application →";
 }
 
+// ── SCROLL ANIMATIONS ──
+
 const banner = document.querySelector('.full-banner img');
 if (banner) {
     window.addEventListener('scroll', () => {
+    window.addEventListener('scroll', () => {
+        const rect = banner.closest('.full-banner').getBoundingClientRect();
+        const offset = (rect.top / window.innerHeight) * 30;
+        banner.style.transform = `translateY(${offset}px)`;
+    });
+}
+</script>
+
+<!-- Script del formulario — separado para garantizar que cargue -->
+<script>
+var FORM_URL = "https://script.google.com/macros/s/AKfycbyRNuutnEnnVyITG1prwLtOd98S41avkQ6MIO8XWuANmycFAJVuyOgUSTGU1YlrgkA/exec";
+
+function submitForm() {
+    var data = {
+        fullName : document.getElementById("fullName").value,
+        company  : document.getElementById("company").value,
+        email    : document.getElementById("email").value,
+        phone    : document.getElementById("phone").value,
+        revenue  : document.getElementById("revenue").value,
+        message  : document.getElementById("message").value
+    };
+
+    document.getElementById("submit-btn").innerText = "Sending...";
+
+    fetch(FORM_URL, {
+        method  : "POST",
+        mode    : "no-cors",
+        headers : { "Content-Type": "text/plain;charset=utf-8" },
+        body    : JSON.stringify(data)
+    }).then(function() {
+        alert("Application submitted! We will contact you within 48 hours.");
+        document.querySelectorAll("#elevate-form input, #elevate-form textarea, #elevate-form select").forEach(function(el){ el.value = ""; });
+        document.getElementById("submit-btn").innerText = "Submit Application →";
+    }).catch(function(err) {
+        alert("Error: " + err.message);
+        document.getElementById("submit-btn").innerText = "Submit Application →";
+    });
+}
+</script>
+
+</body>
+</html>
