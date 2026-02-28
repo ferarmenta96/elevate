@@ -1,47 +1,946 @@
-// ── CONFIGURACIÓN ──────────────────────────────────────────
-var ADMIN_EMAIL = "tu-email@empresa.com"; // ← Cambia por tu email
-// ───────────────────────────────────────────────────────────
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Elevate AI | Enterprise AI Systems That Multiply Revenue</title>
+    <meta name="description" content="We design AI infrastructures that automate growth, optimize operations, and increase profitability for any business.">
 
-function doPost(e) {
-  if (!e.postData) return ContentService.createTextOutput("No data");
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 
-  const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Contactos");
-  const data  = JSON.parse(e.postData.contents);
 
-  sheet.appendRow([
-    new Date(),
-    data.fullName || "",
-    data.company  || "",
-    data.email    || "",
-    data.phone    || "",
-    data.revenue  || "",
-    data.message  || ""
-  ]);
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.3.0/dist/chart.umd.min.js"></script>
 
-  return ContentService.createTextOutput("Success").setMimeType(ContentService.MimeType.TEXT);
+    <style>
+        :root {
+            --bg: #020202;
+            --bg-card: #0c0c0c;
+            --bg-elevated: #141414;
+            --text: #f5f0e8;
+            --text-muted: #6b6560;
+            --gold: #C9A84C;
+            --gold-light: #E8CC7A;
+            --gold-dim: rgba(201, 168, 76, 0.15);
+            --border: rgba(201, 168, 76, 0.12);
+            --border-dim: rgba(255,255,255,0.05);
+            --nav-h: 72px;
+            --font-display: 'Cormorant Garamond', serif;
+            --font-body: 'DM Sans', sans-serif;
+        }
+
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; background: var(--bg); }
+        body { background: var(--bg); color: var(--text); overflow-x: hidden; -webkit-font-smoothing: antialiased; font-family: var(--font-body); }
+
+        /* ── SCROLLBAR ── */
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-track { background: var(--bg); }
+        ::-webkit-scrollbar-thumb { background: var(--gold); border-radius: 2px; }
+
+        /* ── HEADER ── */
+        header {
+            position: fixed; top: 0; width: 100%; height: var(--nav-h);
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 0 6%; z-index: 1000;
+            background: rgba(2,2,2,0.7);
+            backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
+            border-bottom: 1px solid var(--border);
+            transition: background 0.4s;
+        }
+        .logo { font-family: var(--font-display); font-size: 22px; font-weight: 600; letter-spacing: 4px; color: var(--text); }
+        .logo span { color: var(--gold); }
+        nav { display: flex; gap: 36px; align-items: center; }
+        nav a { color: var(--text-muted); text-decoration: none; font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: 1.5px; transition: color 0.3s; }
+        nav a:hover { color: var(--gold); }
+        .nav-cta { background: var(--gold); color: #000 !important; padding: 10px 22px; border-radius: 2px; font-weight: 600 !important; }
+        .nav-cta:hover { background: var(--gold-light) !important; color: #000 !important; }
+
+        /* ── UTILITY ── */
+        .section-wrap { max-width: 1360px; margin: 0 auto; padding: 130px 6%; }
+        .label { font-size: 10px; font-weight: 600; letter-spacing: 3px; text-transform: uppercase; color: var(--gold); margin-bottom: 18px; display: block; }
+        .display { font-family: var(--font-display); font-weight: 600; line-height: 1.0; letter-spacing: -0.01em; }
+        .body-text { color: var(--text-muted); line-height: 1.75; font-size: 16px; margin-top: 18px; font-weight: 300; }
+        .gold-line { width: 48px; height: 1px; background: var(--gold); display: block; margin: 24px 0; }
+        .reveal { opacity: 1; transform: translateY(0); }
+
+        .btn-primary {
+            display: inline-flex; align-items: center; gap: 10px;
+            padding: 16px 36px; background: var(--gold); color: #000;
+            font-family: var(--font-body); font-size: 12px; font-weight: 700;
+            letter-spacing: 1.5px; text-transform: uppercase; text-decoration: none;
+            border: none; cursor: pointer; transition: all 0.3s; border-radius: 2px;
+        }
+        .btn-primary:hover { background: var(--gold-light); transform: translateY(-2px); box-shadow: 0 12px 40px rgba(201,168,76,0.25); }
+        .btn-outline {
+            display: inline-flex; align-items: center; gap: 10px;
+            padding: 15px 35px; background: transparent; color: var(--gold);
+            font-family: var(--font-body); font-size: 12px; font-weight: 600;
+            letter-spacing: 1.5px; text-transform: uppercase; text-decoration: none;
+            border: 1px solid var(--gold); cursor: pointer; transition: all 0.3s; border-radius: 2px;
+        }
+        .btn-outline:hover { background: var(--gold-dim); transform: translateY(-2px); }
+
+        /* ── HERO ── */
+        .hero {
+            min-height: 100vh; position: relative; display: flex;
+            align-items: center; justify-content: center; text-align: center;
+            overflow: hidden; padding-top: var(--nav-h);
+        }
+        #heroCanvas { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; }
+        .hero-overlay { position: absolute; inset: 0; background: radial-gradient(ellipse at center top, rgba(201,168,76,0.06) 0%, transparent 60%), linear-gradient(to bottom, transparent 40%, var(--bg) 100%); z-index: 1; }
+        .hero-content { position: relative; z-index: 2; max-width: 980px; padding: 0 24px; }
+        .hero-badge { display: inline-flex; align-items: center; gap: 8px; padding: 8px 20px; border: 1px solid var(--border); border-radius: 100px; font-size: 11px; font-weight: 500; letter-spacing: 1px; color: var(--gold); margin-bottom: 40px; background: rgba(201,168,76,0.05); }
+        .hero-badge::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--gold); display: block; animation: pulse 2s infinite; }
+        @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+        .hero h1 { font-size: clamp(52px, 7.5vw, 96px); font-family: var(--font-display); font-weight: 600; line-height: 1.0; margin-bottom: 28px; }
+        .hero h1 em { font-style: italic; color: var(--gold); }
+        .hero-sub { font-size: clamp(16px, 1.8vw, 19px); max-width: 680px; margin: 0 auto; color: var(--text-muted); line-height: 1.7; font-weight: 300; }
+        .hero-ctas { display: flex; gap: 18px; justify-content: center; margin-top: 50px; flex-wrap: wrap; }
+        .trusted-bar { margin-top: 80px; display: flex; flex-direction: column; align-items: center; gap: 20px; }
+        .trusted-label { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--text-muted); }
+        .trusted-logos { display: flex; gap: 40px; align-items: center; flex-wrap: wrap; justify-content: center; opacity: 0.35; filter: grayscale(1); }
+        .trusted-logos span { font-family: var(--font-display); font-size: 15px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; color: var(--text); }
+
+        /* ── PAIN SECTION ── */
+        .pain-section { background: var(--bg); }
+        .pain-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0; border: 1px solid var(--border); margin-top: 70px; }
+        .pain-stat { padding: 50px; border-right: 1px solid var(--border); border-bottom: 1px solid var(--border); position: relative; overflow: hidden; transition: background 0.4s; }
+        .pain-stat:nth-child(even) { border-right: 0; }
+        .pain-stat:nth-child(3), .pain-stat:nth-child(4) { border-bottom: 0; }
+        .pain-stat:hover { background: rgba(201,168,76,0.03); }
+        .pain-stat::before { content: ''; position: absolute; top: 0; left: 0; width: 3px; height: 0; background: var(--gold); transition: height 0.5s ease; }
+        .pain-stat:hover::before { height: 100%; }
+        .pain-number { font-family: var(--font-display); font-size: clamp(52px, 6vw, 80px); font-weight: 700; color: var(--gold); line-height: 1; display: block; }
+        .pain-stat h3 { font-family: var(--font-display); font-size: 22px; margin-top: 12px; font-weight: 600; }
+        .pain-stat p { font-size: 14px; color: var(--text-muted); margin-top: 10px; line-height: 1.6; font-weight: 300; }
+        .pain-center { text-align: center; max-width: 720px; margin: 0 auto; }
+        .pain-center h2 { font-size: clamp(40px, 5vw, 64px); }
+
+        /* ── SERVICES ── */
+        .services-section { }
+        .tier { margin-bottom: 100px; }
+        .tier-header { display: flex; align-items: flex-start; gap: 60px; margin-bottom: 50px; }
+        .tier-number { font-family: var(--font-display); font-size: 80px; font-weight: 700; color: var(--border); line-height: 1; flex-shrink: 0; }
+        .tier-title-block h2 { font-size: clamp(32px, 4vw, 52px); font-family: var(--font-display); font-weight: 600; }
+        .tier-grid { display: grid; grid-template-columns: 1.2fr 1fr; gap: 2px; background: var(--border); border: 1px solid var(--border); }
+        .tier-image { grid-row: span 2; overflow: hidden; min-height: 400px; background: var(--bg-card); position: relative; }
+        .tier-image img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(40%) brightness(0.75); transition: all 1.2s cubic-bezier(0.2,0.8,0.2,1); }
+        .tier:hover .tier-image img { filter: grayscale(0%) brightness(0.9); transform: scale(1.04); }
+        .service-item { background: var(--bg-card); padding: 28px 32px; display: flex; align-items: center; gap: 16px; transition: background 0.3s; }
+        .service-item:hover { background: var(--bg-elevated); }
+        .service-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--gold); flex-shrink: 0; }
+        .service-item span { font-size: 14px; font-weight: 400; color: var(--text-muted); letter-spacing: 0.3px; }
+        .tier-cta-block { background: var(--bg-card); padding: 32px; display: flex; align-items: center; justify-content: space-between; gap: 20px; }
+
+        /* ── RESULTS / CASES ── */
+        .results-section { }
+        .results-header { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: end; margin-bottom: 70px; }
+        .results-header h2 { font-size: clamp(40px, 5vw, 66px); font-family: var(--font-display); font-weight: 600; }
+        .results-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); margin-bottom: 60px; }
+        .result-card { background: var(--bg-card); padding: 44px 36px; transition: background 0.3s; }
+        .result-card:hover { background: var(--bg-elevated); }
+        .result-kpi { font-family: var(--font-display); font-size: 56px; font-weight: 700; color: var(--gold); line-height: 1; display: block; }
+        .result-card h3 { font-size: 16px; font-weight: 600; margin-top: 14px; letter-spacing: 0.3px; }
+        .result-card p { font-size: 13px; color: var(--text-muted); margin-top: 10px; line-height: 1.65; font-weight: 300; }
+        .testimonials-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; }
+        .testimonial { background: var(--bg-card); border: 1px solid var(--border); border-radius: 4px; padding: 40px; position: relative; }
+        .testimonial::before { content: '"'; font-family: var(--font-display); font-size: 80px; color: var(--gold); opacity: 0.2; position: absolute; top: 16px; left: 28px; line-height: 1; }
+        .testimonial p { font-size: 15px; line-height: 1.75; color: var(--text); font-weight: 300; margin: 0; position: relative; z-index: 1; }
+        .testimonial-author { margin-top: 24px; display: flex; align-items: center; gap: 14px; }
+        .author-avatar { width: 42px; height: 42px; border-radius: 50%; background: var(--gold-dim); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; font-family: var(--font-display); font-weight: 600; color: var(--gold); font-size: 16px; flex-shrink: 0; }
+        .author-info strong { display: block; font-size: 13px; font-weight: 600; }
+        .author-info span { font-size: 12px; color: var(--text-muted); }
+
+        /* ── AUTHORITY ── */
+        .authority-section { background: linear-gradient(to bottom, var(--bg), #080600, var(--bg)); }
+        .authority-inner { text-align: center; max-width: 800px; margin: 0 auto; }
+        .authority-inner h2 { font-size: clamp(44px, 5.5vw, 70px); }
+        .authority-badges { display: flex; justify-content: center; gap: 24px; margin-top: 60px; flex-wrap: wrap; }
+        .badge { border: 1px solid var(--border); padding: 20px 32px; display: flex; flex-direction: column; align-items: center; gap: 8px; transition: border-color 0.3s, background 0.3s; }
+        .badge:hover { border-color: var(--gold); background: var(--gold-dim); }
+        .badge-icon { color: var(--gold); font-size: 22px; }
+        .badge span { font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; font-weight: 600; color: var(--text-muted); }
+        .split-authority { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; margin-top: 100px; }
+        .split-authority img { width: 100%; aspect-ratio: 4/3; object-fit: cover; filter: grayscale(30%) brightness(0.8); transition: all 1.2s; border: 1px solid var(--border); }
+        .split-authority:hover img { filter: grayscale(0%) brightness(1); }
+
+        /* ── CHART ── */
+        .metrics-section { }
+        .metrics-title { text-align: center; max-width: 760px; margin: 0 auto 60px; }
+        .metrics-title h2 { font-size: clamp(40px, 5vw, 64px); }
+        .chart-wrap { background: var(--bg-card); border: 1px solid var(--border); padding: 50px; }
+        .chart-container-fix { position: relative; height: 45vh; min-height: 380px; }
+
+        /* ── FULL BANNER ── */
+        .full-banner { width: 100%; height: 420px; overflow: hidden; position: relative; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+        .full-banner img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(60%) brightness(0.6); }
+        .banner-overlay { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; background: rgba(2,2,2,0.5); }
+        .banner-text { text-align: center; }
+        .banner-text h2 { font-family: var(--font-display); font-size: clamp(36px, 5vw, 64px); font-weight: 600; }
+        .banner-text p { font-size: 16px; color: var(--text-muted); margin-top: 12px; }
+
+        /* ── GLOBAL INFRA ── */
+        .infra-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
+        .infra-image-wrap { overflow: hidden; border: 1px solid var(--border); }
+        .infra-image-wrap img { width: 100%; display: block; filter: grayscale(30%) brightness(0.8); transition: all 1.2s cubic-bezier(0.2,0.8,0.2,1); }
+        .infra-grid:hover .infra-image-wrap img { filter: grayscale(0%) brightness(1); transform: scale(1.03); }
+        .infra-text h2 { font-size: clamp(36px, 4.5vw, 58px); }
+
+        /* ── CONTACT ── */
+        .contact-section { }
+        .contact-inner { display: grid; grid-template-columns: 1fr 1.2fr; gap: 80px; }
+        .contact-info h2 { font-size: clamp(40px, 5vw, 62px); }
+        .contact-disclaimer { margin-top: 40px; padding: 24px; border: 1px solid var(--border); font-size: 12px; line-height: 1.7; color: var(--text-muted); background: var(--gold-dim); }
+        .contact-disclaimer strong { color: var(--gold); display: block; margin-bottom: 6px; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; }
+        .form-card { background: var(--bg-card); border: 1px solid var(--border); padding: 50px; }
+        form { display: flex; flex-direction: column; gap: 14px; }
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+        input, textarea, select {
+            padding: 16px 20px; border: 1px solid var(--border-dim); background: var(--bg-elevated);
+            color: var(--text); font-family: var(--font-body); font-size: 14px; transition: 0.3s; outline: none; border-radius: 2px;
+        }
+        input:focus, textarea:focus { border-color: var(--gold); background: #0a0800; }
+        input::placeholder, textarea::placeholder { color: var(--text-muted); }
+        textarea { resize: vertical; min-height: 120px; }
+        button[type="submit"] {
+            padding: 18px; background: var(--gold); color: #000; border: none;
+            font-family: var(--font-body); font-weight: 700; font-size: 12px;
+            letter-spacing: 2px; text-transform: uppercase; cursor: pointer; transition: 0.3s; border-radius: 2px; margin-top: 8px;
+        }
+        button[type="submit"]:hover { background: var(--gold-light); }
+
+        .field-wrap { position: relative; display: flex; flex-direction: column; gap: 4px; }
+        .field-error { font-size: 11px; color: #e05c5c; min-height: 16px; padding-left: 4px; display: block; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        #submit-btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none !important; }
+        select option { background: #141414; color: var(--text); }
+
+        /* ── FOOTER ── */
+        footer { border-top: 1px solid var(--border); background: var(--bg); margin-top: 0; }
+        .footer-main { max-width: 1360px; margin: 0 auto; padding: 80px 6% 50px; display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 60px; }
+        .footer-brand .logo { font-size: 24px; }
+        .footer-brand p { font-size: 13px; color: var(--text-muted); margin-top: 16px; line-height: 1.7; font-weight: 300; max-width: 280px; }
+        .footer-social { display: flex; gap: 14px; margin-top: 30px; }
+        .social-link { width: 38px; height: 38px; border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; color: var(--text-muted); text-decoration: none; font-size: 13px; transition: 0.3s; }
+        .social-link:hover { border-color: var(--gold); color: var(--gold); }
+        .footer-col h4 { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 24px; font-weight: 600; }
+        .footer-col a { display: block; color: var(--text-muted); text-decoration: none; font-size: 13px; margin-bottom: 14px; transition: color 0.3s; font-weight: 300; }
+        .footer-col a:hover { color: var(--gold); }
+        .footer-bottom { border-top: 1px solid var(--border-dim); padding: 28px 6%; max-width: 1360px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; }
+        .footer-bottom p { font-size: 12px; color: var(--text-muted); font-weight: 300; }
+
+        /* ── RESPONSIVE ── */
+        @media(max-width:1024px) {
+            .pain-grid, .tier-grid { grid-template-columns: 1fr; }
+            .tier-grid { grid-template-columns: 1fr 1fr; }
+            .tier-image { grid-row: auto; min-height: 280px; }
+            .results-grid { grid-template-columns: 1fr 1fr; }
+            .contact-inner, .split-authority, .infra-grid, .results-header { grid-template-columns: 1fr; gap: 50px; }
+            .footer-main { grid-template-columns: 1fr 1fr; }
+        }
+        @media(max-width:768px) {
+            header { padding: 0 5%; }
+            nav a:not(.nav-cta) { display: none; }
+            .tier-grid, .testimonials-grid, .results-grid { grid-template-columns: 1fr; }
+            .pain-grid, .form-row { grid-template-columns: 1fr; }
+            .tier-header { flex-direction: column; gap: 20px; }
+            .tier-number { font-size: 50px; }
+            .authority-badges { gap: 14px; }
+            .footer-main { grid-template-columns: 1fr; gap: 40px; }
+            .footer-bottom { flex-direction: column; gap: 12px; text-align: center; }
+            .full-banner { height: 300px; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ── HEADER ── -->
+<header>
+    <div class="logo">ELEV<span>A</span>TE</div>
+    <nav>
+        <a href="#services">Services</a>
+        <a href="#results">Results</a>
+        <a href="#infrastructure">Infrastructure</a>
+        <a href="#contact" class="nav-cta">Consult</a>
+    </nav>
+</header>
+
+<!-- ── HERO ── -->
+<section class="hero">
+    <canvas id="heroCanvas"></canvas>
+    <div class="hero-overlay"></div>
+    <div class="hero-content reveal">
+        <div class="hero-badge">Trusted by Enterprise Leaders Worldwide</div>
+        <h1>Enterprise AI Systems<br>That <em>Multiply</em> Revenue</h1>
+        <p class="hero-sub">We design AI infrastructures that automate growth, optimize operations, and increase profitability for clinics, law firms, insurance agencies, and high-growth companies.</p>
+        <div class="hero-ctas">
+            <a href="#contact" class="btn-primary">Request Executive Consultation →</a>
+            <a href="#services" class="btn-outline">Explore Solutions</a>
+        </div>
+        <div class="trusted-bar">
+            <span class="trusted-label">Trusted by Enterprises</span>
+            <div class="trusted-logos">
+                <span>Meridian Corp</span>
+                <span>Nexus Health</span>
+                <span>Vantage Law</span>
+                <span>Arcadia Capital</span>
+                <span>Sterling Group</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ── PAIN SECTION ── -->
+<div class="section-wrap pain-section" id="problem">
+    <div class="pain-center reveal">
+        <span class="label">The Revenue Gap</span>
+        <h2 class="display">The Revenue Gap Most Businesses Ignore</h2>
+        <span class="gold-line" style="margin:24px auto;"></span>
+        <p class="body-text">Manual processes, missed leads, and inefficient systems cost businesses thousands every month. The gap between where you are and where AI can take you is the most expensive problem you're not solving.</p>
+        <div style="margin-top:36px;">
+            <a href="#contact" class="btn-outline">See How We Can Help →</a>
+        </div>
+    </div>
+    <div class="pain-grid reveal">
+        <div class="pain-stat">
+            <span class="pain-number counter" data-target="300">0</span>
+            <span style="font-size:18px;color:var(--gold);font-family:var(--font-display);">K lost annually</span>
+            <h3>Revenue Leakage</h3>
+            <p>The average enterprise loses over $300K per year to manual processes and missed automation opportunities.</p>
+        </div>
+        <div class="pain-stat">
+            <span class="pain-number counter" data-target="67">0</span>
+            <span style="font-size:18px;color:var(--gold);font-family:var(--font-display);">% of leads ignored</span>
+            <h3>Lead Response Failure</h3>
+            <p>67% of inbound leads never receive a timely follow-up, falling through the cracks of overwhelmed teams.</p>
+        </div>
+        <div class="pain-stat">
+            <span class="pain-number counter" data-target="40">0</span>
+            <span style="font-size:18px;color:var(--gold);font-family:var(--font-display);">hrs/week wasted</span>
+            <h3>Operational Drag</h3>
+            <p>Mid-size businesses waste 40+ hours weekly on tasks that AI can handle autonomously in minutes.</p>
+        </div>
+        <div class="pain-stat">
+            <span class="pain-number counter" data-target="3">0</span>
+            <span style="font-size:18px;color:var(--gold);font-family:var(--font-display);">× competitive gap</span>
+            <h3>AI-Adoption Divide</h3>
+            <p>AI-first companies are scaling 3× faster than those still relying on legacy tools and manual operations.</p>
+        </div>
+    </div>
+</div>
+
+<!-- ── SERVICES ── -->
+<div class="section-wrap services-section" id="services">
+    <div style="text-align:center; max-width:700px; margin:0 auto 80px;" class="reveal">
+        <span class="label">Our Solutions</span>
+        <h2 class="display" style="font-size:clamp(40px,5vw,66px);">Three Levels of Intelligence</h2>
+        <p class="body-text">A tiered system engineered for every stage of enterprise growth — from automation to full AI operating infrastructure.</p>
+    </div>
+
+    <!-- TIER 1 -->
+    <div class="tier reveal">
+        <div class="tier-header">
+            <span class="tier-number">01</span>
+            <div class="tier-title-block">
+                <span class="label">Level 1 — AI Automation Suite</span>
+                <h2 class="display">Automate Operations & Sales</h2>
+                <p class="body-text" style="max-width:500px;">The foundation layer. Eliminate repetitive work, activate 24/7 lead handling, and deploy intelligent marketing systems from day one.</p>
+            </div>
+        </div>
+        <div class="tier-grid">
+            <div class="tier-image">
+                <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&q=80&w=900" alt="AI Automation Dashboard">
+            </div>
+            <div class="service-item"><span class="service-dot"></span><span>Administrative Process Automation</span></div>
+            <div class="service-item"><span class="service-dot"></span><span>Web & WhatsApp Chatbots</span></div>
+            <div class="service-item"><span class="service-dot"></span><span>Voice AI Agents — 24/7 Autonomous</span></div>
+            <div class="service-item"><span class="service-dot"></span><span>End-to-End Marketing Automation</span></div>
+            <div class="service-item"><span class="service-dot"></span><span>AI Content & Brand Generation</span></div>
+            <div class="tier-cta-block">
+                <span style="font-size:13px;color:var(--text-muted);">Starting point for any enterprise</span>
+                <a href="#contact" class="btn-primary">Get Your Automation Audit →</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- TIER 2 -->
+    <div class="tier reveal">
+        <div class="tier-header">
+            <span class="tier-number">02</span>
+            <div class="tier-title-block">
+                <span class="label">Level 2 — AI Growth Transformation</span>
+                <h2 class="display">Scale Your Revenue With Intelligence</h2>
+                <p class="body-text" style="max-width:500px;">Advanced revenue intelligence and customer journey systems that actively find and close growth opportunities in your existing operations.</p>
+            </div>
+        </div>
+        <div class="tier-grid">
+            <div class="tier-image">
+                <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&q=80&w=900" alt="Revenue Intelligence">
+            </div>
+            <div class="service-item"><span class="service-dot"></span><span>Revenue Intelligence Systems</span></div>
+            <div class="service-item"><span class="service-dot"></span><span>AI Executive Dashboards & Reporting</span></div>
+            <div class="service-item"><span class="service-dot"></span><span>Customer Journey Automation</span></div>
+            <div class="service-item"><span class="service-dot"></span><span>AI Lead Scoring & Prioritization</span></div>
+            <div class="service-item"><span class="service-dot"></span><span>Smart Pricing AI & Margin Optimization</span></div>
+            <div class="tier-cta-block">
+                <span style="font-size:13px;color:var(--text-muted);">For scaling 7-figure businesses</span>
+                <a href="#contact" class="btn-primary">Schedule Growth Strategy Session →</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- TIER 3 -->
+    <div class="tier reveal">
+        <div class="tier-header">
+            <span class="tier-number">03</span>
+            <div class="tier-title-block">
+                <span class="label">Level 3 — Enterprise AI Infrastructure</span>
+                <h2 class="display">Enterprise-Grade AI Infrastructure</h2>
+                <p class="body-text" style="max-width:500px;">Full-stack enterprise AI deployment. We architect your complete AI operating system, from financial intelligence to security compliance and digital twin modeling.</p>
+            </div>
+        </div>
+        <div class="tier-grid">
+            <div class="tier-image">
+                <img src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&q=80&w=900" alt="Enterprise Infrastructure">
+            </div>
+            <div class="service-item"><span class="service-dot"></span><span>AI Operating Layer — Full Business OS</span></div>
+            <div class="service-item"><span class="service-dot"></span><span>Predictive Inventory Intelligence</span></div>
+            <div class="service-item"><span class="service-dot"></span><span>AI Financial Intelligence & Forecasting</span></div>
+            <div class="service-item"><span class="service-dot"></span><span>AI for HR & Talent Acquisition</span></div>
+            <div class="service-item"><span class="service-dot"></span><span>Security & Compliance Automation</span></div>
+            <div class="service-item"><span class="service-dot"></span><span>Digital Twin & Strategic Expansion</span></div>
+            <div class="tier-cta-block">
+                <span style="font-size:13px;color:var(--text-muted);">For 8-figure enterprise transformation</span>
+                <a href="#contact" class="btn-primary">Apply for Executive Partnership →</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ── RESULTS ── -->
+<div class="section-wrap results-section" id="results">
+    <div class="results-header reveal">
+        <div>
+            <span class="label">Client Impact</span>
+            <h2 class="display">What Enterprise Clients Achieve</h2>
+        </div>
+        <p class="body-text">Every system we build is measured by revenue impact, efficiency gains, and automation of human work. These are not projections — these are client outcomes.</p>
+    </div>
+    <div class="results-grid reveal">
+        <div class="result-card">
+            <span class="result-kpi counter" data-target="312">0</span>
+            <span style="font-size:13px;color:var(--gold);">% Revenue Increase</span>
+            <h3>Regional Insurance Agency</h3>
+            <p>Deployed AI lead scoring and automated follow-up sequences. Tripled policy closings within 8 months of deployment.</p>
+        </div>
+        <div class="result-card">
+            <span class="result-kpi counter" data-target="68">0</span>
+            <span style="font-size:13px;color:var(--gold);">% Cost Reduction</span>
+            <h3>Multi-Location Medical Clinic</h3>
+            <p>Automated patient intake, scheduling, and billing workflows. Reduced administrative overhead by 68% while improving patient satisfaction.</p>
+        </div>
+        <div class="result-card">
+            <span class="result-kpi counter" data-target="4.2">0</span>
+            <span style="font-size:13px;color:var(--gold);">× Faster Client Acquisition</span>
+            <h3>Boutique Law Firm</h3>
+            <p>AI-driven intake qualification and CRM automation converted 4.2× more inbound inquiries into retained clients in the first quarter.</p>
+        </div>
+    </div>
+
+    <div class="testimonials-grid reveal">
+        <div class="testimonial">
+            <p>The AI infrastructure Elevate built didn't just automate our workflows — it fundamentally restructured how our revenue engine operates. We went from guessing to knowing exactly where every dollar was going and coming from.</p>
+            <div class="testimonial-author">
+                <div class="author-avatar">M</div>
+                <div class="author-info">
+                    <strong>Marcus D.</strong>
+                    <span>CEO, Meridian Capital Group</span>
+                </div>
+            </div>
+        </div>
+        <div class="testimonial">
+            <p>Within 90 days, our patient scheduling was fully automated, our staff was freed from data entry, and our clinic's throughput increased by 40%. The ROI calculation was a no-brainer within the first month.</p>
+            <div class="testimonial-author">
+                <div class="author-avatar">S</div>
+                <div class="author-info">
+                    <strong>Dr. Sofia R.</strong>
+                    <span>Managing Director, Nexus Health Systems</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div style="text-align:center;margin-top:50px;" class="reveal">
+        <a href="#contact" class="btn-outline">Request Full Case Study →</a>
+    </div>
+</div>
+
+<!-- ── FULL BANNER ── -->
+<div class="full-banner reveal">
+    <img src="https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop&q=80&w=1600" alt="AI Systems">
+    <div class="banner-overlay">
+        <div class="banner-text">
+            <h2 class="display">AI That Multiplies Revenue —<br>Not Just Automation</h2>
+            <p>Every system is measured by one metric: your bottom line.</p>
+        </div>
+    </div>
+</div>
+
+<!-- ── METRICS ── -->
+<div class="section-wrap metrics-section" id="metrics">
+    <div class="metrics-title reveal">
+        <span class="label">Performance Data</span>
+        <h2 class="display">The Numbers Speak</h2>
+        <p class="body-text">12-month composite impact index across Revenue, Lead Conversion, and Operational Efficiency post-deployment.</p>
+    </div>
+    <div class="chart-wrap reveal">
+        <div class="chart-container-fix">
+            <canvas id="dashboardChart"></canvas>
+        </div>
+    </div>
+</div>
+
+<!-- ── INFRASTRUCTURE ── -->
+<div class="section-wrap" id="infrastructure">
+    <div class="infra-grid reveal">
+        <div class="infra-image-wrap">
+            <img src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&q=80&w=1000" alt="Global AI Infrastructure">
+        </div>
+        <div class="infra-text">
+            <span class="label">Global Infrastructure</span>
+            <h2 class="display">Built for global scale.</h2>
+            <span class="gold-line"></span>
+            <p class="body-text">Our infrastructure handles enterprise workloads across borders. Low-latency distributed processing ensures consistent performance regardless of user location or operational volume.</p>
+            <div style="margin-top:36px;">
+                <a href="#contact" class="btn-outline">Explore Infrastructure →</a>
+            </div>
+        </div>
+    </div>
+    <div class="infra-grid reveal" style="margin-top:100px;">
+        <div class="infra-text">
+            <span class="label">Zero-Friction Deployment</span>
+            <h2 class="display">Fluid integration.</h2>
+            <span class="gold-line"></span>
+            <p class="body-text">Plug Elevate AI directly into your existing infrastructure. No complex migrations, zero downtime. Instant intelligence layered onto your current workflows, designed to work alongside your team from day one.</p>
+        </div>
+        <div class="infra-image-wrap">
+            <img src="https://images.unsplash.com/photo-1639322537228-f710d846310a?auto=format&fit=crop&q=80&w=1000" alt="AI Integration">
+        </div>
+    </div>
+</div>
+
+<!-- ── AUTHORITY ── -->
+<div class="section-wrap authority-section" id="authority">
+    <div class="authority-inner reveal">
+        <span class="label">Why Elevate</span>
+        <h2 class="display" style="font-size:clamp(44px,5.5vw,70px);">Built for 7 & 8 Figure Companies</h2>
+        <span class="gold-line" style="margin:24px auto;"></span>
+        <p class="body-text">We position ourselves not as a software vendor, but as a digital transformation partner. We work exclusively with businesses ready to scale with enterprise-grade AI infrastructure.</p>
+        <div class="authority-badges">
+            <div class="badge">
+                <span class="badge-icon">⬡</span>
+                <span>SOC 2 Compliant</span>
+            </div>
+            <div class="badge">
+                <span class="badge-icon">◈</span>
+                <span>Military-Grade Encryption</span>
+            </div>
+            <div class="badge">
+                <span class="badge-icon">◎</span>
+                <span>On-Premise Deployment</span>
+            </div>
+            <div class="badge">
+                <span class="badge-icon">⬟</span>
+                <span>Digital Transformation Experts</span>
+            </div>
+            <div class="badge">
+                <span class="badge-icon">◇</span>
+                <span>Enterprise AI Infrastructure</span>
+            </div>
+        </div>
+    </div>
+    <div class="split-authority reveal">
+        <img src="https://images.unsplash.com/photo-1563986768609-322da13575f3?auto=format&fit=crop&q=80&w=1000" alt="Enterprise Security">
+        <div>
+            <span class="label">Continuous Learning</span>
+            <h2 class="display" style="font-size:clamp(36px,4.5vw,58px);">Compounding competitive advantage.</h2>
+            <span class="gold-line"></span>
+            <p class="body-text">Unlike static software, our AI models learn from every interaction. The longer the system runs, the more efficient your operations become — creating an ever-widening moat against competitors.</p>
+            <div style="margin-top:36px;">
+                <a href="#contact" class="btn-primary">Work With Us →</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ── CONTACT ── -->
+<div class="section-wrap contact-section" id="contact">
+    <div class="contact-inner">
+        <div class="contact-info reveal">
+            <span class="label">Executive Consultation</span>
+            <h2 class="display" style="font-size:clamp(40px,5vw,62px);">Apply for Executive Strategy Session</h2>
+            <span class="gold-line"></span>
+            <p class="body-text">We work only with businesses ready to scale with enterprise AI infrastructure. This is not a sales call — it is a strategic audit of your operations.</p>
+            <div class="contact-disclaimer">
+                <strong>Confidential & Selective</strong>
+                We accept a limited number of new clients per quarter. Only serious inquiries from high-value businesses seeking transformational growth will receive a response.
+            </div>
+            <div style="margin-top:40px;display:flex;flex-direction:column;gap:16px;">
+                <div style="display:flex;align-items:center;gap:14px;">
+                    <span style="color:var(--gold);font-size:18px;">◎</span>
+                    <span style="font-size:13px;color:var(--text-muted);"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="2045584543555449564560454c45564154450d41490e434f4d">[email&#160;protected]</a></span>
+                </div>
+                <div style="display:flex;align-items:center;gap:14px;">
+                    <span style="color:var(--gold);font-size:18px;">◎</span>
+                    <span style="font-size:13px;color:var(--text-muted);">+1 (800) ELEVATE-AI</span>
+                </div>
+            </div>
+        </div>
+        <div class="form-card reveal">
+
+            <!-- Estado del formulario -->
+            <div id="form-status" style="display:none; padding:28px; border:1px solid var(--border); margin-bottom:20px; text-align:center;">
+                <div id="status-icon" style="font-size:32px; margin-bottom:12px;"></div>
+                <p id="status-title" style="font-family:var(--font-display); font-size:22px; color:var(--text); margin:0;"></p>
+                <p id="status-msg" style="font-size:13px; margin-top:8px;"></p>
+            </div>
+
+            <form id="elevate-form" novalidate>
+                <div class="form-row">
+                    <div class="field-wrap">
+                        <input type="text" id="fullName" placeholder="Full Name" required autocomplete="name">
+                        <span class="field-error" id="err-fullName"></span>
+                    </div>
+                    <div class="field-wrap">
+                        <input type="text" id="company" placeholder="Company Name" required autocomplete="organization">
+                        <span class="field-error" id="err-company"></span>
+                    </div>
+                </div>
+                <div class="field-wrap">
+                    <input type="email" id="email" placeholder="Corporate Email" required autocomplete="email">
+                    <span class="field-error" id="err-email"></span>
+                </div>
+                <div class="field-wrap">
+                    <input type="tel" id="phone" placeholder="Phone Number" required autocomplete="tel">
+                    <span class="field-error" id="err-phone"></span>
+                </div>
+                <div class="field-wrap">
+                    <select id="revenue">
+                        <option value="" disabled selected>Annual Revenue Range</option>
+                        <option>$1M – $3M</option>
+                        <option>$3M – $10M</option>
+                        <option>$10M – $50M</option>
+                        <option>$50M+</option>
+                    </select>
+                </div>
+                <div class="field-wrap">
+                    <textarea id="message" placeholder="Describe your business and what you want to automate or optimize..." required></textarea>
+                    <span class="field-error" id="err-message"></span>
+                </div>
+
+                <!-- Honeypot anti-spam (oculto) -->
+                <input type="text" name="_honey" id="_honey" style="display:none;" tabindex="-1" autocomplete="off">
+
+                <button type="submit" id="submit-btn">
+                    <span id="btn-text">Submit Application →</span>
+                    <span id="btn-loader" style="display:none;">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="animation:spin 0.8s linear infinite;vertical-align:middle;">
+                            <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/>
+                        </svg>
+                        Sending...
+                    </span>
+                </button>
+                <p style="font-size:11px;color:var(--text-muted);text-align:center;margin-top:8px;">
+                    By submitting you agree to our <a href="#" style="color:var(--gold);text-decoration:none;">Privacy Policy</a>. All information is strictly confidential.
+                </p>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- ── FOOTER ── -->
+<footer>
+    <div class="footer-main">
+        <div class="footer-brand">
+            <div class="logo">ELEV<span>A</span>TE</div>
+            <p>Building the autonomous cognitive infrastructure for the next generation of enterprise intelligence.</p>
+            <div class="footer-social">
+                <a href="#" class="social-link">in</a>
+                <a href="#" class="social-link">tw</a>
+                <a href="#" class="social-link">yt</a>
+                <a href="#" class="social-link">ig</a>
+            </div>
+        </div>
+        <div class="footer-col">
+            <h4>Solutions</h4>
+            <a href="#">Voice AI Agents</a>
+            <a href="#">CRM Automation</a>
+            <a href="#">Inventory AI</a>
+            <a href="#">Revenue Intelligence</a>
+            <a href="#">Custom AI Apps</a>
+        </div>
+        <div class="footer-col">
+            <h4>Company</h4>
+            <a href="#">About Us</a>
+            <a href="#">Executive Team</a>
+            <a href="#">Case Studies</a>
+            <a href="#">Careers</a>
+        </div>
+        <div class="footer-col">
+            <h4>Legal</h4>
+            <a href="#">Privacy Policy</a>
+            <a href="#">Terms of Service</a>
+            <a href="#">Data Security</a>
+            <a href="#">Cookie Policy</a>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <p>© 2026 Elevate AI Solutions. All rights reserved.</p>
+        <p>Enterprise AI Infrastructure · Revenue Intelligence · Autonomous Business Systems</p>
+    </div>
+</footer>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+// ── CSS SCROLL ANIMATIONS (no depende de GSAP) ──
+const observer = new IntersectionObserver((entries) => {
+    entries.forEach(el => {
+        if (el.isIntersecting) {
+            el.target.style.opacity = '1';
+            el.target.style.transform = 'translateY(0)';
+            observer.unobserve(el.target);
+        }
+    });
+}, { threshold: 0.08 });
+
+document.querySelectorAll('.reveal').forEach(el => {
+    el.style.transition = 'opacity 0.9s ease, transform 0.9s ease';
+    observer.observe(el);
+});
+
+// ── THREE.JS HERO ──
+try {
+const canvas = document.getElementById('heroCanvas');
+const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+renderer.setSize(window.innerWidth, window.innerHeight);
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 0.1, 1000);
+camera.position.z = 28;
+
+const count = 500;
+const positions = new Float32Array(count * 3);
+for (let i = 0; i < count * 3; i++) positions[i] = (Math.random() - 0.5) * 70;
+const geo = new THREE.BufferGeometry();
+geo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+const mat = new THREE.PointsMaterial({ color: 0xC9A84C, size: 0.08, transparent: true, opacity: 0.25 });
+const points = new THREE.Points(geo, mat);
+scene.add(points);
+
+// Gold accent lines
+const lineMaterial = new THREE.LineBasicMaterial({ color: 0xC9A84C, transparent: true, opacity: 0.06 });
+for (let i = 0; i < 8; i++) {
+    const lineGeo = new THREE.BufferGeometry().setFromPoints([
+        new THREE.Vector3((Math.random()-0.5)*60, (Math.random()-0.5)*60, (Math.random()-0.5)*20),
+        new THREE.Vector3((Math.random()-0.5)*60, (Math.random()-0.5)*60, (Math.random()-0.5)*20)
+    ]);
+    scene.add(new THREE.Line(lineGeo, lineMaterial));
 }
 
-function doGet(e) {
-  const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Contactos");
-  const data  = sheet.getDataRange().getValues();
-  return ContentService
-    .createTextOutput(JSON.stringify(data))
-    .setMimeType(ContentService.MimeType.JSON);
-}
+const clock = new THREE.Clock();
+(function animate() {
+    requestAnimationFrame(animate);
+    const t = clock.getElapsedTime();
+    points.rotation.y = t * 0.025;
+    points.rotation.x = Math.sin(t * 0.08) * 0.06;
+    renderer.render(scene, camera);
+})();
 
-function testScript() {
-  var fakeEvent = {
-    postData: {
-      contents: JSON.stringify({
-        fullName : "Carlos Méndez",
-        company  : "Meridian Corp",
-        email    : "carlos@meridian.com",
-        phone    : "+1 555 123 4567",
-        revenue  : "$10M – $50M",
-        message  : "Quiero automatizar mis ventas."
-      })
+window.addEventListener('resize', () => {
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+});
+} catch(e) { console.warn('WebGL no disponible, usando fondo CSS.'); }
+
+// ── COUNTER ANIMATION ──
+function animateCounter(el) {
+    const target = parseFloat(el.dataset.target);
+    const isFloat = target % 1 !== 0;
+    const duration = 2200;
+    const start = performance.now();
+    function update(now) {
+        const elapsed = now - start;
+        const progress = Math.min(elapsed / duration, 1);
+        const eased = 1 - Math.pow(1 - progress, 3);
+        const value = target * eased;
+        el.textContent = isFloat ? value.toFixed(1) : Math.floor(value);
+        if (progress < 1) requestAnimationFrame(update);
+        else el.textContent = isFloat ? target.toFixed(1) : target;
     }
-  };
-  doPost(fakeEvent);
-  Logger.log("✅ Listo - revisa tu Google Sheet");
+    requestAnimationFrame(update);
 }
+
+document.querySelectorAll('.counter').forEach(el => {
+    const obs = new IntersectionObserver(entries => {
+        entries.forEach(e => { if (e.isIntersecting) { animateCounter(el); obs.disconnect(); } });
+    }, { threshold: 0.5 });
+    obs.observe(el);
+});
+
+// ── CHART.JS ──
+document.addEventListener("DOMContentLoaded", function () {
+    Chart.defaults.color = '#6b6560';
+    Chart.defaults.font.family = "'DM Sans', sans-serif";
+
+    const ctx = document.getElementById('dashboardChart')?.getContext('2d');
+    if (!ctx) return;
+
+    const gradGold = ctx.createLinearGradient(0, 0, 0, 380);
+    gradGold.addColorStop(0, 'rgba(201,168,76,0.3)');
+    gradGold.addColorStop(1, 'rgba(201,168,76,0.0)');
+
+    const gradWhite = ctx.createLinearGradient(0, 0, 0, 380);
+    gradWhite.addColorStop(0, 'rgba(245,240,232,0.1)');
+    gradWhite.addColorStop(1, 'rgba(245,240,232,0.0)');
+
+    new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: ['Month 1', 'Month 2', 'Month 3', 'Month 6', 'Month 9', 'Month 12'],
+            datasets: [
+                {
+                    label: 'Revenue Impact Index',
+                    data: [12, 22, 38, 62, 84, 97],
+                    borderColor: '#C9A84C',
+                    backgroundColor: gradGold,
+                    borderWidth: 2, fill: true, tension: 0.45,
+                    pointBackgroundColor: '#000', pointBorderColor: '#C9A84C', pointRadius: 4
+                },
+                {
+                    label: 'Operational Efficiency',
+                    data: [8, 18, 30, 55, 72, 89],
+                    borderColor: 'rgba(245,240,232,0.5)',
+                    backgroundColor: gradWhite,
+                    borderWidth: 1.5, fill: true, tension: 0.45,
+                    pointBackgroundColor: '#000', pointBorderColor: 'rgba(245,240,232,0.5)', pointRadius: 3
+                }
+            ]
+        },
+        options: {
+            responsive: true, maintainAspectRatio: false,
+            plugins: {
+                legend: { display: true, labels: { color: '#6b6560', font: { size: 12 }, usePointStyle: true, padding: 24 } },
+                tooltip: { backgroundColor: 'rgba(12,12,12,0.95)', titleColor: '#C9A84C', bodyColor: '#f5f0e8', padding: 14, displayColors: false, borderColor: 'rgba(201,168,76,0.2)', borderWidth: 1 }
+            },
+            scales: {
+                y: { beginAtZero: true, max: 100, grid: { color: 'rgba(255,255,255,0.04)' }, ticks: { callback: v => v + '%', color: '#6b6560' }, border: { display: false } },
+                x: { grid: { display: false }, ticks: { color: '#6b6560' }, border: { display: false } }
+            },
+            interaction: { mode: 'index', intersect: false }
+        }
+    });
+});
+
+// ── FORM SUBMISSION ──────────────────────────────────────────
+// ⚠️ REEMPLAZA ESTA URL con la de tu Google Apps Script desplegado
+const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyRNuutnEnnVyITG1prwLtOd98S41avkQ6MIO8XWuANmycFAJVuyOgUSTGU1YlrgkA/exec";
+
+const form       = document.getElementById("elevate-form");
+const submitBtn  = document.getElementById("submit-btn");
+const btnText    = document.getElementById("btn-text");
+const btnLoader  = document.getElementById("btn-loader");
+const formStatus = document.getElementById("form-status");
+
+// Validación en tiempo real
+["fullName","company","email","phone","message"].forEach(id => {
+    document.getElementById(id)?.addEventListener("input", () => clearError(id));
+});
+
+function clearError(id) {
+    const errEl = document.getElementById("err-" + id);
+    if (errEl) errEl.textContent = "";
+    document.getElementById(id)?.style.removeProperty("border-color");
+}
+
+function showError(id, msg) {
+    const errEl = document.getElementById("err-" + id);
+    const input = document.getElementById(id);
+    if (errEl) errEl.textContent = msg;
+    if (input) input.style.borderColor = "#e05c5c";
+}
+
+function validateForm(data) {
+    let valid = true;
+    if (!data.fullName.trim())  { showError("fullName","Full name is required"); valid = false; }
+    if (!data.company.trim())   { showError("company","Company name is required"); valid = false; }
+    if (!data.email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) { showError("email","Enter a valid email"); valid = false; }
+    if (!data.phone.trim())     { showError("phone","Phone number is required"); valid = false; }
+    if (!data.message.trim())   { showError("message","Please describe your business"); valid = false; }
+    return valid;
+}
+
+function setLoading(loading) {
+    submitBtn.disabled = loading;
+    btnText.style.display  = loading ? "none"  : "inline";
+    btnLoader.style.display = loading ? "inline" : "none";
+}
+
+function showStatus(success, title, msg) {
+    formStatus.style.display = "block";
+    formStatus.style.background    = success ? "rgba(201,168,76,0.06)" : "rgba(224,92,92,0.06)";
+    formStatus.style.borderColor   = success ? "rgba(201,168,76,0.4)" : "rgba(224,92,92,0.4)";
+    document.getElementById("status-icon").textContent  = success ? "✦" : "✕";
+    document.getElementById("status-icon").style.color = success ? "var(--gold)" : "#e05c5c";
+    document.getElementById("status-title").textContent = title;
+    document.getElementById("status-msg").textContent   = msg;
+    formStatus.scrollIntoView({ behavior: "smooth", block: "center" });
+}
+
+form?.addEventListener("submit", async function(e) {
+    e.preventDefault();
+
+    // Honeypot check
+    if (document.getElementById("_honey")?.value) return;
+
+    const data = {
+        fullName : document.getElementById("fullName")?.value || "",
+        company  : document.getElementById("company")?.value  || "",
+        email    : document.getElementById("email")?.value    || "",
+        phone    : document.getElementById("phone")?.value    || "",
+        revenue  : document.getElementById("revenue")?.value  || "",
+        message  : document.getElementById("message")?.value  || "",
+    };
+
+    if (!validateForm(data)) return;
+
+    setLoading(true);
+
+    try {
+        await fetch(APPS_SCRIPT_URL, {
+            method  : "POST",
+            mode    : "no-cors",
+            headers : { "Content-Type": "text/plain;charset=utf-8" },
+            body    : JSON.stringify(data),
+        });
+
+        // no-cors siempre retorna opaque response — asumimos éxito si no hubo error de red
+        form.reset();
+        form.style.display = "none";
+        showStatus(true,
+            "Application Submitted",
+            "Thank you, " + data.fullName.split(" ")[0] + ". Your application is under review. Check your inbox — we've sent a confirmation to " + data.email
+        );
+
+    } catch (err) {
+        setLoading(false);
+        showStatus(false,
+            "Submission Failed",
+            "A network error occurred. Please try again or email us directly at executive@elevate-ai.com"
+        );
+    }
+});
+
+const banner = document.querySelector('.full-banner img');
+if (banner) {
+    window.addEventListener('scroll', () => {
