@@ -213,6 +213,15 @@
         #submit-btn span{position:relative;z-index:1;}
         #submit-btn:disabled{opacity:.6;cursor:not-allowed;}
 
+        /* ── LANG SWITCHER ── */
+        .lang-switcher{display:flex;align-items:center;gap:6px;margin-left:16px;padding-left:16px;border-left:1px solid var(--border);}
+        .lang-btn{background:none;border:none;color:var(--text-muted);font-family:var(--font-b);font-size:10px;font-weight:700;letter-spacing:2px;cursor:pointer;padding:6px 4px;transition:color .3s;position:relative;}
+        .lang-btn::after{content:'';position:absolute;bottom:2px;left:0;right:0;height:1px;background:var(--gold);transform:scaleX(0);transition:transform .3s;}
+        .lang-btn.active{color:var(--gold);}
+        .lang-btn.active::after{transform:scaleX(1);}
+        .lang-btn:hover{color:var(--gold);}
+        .lang-divider{color:var(--border);font-size:10px;}
+
         /* ── FOOTER ── */
         footer{border-top:1px solid var(--border);background:var(--bg);}
         .footer-main{max-width:1360px;margin:0 auto;padding:90px 6% 56px;display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:60px;}
@@ -245,6 +254,14 @@
             body{cursor:auto;}
             #cursor,#cursor-ring{display:none;}
         }
+        /* ── LANG SWITCHER ── */
+        .lang-switcher{display:flex;align-items:center;gap:6px;margin-left:16px;padding-left:16px;border-left:1px solid var(--border);}
+        .lang-btn{background:none;border:none;color:var(--text-muted);font-family:var(--font-b);font-size:10px;font-weight:700;letter-spacing:2px;cursor:pointer;padding:6px 2px;transition:color .3s;position:relative;}
+        .lang-btn::after{content:'';position:absolute;bottom:0;left:0;right:0;height:1px;background:var(--gold);transform:scaleX(0);transition:transform .3s;}
+        .lang-btn.active{color:var(--gold);}
+        .lang-btn.active::after{transform:scaleX(1);}
+        .lang-btn:hover{color:var(--gold);}
+        .lang-divider{color:var(--border);font-size:10px;user-select:none;}
     </style>
 </head>
 <body>
@@ -256,10 +273,15 @@
 <header>
     <div class="logo"><span style="letter-spacing:5px;">H</span><span class="logo-eye"></span><span style="letter-spacing:5px;">RUS</span></div>
     <nav>
-        <a href="#services">Services</a>
-        <a href="#results">Results</a>
-        <a href="#infrastructure">Infrastructure</a>
-        <a href="#contact" class="nav-cta">Consult</a>
+        <a href="#services" id="nav-services">Services</a>
+        <a href="#results" id="nav-results">Results</a>
+        <a href="#infrastructure" id="nav-infra">Infrastructure</a>
+        <a href="#contact" class="nav-cta" id="nav-cta">Consult</a>
+        <div class="lang-switcher">
+            <button class="lang-btn active" onclick="setLang('en')">EN</button>
+            <span class="lang-divider">|</span>
+            <button class="lang-btn" onclick="setLang('es')">ES</button>
+        </div>
     </nav>
 </header>
 
@@ -268,15 +290,15 @@
     <canvas id="heroCanvas"></canvas>
     <div class="hero-overlay"></div>
     <div class="hero-content reveal">
-        <div class="hero-eyebrow"><span class="hero-eyebrow-dot"></span>The All-Seeing Enterprise Intelligence</div>
-        <h1>See Everything.<br><em>Miss Nothing.</em><br><span class="thin">Scale Without Limits.</span></h1>
-        <p class="hero-sub">HORUS is the AI operating system that sees what your business is losing — and eliminates it. Revenue leaks, missed leads, operational drag. We see it all, and we fix it.</p>
+        <div class="hero-eyebrow"><span class="hero-eyebrow-dot"></span><span id="t-hero-badge">The All-Seeing Enterprise Intelligence</span></div>
+        <h1 id="t-hero-h1">See Everything.<br><em>Miss Nothing.</em><br><span class='thin'>Scale Without Limits.</span></h1>
+        <p class="hero-sub" id="t-hero-sub">HORUS is the AI operating system that sees what your business is losing — and eliminates it. Revenue leaks, missed leads, operational drag. We see it all, and we fix it.</p>
         <div class="hero-ctas">
-            <a href="#contact" class="btn-gold"><span>Request Executive Consultation →</span></a>
-            <a href="#services" class="btn-ghost">Explore Solutions</a>
+            <a href="#contact" class="btn-gold"><span id="t-hero-cta1">Request Executive Consultation →</span></a>
+            <a href="#services" class="btn-ghost" id="t-hero-cta2">Explore Solutions</a>
         </div>
         <div class="trusted-bar">
-            <span class="trusted-label">Trusted by Enterprises</span>
+            <span class="trusted-label" id="t-trusted">Trusted by Enterprises</span>
             <div class="trusted-logos">
                 <span>Meridian Corp</span><span>Nexus Health</span><span>Vantage Law</span><span>Arcadia Capital</span><span>Sterling Group</span>
             </div>
@@ -291,35 +313,35 @@
 <!-- ── PAIN ── -->
 <div class="sw" id="problem">
     <div class="pain-center reveal">
-        <span class="label">The Revenue Gap</span>
-        <h2 class="display" style="font-size:clamp(42px,5.5vw,68px);">The Cost of Doing Nothing</h2>
+        <span class="label" id="t-pain-label">The Revenue Gap</span>
+        <h2 class="display" style="font-size:clamp(42px,5.5vw,68px);" id="t-pain-h2">The Cost of Doing Nothing</h2>
         <div class="gold-line" style="margin:28px auto;width:1px;height:60px;background:linear-gradient(to bottom,var(--gold),transparent);"></div>
-        <p class="body-text">Manual processes, missed leads, and inefficient systems cost businesses thousands every month. The gap between where you are and where AI can take you is the most expensive problem you're not solving.</p>
-        <div style="margin-top:40px;"><a href="#contact" class="btn-ghost">See How We Can Help →</a></div>
+        <p class="body-text" id="t-pain-body">Manual processes, missed leads, and inefficient systems cost businesses thousands every month. The gap between where you are and where AI can take you is the most expensive problem you're not solving.</p>
+        <div style="margin-top:40px;"><a href="#contact" class="btn-ghost" id="t-pain-cta">See How We Can Help →</a></div>
     </div>
     <div class="pain-grid reveal">
-        <div class="pain-stat"><div class="pain-accent"></div><span class="pain-number counter" data-target="300">0</span><span class="pain-unit">thousand lost annually</span><h3>Revenue Leakage</h3><p>The average enterprise loses over $300K per year to manual processes and missed automation opportunities.</p></div>
-        <div class="pain-stat"><div class="pain-accent"></div><span class="pain-number counter" data-target="67">0</span><span class="pain-unit">percent of leads ignored</span><h3>Lead Response Failure</h3><p>67% of inbound leads never receive a timely follow-up, falling through the cracks of overwhelmed teams.</p></div>
-        <div class="pain-stat"><div class="pain-accent"></div><span class="pain-number counter" data-target="40">0</span><span class="pain-unit">hours per week wasted</span><h3>Operational Drag</h3><p>Mid-size businesses waste 40+ hours weekly on tasks that AI can handle autonomously in minutes.</p></div>
-        <div class="pain-stat"><div class="pain-accent"></div><span class="pain-number counter" data-target="3">0</span><span class="pain-unit">times the competitive gap</span><h3>AI-Adoption Divide</h3><p>AI-first companies are scaling 3× faster than those still relying on legacy tools and manual operations.</p></div>
+        <div class="pain-stat"><div class="pain-accent"></div><span class="pain-number counter" data-target="300">0</span><span class="pain-unit" id="t-p1-unit">thousand lost annually</span><h3 id="t-p1-h3">Revenue Leakage</h3><p id="t-p1-p">The average enterprise loses over $300K per year to manual processes and missed automation opportunities.</p></div>
+        <div class="pain-stat"><div class="pain-accent"></div><span class="pain-number counter" data-target="67">0</span><span class="pain-unit" id="t-p2-unit">percent of leads ignored</span><h3 id="t-p2-h3">Lead Response Failure</h3><p id="t-p2-p">67% of inbound leads never receive a timely follow-up, falling through the cracks of overwhelmed teams.</p></div>
+        <div class="pain-stat"><div class="pain-accent"></div><span class="pain-number counter" data-target="40">0</span><span class="pain-unit" id="t-p3-unit">hours per week wasted</span><h3 id="t-p3-h3">Operational Drag</h3><p id="t-p3-p">Mid-size businesses waste 40+ hours weekly on tasks that AI can handle autonomously in minutes.</p></div>
+        <div class="pain-stat"><div class="pain-accent"></div><span class="pain-number counter" data-target="3">0</span><span class="pain-unit" id="t-p4-unit">times the competitive gap</span><h3 id="t-p4-h3">AI-Adoption Divide</h3><p id="t-p4-p">AI-first companies are scaling 3× faster than those still relying on legacy tools and manual operations.</p></div>
     </div>
 </div>
 
 <!-- ── SERVICES ── -->
 <div class="sw" id="services">
     <div style="text-align:center;max-width:700px;margin:0 auto 90px;" class="reveal">
-        <span class="label">Our Solutions</span>
-        <h2 class="display" style="font-size:clamp(42px,5.5vw,70px);">Three Levels<br>of Intelligence</h2>
-        <p class="body-text">A tiered system engineered for every stage of enterprise growth — from automation to full AI operating infrastructure.</p>
+        <span class="label" id="t-srv-label">Our Solutions</span>
+        <h2 class="display" style="font-size:clamp(42px,5.5vw,70px);" id="t-srv-h2">Three Levels<br>of Intelligence</h2>
+        <p class="body-text" id="t-srv-body">A tiered system engineered for every stage of enterprise growth — from automation to full AI operating infrastructure.</p>
     </div>
 
     <div class="tier reveal">
         <div class="tier-header">
             <span class="tier-num">01</span>
             <div class="tier-title-block">
-                <span class="label">Level 1 — AI Automation Suite</span>
-                <h2 class="display">Automate Operations<br>& Sales</h2>
-                <p class="body-text" style="max-width:480px;">The foundation layer. Eliminate repetitive work, activate 24/7 lead handling, and deploy intelligent marketing systems from day one.</p>
+                <span class="label" id="t-t1-label">Level 1 — AI Automation Suite</span>
+                <h2 class="display" id="t-t1-h2">Automate Operations<br>& Sales</h2>
+                <p class="body-text" style="max-width:480px;" id="t-t1-body">The foundation layer. Eliminate repetitive work, activate 24/7 lead handling, and deploy intelligent marketing systems from day one.</p>
             </div>
         </div>
         <div class="tier-grid">
@@ -329,7 +351,7 @@
             <div class="service-item"><span class="service-dot"></span><span>Voice AI Agents — 24/7 Autonomous</span></div>
             <div class="service-item"><span class="service-dot"></span><span>End-to-End Marketing Automation</span></div>
             <div class="service-item"><span class="service-dot"></span><span>AI Content & Brand Generation</span></div>
-            <div class="tier-cta-block"><span style="font-size:12px;color:var(--text-muted);">Starting point for any enterprise</span><a href="#contact" class="btn-gold"><span>Get Your Automation Audit →</span></a></div>
+            <div class="tier-cta-block"><span style="font-size:12px;color:var(--text-muted);" id="t-t1-note">Starting point for any enterprise</span><a href="#contact" class="btn-gold"><span id="t-t1-cta">Get Your Automation Audit →</span></a></div>
         </div>
     </div>
 
@@ -337,9 +359,9 @@
         <div class="tier-header">
             <span class="tier-num">02</span>
             <div class="tier-title-block">
-                <span class="label">Level 2 — AI Growth Transformation</span>
-                <h2 class="display">Scale Your Revenue<br>With Intelligence</h2>
-                <p class="body-text" style="max-width:480px;">Advanced revenue intelligence and customer journey systems that actively find and close growth opportunities in your existing operations.</p>
+                <span class="label" id="t-t2-label">Level 2 — AI Growth Transformation</span>
+                <h2 class="display" id="t-t2-h2">Scale Your Revenue<br>With Intelligence</h2>
+                <p class="body-text" style="max-width:480px;" id="t-t2-body">Advanced revenue intelligence and customer journey systems that actively find and close growth opportunities in your existing operations.</p>
             </div>
         </div>
         <div class="tier-grid">
@@ -349,7 +371,7 @@
             <div class="service-item"><span class="service-dot"></span><span>Customer Journey Automation</span></div>
             <div class="service-item"><span class="service-dot"></span><span>AI Lead Scoring & Prioritization</span></div>
             <div class="service-item"><span class="service-dot"></span><span>Smart Pricing AI & Margin Optimization</span></div>
-            <div class="tier-cta-block"><span style="font-size:12px;color:var(--text-muted);">For scaling 7-figure businesses</span><a href="#contact" class="btn-gold"><span>Schedule Growth Strategy Session →</span></a></div>
+            <div class="tier-cta-block"><span style="font-size:12px;color:var(--text-muted);" id="t-t2-note">For scaling 7-figure businesses</span><a href="#contact" class="btn-gold"><span id="t-t2-cta">Schedule Growth Strategy Session →</span></a></div>
         </div>
     </div>
 
@@ -357,9 +379,9 @@
         <div class="tier-header">
             <span class="tier-num">03</span>
             <div class="tier-title-block">
-                <span class="label">Level 3 — Enterprise AI Infrastructure</span>
-                <h2 class="display">Enterprise-Grade<br>AI Infrastructure</h2>
-                <p class="body-text" style="max-width:480px;">Full-stack enterprise AI deployment. We architect your complete AI operating system — from financial intelligence to security compliance and digital twin modeling.</p>
+                <span class="label" id="t-t3-label">Level 3 — Enterprise AI Infrastructure</span>
+                <h2 class="display" id="t-t3-h2">Enterprise-Grade<br>AI Infrastructure</h2>
+                <p class="body-text" style="max-width:480px;" id="t-t3-body">Full-stack enterprise AI deployment. We architect your complete AI operating system — from financial intelligence to security compliance and digital twin modeling.</p>
             </div>
         </div>
         <div class="tier-grid">
@@ -370,7 +392,7 @@
             <div class="service-item"><span class="service-dot"></span><span>AI for HR & Talent Acquisition</span></div>
             <div class="service-item"><span class="service-dot"></span><span>Security & Compliance Automation</span></div>
             <div class="service-item"><span class="service-dot"></span><span>Digital Twin & Strategic Expansion</span></div>
-            <div class="tier-cta-block"><span style="font-size:12px;color:var(--text-muted);">For 8-figure enterprise transformation</span><a href="#contact" class="btn-gold"><span>Apply for Executive Partnership →</span></a></div>
+            <div class="tier-cta-block"><span style="font-size:12px;color:var(--text-muted);" id="t-t3-note">For 8-figure enterprise transformation</span><a href="#contact" class="btn-gold"><span id="t-t3-cta">Apply for Executive Partnership →</span></a></div>
         </div>
     </div>
 </div>
@@ -378,19 +400,19 @@
 <!-- ── RESULTS ── -->
 <div class="sw" id="results">
     <div class="results-header reveal">
-        <div><span class="label">Client Impact</span><h2 class="display">What Enterprise<br>Clients Achieve</h2></div>
-        <p class="body-text">Every system we build is measured by revenue impact, efficiency gains, and automation of human work. These are not projections — these are client outcomes.</p>
+        <div><span class="label" id="t-res-label">Client Impact</span><h2 class="display" id="t-res-h2">What Enterprise<br>Clients Achieve</h2></div>
+        <p class="body-text" id="t-res-body">Every system we build is measured by revenue impact, efficiency gains, and automation of human work. These are not projections — these are client outcomes.</p>
     </div>
     <div class="results-grid reveal">
-        <div class="result-card"><span class="result-kpi counter" data-target="312">0</span><span style="font-size:12px;color:var(--gold);letter-spacing:1px;text-transform:uppercase;">% Revenue Increase</span><h3>Regional Insurance Agency</h3><p>Deployed AI lead scoring and automated follow-up sequences. Tripled policy closings within 8 months of deployment.</p></div>
-        <div class="result-card"><span class="result-kpi counter" data-target="68">0</span><span style="font-size:12px;color:var(--gold);letter-spacing:1px;text-transform:uppercase;">% Cost Reduction</span><h3>Multi-Location Medical Clinic</h3><p>Automated patient intake, scheduling, and billing workflows. Reduced administrative overhead while improving patient satisfaction scores.</p></div>
-        <div class="result-card"><span class="result-kpi counter" data-target="4">0</span><span style="font-size:12px;color:var(--gold);letter-spacing:1px;text-transform:uppercase;">× Faster Client Acquisition</span><h3>Boutique Law Firm</h3><p>AI-driven intake qualification and CRM automation converted 4× more inbound inquiries into retained clients in the first quarter.</p></div>
+        <div class="result-card"><span class="result-kpi counter" data-target="312">0</span><span style="font-size:12px;color:var(--gold);letter-spacing:1px;text-transform:uppercase;">% Revenue Increase</span><h3 id="t-r1-h3">Regional Insurance Agency</h3><p id="t-r1-p">Deployed AI lead scoring and automated follow-up sequences. Tripled policy closings within 8 months of deployment.</p></div>
+        <div class="result-card"><span class="result-kpi counter" data-target="68">0</span><span style="font-size:12px;color:var(--gold);letter-spacing:1px;text-transform:uppercase;">% Cost Reduction</span><h3 id="t-r2-h3">Multi-Location Medical Clinic</h3><p id="t-r2-p">Automated patient intake, scheduling, and billing workflows. Reduced administrative overhead while improving patient satisfaction scores.</p></div>
+        <div class="result-card"><span class="result-kpi counter" data-target="4">0</span><span style="font-size:12px;color:var(--gold);letter-spacing:1px;text-transform:uppercase;">× Faster Client Acquisition</span><h3 id="t-r3-h3">Boutique Law Firm</h3><p id="t-r3-p">AI-driven intake qualification and CRM automation converted 4× more inbound inquiries into retained clients in the first quarter.</p></div>
     </div>
     <div class="testimonials-grid reveal">
-        <div class="testimonial"><p>The AI infrastructure HORUS built didn't just automate our workflows — it fundamentally restructured how our revenue engine operates. We went from guessing to knowing exactly where every dollar was going and coming from.</p><div class="testimonial-author"><div class="author-avatar">M</div><div class="author-info"><strong>Marcus D.</strong><span>CEO, Meridian Capital Group</span></div></div></div>
-        <div class="testimonial"><p>Within 90 days, our patient scheduling was fully automated, our staff was freed from data entry, and our clinic's throughput increased by 40%. The ROI calculation was a no-brainer within the first month.</p><div class="testimonial-author"><div class="author-avatar">S</div><div class="author-info"><strong>Dr. Sofia R.</strong><span>Managing Director, Nexus Health Systems</span></div></div></div>
+        <div class="testimonial"><p id="t-q1">The AI infrastructure HORUS built didn't just automate our workflows — it fundamentally restructured how our revenue engine operates. We went from guessing to knowing exactly where every dollar was going and coming from.</p><div class="testimonial-author"><div class="author-avatar">M</div><div class="author-info"><strong>Marcus D.</strong><span>CEO, Meridian Capital Group</span></div></div></div>
+        <div class="testimonial"><p id="t-q2">Within 90 days, our patient scheduling was fully automated, our staff was freed from data entry, and our clinic's throughput increased by 40%. The ROI calculation was a no-brainer within the first month.</p><div class="testimonial-author"><div class="author-avatar">S</div><div class="author-info"><strong>Dr. Sofia R.</strong><span>Managing Director, Nexus Health Systems</span></div></div></div>
     </div>
-    <div style="text-align:center;margin-top:60px;" class="reveal"><a href="#contact" class="btn-ghost">Request Full Case Study →</a></div>
+    <div style="text-align:center;margin-top:60px;" class="reveal"><a href="#contact" class="btn-ghost" id="t-res-cta">Request Full Case Study →</a></div>
 </div>
 
 <!-- ── FULL BANNER ── -->
@@ -398,8 +420,8 @@
     <img src="https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop&q=80&w=1600" alt="AI Systems">
     <div class="banner-overlay">
         <div class="banner-text">
-            <h2 class="display"><em>HORUS</em> Sees What<br>Others Miss</h2>
-            <p>The all-seeing AI operating system for enterprise revenue</p>
+            <h2 class="display" id="t-ban-h2"><em>HORUS</em> Sees What<br>Others Miss</h2>
+            <p id="t-ban-p">The all-seeing AI operating system for enterprise revenue</p>
         </div>
     </div>
 </div>
@@ -468,13 +490,13 @@
 <div class="sw" id="contact">
     <div class="contact-inner">
         <div class="contact-info reveal">
-            <span class="label">Executive Consultation</span>
-            <h2 class="display" style="font-size:clamp(36px,5vw,58px);">Apply for Executive Strategy Session</h2>
+            <span class="label" id="t-con-label">Executive Consultation</span>
+            <h2 class="display" style="font-size:clamp(36px,5vw,58px);" id="t-con-h2">Apply for Executive Strategy Session</h2>
             <div class="gold-line"></div>
-            <p class="body-text">We work only with businesses ready to scale with enterprise AI infrastructure. This is not a sales call — it is a strategic audit of your operations.</p>
+            <p class="body-text" id="t-con-body">We work only with businesses ready to scale with enterprise AI infrastructure. This is not a sales call — it is a strategic audit of your operations.</p>
             <div class="contact-disclaimer">
                 <strong>Confidential & Selective</strong>
-                We accept a limited number of new clients per quarter. Only serious inquiries from high-value businesses seeking transformational growth will receive a response.
+                <span id="t-dis-body">We accept a limited number of new clients per quarter. Only serious inquiries from high-value businesses seeking transformational growth will receive a response.</span>
             </div>
             <div style="margin-top:36px;">
                 <div class="contact-detail"><div class="contact-detail-icon">◎</div><span><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="badfc2dfd9cfced3ccdffadfd6dfccdbcedf97dbd394d9d5d7">[email&#160;protected]</a></span></div>
@@ -498,7 +520,7 @@
                 <div class="field-wrap"><input type="tel" id="phone" placeholder="Phone Number" required><span class="field-error" id="err-phone"></span></div>
                 <select id="revenue"><option value="" disabled selected>Annual Revenue Range</option><option>$1M – $3M</option><option>$3M – $10M</option><option>$10M – $50M</option><option>$50M+</option></select>
                 <div class="field-wrap"><textarea id="message" placeholder="Describe your business and what you want to automate or optimize..." required></textarea><span class="field-error" id="err-message"></span></div>
-                <button type="button" id="submit-btn" onclick="submitForm()"><span>Submit Application →</span></button>
+                <button type="button" id="submit-btn" onclick="submitForm()"><span id="t-submit">Submit Application →</span></button>
                 <p style="font-size:10px;color:var(--text-muted);text-align:center;margin-top:8px;letter-spacing:.3px;">By submitting you agree to our <a href="#" style="color:var(--gold);text-decoration:none;">Privacy Policy</a>. All information is strictly confidential.</p>
             </form>
         </div>
@@ -510,7 +532,7 @@
     <div class="footer-main">
         <div class="footer-brand">
             <div class="logo"><span style="letter-spacing:5px;">H</span><span class="logo-eye"></span><span style="letter-spacing:5px;">RUS</span></div>
-            <p>The all-seeing AI operating system for the next generation of enterprise intelligence.</p>
+            <p id="t-footer-tag">The all-seeing AI operating system for the next generation of enterprise intelligence.</p>
             <div class="footer-social">
                 <a href="#" class="social-link">in</a><a href="#" class="social-link">tw</a><a href="#" class="social-link">yt</a><a href="#" class="social-link">ig</a>
             </div>
@@ -664,11 +686,14 @@ function submitForm(){
     var revenue=document.getElementById("revenue").value;
     var message=document.getElementById("message").value.trim();
     var valid=true;
-    if(!fullName){showFieldError("fullName","Full name is required");valid=false;}
-    if(!company){showFieldError("company","Company name is required");valid=false;}
-    if(!email||!email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)){showFieldError("email","Enter a valid email");valid=false;}
-    if(!phone){showFieldError("phone","Phone number is required");valid=false;}
-    if(!message){showFieldError("message","Please describe your business");valid=false;}
+    var errs = window._lang==='es'
+        ? {fullName:"Nombre completo requerido",company:"Nombre de empresa requerido",email:"Ingresa un correo válido",phone:"Número de teléfono requerido",message:"Describe tu negocio"}
+        : {fullName:"Full name is required",company:"Company name is required",email:"Enter a valid email",phone:"Phone number is required",message:"Please describe your business"};
+    if(!fullName){showFieldError("fullName",errs.fullName);valid=false;}
+    if(!company){showFieldError("company",errs.company);valid=false;}
+    if(!email||!email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)){showFieldError("email",errs.email);valid=false;}
+    if(!phone){showFieldError("phone",errs.phone);valid=false;}
+    if(!message){showFieldError("message",errs.message);valid=false;}
     if(!valid) return;
     var btn=document.getElementById("submit-btn");
     btn.disabled=true;btn.querySelector('span').textContent="Sending...";
@@ -682,10 +707,125 @@ function submitForm(){
     .catch(function(){btn.disabled=false;btn.querySelector('span').textContent="Submit Application →";alert("Network error. Please try again or email us at executive@horus-ai.com");});
 }
 
-["fullName","company","email","phone","message"].forEach(function(id){
-    var el=document.getElementById(id);
-    if(el) el.addEventListener("input",function(){var e=document.getElementById("err-"+id);if(e)e.textContent="";el.style.borderColor="";});
-});
+<!-- ── LANG SCRIPT ── -->
+<script>
+var T = {
+  en: {
+    "nav-services":"Services","nav-results":"Results","nav-infra":"Infrastructure","nav-cta":"Consult",
+    "hero-badge":"The All-Seeing Enterprise Intelligence",
+    "hero-h1":"See Everything.<br><em>Miss Nothing.</em><br><span class='thin'>Scale Without Limits.</span>",
+    "hero-sub":"HORUS is the AI operating system that sees what your business is losing — and eliminates it. Revenue leaks, missed leads, operational drag. We see it all, and we fix it.",
+    "hero-cta1":"Request Executive Consultation →","hero-cta2":"Explore Solutions","trusted":"Trusted by Enterprises",
+    "pain-label":"The Revenue Gap","pain-h2":"The Cost of Doing Nothing",
+    "pain-body":"Manual processes, missed leads, and inefficient systems cost businesses thousands every month. The gap between where you are and where AI can take you is the most expensive problem you're not solving.",
+    "pain-cta":"See How We Can Help →",
+    "p1-unit":"thousand lost annually","p1-h3":"Revenue Leakage","p1-p":"The average enterprise loses over $300K per year to manual processes and missed automation opportunities.",
+    "p2-unit":"percent of leads ignored","p2-h3":"Lead Response Failure","p2-p":"67% of inbound leads never receive a timely follow-up, falling through the cracks of overwhelmed teams.",
+    "p3-unit":"hours per week wasted","p3-h3":"Operational Drag","p3-p":"Mid-size businesses waste 40+ hours weekly on tasks that AI can handle autonomously in minutes.",
+    "p4-unit":"times the competitive gap","p4-h3":"AI-Adoption Divide","p4-p":"AI-first companies are scaling 3× faster than those still relying on legacy tools and manual operations.",
+    "srv-label":"Our Solutions","srv-h2":"Three Levels<br>of Intelligence","srv-body":"A tiered system engineered for every stage of enterprise growth — from automation to full AI operating infrastructure.",
+    "t1-label":"Level 1 — AI Automation Suite","t1-h2":"Automate Operations<br>& Sales","t1-body":"The foundation layer. Eliminate repetitive work, activate 24/7 lead handling, and deploy intelligent marketing systems from day one.","t1-note":"Starting point for any enterprise","t1-cta":"Get Your Automation Audit →",
+    "t2-label":"Level 2 — AI Growth Transformation","t2-h2":"Scale Your Revenue<br>With Intelligence","t2-body":"Advanced revenue intelligence and customer journey systems that actively find and close growth opportunities in your existing operations.","t2-note":"For scaling 7-figure businesses","t2-cta":"Schedule Growth Strategy Session →",
+    "t3-label":"Level 3 — Enterprise AI Infrastructure","t3-h2":"Enterprise-Grade<br>AI Infrastructure","t3-body":"Full-stack enterprise AI deployment. We architect your complete AI operating system — from financial intelligence to security compliance and digital twin modeling.","t3-note":"For 8-figure enterprise transformation","t3-cta":"Apply for Executive Partnership →",
+    "res-label":"Client Impact","res-h2":"What Enterprise<br>Clients Achieve","res-body":"Every system we build is measured by revenue impact, efficiency gains, and automation of human work. These are not projections — these are client outcomes.",
+    "r1-h3":"Regional Insurance Agency","r1-p":"Deployed AI lead scoring and automated follow-up sequences. Tripled policy closings within 8 months of deployment.",
+    "r2-h3":"Multi-Location Medical Clinic","r2-p":"Automated patient intake, scheduling, and billing workflows. Reduced administrative overhead while improving patient satisfaction scores.",
+    "r3-h3":"Boutique Law Firm","r3-p":"AI-driven intake qualification and CRM automation converted 4× more inbound inquiries into retained clients in the first quarter.",
+    "q1":"The AI infrastructure HORUS built didn't just automate our workflows — it fundamentally restructured how our revenue engine operates. We went from guessing to knowing exactly where every dollar was going and coming from.",
+    "q2":"Within 90 days, our patient scheduling was fully automated, our staff was freed from data entry, and our clinic's throughput increased by 40%. The ROI calculation was a no-brainer within the first month.",
+    "res-cta":"Request Full Case Study →",
+    "ban-h2":"<em>HORUS</em> Sees What<br>Others Miss","ban-p":"The all-seeing AI operating system for enterprise revenue",
+    "con-label":"Executive Consultation","con-h2":"Apply for Executive Strategy Session","con-body":"We work only with businesses ready to scale with enterprise AI infrastructure. This is not a sales call — it is a strategic audit of your operations.",
+    "dis-title":"Confidential &amp; Selective","dis-body":"We accept a limited number of new clients per quarter. Only serious inquiries from high-value businesses seeking transformational growth will receive a response.",
+    "f-name":"Full Name","f-company":"Company Name","f-email":"Corporate Email","f-phone":"Phone Number","f-revenue":"Annual Revenue Range","f-msg":"Describe your business and what you want to automate or optimize...",
+    "submit":"Submit Application →",
+    "footer-tag":"The all-seeing AI operating system for the next generation of enterprise intelligence."
+  },
+  es: {
+    "nav-services":"Servicios","nav-results":"Resultados","nav-infra":"Infraestructura","nav-cta":"Consultar",
+    "hero-badge":"La Inteligencia Empresarial que Todo lo Ve",
+    "hero-h1":"Ve Todo.<br><em>No Pierdas Nada.</em><br><span class='thin'>Escala Sin Límites.</span>",
+    "hero-sub":"HORUS es el sistema operativo de IA que detecta lo que tu negocio está perdiendo — y lo elimina. Fugas de ingresos, leads perdidos, ineficiencias operativas. Lo vemos todo y lo resolvemos.",
+    "hero-cta1":"Solicitar Consulta Ejecutiva →","hero-cta2":"Explorar Soluciones","trusted":"Confiado por Empresas Líderes",
+    "pain-label":"La Brecha de Ingresos","pain-h2":"El Costo de No Hacer Nada",
+    "pain-body":"Procesos manuales, leads perdidos y sistemas ineficientes le cuestan a las empresas miles cada mes. La brecha entre donde estás y donde la IA puede llevarte es el problema más costoso que no estás resolviendo.",
+    "pain-cta":"Ver Cómo Podemos Ayudar →",
+    "p1-unit":"mil perdidos anualmente","p1-h3":"Fuga de Ingresos","p1-p":"La empresa promedio pierde más de $300K al año en procesos manuales y oportunidades de automatización perdidas.",
+    "p2-unit":"% de leads ignorados","p2-h3":"Falla en Respuesta de Leads","p2-p":"El 67% de los leads entrantes nunca reciben seguimiento oportuno, perdiéndose entre equipos saturados.",
+    "p3-unit":"horas semanales desperdiciadas","p3-h3":"Ineficiencia Operativa","p3-p":"Las empresas medianas desperdician 40+ horas semanales en tareas que la IA puede manejar de forma autónoma.",
+    "p4-unit":"veces la brecha competitiva","p4-h3":"Divide de Adopción de IA","p4-p":"Las empresas que lideran con IA escalan 3× más rápido que quienes siguen dependiendo de herramientas obsoletas.",
+    "srv-label":"Nuestras Soluciones","srv-h2":"Tres Niveles<br>de Inteligencia","srv-body":"Un sistema escalonado diseñado para cada etapa del crecimiento empresarial — desde automatización hasta infraestructura de IA completa.",
+    "t1-label":"Nivel 1 — Suite de Automatización IA","t1-h2":"Automatiza Operaciones<br>y Ventas","t1-body":"La capa base. Elimina el trabajo repetitivo, activa la gestión de leads 24/7 y despliega sistemas de marketing inteligente desde el primer día.","t1-note":"Punto de partida para cualquier empresa","t1-cta":"Obtener Auditoría de Automatización →",
+    "t2-label":"Nivel 2 — Transformación de Crecimiento IA","t2-h2":"Escala Tus Ingresos<br>Con Inteligencia","t2-body":"Sistemas avanzados de inteligencia de ingresos que detectan y cierran oportunidades de crecimiento en tus operaciones actuales.","t2-note":"Para empresas de 7 cifras en expansión","t2-cta":"Agendar Sesión de Estrategia →",
+    "t3-label":"Nivel 3 — Infraestructura IA Empresarial","t3-h2":"Infraestructura IA<br>de Alto Rendimiento","t3-body":"Despliegue completo de IA empresarial. Diseñamos tu sistema operativo de IA completo — desde inteligencia financiera hasta seguridad y cumplimiento.","t3-note":"Para transformación empresarial de 8 cifras","t3-cta":"Aplicar para Asociación Ejecutiva →",
+    "res-label":"Impacto en Clientes","res-h2":"Lo que Logran<br>Nuestros Clientes","res-body":"Cada sistema que construimos se mide por impacto en ingresos, ganancias en eficiencia y automatización. Estos son resultados reales de clientes.",
+    "r1-h3":"Agencia Regional de Seguros","r1-p":"Implementamos IA de calificación de leads y secuencias automatizadas. Las pólizas cerradas se triplicaron en 8 meses.",
+    "r2-h3":"Clínica Médica Multi-Sede","r2-p":"Automatizamos admisión, citas y facturación. Reducimos la carga administrativa mejorando la satisfacción del paciente.",
+    "r3-h3":"Firma Legal Boutique","r3-p":"La automatización del CRM y la calificación IA convirtieron 4× más consultas en clientes retenidos en el primer trimestre.",
+    "q1":"La infraestructura de IA que HORUS construyó no solo automatizó nuestros flujos — reestructuró fundamentalmente cómo opera nuestro motor de ingresos. Pasamos de adivinar a saber exactamente a dónde iba cada dólar.",
+    "q2":"En 90 días, la agenda de pacientes estaba completamente automatizada, el personal se liberó de la captura de datos y el rendimiento de nuestra clínica aumentó un 40%.",
+    "res-cta":"Solicitar Caso de Estudio →",
+    "ban-h2":"HORUS Ve Lo que<br><em>Otros No Ven</em>","ban-p":"El sistema operativo IA que todo lo ve para ingresos empresariales",
+    "con-label":"Consulta Ejecutiva","con-h2":"Aplica para Sesión de Estrategia Ejecutiva","con-body":"Solo trabajamos con empresas listas para escalar con IA de nivel empresarial. Esta no es una llamada de ventas — es una auditoría estratégica de tus operaciones.",
+    "dis-title":"Confidencial y Selectivo","dis-body":"Aceptamos un número limitado de nuevos clientes por trimestre. Solo las consultas serias de empresas de alto valor recibirán respuesta.",
+    "f-name":"Nombre Completo","f-company":"Nombre de la Empresa","f-email":"Correo Corporativo","f-phone":"Número de Teléfono","f-revenue":"Rango de Ingresos Anuales","f-msg":"Describe tu negocio y qué quieres automatizar u optimizar...",
+    "submit":"Enviar Solicitud →",
+    "footer-tag":"El sistema operativo IA que todo lo ve para la próxima generación de inteligencia empresarial."
+  }
+};
+
+function setLang(lang) {
+    var t = T[lang];
+    // Toggle active button
+    document.querySelectorAll('.lang-btn').forEach(function(b){
+        b.classList.toggle('active', b.textContent.trim().toLowerCase()===lang);
+    });
+    // Helper
+    function tx(id,val,html){ var e=document.getElementById(id); if(!e||!val) return; if(html) e.innerHTML=val; else e.textContent=val; }
+    function ph(id,val){ var e=document.getElementById(id); if(e&&val) e.setAttribute('placeholder',val); }
+    // Nav
+    tx('nav-services',t['nav-services']); tx('nav-results',t['nav-results']);
+    tx('nav-infra',t['nav-infra']); tx('nav-cta',t['nav-cta']);
+    // Hero
+    tx('t-hero-badge',t['hero-badge']);
+    tx('t-hero-h1',t['hero-h1'],true);
+    tx('t-hero-sub',t['hero-sub']);
+    tx('t-hero-cta1',t['hero-cta1']);
+    tx('t-hero-cta2',t['hero-cta2']);
+    tx('t-trusted',t['trusted']);
+    // Pain
+    tx('t-pain-label',t['pain-label']); tx('t-pain-h2',t['pain-h2'],true);
+    tx('t-pain-body',t['pain-body']); tx('t-pain-cta',t['pain-cta'],true);
+    ['1','2','3','4'].forEach(function(n){
+        tx('t-p'+n+'-unit',t['p'+n+'-unit']); tx('t-p'+n+'-h3',t['p'+n+'-h3']); tx('t-p'+n+'-p',t['p'+n+'-p']);
+    });
+    // Services
+    tx('t-srv-label',t['srv-label']); tx('t-srv-h2',t['srv-h2'],true); tx('t-srv-body',t['srv-body']);
+    ['1','2','3'].forEach(function(n){
+        tx('t-t'+n+'-label',t['t'+n+'-label']); tx('t-t'+n+'-h2',t['t'+n+'-h2'],true);
+        tx('t-t'+n+'-body',t['t'+n+'-body']); tx('t-t'+n+'-note',t['t'+n+'-note']); tx('t-t'+n+'-cta',t['t'+n+'-cta']);
+    });
+    // Results
+    tx('t-res-label',t['res-label']); tx('t-res-h2',t['res-h2'],true); tx('t-res-body',t['res-body']);
+    tx('t-r1-h3',t['r1-h3']); tx('t-r1-p',t['r1-p']);
+    tx('t-r2-h3',t['r2-h3']); tx('t-r2-p',t['r2-p']);
+    tx('t-r3-h3',t['r3-h3']); tx('t-r3-p',t['r3-p']);
+    tx('t-q1',t['q1']); tx('t-q2',t['q2']); tx('t-res-cta',t['res-cta'],true);
+    // Banner
+    tx('t-ban-h2',t['ban-h2'],true); tx('t-ban-p',t['ban-p']);
+    // Contact
+    tx('t-con-label',t['con-label']); tx('t-con-h2',t['con-h2'],true); tx('t-con-body',t['con-body']);
+    tx('t-dis-title',t['dis-title'],true); tx('t-dis-body',t['dis-body']);
+    ph('fullName',t['f-name']); ph('company',t['f-company']); ph('email',t['f-email']);
+    ph('phone',t['f-phone']); ph('message',t['f-msg']);
+    var revOpt = document.querySelector('#revenue option[disabled]'); if(revOpt) revOpt.textContent=t['f-revenue'];
+    tx('t-submit',t['submit']);
+    // Footer
+    tx('t-footer-tag',t['footer-tag']);
+    // Update form validation messages language
+    window._lang = lang;
+}
+window._lang = 'en';
 </script>
 </body>
 </html>
