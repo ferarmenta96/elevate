@@ -5,247 +5,249 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Elevate AI | Enterprise AI Systems That Multiply Revenue</title>
     <meta name="description" content="We design AI infrastructures that automate growth, optimize operations, and increase profitability for any business.">
-
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,600&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,600&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.3.0/dist/chart.umd.min.js"></script>
-
     <style>
         :root {
-            --bg: #020202;
-            --bg-card: #0c0c0c;
-            --bg-elevated: #141414;
-            --text: #f5f0e8;
-            --text-muted: #6b6560;
-            --gold: #C9A84C;
-            --gold-light: #E8CC7A;
-            --gold-dim: rgba(201,168,76,0.12);
-            --border: rgba(201,168,76,0.12);
-            --border-dim: rgba(255,255,255,0.05);
-            --nav-h: 72px;
-            --font-display: 'Cormorant Garamond', serif;
-            --font-body: 'DM Sans', sans-serif;
+            --bg:#020202; --bg-card:#0a0a0a; --bg-elevated:#111;
+            --text:#f5f0e8; --text-muted:#5a5550;
+            --gold:#C9A84C; --gold-light:#E8CC7A; --gold-dim:rgba(201,168,76,0.1);
+            --border:rgba(201,168,76,0.14); --border-dim:rgba(255,255,255,0.04);
+            --nav-h:72px;
+            --font-d:'Cormorant Garamond',serif; --font-b:'DM Sans',sans-serif;
         }
-        *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
-        html { scroll-behavior:smooth; background:var(--bg); }
-        body { background:var(--bg); color:var(--text); overflow-x:hidden; -webkit-font-smoothing:antialiased; font-family:var(--font-body); }
-        ::-webkit-scrollbar { width:3px; }
-        ::-webkit-scrollbar-track { background:var(--bg); }
-        ::-webkit-scrollbar-thumb { background:var(--gold); }
+        *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+        html{scroll-behavior:smooth;background:var(--bg);}
+        body{background:var(--bg);color:var(--text);overflow-x:hidden;-webkit-font-smoothing:antialiased;font-family:var(--font-b);cursor:none;}
+        ::-webkit-scrollbar{width:2px;}
+        ::-webkit-scrollbar-track{background:var(--bg);}
+        ::-webkit-scrollbar-thumb{background:var(--gold);}
+
+        /* ── CUSTOM CURSOR ── */
+        #cursor{position:fixed;width:8px;height:8px;background:var(--gold);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:width .2s,height .2s,opacity .2s;}
+        #cursor-ring{position:fixed;width:32px;height:32px;border:1px solid rgba(201,168,76,0.4);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:transform .12s ease,width .3s,height .3s,border-color .3s;mix-blend-mode:difference;}
+        body:hover #cursor{opacity:1;}
+
+        /* ── GRAIN OVERLAY ── */
+        body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");pointer-events:none;z-index:9990;opacity:.35;}
 
         /* ── HEADER ── */
-        header {
-            position:fixed; top:0; width:100%; height:var(--nav-h);
-            display:flex; justify-content:space-between; align-items:center;
-            padding:0 6%; z-index:1000;
-            background:rgba(2,2,2,0.75);
-            backdrop-filter:blur(28px); -webkit-backdrop-filter:blur(28px);
-            border-bottom:1px solid var(--border);
-        }
-        .logo { font-family:var(--font-display); font-size:22px; font-weight:600; letter-spacing:4px; color:var(--text); }
-        .logo span { color:var(--gold); }
-        nav { display:flex; gap:36px; align-items:center; }
-        nav a { color:var(--text-muted); text-decoration:none; font-size:11px; font-weight:500; text-transform:uppercase; letter-spacing:1.5px; transition:color 0.3s; }
-        nav a:hover { color:var(--gold); }
-        .nav-cta { background:var(--gold); color:#000 !important; padding:10px 24px; border-radius:2px; font-weight:700 !important; transition:background 0.3s !important; }
-        .nav-cta:hover { background:var(--gold-light) !important; }
+        header{position:fixed;top:0;width:100%;height:var(--nav-h);display:flex;justify-content:space-between;align-items:center;padding:0 6%;z-index:1000;background:rgba(2,2,2,0.8);backdrop-filter:blur(32px);-webkit-backdrop-filter:blur(32px);border-bottom:1px solid var(--border);}
+        .logo{font-family:var(--font-d);font-size:21px;font-weight:600;letter-spacing:5px;color:var(--text);}
+        .logo span{color:var(--gold);}
+        nav{display:flex;gap:36px;align-items:center;}
+        nav a{color:var(--text-muted);text-decoration:none;font-size:10px;font-weight:500;text-transform:uppercase;letter-spacing:2px;transition:color .3s;position:relative;}
+        nav a::after{content:'';position:absolute;bottom:-2px;left:0;width:0;height:1px;background:var(--gold);transition:width .3s;}
+        nav a:hover{color:var(--gold);}
+        nav a:hover::after{width:100%;}
+        .nav-cta{background:var(--gold)!important;color:#000!important;padding:10px 24px;border-radius:1px;font-weight:700!important;letter-spacing:2px!important;}
+        .nav-cta::after{display:none!important;}
+        .nav-cta:hover{background:var(--gold-light)!important;color:#000!important;}
 
         /* ── UTILITY ── */
-        .section-wrap { max-width:1360px; margin:0 auto; padding:130px 6%; }
-        .label { font-size:10px; font-weight:600; letter-spacing:3px; text-transform:uppercase; color:var(--gold); margin-bottom:18px; display:block; }
-        .display { font-family:var(--font-display); font-weight:600; line-height:1.0; letter-spacing:-0.01em; }
-        .body-text { color:var(--text-muted); line-height:1.75; font-size:16px; margin-top:18px; font-weight:300; }
-        .gold-line { width:48px; height:1px; background:var(--gold); display:block; margin:24px 0; }
-        .reveal { opacity:1; transform:translateY(0); }
+        .sw{max-width:1360px;margin:0 auto;padding:140px 6%;}
+        .label{font-size:9px;font-weight:600;letter-spacing:4px;text-transform:uppercase;color:var(--gold);margin-bottom:20px;display:flex;align-items:center;gap:12px;}
+        .label::before{content:'';width:24px;height:1px;background:var(--gold);display:inline-block;flex-shrink:0;}
+        .display{font-family:var(--font-d);font-weight:600;line-height:.95;letter-spacing:-.02em;}
+        .body-text{color:var(--text-muted);line-height:1.8;font-size:15px;margin-top:20px;font-weight:300;}
+        .gold-line{width:1px;height:60px;background:linear-gradient(to bottom,var(--gold),transparent);display:block;margin:28px 0;}
+        .reveal{opacity:0;transform:translateY(40px);}
+        .revealed{opacity:1!important;transform:translateY(0)!important;transition:opacity .9s cubic-bezier(.2,.8,.2,1),transform .9s cubic-bezier(.2,.8,.2,1);}
 
-        .btn-primary {
-            display:inline-flex; align-items:center; gap:10px;
-            padding:16px 36px; background:var(--gold); color:#000;
-            font-family:var(--font-body); font-size:12px; font-weight:700;
-            letter-spacing:1.5px; text-transform:uppercase; text-decoration:none;
-            border:none; cursor:pointer; transition:all 0.3s; border-radius:2px;
-        }
-        .btn-primary:hover { background:var(--gold-light); transform:translateY(-2px); box-shadow:0 12px 40px rgba(201,168,76,0.25); }
-        .btn-outline {
-            display:inline-flex; align-items:center; gap:10px;
-            padding:15px 35px; background:transparent; color:var(--gold);
-            font-family:var(--font-body); font-size:12px; font-weight:600;
-            letter-spacing:1.5px; text-transform:uppercase; text-decoration:none;
-            border:1px solid var(--gold); cursor:pointer; transition:all 0.3s; border-radius:2px;
-        }
-        .btn-outline:hover { background:var(--gold-dim); transform:translateY(-2px); }
+        .btn-gold{display:inline-flex;align-items:center;gap:12px;padding:16px 38px;background:var(--gold);color:#000;font-family:var(--font-b);font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;text-decoration:none;border:none;cursor:none;transition:all .3s;position:relative;overflow:hidden;}
+        .btn-gold::before{content:'';position:absolute;inset:0;background:var(--gold-light);transform:scaleX(0);transform-origin:left;transition:transform .4s cubic-bezier(.2,.8,.2,1);}
+        .btn-gold:hover::before{transform:scaleX(1);}
+        .btn-gold span{position:relative;z-index:1;}
+        .btn-ghost{display:inline-flex;align-items:center;gap:12px;padding:15px 37px;background:transparent;color:var(--gold);font-family:var(--font-b);font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;text-decoration:none;border:1px solid rgba(201,168,76,0.4);cursor:none;transition:all .3s;}
+        .btn-ghost:hover{border-color:var(--gold);background:var(--gold-dim);transform:translateY(-2px);}
 
         /* ── HERO ── */
-        .hero {
-            min-height:100vh; position:relative; display:flex;
-            align-items:center; justify-content:center; text-align:center;
-            overflow:hidden; padding-top:var(--nav-h);
-        }
-        #heroCanvas { position:absolute; inset:0; width:100%; height:100%; z-index:0; pointer-events:none; }
-        .hero-overlay { position:absolute; inset:0; background:radial-gradient(ellipse at center top, rgba(201,168,76,0.07) 0%, transparent 60%), linear-gradient(to bottom, transparent 40%, var(--bg) 100%); z-index:1; }
-        .hero-content { position:relative; z-index:2; max-width:980px; padding:0 24px; }
-        .hero-badge { display:inline-flex; align-items:center; gap:8px; padding:8px 20px; border:1px solid var(--border); border-radius:100px; font-size:11px; font-weight:500; letter-spacing:1px; color:var(--gold); margin-bottom:44px; background:rgba(201,168,76,0.05); }
-        .hero-badge::before { content:''; width:6px; height:6px; border-radius:50%; background:var(--gold); display:block; animation:pulse 2s infinite; }
-        @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
-        .hero h1 { font-size:clamp(52px,7.5vw,96px); font-family:var(--font-display); font-weight:600; line-height:1.0; margin-bottom:28px; }
-        .hero h1 em { font-style:italic; color:var(--gold); }
-        .hero-sub { font-size:clamp(16px,1.8vw,19px); max-width:680px; margin:0 auto; color:var(--text-muted); line-height:1.7; font-weight:300; }
-        .hero-ctas { display:flex; gap:18px; justify-content:center; margin-top:50px; flex-wrap:wrap; }
-        .trusted-bar { margin-top:90px; display:flex; flex-direction:column; align-items:center; gap:20px; }
-        .trusted-label { font-size:10px; letter-spacing:2px; text-transform:uppercase; color:var(--text-muted); }
-        .trusted-logos { display:flex; gap:44px; align-items:center; flex-wrap:wrap; justify-content:center; opacity:0.3; filter:grayscale(1); }
-        .trusted-logos span { font-family:var(--font-display); font-size:15px; font-weight:600; letter-spacing:2px; text-transform:uppercase; }
+        .hero{min-height:100vh;position:relative;display:flex;align-items:center;justify-content:center;text-align:center;overflow:hidden;padding-top:var(--nav-h);}
+        #heroCanvas{position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;}
+        .hero-overlay{position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 50% 20%,rgba(201,168,76,0.06) 0%,transparent 70%),linear-gradient(to bottom,transparent 50%,var(--bg) 100%);z-index:1;}
+        .hero-content{position:relative;z-index:2;max-width:1000px;padding:0 24px;}
+        .hero-eyebrow{display:inline-flex;align-items:center;gap:10px;padding:9px 22px;border:1px solid var(--border);font-size:10px;font-weight:500;letter-spacing:2px;color:var(--gold);margin-bottom:50px;background:rgba(201,168,76,0.04);text-transform:uppercase;}
+        .hero-eyebrow-dot{width:5px;height:5px;border-radius:50%;background:var(--gold);animation:pulse 2s infinite;}
+        @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.3;transform:scale(.8)}}
+        .hero h1{font-size:clamp(56px,8vw,104px);font-family:var(--font-d);font-weight:600;line-height:.92;margin-bottom:32px;letter-spacing:-.02em;}
+        .hero h1 em{font-style:italic;color:var(--gold);font-weight:400;}
+        .hero h1 .thin{font-weight:300;color:rgba(245,240,232,0.6);}
+        .hero-sub{font-size:clamp(15px,1.6vw,18px);max-width:620px;margin:0 auto;color:var(--text-muted);line-height:1.75;font-weight:300;}
+        .hero-ctas{display:flex;gap:16px;justify-content:center;margin-top:54px;flex-wrap:wrap;}
+        .hero-scroll{position:absolute;bottom:40px;left:50%;transform:translateX(-50%);z-index:2;display:flex;flex-direction:column;align-items:center;gap:8px;}
+        .hero-scroll span{font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--text-muted);}
+        .scroll-line{width:1px;height:50px;background:linear-gradient(to bottom,var(--gold),transparent);animation:scrollLine 2s ease infinite;}
+        @keyframes scrollLine{0%{transform:scaleY(0);transform-origin:top}50%{transform:scaleY(1);transform-origin:top}51%{transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}
+        .trusted-bar{margin-top:100px;display:flex;flex-direction:column;align-items:center;gap:22px;}
+        .trusted-label{font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--text-muted);}
+        .trusted-logos{display:flex;gap:48px;align-items:center;flex-wrap:wrap;justify-content:center;opacity:.22;filter:grayscale(1);}
+        .trusted-logos span{font-family:var(--font-d);font-size:14px;font-weight:600;letter-spacing:3px;text-transform:uppercase;}
 
         /* ── PAIN ── */
-        .pain-center { text-align:center; max-width:720px; margin:0 auto; }
-        .pain-grid { display:grid; grid-template-columns:1fr 1fr; gap:0; border:1px solid var(--border); margin-top:70px; }
-        .pain-stat { padding:50px; border-right:1px solid var(--border); border-bottom:1px solid var(--border); position:relative; overflow:hidden; transition:background 0.4s; }
-        .pain-stat:nth-child(even) { border-right:0; }
-        .pain-stat:nth-child(3), .pain-stat:nth-child(4) { border-bottom:0; }
-        .pain-stat:hover { background:rgba(201,168,76,0.03); }
-        .pain-stat::before { content:''; position:absolute; top:0; left:0; width:3px; height:0; background:var(--gold); transition:height 0.5s ease; }
-        .pain-stat:hover::before { height:100%; }
-        .pain-number { font-family:var(--font-display); font-size:clamp(52px,6vw,80px); font-weight:700; color:var(--gold); line-height:1; display:block; }
-        .pain-unit { font-size:18px; color:var(--gold); font-family:var(--font-display); }
-        .pain-stat h3 { font-family:var(--font-display); font-size:22px; margin-top:12px; font-weight:600; }
-        .pain-stat p { font-size:14px; color:var(--text-muted); margin-top:10px; line-height:1.6; font-weight:300; }
+        .pain-center{text-align:center;max-width:740px;margin:0 auto;}
+        .pain-grid{display:grid;grid-template-columns:1fr 1fr;margin-top:80px;}
+        .pain-stat{padding:56px 50px;border:1px solid var(--border);margin:-1px 0 0 -1px;position:relative;overflow:hidden;transition:background .4s;}
+        .pain-stat::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(201,168,76,0.04) 0%,transparent 60%);opacity:0;transition:opacity .4s;}
+        .pain-stat:hover{background:rgba(201,168,76,0.02);}
+        .pain-stat:hover::after{opacity:1;}
+        .pain-accent{position:absolute;top:0;left:0;width:0;height:2px;background:linear-gradient(to right,var(--gold),transparent);transition:width .6s cubic-bezier(.2,.8,.2,1);}
+        .pain-stat:hover .pain-accent{width:100%;}
+        .pain-number{font-family:var(--font-d);font-size:clamp(60px,7vw,88px);font-weight:700;color:var(--gold);line-height:1;display:block;}
+        .pain-unit{font-size:14px;color:rgba(201,168,76,0.7);font-family:var(--font-d);font-style:italic;margin-top:4px;display:block;}
+        .pain-stat h3{font-family:var(--font-d);font-size:20px;margin-top:20px;font-weight:600;letter-spacing:.5px;}
+        .pain-stat p{font-size:13px;color:var(--text-muted);margin-top:10px;line-height:1.7;font-weight:300;}
 
         /* ── SERVICES ── */
-        .tier { margin-bottom:100px; }
-        .tier-header { display:flex; align-items:flex-start; gap:60px; margin-bottom:50px; }
-        .tier-number { font-family:var(--font-display); font-size:80px; font-weight:700; color:rgba(201,168,76,0.15); line-height:1; flex-shrink:0; }
-        .tier-title-block h2 { font-size:clamp(32px,4vw,52px); font-family:var(--font-display); font-weight:600; }
-        .tier-grid { display:grid; grid-template-columns:1.2fr 1fr; gap:2px; background:var(--border); border:1px solid var(--border); }
-        .tier-image { grid-row:span 2; overflow:hidden; min-height:400px; background:var(--bg-card); position:relative; }
-        .tier-image img { width:100%; height:100%; object-fit:cover; filter:grayscale(40%) brightness(0.75); transition:all 1.2s cubic-bezier(0.2,0.8,0.2,1); display:block; }
-        .tier:hover .tier-image img { filter:grayscale(0%) brightness(0.9); transform:scale(1.04); }
-        .service-item { background:var(--bg-card); padding:28px 32px; display:flex; align-items:center; gap:16px; transition:background 0.3s; }
-        .service-item:hover { background:var(--bg-elevated); }
-        .service-dot { width:6px; height:6px; border-radius:50%; background:var(--gold); flex-shrink:0; }
-        .service-item span { font-size:14px; font-weight:400; color:var(--text-muted); letter-spacing:0.3px; }
-        .tier-cta-block { background:var(--bg-card); padding:32px; display:flex; align-items:center; justify-content:space-between; gap:20px; }
+        .tier{margin-bottom:120px;}
+        .tier-header{display:flex;align-items:flex-start;gap:60px;margin-bottom:50px;}
+        .tier-num{font-family:var(--font-d);font-size:100px;font-weight:700;color:rgba(201,168,76,0.08);line-height:1;flex-shrink:0;margin-top:-10px;}
+        .tier-title-block h2{font-size:clamp(32px,4vw,54px);font-family:var(--font-d);font-weight:600;}
+        .tier-grid{display:grid;grid-template-columns:1.3fr 1fr;gap:1px;background:rgba(201,168,76,0.08);}
+        .tier-image{grid-row:span 2;overflow:hidden;min-height:440px;position:relative;}
+        .tier-image img{width:100%;height:100%;object-fit:cover;filter:grayscale(50%) brightness(0.65);transition:all 1.4s cubic-bezier(.2,.8,.2,1);display:block;}
+        .tier-image::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(201,168,76,0.08) 0%,transparent 50%);}
+        .tier:hover .tier-image img{filter:grayscale(0%) brightness(0.85);transform:scale(1.06);}
+        .service-item{background:var(--bg-card);padding:26px 30px;display:flex;align-items:center;gap:16px;transition:background .25s,padding-left .25s;}
+        .service-item:hover{background:var(--bg-elevated);padding-left:36px;}
+        .service-dot{width:5px;height:5px;border-radius:50%;background:var(--gold);flex-shrink:0;transition:transform .25s;}
+        .service-item:hover .service-dot{transform:scale(1.6);}
+        .service-item span{font-size:13px;font-weight:400;color:var(--text-muted);letter-spacing:.3px;transition:color .25s;}
+        .service-item:hover span{color:var(--text);}
+        .tier-cta-block{background:var(--bg-card);padding:30px;display:flex;align-items:center;justify-content:space-between;gap:20px;border-top:1px solid var(--border);}
 
         /* ── RESULTS ── */
-        .results-header { display:grid; grid-template-columns:1fr 1fr; gap:80px; align-items:end; margin-bottom:70px; }
-        .results-header h2 { font-size:clamp(40px,5vw,66px); font-family:var(--font-display); font-weight:600; }
-        .results-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:var(--border); border:1px solid var(--border); margin-bottom:60px; }
-        .result-card { background:var(--bg-card); padding:44px 36px; transition:background 0.3s; }
-        .result-card:hover { background:var(--bg-elevated); }
-        .result-kpi { font-family:var(--font-display); font-size:56px; font-weight:700; color:var(--gold); line-height:1; display:block; }
-        .result-card h3 { font-size:16px; font-weight:600; margin-top:14px; }
-        .result-card p { font-size:13px; color:var(--text-muted); margin-top:10px; line-height:1.65; font-weight:300; }
-        .testimonials-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:24px; }
-        .testimonial { background:var(--bg-card); border:1px solid var(--border); padding:40px; position:relative; transition:border-color 0.3s; }
-        .testimonial:hover { border-color:rgba(201,168,76,0.3); }
-        .testimonial::before { content:'"'; font-family:var(--font-display); font-size:80px; color:var(--gold); opacity:0.15; position:absolute; top:16px; left:28px; line-height:1; }
-        .testimonial p { font-size:15px; line-height:1.75; color:var(--text); font-weight:300; margin:0; position:relative; z-index:1; }
-        .testimonial-author { margin-top:24px; display:flex; align-items:center; gap:14px; }
-        .author-avatar { width:42px; height:42px; border-radius:50%; background:var(--gold-dim); border:1px solid var(--border); display:flex; align-items:center; justify-content:center; font-family:var(--font-display); font-weight:600; color:var(--gold); font-size:16px; flex-shrink:0; }
-        .author-info strong { display:block; font-size:13px; font-weight:600; }
-        .author-info span { font-size:12px; color:var(--text-muted); }
+        .results-header{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:end;margin-bottom:70px;}
+        .results-header h2{font-size:clamp(40px,5vw,68px);font-family:var(--font-d);font-weight:600;}
+        .results-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);margin-bottom:2px;}
+        .result-card{background:var(--bg-card);padding:48px 36px;transition:background .3s;position:relative;overflow:hidden;}
+        .result-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(to right,transparent,var(--gold),transparent);opacity:0;transition:opacity .4s;}
+        .result-card:hover{background:var(--bg-elevated);}
+        .result-card:hover::before{opacity:1;}
+        .result-kpi{font-family:var(--font-d);font-size:60px;font-weight:700;color:var(--gold);line-height:1;display:block;}
+        .result-card h3{font-size:15px;font-weight:600;margin-top:16px;letter-spacing:.3px;}
+        .result-card p{font-size:13px;color:var(--text-muted);margin-top:10px;line-height:1.7;font-weight:300;}
+        .testimonials-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--border);}
+        .testimonial{background:var(--bg-card);padding:44px;position:relative;transition:background .3s;}
+        .testimonial:hover{background:var(--bg-elevated);}
+        .testimonial::before{content:'\201C';font-family:var(--font-d);font-size:120px;color:var(--gold);opacity:.08;position:absolute;top:10px;left:24px;line-height:1;}
+        .testimonial p{font-size:15px;line-height:1.8;color:rgba(245,240,232,0.8);font-weight:300;margin:0;position:relative;z-index:1;font-style:italic;}
+        .testimonial-author{margin-top:28px;display:flex;align-items:center;gap:14px;}
+        .author-avatar{width:44px;height:44px;border-radius:50%;background:var(--gold-dim);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-family:var(--font-d);font-weight:600;color:var(--gold);font-size:18px;flex-shrink:0;}
+        .author-info strong{display:block;font-size:13px;font-weight:600;letter-spacing:.3px;}
+        .author-info span{font-size:11px;color:var(--text-muted);letter-spacing:.5px;}
 
         /* ── FULL BANNER ── */
-        .full-banner { width:100%; height:420px; overflow:hidden; position:relative; border-top:1px solid var(--border); border-bottom:1px solid var(--border); }
-        .full-banner img { width:100%; height:120%; object-fit:cover; filter:grayscale(60%) brightness(0.55); display:block; }
-        .banner-overlay { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; background:rgba(2,2,2,0.45); }
-        .banner-text { text-align:center; padding:0 24px; }
-        .banner-text h2 { font-family:var(--font-display); font-size:clamp(32px,5vw,64px); font-weight:600; }
-        .banner-text p { font-size:16px; color:var(--text-muted); margin-top:14px; }
+        .full-banner{width:100%;height:460px;overflow:hidden;position:relative;border-top:1px solid var(--border);border-bottom:1px solid var(--border);}
+        .full-banner img{width:100%;height:130%;object-fit:cover;filter:grayscale(70%) brightness(0.45);display:block;}
+        .banner-overlay{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(2,2,2,0.5);}
+        .banner-text{text-align:center;padding:0 24px;}
+        .banner-text h2{font-family:var(--font-d);font-size:clamp(32px,5vw,68px);font-weight:600;line-height:.95;}
+        .banner-text h2 em{font-style:italic;color:var(--gold);}
+        .banner-text p{font-size:14px;color:rgba(245,240,232,0.5);margin-top:18px;letter-spacing:1px;text-transform:uppercase;}
 
         /* ── METRICS ── */
-        .metrics-title { text-align:center; max-width:760px; margin:0 auto 60px; }
-        .metrics-title h2 { font-size:clamp(40px,5vw,64px); }
-        .chart-wrap { background:var(--bg-card); border:1px solid var(--border); padding:50px; }
-        .chart-container-fix { position:relative; height:45vh; min-height:380px; }
+        .metrics-title{text-align:center;max-width:760px;margin:0 auto 60px;}
+        .metrics-title h2{font-size:clamp(40px,5vw,64px);}
+        .chart-wrap{background:var(--bg-card);border:1px solid var(--border);padding:50px;position:relative;overflow:hidden;}
+        .chart-wrap::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(to right,transparent,var(--gold),transparent);}
+        .chart-container-fix{position:relative;height:45vh;min-height:380px;}
 
         /* ── INFRA ── */
-        .infra-grid { display:grid; grid-template-columns:1fr 1fr; gap:80px; align-items:center; }
-        .infra-image-wrap { overflow:hidden; border:1px solid var(--border); }
-        .infra-image-wrap img { width:100%; display:block; filter:grayscale(30%) brightness(0.8); transition:all 1.2s cubic-bezier(0.2,0.8,0.2,1); }
-        .infra-grid:hover .infra-image-wrap img { filter:grayscale(0%) brightness(1); transform:scale(1.03); }
+        .infra-grid{display:grid;grid-template-columns:1fr 1fr;gap:100px;align-items:center;}
+        .infra-image-wrap{overflow:hidden;position:relative;}
+        .infra-image-wrap::after{content:'';position:absolute;inset:0;border:1px solid var(--border);pointer-events:none;}
+        .infra-image-wrap img{width:100%;display:block;filter:grayscale(40%) brightness(0.7);transition:all 1.4s cubic-bezier(.2,.8,.2,1);}
+        .infra-grid:hover .infra-image-wrap img{filter:grayscale(0%) brightness(.9);transform:scale(1.04);}
 
         /* ── AUTHORITY ── */
-        .authority-inner { text-align:center; max-width:800px; margin:0 auto; }
-        .authority-badges { display:flex; justify-content:center; gap:16px; margin-top:60px; flex-wrap:wrap; }
-        .badge { border:1px solid var(--border); padding:20px 28px; display:flex; flex-direction:column; align-items:center; gap:8px; transition:border-color 0.3s, background 0.3s; cursor:default; }
-        .badge:hover { border-color:var(--gold); background:var(--gold-dim); }
-        .badge-icon { color:var(--gold); font-size:20px; }
-        .badge span { font-size:11px; letter-spacing:1.5px; text-transform:uppercase; font-weight:600; color:var(--text-muted); }
-        .split-authority { display:grid; grid-template-columns:1fr 1fr; gap:80px; align-items:center; margin-top:100px; }
-        .split-authority img { width:100%; aspect-ratio:4/3; object-fit:cover; filter:grayscale(30%) brightness(0.8); transition:all 1.2s; border:1px solid var(--border); display:block; }
-        .split-authority:hover img { filter:grayscale(0%) brightness(1); }
+        .authority-inner{text-align:center;max-width:820px;margin:0 auto;}
+        .authority-badges{display:flex;justify-content:center;gap:12px;margin-top:64px;flex-wrap:wrap;}
+        .badge{border:1px solid var(--border);padding:18px 26px;display:flex;flex-direction:column;align-items:center;gap:10px;transition:border-color .3s,background .3s;cursor:none;position:relative;overflow:hidden;}
+        .badge::before{content:'';position:absolute;inset:0;background:var(--gold-dim);transform:scaleY(0);transform-origin:bottom;transition:transform .4s cubic-bezier(.2,.8,.2,1);}
+        .badge:hover::before{transform:scaleY(1);}
+        .badge:hover{border-color:var(--gold);}
+        .badge-icon{color:var(--gold);font-size:18px;position:relative;}
+        .badge span{font-size:9px;letter-spacing:2px;text-transform:uppercase;font-weight:600;color:var(--text-muted);position:relative;}
+        .split-authority{display:grid;grid-template-columns:1fr 1fr;gap:100px;align-items:center;margin-top:110px;}
+        .split-authority img{width:100%;aspect-ratio:4/3;object-fit:cover;filter:grayscale(40%) brightness(0.7);transition:all 1.4s;display:block;}
+        .split-authority:hover img{filter:grayscale(0%) brightness(.9);}
+        .img-frame{overflow:hidden;position:relative;}
+        .img-frame::after{content:'';position:absolute;inset:0;border:1px solid var(--border);pointer-events:none;}
 
         /* ── CONTACT ── */
-        .contact-inner { display:grid; grid-template-columns:1fr 1.2fr; gap:80px; }
-        .contact-info h2 { font-size:clamp(38px,5vw,60px); }
-        .contact-disclaimer { margin-top:36px; padding:22px; border:1px solid var(--border); font-size:12px; line-height:1.7; color:var(--text-muted); background:var(--gold-dim); }
-        .contact-disclaimer strong { color:var(--gold); display:block; margin-bottom:6px; font-size:10px; letter-spacing:2px; text-transform:uppercase; }
-        .form-card { background:var(--bg-card); border:1px solid var(--border); padding:50px; }
+        .contact-inner{display:grid;grid-template-columns:1fr 1.2fr;gap:100px;}
+        .contact-info h2{font-size:clamp(36px,5vw,60px);}
+        .contact-disclaimer{margin-top:40px;padding:24px;border-left:2px solid var(--gold);background:rgba(201,168,76,0.04);font-size:12px;line-height:1.75;color:var(--text-muted);}
+        .contact-disclaimer strong{color:var(--gold);display:block;margin-bottom:8px;font-size:9px;letter-spacing:3px;text-transform:uppercase;}
+        .contact-detail{display:flex;align-items:center;gap:14px;margin-top:16px;}
+        .contact-detail-icon{width:36px;height:36px;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;color:var(--gold);font-size:14px;flex-shrink:0;}
+        .contact-detail span{font-size:13px;color:var(--text-muted);}
+        .form-card{background:var(--bg-card);border:1px solid var(--border);padding:52px;position:relative;overflow:hidden;}
+        .form-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(to right,transparent,var(--gold),transparent);}
 
-        /* Form success state */
-        .form-success { display:none; text-align:center; padding:50px 30px; }
-        .form-success .success-icon { font-size:48px; color:var(--gold); font-family:var(--font-display); margin-bottom:20px; }
-        .form-success h3 { font-family:var(--font-display); font-size:32px; font-weight:600; margin-bottom:12px; }
-        .form-success p { color:var(--text-muted); font-size:14px; line-height:1.7; font-weight:300; }
+        /* Form success */
+        .form-success{display:none;text-align:center;padding:60px 30px;}
+        .success-icon{font-family:var(--font-d);font-size:56px;color:var(--gold);margin-bottom:24px;display:block;}
+        .form-success h3{font-family:var(--font-d);font-size:36px;font-weight:600;margin-bottom:14px;}
+        .form-success p{color:var(--text-muted);font-size:14px;line-height:1.7;font-weight:300;}
+        .form-success .divider{width:1px;height:40px;background:linear-gradient(to bottom,var(--gold),transparent);margin:28px auto;}
 
-        form { display:flex; flex-direction:column; gap:14px; }
-        .form-row { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
-        .field-wrap { display:flex; flex-direction:column; gap:4px; }
-        .field-error { font-size:11px; color:#e05c5c; min-height:16px; padding-left:4px; display:block; }
-        input, textarea, select {
-            padding:16px 20px; border:1px solid var(--border-dim); background:var(--bg-elevated);
-            color:var(--text); font-family:var(--font-body); font-size:14px; transition:border-color 0.3s, background 0.3s; outline:none; border-radius:2px; width:100%;
-        }
-        input:focus, textarea:focus, select:focus { border-color:var(--gold); background:#0a0800; }
-        input::placeholder, textarea::placeholder { color:var(--text-muted); }
-        textarea { resize:vertical; min-height:120px; }
-        select option { background:#141414; color:var(--text); }
-        #submit-btn {
-            padding:18px; background:var(--gold); color:#000; border:none;
-            font-family:var(--font-body); font-weight:700; font-size:12px;
-            letter-spacing:2px; text-transform:uppercase; cursor:pointer; transition:all 0.3s; border-radius:2px; margin-top:8px; width:100%;
-        }
-        #submit-btn:hover { background:var(--gold-light); transform:translateY(-1px); }
-        #submit-btn:disabled { opacity:0.6; cursor:not-allowed; transform:none; }
+        /* Form fields */
+        .form-fields{display:flex;flex-direction:column;gap:12px;}
+        .form-row-2{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+        .field-wrap{display:flex;flex-direction:column;gap:4px;}
+        .field-error{font-size:10px;color:#e05c5c;min-height:14px;padding-left:2px;letter-spacing:.3px;}
+        input,textarea,select{padding:15px 18px;border:1px solid var(--border-dim);background:rgba(20,20,20,0.8);color:var(--text);font-family:var(--font-b);font-size:13px;transition:border-color .3s,background .3s;outline:none;width:100%;border-radius:0;}
+        input:focus,textarea:focus,select:focus{border-color:rgba(201,168,76,0.5);background:rgba(12,8,0,0.9);}
+        input::placeholder,textarea::placeholder{color:rgba(90,85,80,0.8);}
+        textarea{resize:vertical;min-height:110px;}
+        select option{background:#111;color:var(--text);}
+        #submit-btn{width:100%;padding:18px;background:var(--gold);color:#000;border:none;font-family:var(--font-b);font-weight:700;font-size:11px;letter-spacing:2.5px;text-transform:uppercase;cursor:none;transition:all .3s;margin-top:8px;position:relative;overflow:hidden;}
+        #submit-btn::before{content:'';position:absolute;inset:0;background:var(--gold-light);transform:scaleX(0);transform-origin:left;transition:transform .4s cubic-bezier(.2,.8,.2,1);}
+        #submit-btn:hover::before{transform:scaleX(1);}
+        #submit-btn span{position:relative;z-index:1;}
+        #submit-btn:disabled{opacity:.6;cursor:not-allowed;}
 
         /* ── FOOTER ── */
-        footer { border-top:1px solid var(--border); background:var(--bg); }
-        .footer-main { max-width:1360px; margin:0 auto; padding:80px 6% 50px; display:grid; grid-template-columns:2fr 1fr 1fr 1fr; gap:60px; }
-        .footer-brand .logo { font-size:24px; }
-        .footer-brand p { font-size:13px; color:var(--text-muted); margin-top:16px; line-height:1.7; font-weight:300; max-width:280px; }
-        .footer-social { display:flex; gap:12px; margin-top:30px; }
-        .social-link { width:36px; height:36px; border:1px solid var(--border); display:flex; align-items:center; justify-content:center; color:var(--text-muted); text-decoration:none; font-size:12px; font-weight:700; transition:all 0.3s; }
-        .social-link:hover { border-color:var(--gold); color:var(--gold); }
-        .footer-col h4 { font-size:10px; letter-spacing:2px; text-transform:uppercase; color:var(--text-muted); margin-bottom:24px; font-weight:600; }
-        .footer-col a { display:block; color:var(--text-muted); text-decoration:none; font-size:13px; margin-bottom:14px; transition:color 0.3s; font-weight:300; }
-        .footer-col a:hover { color:var(--gold); }
-        .footer-bottom { border-top:1px solid var(--border-dim); padding:28px 6%; max-width:1360px; margin:0 auto; display:flex; justify-content:space-between; align-items:center; }
-        .footer-bottom p { font-size:12px; color:var(--text-muted); font-weight:300; }
+        footer{border-top:1px solid var(--border);background:var(--bg);}
+        .footer-main{max-width:1360px;margin:0 auto;padding:90px 6% 56px;display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:60px;}
+        .footer-brand .logo{font-size:22px;}
+        .footer-brand p{font-size:13px;color:var(--text-muted);margin-top:18px;line-height:1.75;font-weight:300;max-width:260px;}
+        .footer-social{display:flex;gap:10px;margin-top:32px;}
+        .social-link{width:34px;height:34px;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;color:var(--text-muted);text-decoration:none;font-size:11px;font-weight:700;transition:all .3s;cursor:none;}
+        .social-link:hover{border-color:var(--gold);color:var(--gold);}
+        .footer-col h4{font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--text-muted);margin-bottom:26px;font-weight:600;}
+        .footer-col a{display:block;color:var(--text-muted);text-decoration:none;font-size:13px;margin-bottom:14px;transition:color .3s;font-weight:300;}
+        .footer-col a:hover{color:var(--gold);}
+        .footer-bottom{border-top:1px solid var(--border-dim);padding:28px 6%;max-width:1360px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;}
+        .footer-bottom p{font-size:11px;color:rgba(90,85,80,0.7);font-weight:300;letter-spacing:.5px;}
 
         /* ── RESPONSIVE ── */
-        @media(max-width:1024px) {
-            .pain-grid { grid-template-columns:1fr 1fr; }
-            .tier-grid { grid-template-columns:1fr 1fr; }
-            .tier-image { grid-row:auto; min-height:280px; }
-            .results-grid { grid-template-columns:1fr 1fr; }
-            .contact-inner, .split-authority, .infra-grid, .results-header { grid-template-columns:1fr; gap:50px; }
-            .footer-main { grid-template-columns:1fr 1fr; }
+        @media(max-width:1024px){
+            .pain-grid,.tier-grid,.infra-grid,.contact-inner,.split-authority,.results-header{grid-template-columns:1fr;gap:50px;}
+            .tier-image{grid-row:auto;min-height:280px;}
+            .results-grid{grid-template-columns:1fr 1fr;}
+            .footer-main{grid-template-columns:1fr 1fr;}
         }
-        @media(max-width:768px) {
-            nav a:not(.nav-cta) { display:none; }
-            .tier-grid, .testimonials-grid, .results-grid, .pain-grid, .form-row { grid-template-columns:1fr; }
-            .tier-header { flex-direction:column; gap:20px; }
-            .tier-number { font-size:50px; }
-            .footer-main { grid-template-columns:1fr; gap:40px; }
-            .footer-bottom { flex-direction:column; gap:12px; text-align:center; }
-            .full-banner { height:300px; }
-            .pain-stat:nth-child(2) { border-right:0; }
-            .pain-stat:nth-child(3) { border-bottom:1px solid var(--border); }
+        @media(max-width:768px){
+            nav a:not(.nav-cta){display:none;}
+            .testimonials-grid,.results-grid,.form-row-2{grid-template-columns:1fr;}
+            .tier-header{flex-direction:column;gap:16px;}
+            .tier-num{font-size:60px;}
+            .footer-main{grid-template-columns:1fr;gap:40px;}
+            .footer-bottom{flex-direction:column;gap:12px;text-align:center;}
+            .full-banner{height:320px;}
+            body{cursor:auto;}
+            #cursor,#cursor-ring{display:none;}
         }
     </style>
 </head>
 <body>
+
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
 
 <!-- ── HEADER ── -->
 <header>
@@ -263,78 +265,58 @@
     <canvas id="heroCanvas"></canvas>
     <div class="hero-overlay"></div>
     <div class="hero-content reveal">
-        <div class="hero-badge">Trusted by Enterprise Leaders Worldwide</div>
-        <h1>Enterprise AI Systems<br>That <em>Multiply</em> Revenue</h1>
+        <div class="hero-eyebrow"><span class="hero-eyebrow-dot"></span>Trusted by Enterprise Leaders Worldwide</div>
+        <h1>Enterprise AI <span class="thin">that</span><br><em>Multiplies</em> Revenue</h1>
         <p class="hero-sub">We design AI infrastructures that automate growth, optimize operations, and increase profitability for clinics, law firms, insurance agencies, and high-growth companies.</p>
         <div class="hero-ctas">
-            <a href="#contact" class="btn-primary">Request Executive Consultation →</a>
-            <a href="#services" class="btn-outline">Explore Solutions</a>
+            <a href="#contact" class="btn-gold"><span>Request Executive Consultation →</span></a>
+            <a href="#services" class="btn-ghost">Explore Solutions</a>
         </div>
         <div class="trusted-bar">
             <span class="trusted-label">Trusted by Enterprises</span>
             <div class="trusted-logos">
-                <span>Meridian Corp</span>
-                <span>Nexus Health</span>
-                <span>Vantage Law</span>
-                <span>Arcadia Capital</span>
-                <span>Sterling Group</span>
+                <span>Meridian Corp</span><span>Nexus Health</span><span>Vantage Law</span><span>Arcadia Capital</span><span>Sterling Group</span>
             </div>
         </div>
+    </div>
+    <div class="hero-scroll">
+        <span>Scroll</span>
+        <div class="scroll-line"></div>
     </div>
 </section>
 
 <!-- ── PAIN ── -->
-<div class="section-wrap" id="problem">
+<div class="sw" id="problem">
     <div class="pain-center reveal">
         <span class="label">The Revenue Gap</span>
-        <h2 class="display" style="font-size:clamp(40px,5vw,64px);">The Revenue Gap Most Businesses Ignore</h2>
-        <span class="gold-line" style="margin:24px auto;"></span>
+        <h2 class="display" style="font-size:clamp(42px,5.5vw,68px);">The Cost of Doing Nothing</h2>
+        <div class="gold-line" style="margin:28px auto;width:1px;height:60px;background:linear-gradient(to bottom,var(--gold),transparent);"></div>
         <p class="body-text">Manual processes, missed leads, and inefficient systems cost businesses thousands every month. The gap between where you are and where AI can take you is the most expensive problem you're not solving.</p>
-        <div style="margin-top:36px;"><a href="#contact" class="btn-outline">See How We Can Help →</a></div>
+        <div style="margin-top:40px;"><a href="#contact" class="btn-ghost">See How We Can Help →</a></div>
     </div>
     <div class="pain-grid reveal">
-        <div class="pain-stat">
-            <span class="pain-number counter" data-target="300">0</span>
-            <span class="pain-unit">K lost annually</span>
-            <h3>Revenue Leakage</h3>
-            <p>The average enterprise loses over $300K per year to manual processes and missed automation opportunities.</p>
-        </div>
-        <div class="pain-stat">
-            <span class="pain-number counter" data-target="67">0</span>
-            <span class="pain-unit">% of leads ignored</span>
-            <h3>Lead Response Failure</h3>
-            <p>67% of inbound leads never receive a timely follow-up, falling through the cracks of overwhelmed teams.</p>
-        </div>
-        <div class="pain-stat">
-            <span class="pain-number counter" data-target="40">0</span>
-            <span class="pain-unit">hrs/week wasted</span>
-            <h3>Operational Drag</h3>
-            <p>Mid-size businesses waste 40+ hours weekly on tasks that AI can handle autonomously in minutes.</p>
-        </div>
-        <div class="pain-stat">
-            <span class="pain-number counter" data-target="3">0</span>
-            <span class="pain-unit">× competitive gap</span>
-            <h3>AI-Adoption Divide</h3>
-            <p>AI-first companies are scaling 3× faster than those still relying on legacy tools and manual operations.</p>
-        </div>
+        <div class="pain-stat"><div class="pain-accent"></div><span class="pain-number counter" data-target="300">0</span><span class="pain-unit">thousand lost annually</span><h3>Revenue Leakage</h3><p>The average enterprise loses over $300K per year to manual processes and missed automation opportunities.</p></div>
+        <div class="pain-stat"><div class="pain-accent"></div><span class="pain-number counter" data-target="67">0</span><span class="pain-unit">percent of leads ignored</span><h3>Lead Response Failure</h3><p>67% of inbound leads never receive a timely follow-up, falling through the cracks of overwhelmed teams.</p></div>
+        <div class="pain-stat"><div class="pain-accent"></div><span class="pain-number counter" data-target="40">0</span><span class="pain-unit">hours per week wasted</span><h3>Operational Drag</h3><p>Mid-size businesses waste 40+ hours weekly on tasks that AI can handle autonomously in minutes.</p></div>
+        <div class="pain-stat"><div class="pain-accent"></div><span class="pain-number counter" data-target="3">0</span><span class="pain-unit">times the competitive gap</span><h3>AI-Adoption Divide</h3><p>AI-first companies are scaling 3× faster than those still relying on legacy tools and manual operations.</p></div>
     </div>
 </div>
 
 <!-- ── SERVICES ── -->
-<div class="section-wrap" id="services">
-    <div style="text-align:center;max-width:700px;margin:0 auto 80px;" class="reveal">
+<div class="sw" id="services">
+    <div style="text-align:center;max-width:700px;margin:0 auto 90px;" class="reveal">
         <span class="label">Our Solutions</span>
-        <h2 class="display" style="font-size:clamp(40px,5vw,66px);">Three Levels of Intelligence</h2>
+        <h2 class="display" style="font-size:clamp(42px,5.5vw,70px);">Three Levels<br>of Intelligence</h2>
         <p class="body-text">A tiered system engineered for every stage of enterprise growth — from automation to full AI operating infrastructure.</p>
     </div>
 
     <div class="tier reveal">
         <div class="tier-header">
-            <span class="tier-number">01</span>
+            <span class="tier-num">01</span>
             <div class="tier-title-block">
                 <span class="label">Level 1 — AI Automation Suite</span>
-                <h2 class="display">Automate Operations & Sales</h2>
-                <p class="body-text" style="max-width:500px;">The foundation layer. Eliminate repetitive work, activate 24/7 lead handling, and deploy intelligent marketing systems from day one.</p>
+                <h2 class="display">Automate Operations<br>& Sales</h2>
+                <p class="body-text" style="max-width:480px;">The foundation layer. Eliminate repetitive work, activate 24/7 lead handling, and deploy intelligent marketing systems from day one.</p>
             </div>
         </div>
         <div class="tier-grid">
@@ -344,20 +326,17 @@
             <div class="service-item"><span class="service-dot"></span><span>Voice AI Agents — 24/7 Autonomous</span></div>
             <div class="service-item"><span class="service-dot"></span><span>End-to-End Marketing Automation</span></div>
             <div class="service-item"><span class="service-dot"></span><span>AI Content & Brand Generation</span></div>
-            <div class="tier-cta-block">
-                <span style="font-size:13px;color:var(--text-muted);">Starting point for any enterprise</span>
-                <a href="#contact" class="btn-primary">Get Your Automation Audit →</a>
-            </div>
+            <div class="tier-cta-block"><span style="font-size:12px;color:var(--text-muted);">Starting point for any enterprise</span><a href="#contact" class="btn-gold"><span>Get Your Automation Audit →</span></a></div>
         </div>
     </div>
 
     <div class="tier reveal">
         <div class="tier-header">
-            <span class="tier-number">02</span>
+            <span class="tier-num">02</span>
             <div class="tier-title-block">
                 <span class="label">Level 2 — AI Growth Transformation</span>
-                <h2 class="display">Scale Your Revenue With Intelligence</h2>
-                <p class="body-text" style="max-width:500px;">Advanced revenue intelligence and customer journey systems that actively find and close growth opportunities in your existing operations.</p>
+                <h2 class="display">Scale Your Revenue<br>With Intelligence</h2>
+                <p class="body-text" style="max-width:480px;">Advanced revenue intelligence and customer journey systems that actively find and close growth opportunities in your existing operations.</p>
             </div>
         </div>
         <div class="tier-grid">
@@ -367,20 +346,17 @@
             <div class="service-item"><span class="service-dot"></span><span>Customer Journey Automation</span></div>
             <div class="service-item"><span class="service-dot"></span><span>AI Lead Scoring & Prioritization</span></div>
             <div class="service-item"><span class="service-dot"></span><span>Smart Pricing AI & Margin Optimization</span></div>
-            <div class="tier-cta-block">
-                <span style="font-size:13px;color:var(--text-muted);">For scaling 7-figure businesses</span>
-                <a href="#contact" class="btn-primary">Schedule Growth Strategy Session →</a>
-            </div>
+            <div class="tier-cta-block"><span style="font-size:12px;color:var(--text-muted);">For scaling 7-figure businesses</span><a href="#contact" class="btn-gold"><span>Schedule Growth Strategy Session →</span></a></div>
         </div>
     </div>
 
     <div class="tier reveal">
         <div class="tier-header">
-            <span class="tier-number">03</span>
+            <span class="tier-num">03</span>
             <div class="tier-title-block">
                 <span class="label">Level 3 — Enterprise AI Infrastructure</span>
-                <h2 class="display">Enterprise-Grade AI Infrastructure</h2>
-                <p class="body-text" style="max-width:500px;">Full-stack enterprise AI deployment. We architect your complete AI operating system — from financial intelligence to security compliance and digital twin modeling.</p>
+                <h2 class="display">Enterprise-Grade<br>AI Infrastructure</h2>
+                <p class="body-text" style="max-width:480px;">Full-stack enterprise AI deployment. We architect your complete AI operating system — from financial intelligence to security compliance and digital twin modeling.</p>
             </div>
         </div>
         <div class="tier-grid">
@@ -391,62 +367,27 @@
             <div class="service-item"><span class="service-dot"></span><span>AI for HR & Talent Acquisition</span></div>
             <div class="service-item"><span class="service-dot"></span><span>Security & Compliance Automation</span></div>
             <div class="service-item"><span class="service-dot"></span><span>Digital Twin & Strategic Expansion</span></div>
-            <div class="tier-cta-block">
-                <span style="font-size:13px;color:var(--text-muted);">For 8-figure enterprise transformation</span>
-                <a href="#contact" class="btn-primary">Apply for Executive Partnership →</a>
-            </div>
+            <div class="tier-cta-block"><span style="font-size:12px;color:var(--text-muted);">For 8-figure enterprise transformation</span><a href="#contact" class="btn-gold"><span>Apply for Executive Partnership →</span></a></div>
         </div>
     </div>
 </div>
 
 <!-- ── RESULTS ── -->
-<div class="section-wrap" id="results">
+<div class="sw" id="results">
     <div class="results-header reveal">
-        <div>
-            <span class="label">Client Impact</span>
-            <h2 class="display">What Enterprise Clients Achieve</h2>
-        </div>
+        <div><span class="label">Client Impact</span><h2 class="display">What Enterprise<br>Clients Achieve</h2></div>
         <p class="body-text">Every system we build is measured by revenue impact, efficiency gains, and automation of human work. These are not projections — these are client outcomes.</p>
     </div>
     <div class="results-grid reveal">
-        <div class="result-card">
-            <span class="result-kpi counter" data-target="312">0</span>
-            <span style="font-size:13px;color:var(--gold);">% Revenue Increase</span>
-            <h3>Regional Insurance Agency</h3>
-            <p>Deployed AI lead scoring and automated follow-up sequences. Tripled policy closings within 8 months of deployment.</p>
-        </div>
-        <div class="result-card">
-            <span class="result-kpi counter" data-target="68">0</span>
-            <span style="font-size:13px;color:var(--gold);">% Cost Reduction</span>
-            <h3>Multi-Location Medical Clinic</h3>
-            <p>Automated patient intake, scheduling, and billing workflows. Reduced administrative overhead while improving patient satisfaction scores.</p>
-        </div>
-        <div class="result-card">
-            <span class="result-kpi counter" data-target="4">0</span>
-            <span style="font-size:13px;color:var(--gold);">× Faster Client Acquisition</span>
-            <h3>Boutique Law Firm</h3>
-            <p>AI-driven intake qualification and CRM automation converted 4× more inbound inquiries into retained clients in the first quarter.</p>
-        </div>
+        <div class="result-card"><span class="result-kpi counter" data-target="312">0</span><span style="font-size:12px;color:var(--gold);letter-spacing:1px;text-transform:uppercase;">% Revenue Increase</span><h3>Regional Insurance Agency</h3><p>Deployed AI lead scoring and automated follow-up sequences. Tripled policy closings within 8 months of deployment.</p></div>
+        <div class="result-card"><span class="result-kpi counter" data-target="68">0</span><span style="font-size:12px;color:var(--gold);letter-spacing:1px;text-transform:uppercase;">% Cost Reduction</span><h3>Multi-Location Medical Clinic</h3><p>Automated patient intake, scheduling, and billing workflows. Reduced administrative overhead while improving patient satisfaction scores.</p></div>
+        <div class="result-card"><span class="result-kpi counter" data-target="4">0</span><span style="font-size:12px;color:var(--gold);letter-spacing:1px;text-transform:uppercase;">× Faster Client Acquisition</span><h3>Boutique Law Firm</h3><p>AI-driven intake qualification and CRM automation converted 4× more inbound inquiries into retained clients in the first quarter.</p></div>
     </div>
     <div class="testimonials-grid reveal">
-        <div class="testimonial">
-            <p>The AI infrastructure Elevate built didn't just automate our workflows — it fundamentally restructured how our revenue engine operates. We went from guessing to knowing exactly where every dollar was going and coming from.</p>
-            <div class="testimonial-author">
-                <div class="author-avatar">M</div>
-                <div class="author-info"><strong>Marcus D.</strong><span>CEO, Meridian Capital Group</span></div>
-            </div>
-        </div>
-        <div class="testimonial">
-            <p>Within 90 days, our patient scheduling was fully automated, our staff was freed from data entry, and our clinic's throughput increased by 40%. The ROI calculation was a no-brainer within the first month.</p>
-            <div class="testimonial-author">
-                <div class="author-avatar">S</div>
-                <div class="author-info"><strong>Dr. Sofia R.</strong><span>Managing Director, Nexus Health Systems</span></div>
-            </div>
-        </div>
+        <div class="testimonial"><p>The AI infrastructure Elevate built didn't just automate our workflows — it fundamentally restructured how our revenue engine operates. We went from guessing to knowing exactly where every dollar was going and coming from.</p><div class="testimonial-author"><div class="author-avatar">M</div><div class="author-info"><strong>Marcus D.</strong><span>CEO, Meridian Capital Group</span></div></div></div>
+        <div class="testimonial"><p>Within 90 days, our patient scheduling was fully automated, our staff was freed from data entry, and our clinic's throughput increased by 40%. The ROI calculation was a no-brainer within the first month.</p><div class="testimonial-author"><div class="author-avatar">S</div><div class="author-info"><strong>Dr. Sofia R.</strong><span>Managing Director, Nexus Health Systems</span></div></div></div>
     </div>
-    <div style="text-align:center;margin-top:50px;" class="reveal">
-        <a href="#contact" class="btn-outline">Request Full Case Study →</a>
-    </div>
+    <div style="text-align:center;margin-top:60px;" class="reveal"><a href="#contact" class="btn-ghost">Request Full Case Study →</a></div>
 </div>
 
 <!-- ── FULL BANNER ── -->
@@ -454,146 +395,108 @@
     <img src="https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop&q=80&w=1600" alt="AI Systems">
     <div class="banner-overlay">
         <div class="banner-text">
-            <h2 class="display">AI That Multiplies Revenue —<br>Not Just Automation</h2>
-            <p>Every system is measured by one metric: your bottom line.</p>
+            <h2 class="display">AI That <em>Multiplies</em> Revenue<br>— Not Just Automation</h2>
+            <p>Every system measured by one metric: your bottom line</p>
         </div>
     </div>
 </div>
 
 <!-- ── METRICS ── -->
-<div class="section-wrap" id="metrics">
+<div class="sw" id="metrics">
     <div class="metrics-title reveal">
         <span class="label">Performance Data</span>
         <h2 class="display">The Numbers Speak</h2>
         <p class="body-text">12-month composite impact index across Revenue, Lead Conversion, and Operational Efficiency post-deployment.</p>
     </div>
-    <div class="chart-wrap reveal">
-        <div class="chart-container-fix">
-            <canvas id="dashboardChart"></canvas>
-        </div>
-    </div>
+    <div class="chart-wrap reveal"><div class="chart-container-fix"><canvas id="dashboardChart"></canvas></div></div>
 </div>
 
 <!-- ── INFRASTRUCTURE ── -->
-<div class="section-wrap" id="infrastructure">
+<div class="sw" id="infrastructure">
     <div class="infra-grid reveal">
-        <div class="infra-image-wrap">
-            <img src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&q=80&w=1000" alt="Global AI Infrastructure" loading="lazy">
-        </div>
+        <div class="infra-image-wrap"><img src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&q=80&w=1000" alt="Global AI Infrastructure" loading="lazy"></div>
         <div>
             <span class="label">Global Infrastructure</span>
             <h2 class="display" style="font-size:clamp(36px,4.5vw,58px);">Built for global scale.</h2>
-            <span class="gold-line"></span>
+            <div class="gold-line"></div>
             <p class="body-text">Our infrastructure handles enterprise workloads across borders. Low-latency distributed processing ensures consistent performance regardless of user location or operational volume.</p>
-            <div style="margin-top:36px;"><a href="#contact" class="btn-outline">Explore Infrastructure →</a></div>
+            <div style="margin-top:40px;"><a href="#contact" class="btn-ghost">Explore Infrastructure →</a></div>
         </div>
     </div>
-    <div class="infra-grid reveal" style="margin-top:100px;">
+    <div class="infra-grid reveal" style="margin-top:120px;">
         <div>
             <span class="label">Zero-Friction Deployment</span>
             <h2 class="display" style="font-size:clamp(36px,4.5vw,58px);">Fluid integration.</h2>
-            <span class="gold-line"></span>
+            <div class="gold-line"></div>
             <p class="body-text">Plug Elevate AI directly into your existing infrastructure. No complex migrations, zero downtime. Instant intelligence layered onto your current workflows from day one.</p>
         </div>
-        <div class="infra-image-wrap">
-            <img src="https://images.unsplash.com/photo-1639322537228-f710d846310a?auto=format&fit=crop&q=80&w=1000" alt="AI Integration" loading="lazy">
-        </div>
+        <div class="infra-image-wrap"><img src="https://images.unsplash.com/photo-1639322537228-f710d846310a?auto=format&fit=crop&q=80&w=1000" alt="AI Integration" loading="lazy"></div>
     </div>
 </div>
 
 <!-- ── AUTHORITY ── -->
-<div class="section-wrap" id="authority">
+<div class="sw" id="authority">
     <div class="authority-inner reveal">
         <span class="label">Why Elevate</span>
-        <h2 class="display" style="font-size:clamp(44px,5.5vw,70px);">Built for 7 & 8 Figure Companies</h2>
-        <span class="gold-line" style="margin:24px auto;"></span>
+        <h2 class="display" style="font-size:clamp(44px,6vw,74px);">Built for 7 & 8<br>Figure Companies</h2>
+        <div class="gold-line" style="margin:32px auto;"></div>
         <p class="body-text">We position ourselves not as a software vendor, but as a digital transformation partner. We work exclusively with businesses ready to scale with enterprise-grade AI infrastructure.</p>
         <div class="authority-badges">
             <div class="badge"><span class="badge-icon">⬡</span><span>SOC 2 Compliant</span></div>
             <div class="badge"><span class="badge-icon">◈</span><span>Military-Grade Encryption</span></div>
             <div class="badge"><span class="badge-icon">◎</span><span>On-Premise Deployment</span></div>
-            <div class="badge"><span class="badge-icon">⬟</span><span>Digital Transformation Experts</span></div>
-            <div class="badge"><span class="badge-icon">◇</span><span>Enterprise AI Infrastructure</span></div>
+            <div class="badge"><span class="badge-icon">⬟</span><span>Digital Transformation</span></div>
+            <div class="badge"><span class="badge-icon">◇</span><span>Enterprise AI</span></div>
         </div>
     </div>
     <div class="split-authority reveal">
-        <img src="https://images.unsplash.com/photo-1563986768609-322da13575f3?auto=format&fit=crop&q=80&w=1000" alt="Enterprise Security" loading="lazy">
+        <div class="img-frame"><img src="https://images.unsplash.com/photo-1563986768609-322da13575f3?auto=format&fit=crop&q=80&w=1000" alt="Enterprise Security" loading="lazy"></div>
         <div>
             <span class="label">Continuous Learning</span>
             <h2 class="display" style="font-size:clamp(36px,4.5vw,58px);">Compounding competitive advantage.</h2>
-            <span class="gold-line"></span>
+            <div class="gold-line"></div>
             <p class="body-text">Unlike static software, our AI models learn from every interaction. The longer the system runs, the more efficient your operations become — creating an ever-widening moat against competitors.</p>
-            <div style="margin-top:36px;"><a href="#contact" class="btn-primary">Work With Us →</a></div>
+            <div style="margin-top:40px;"><a href="#contact" class="btn-gold"><span>Work With Us →</span></a></div>
         </div>
     </div>
 </div>
 
 <!-- ── CONTACT ── -->
-<div class="section-wrap" id="contact">
+<div class="sw" id="contact">
     <div class="contact-inner">
         <div class="contact-info reveal">
             <span class="label">Executive Consultation</span>
-            <h2 class="display" style="font-size:clamp(38px,5vw,60px);">Apply for Executive Strategy Session</h2>
-            <span class="gold-line"></span>
+            <h2 class="display" style="font-size:clamp(36px,5vw,58px);">Apply for Executive Strategy Session</h2>
+            <div class="gold-line"></div>
             <p class="body-text">We work only with businesses ready to scale with enterprise AI infrastructure. This is not a sales call — it is a strategic audit of your operations.</p>
             <div class="contact-disclaimer">
                 <strong>Confidential & Selective</strong>
                 We accept a limited number of new clients per quarter. Only serious inquiries from high-value businesses seeking transformational growth will receive a response.
             </div>
-            <div style="margin-top:40px;display:flex;flex-direction:column;gap:16px;">
-                <div style="display:flex;align-items:center;gap:14px;">
-                    <span style="color:var(--gold);font-size:18px;">◎</span>
-                    <span style="font-size:13px;color:var(--text-muted);">executive@elevate-ai.com</span>
-                </div>
-                <div style="display:flex;align-items:center;gap:14px;">
-                    <span style="color:var(--gold);font-size:18px;">◎</span>
-                    <span style="font-size:13px;color:var(--text-muted);">+1 (800) ELEVATE-AI</span>
-                </div>
+            <div style="margin-top:36px;">
+                <div class="contact-detail"><div class="contact-detail-icon">◎</div><span>executive@elevate-ai.com</span></div>
+                <div class="contact-detail"><div class="contact-detail-icon">◎</div><span>+1 (800) ELEVATE-AI</span></div>
             </div>
         </div>
         <div class="form-card reveal">
-            <!-- Success State -->
             <div class="form-success" id="form-success">
-                <div class="success-icon">✦</div>
-                <h3>Application Submitted</h3>
-                <p id="success-msg">Your application is under review. Check your inbox — we've sent a confirmation to your email.</p>
-                <div style="margin-top:30px;padding-top:24px;border-top:1px solid var(--border);font-size:12px;color:var(--text-muted);">
-                    We review every application carefully and respond only to high-fit partnerships within <strong style="color:var(--text);">48 business hours</strong>.
-                </div>
+                <span class="success-icon">✦</span>
+                <h3>Application Received</h3>
+                <p id="success-msg">Your application is under review. We've sent a confirmation to your inbox.</p>
+                <div class="divider"></div>
+                <p style="font-size:12px;">We review every application carefully and respond only to high-fit partnerships within <strong style="color:var(--text);">48 business hours</strong>.</p>
             </div>
-            <!-- Form -->
-            <form id="elevate-form">
-                <div class="form-row">
-                    <div class="field-wrap">
-                        <input type="text" id="fullName" placeholder="Full Name" required>
-                        <span class="field-error" id="err-fullName"></span>
-                    </div>
-                    <div class="field-wrap">
-                        <input type="text" id="company" placeholder="Company Name" required>
-                        <span class="field-error" id="err-company"></span>
-                    </div>
+            <form id="elevate-form" class="form-fields">
+                <div class="form-row-2">
+                    <div class="field-wrap"><input type="text" id="fullName" placeholder="Full Name" required><span class="field-error" id="err-fullName"></span></div>
+                    <div class="field-wrap"><input type="text" id="company" placeholder="Company Name" required><span class="field-error" id="err-company"></span></div>
                 </div>
-                <div class="field-wrap">
-                    <input type="email" id="email" placeholder="Corporate Email" required>
-                    <span class="field-error" id="err-email"></span>
-                </div>
-                <div class="field-wrap">
-                    <input type="tel" id="phone" placeholder="Phone Number" required>
-                    <span class="field-error" id="err-phone"></span>
-                </div>
-                <select id="revenue">
-                    <option value="" disabled selected>Annual Revenue Range</option>
-                    <option>$1M – $3M</option>
-                    <option>$3M – $10M</option>
-                    <option>$10M – $50M</option>
-                    <option>$50M+</option>
-                </select>
-                <div class="field-wrap">
-                    <textarea id="message" placeholder="Describe your business and what you want to automate or optimize..." required></textarea>
-                    <span class="field-error" id="err-message"></span>
-                </div>
-                <button type="button" id="submit-btn" onclick="submitForm()">Submit Application →</button>
-                <p style="font-size:11px;color:var(--text-muted);text-align:center;margin-top:8px;">By submitting you agree to our <a href="#" style="color:var(--gold);text-decoration:none;">Privacy Policy</a>. All information is strictly confidential.</p>
+                <div class="field-wrap"><input type="email" id="email" placeholder="Corporate Email" required><span class="field-error" id="err-email"></span></div>
+                <div class="field-wrap"><input type="tel" id="phone" placeholder="Phone Number" required><span class="field-error" id="err-phone"></span></div>
+                <select id="revenue"><option value="" disabled selected>Annual Revenue Range</option><option>$1M – $3M</option><option>$3M – $10M</option><option>$10M – $50M</option><option>$50M+</option></select>
+                <div class="field-wrap"><textarea id="message" placeholder="Describe your business and what you want to automate or optimize..." required></textarea><span class="field-error" id="err-message"></span></div>
+                <button type="button" id="submit-btn" onclick="submitForm()"><span>Submit Application →</span></button>
+                <p style="font-size:10px;color:var(--text-muted);text-align:center;margin-top:8px;letter-spacing:.3px;">By submitting you agree to our <a href="#" style="color:var(--gold);text-decoration:none;">Privacy Policy</a>. All information is strictly confidential.</p>
             </form>
         </div>
     </div>
@@ -606,34 +509,12 @@
             <div class="logo">ELEV<span>A</span>TE</div>
             <p>Building the autonomous cognitive infrastructure for the next generation of enterprise intelligence.</p>
             <div class="footer-social">
-                <a href="#" class="social-link">in</a>
-                <a href="#" class="social-link">tw</a>
-                <a href="#" class="social-link">yt</a>
-                <a href="#" class="social-link">ig</a>
+                <a href="#" class="social-link">in</a><a href="#" class="social-link">tw</a><a href="#" class="social-link">yt</a><a href="#" class="social-link">ig</a>
             </div>
         </div>
-        <div class="footer-col">
-            <h4>Solutions</h4>
-            <a href="#">Voice AI Agents</a>
-            <a href="#">CRM Automation</a>
-            <a href="#">Inventory AI</a>
-            <a href="#">Revenue Intelligence</a>
-            <a href="#">Custom AI Apps</a>
-        </div>
-        <div class="footer-col">
-            <h4>Company</h4>
-            <a href="#">About Us</a>
-            <a href="#">Executive Team</a>
-            <a href="#">Case Studies</a>
-            <a href="#">Careers</a>
-        </div>
-        <div class="footer-col">
-            <h4>Legal</h4>
-            <a href="#">Privacy Policy</a>
-            <a href="#">Terms of Service</a>
-            <a href="#">Data Security</a>
-            <a href="#">Cookie Policy</a>
-        </div>
+        <div class="footer-col"><h4>Solutions</h4><a href="#">Voice AI Agents</a><a href="#">CRM Automation</a><a href="#">Inventory AI</a><a href="#">Revenue Intelligence</a><a href="#">Custom AI Apps</a></div>
+        <div class="footer-col"><h4>Company</h4><a href="#">About Us</a><a href="#">Executive Team</a><a href="#">Case Studies</a><a href="#">Careers</a></div>
+        <div class="footer-col"><h4>Legal</h4><a href="#">Privacy Policy</a><a href="#">Terms of Service</a><a href="#">Data Security</a><a href="#">Cookie Policy</a></div>
     </div>
     <div class="footer-bottom">
         <p>© 2026 Elevate AI Solutions. All rights reserved.</p>
@@ -642,208 +523,166 @@
 </footer>
 
 <script>
-// ── SCROLL ANIMATIONS ──
-const observer = new IntersectionObserver((entries) => {
-    entries.forEach(el => {
-        if (el.isIntersecting) {
-            el.target.style.transition = 'opacity 0.9s ease, transform 0.9s ease';
-            el.target.style.opacity = '1';
-            el.target.style.transform = 'translateY(0)';
-            observer.unobserve(el.target);
-        }
-    });
-}, { threshold: 0.06 });
+// ── CUSTOM CURSOR ──
+const cur = document.getElementById('cursor');
+const ring = document.getElementById('cursor-ring');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.left=mx+'px';cur.style.top=my+'px';});
+function animRing(){rx+=(mx-rx)*.12;ry+=(my-ry)*.12;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(animRing);}
+animRing();
+document.querySelectorAll('a,button,[onclick]').forEach(el=>{
+    el.addEventListener('mouseenter',()=>{cur.style.width='14px';cur.style.height='14px';ring.style.width='48px';ring.style.height='48px';ring.style.borderColor='rgba(201,168,76,0.7)';});
+    el.addEventListener('mouseleave',()=>{cur.style.width='8px';cur.style.height='8px';ring.style.width='32px';ring.style.height='32px';ring.style.borderColor='rgba(201,168,76,0.4)';});
+});
 
-document.querySelectorAll('.reveal').forEach(el => {
-    el.style.opacity = '0';
-    el.style.transform = 'translateY(30px)';
-    observer.observe(el);
+// ── SCROLL ANIMATIONS ──
+const revealObs = new IntersectionObserver((entries)=>{
+    entries.forEach(el=>{
+        if(el.isIntersecting) el.target.classList.add('revealed');
+    });
+},{threshold:0.06});
+document.querySelectorAll('.reveal').forEach((el,i)=>{
+    el.style.transitionDelay = (i % 3) * 0.1 + 's';
+    revealObs.observe(el);
 });
 
 // ── THREE.JS HERO ──
 try {
-    const canvas = document.getElementById('heroCanvas');
-    const renderer = new THREE.WebGLRenderer({ canvas, alpha:true, antialias:true });
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(70, window.innerWidth/window.innerHeight, 0.1, 1000);
-    camera.position.z = 28;
-
-    const count = 500;
-    const positions = new Float32Array(count * 3);
-    for (let i = 0; i < count * 3; i++) positions[i] = (Math.random() - 0.5) * 70;
-    const geo = new THREE.BufferGeometry();
-    geo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-    const mat = new THREE.PointsMaterial({ color:0xC9A84C, size:0.08, transparent:true, opacity:0.25 });
-    const points = new THREE.Points(geo, mat);
-    scene.add(points);
-
-    const lineMat = new THREE.LineBasicMaterial({ color:0xC9A84C, transparent:true, opacity:0.05 });
-    for (let i = 0; i < 8; i++) {
-        const lg = new THREE.BufferGeometry().setFromPoints([
-            new THREE.Vector3((Math.random()-0.5)*60,(Math.random()-0.5)*60,(Math.random()-0.5)*20),
-            new THREE.Vector3((Math.random()-0.5)*60,(Math.random()-0.5)*60,(Math.random()-0.5)*20)
+    const canvas=document.getElementById('heroCanvas');
+    const renderer=new THREE.WebGLRenderer({canvas,alpha:true,antialias:true});
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio,2));
+    renderer.setSize(window.innerWidth,window.innerHeight);
+    const scene=new THREE.Scene();
+    const camera=new THREE.PerspectiveCamera(70,window.innerWidth/window.innerHeight,0.1,1000);
+    camera.position.z=28;
+    const count=600;
+    const pos=new Float32Array(count*3);
+    for(let i=0;i<count*3;i++) pos[i]=(Math.random()-.5)*75;
+    const geo=new THREE.BufferGeometry();
+    geo.setAttribute('position',new THREE.BufferAttribute(pos,3));
+    const mat=new THREE.PointsMaterial({color:0xC9A84C,size:.07,transparent:true,opacity:.22});
+    const pts=new THREE.Points(geo,mat);
+    scene.add(pts);
+    for(let i=0;i<10;i++){
+        const lg=new THREE.BufferGeometry().setFromPoints([
+            new THREE.Vector3((Math.random()-.5)*65,(Math.random()-.5)*65,(Math.random()-.5)*20),
+            new THREE.Vector3((Math.random()-.5)*65,(Math.random()-.5)*65,(Math.random()-.5)*20)
         ]);
-        scene.add(new THREE.Line(lg, lineMat));
+        scene.add(new THREE.Line(lg,new THREE.LineBasicMaterial({color:0xC9A84C,transparent:true,opacity:.04})));
     }
-
-    const clock = new THREE.Clock();
-    (function animate() {
-        requestAnimationFrame(animate);
-        const t = clock.getElapsedTime();
-        points.rotation.y = t * 0.025;
-        points.rotation.x = Math.sin(t * 0.08) * 0.06;
-        renderer.render(scene, camera);
+    const clk=new THREE.Clock();
+    (function anim(){
+        requestAnimationFrame(anim);
+        const t=clk.getElapsedTime();
+        pts.rotation.y=t*.022;
+        pts.rotation.x=Math.sin(t*.07)*.05;
+        renderer.render(scene,camera);
     })();
-
-    window.addEventListener('resize', () => {
-        renderer.setSize(window.innerWidth, window.innerHeight);
-        camera.aspect = window.innerWidth / window.innerHeight;
-        camera.updateProjectionMatrix();
-    });
-} catch(e) { console.warn('WebGL not available'); }
+    window.addEventListener('resize',()=>{renderer.setSize(window.innerWidth,window.innerHeight);camera.aspect=window.innerWidth/window.innerHeight;camera.updateProjectionMatrix();});
+} catch(e){console.warn('WebGL unavailable');}
 
 // ── COUNTERS ──
-function animateCounter(el) {
-    const target = parseFloat(el.dataset.target);
-    const isFloat = target % 1 !== 0;
-    const duration = 2200;
-    const start = performance.now();
-    function update(now) {
-        const progress = Math.min((now - start) / duration, 1);
-        const eased = 1 - Math.pow(1 - progress, 3);
-        el.textContent = isFloat ? (target * eased).toFixed(1) : Math.floor(target * eased);
-        if (progress < 1) requestAnimationFrame(update);
-        else el.textContent = isFloat ? target.toFixed(1) : target;
-    }
-    requestAnimationFrame(update);
-}
-document.querySelectorAll('.counter').forEach(el => {
-    const obs = new IntersectionObserver(entries => {
-        if (entries[0].isIntersecting) { animateCounter(el); obs.disconnect(); }
-    }, { threshold: 0.5 });
+document.querySelectorAll('.counter').forEach(el=>{
+    const obs=new IntersectionObserver(entries=>{
+        if(entries[0].isIntersecting){
+            const target=parseFloat(el.dataset.target);
+            const dur=2400,start=performance.now();
+            function upd(now){
+                const p=Math.min((now-start)/dur,1);
+                const e=1-Math.pow(1-p,4);
+                el.textContent=target%1!==0?(target*e).toFixed(1):Math.floor(target*e);
+                if(p<1)requestAnimationFrame(upd);else el.textContent=target%1!==0?target.toFixed(1):target;
+            }
+            requestAnimationFrame(upd);
+            obs.disconnect();
+        }
+    },{threshold:.5});
     obs.observe(el);
 });
 
 // ── CHART ──
-document.addEventListener("DOMContentLoaded", function() {
-    Chart.defaults.color = '#6b6560';
-    Chart.defaults.font.family = "'DM Sans', sans-serif";
-    const ctx = document.getElementById('dashboardChart')?.getContext('2d');
-    if (!ctx) return;
-    const gradGold = ctx.createLinearGradient(0,0,0,380);
-    gradGold.addColorStop(0,'rgba(201,168,76,0.3)');
-    gradGold.addColorStop(1,'rgba(201,168,76,0.0)');
-    const gradWhite = ctx.createLinearGradient(0,0,0,380);
-    gradWhite.addColorStop(0,'rgba(245,240,232,0.08)');
-    gradWhite.addColorStop(1,'rgba(245,240,232,0.0)');
-    new Chart(ctx, {
+document.addEventListener("DOMContentLoaded",function(){
+    Chart.defaults.color='#5a5550';
+    Chart.defaults.font.family="'DM Sans',sans-serif";
+    const ctx=document.getElementById('dashboardChart')?.getContext('2d');
+    if(!ctx) return;
+    const g1=ctx.createLinearGradient(0,0,0,380);
+    g1.addColorStop(0,'rgba(201,168,76,0.28)');g1.addColorStop(1,'rgba(201,168,76,0)');
+    const g2=ctx.createLinearGradient(0,0,0,380);
+    g2.addColorStop(0,'rgba(245,240,232,0.07)');g2.addColorStop(1,'rgba(245,240,232,0)');
+    new Chart(ctx,{
         type:'line',
-        data: {
+        data:{
             labels:['Month 1','Month 2','Month 3','Month 6','Month 9','Month 12'],
             datasets:[
-                { label:'Revenue Impact', data:[12,22,38,62,84,97], borderColor:'#C9A84C', backgroundColor:gradGold, borderWidth:2, fill:true, tension:0.45, pointBackgroundColor:'#000', pointBorderColor:'#C9A84C', pointRadius:4 },
-                { label:'Operational Efficiency', data:[8,18,30,55,72,89], borderColor:'rgba(245,240,232,0.4)', backgroundColor:gradWhite, borderWidth:1.5, fill:true, tension:0.45, pointBackgroundColor:'#000', pointBorderColor:'rgba(245,240,232,0.4)', pointRadius:3 }
+                {label:'Revenue Impact',data:[12,22,38,62,84,97],borderColor:'#C9A84C',backgroundColor:g1,borderWidth:1.5,fill:true,tension:.45,pointBackgroundColor:'#000',pointBorderColor:'#C9A84C',pointRadius:4,pointHoverRadius:6},
+                {label:'Operational Efficiency',data:[8,18,30,55,72,89],borderColor:'rgba(245,240,232,0.3)',backgroundColor:g2,borderWidth:1,fill:true,tension:.45,pointBackgroundColor:'#000',pointBorderColor:'rgba(245,240,232,0.3)',pointRadius:3}
             ]
         },
-        options: {
-            responsive:true, maintainAspectRatio:false,
-            plugins: {
-                legend:{ display:true, labels:{ color:'#6b6560', font:{ size:12 }, usePointStyle:true, padding:24 } },
-                tooltip:{ backgroundColor:'rgba(12,12,12,0.95)', titleColor:'#C9A84C', bodyColor:'#f5f0e8', padding:14, displayColors:false, borderColor:'rgba(201,168,76,0.2)', borderWidth:1 }
+        options:{
+            responsive:true,maintainAspectRatio:false,
+            plugins:{
+                legend:{display:true,labels:{color:'#5a5550',font:{size:11},usePointStyle:true,padding:28}},
+                tooltip:{backgroundColor:'rgba(10,10,10,0.96)',titleColor:'#C9A84C',bodyColor:'#f5f0e8',padding:16,displayColors:false,borderColor:'rgba(201,168,76,0.2)',borderWidth:1}
             },
-            scales: {
-                y:{ beginAtZero:true, max:100, grid:{ color:'rgba(255,255,255,0.04)' }, ticks:{ callback:v=>v+'%', color:'#6b6560' }, border:{ display:false } },
-                x:{ grid:{ display:false }, ticks:{ color:'#6b6560' }, border:{ display:false } }
+            scales:{
+                y:{beginAtZero:true,max:100,grid:{color:'rgba(255,255,255,0.03)'},ticks:{callback:v=>v+'%',color:'#5a5550'},border:{display:false}},
+                x:{grid:{display:false},ticks:{color:'#5a5550'},border:{display:false}}
             },
-            interaction:{ mode:'index', intersect:false }
+            interaction:{mode:'index',intersect:false}
         }
     });
 });
 
 // ── PARALLAX BANNER ──
-const banner = document.querySelector('.full-banner img');
-if (banner) {
-    window.addEventListener('scroll', () => {
-        const rect = banner.closest('.full-banner').getBoundingClientRect();
-        const offset = (rect.top / window.innerHeight) * 30;
-        banner.style.transform = `translateY(${offset}px)`;
+const bannerImg=document.querySelector('.full-banner img');
+if(bannerImg){
+    window.addEventListener('scroll',()=>{
+        const r=bannerImg.closest('.full-banner').getBoundingClientRect();
+        const o=(r.top/window.innerHeight)*35;
+        bannerImg.style.transform=`translateY(${o}px)`;
     });
 }
 </script>
 
-<!-- ── FORM SCRIPT — separado para garantizar carga ── -->
+<!-- ── FORM SCRIPT ── -->
 <script>
 var FORM_URL = "https://script.google.com/macros/s/AKfycbyRNuutnEnnVyITG1prwLtOd98S41avkQ6MIO8XWuANmycFAJVuyOgUSTGU1YlrgkA/exec";
 
-function showFieldError(id, msg) {
-    var el = document.getElementById("err-" + id);
-    var input = document.getElementById(id);
-    if (el) el.textContent = msg;
-    if (input) input.style.borderColor = "#e05c5c";
-}
-function clearErrors() {
-    ["fullName","company","email","phone","message"].forEach(function(id) {
-        var el = document.getElementById("err-" + id);
-        var input = document.getElementById(id);
-        if (el) el.textContent = "";
-        if (input) input.style.borderColor = "";
-    });
-}
+function showFieldError(id,msg){var e=document.getElementById("err-"+id);var i=document.getElementById(id);if(e)e.textContent=msg;if(i)i.style.borderColor="#e05c5c";}
+function clearErrors(){["fullName","company","email","phone","message"].forEach(function(id){var e=document.getElementById("err-"+id);var i=document.getElementById(id);if(e)e.textContent="";if(i)i.style.borderColor="";}); }
 
-function submitForm() {
+function submitForm(){
     clearErrors();
-    var fullName = document.getElementById("fullName").value.trim();
-    var company  = document.getElementById("company").value.trim();
-    var email    = document.getElementById("email").value.trim();
-    var phone    = document.getElementById("phone").value.trim();
-    var revenue  = document.getElementById("revenue").value;
-    var message  = document.getElementById("message").value.trim();
-
-    var valid = true;
-    if (!fullName) { showFieldError("fullName", "Full name is required"); valid = false; }
-    if (!company)  { showFieldError("company",  "Company name is required"); valid = false; }
-    if (!email || !email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) { showFieldError("email", "Enter a valid email"); valid = false; }
-    if (!phone)    { showFieldError("phone",    "Phone number is required"); valid = false; }
-    if (!message)  { showFieldError("message",  "Please describe your business"); valid = false; }
-    if (!valid) return;
-
-    var btn = document.getElementById("submit-btn");
-    btn.disabled = true;
-    btn.innerText = "Sending...";
-
-    var data = { fullName:fullName, company:company, email:email, phone:phone, revenue:revenue, message:message };
-
-    fetch(FORM_URL, {
-        method  : "POST",
-        mode    : "no-cors",
-        headers : { "Content-Type": "text/plain;charset=utf-8" },
-        body    : JSON.stringify(data)
-    }).then(function() {
-        document.getElementById("elevate-form").style.display = "none";
-        var success = document.getElementById("form-success");
-        success.style.display = "block";
-        document.getElementById("success-msg").textContent =
-            "Thank you, " + fullName.split(" ")[0] + ". Your application is under review. We've sent a confirmation to " + email + ".";
-        success.scrollIntoView({ behavior:"smooth", block:"center" });
-    }).catch(function(err) {
-        btn.disabled = false;
-        btn.innerText = "Submit Application →";
-        alert("Network error. Please try again or email us at executive@elevate-ai.com");
-    });
+    var fullName=document.getElementById("fullName").value.trim();
+    var company=document.getElementById("company").value.trim();
+    var email=document.getElementById("email").value.trim();
+    var phone=document.getElementById("phone").value.trim();
+    var revenue=document.getElementById("revenue").value;
+    var message=document.getElementById("message").value.trim();
+    var valid=true;
+    if(!fullName){showFieldError("fullName","Full name is required");valid=false;}
+    if(!company){showFieldError("company","Company name is required");valid=false;}
+    if(!email||!email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)){showFieldError("email","Enter a valid email");valid=false;}
+    if(!phone){showFieldError("phone","Phone number is required");valid=false;}
+    if(!message){showFieldError("message","Please describe your business");valid=false;}
+    if(!valid) return;
+    var btn=document.getElementById("submit-btn");
+    btn.disabled=true;btn.querySelector('span').textContent="Sending...";
+    fetch(FORM_URL,{method:"POST",mode:"no-cors",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify({fullName:fullName,company:company,email:email,phone:phone,revenue:revenue,message:message})})
+    .then(function(){
+        document.getElementById("elevate-form").style.display="none";
+        var s=document.getElementById("form-success");s.style.display="block";
+        document.getElementById("success-msg").textContent="Thank you, "+fullName.split(" ")[0]+". Your application is under review. We've sent a confirmation to "+email+".";
+        s.scrollIntoView({behavior:"smooth",block:"center"});
+    })
+    .catch(function(){btn.disabled=false;btn.querySelector('span').textContent="Submit Application →";alert("Network error. Please try again or email us at executive@elevate-ai.com");});
 }
 
-// Clear errors on input
-["fullName","company","email","phone","message"].forEach(function(id) {
-    var el = document.getElementById(id);
-    if (el) el.addEventListener("input", function() {
-        var errEl = document.getElementById("err-" + id);
-        if (errEl) errEl.textContent = "";
-        el.style.borderColor = "";
-    });
+["fullName","company","email","phone","message"].forEach(function(id){
+    var el=document.getElementById(id);
+    if(el) el.addEventListener("input",function(){var e=document.getElementById("err-"+id);if(e)e.textContent="";el.style.borderColor="";});
 });
 </script>
-
 </body>
 </html>
