@@ -59,11 +59,11 @@
         .reveal{opacity:0;transform:translateY(40px);}
         .revealed{opacity:1!important;transform:translateY(0)!important;transition:opacity .9s cubic-bezier(.2,.8,.2,1),transform .9s cubic-bezier(.2,.8,.2,1);}
 
-        .btn-gold{display:inline-flex;align-items:center;gap:12px;padding:16px 38px;background:var(--gold);color:#000;font-family:var(--font-b);font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;text-decoration:none;border:none;cursor:none;transition:all .3s;position:relative;overflow:hidden;}
+        .btn-gold{display:inline-flex;align-items:center;gap:12px;padding:16px 38px;background:var(--gold);color:#000;font-family:var(--font-b);font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;text-decoration:none;border:none;cursor:pointer;transition:all .3s;position:relative;overflow:hidden;}
         .btn-gold::before{content:'';position:absolute;inset:0;background:var(--gold-light);transform:scaleX(0);transform-origin:left;transition:transform .4s cubic-bezier(.2,.8,.2,1);}
         .btn-gold:hover::before{transform:scaleX(1);}
         .btn-gold span{position:relative;z-index:1;}
-        .btn-ghost{display:inline-flex;align-items:center;gap:12px;padding:15px 37px;background:transparent;color:var(--gold);font-family:var(--font-b);font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;text-decoration:none;border:1px solid rgba(201,168,76,0.4);cursor:none;transition:all .3s;}
+        .btn-ghost{display:inline-flex;align-items:center;gap:12px;padding:15px 37px;background:transparent;color:var(--gold);font-family:var(--font-b);font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;text-decoration:none;border:1px solid rgba(201,168,76,0.4);cursor:pointer;transition:all .3s;}
         .btn-ghost:hover{border-color:var(--gold);background:var(--gold-dim);transform:translateY(-2px);}
 
         /* ── HERO ── */
@@ -167,7 +167,7 @@
         /* ── AUTHORITY ── */
         .authority-inner{text-align:center;max-width:820px;margin:0 auto;}
         .authority-badges{display:flex;justify-content:center;gap:12px;margin-top:64px;flex-wrap:wrap;}
-        .badge{border:1px solid var(--border);padding:18px 26px;display:flex;flex-direction:column;align-items:center;gap:10px;transition:border-color .3s,background .3s;cursor:none;position:relative;overflow:hidden;}
+        .badge{border:1px solid var(--border);padding:18px 26px;display:flex;flex-direction:column;align-items:center;gap:10px;transition:border-color .3s,background .3s;cursor:pointer;position:relative;overflow:hidden;}
         .badge::before{content:'';position:absolute;inset:0;background:var(--gold-dim);transform:scaleY(0);transform-origin:bottom;transition:transform .4s cubic-bezier(.2,.8,.2,1);}
         .badge:hover::before{transform:scaleY(1);}
         .badge:hover{border-color:var(--gold);}
@@ -207,7 +207,7 @@
         input::placeholder,textarea::placeholder{color:rgba(90,85,80,0.8);}
         textarea{resize:vertical;min-height:110px;}
         select option{background:#111;color:var(--text);}
-        #submit-btn{width:100%;padding:18px;background:var(--gold);color:#000;border:none;font-family:var(--font-b);font-weight:700;font-size:11px;letter-spacing:2.5px;text-transform:uppercase;cursor:none;transition:all .3s;margin-top:8px;position:relative;overflow:hidden;}
+        #submit-btn{width:100%;padding:18px;background:var(--gold);color:#000;border:none;font-family:var(--font-b);font-weight:700;font-size:11px;letter-spacing:2.5px;text-transform:uppercase;cursor:pointer;transition:all .3s;margin-top:8px;position:relative;overflow:hidden;}
         #submit-btn::before{content:'';position:absolute;inset:0;background:var(--gold-light);transform:scaleX(0);transform-origin:left;transition:transform .4s cubic-bezier(.2,.8,.2,1);}
         #submit-btn:hover::before{transform:scaleX(1);}
         #submit-btn span{position:relative;z-index:1;}
@@ -219,7 +219,7 @@
         .footer-brand .logo{font-size:22px;}
         .footer-brand p{font-size:13px;color:var(--text-muted);margin-top:18px;line-height:1.75;font-weight:300;max-width:260px;}
         .footer-social{display:flex;gap:10px;margin-top:32px;}
-        .social-link{width:34px;height:34px;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;color:var(--text-muted);text-decoration:none;font-size:11px;font-weight:700;transition:all .3s;cursor:none;}
+        .social-link{width:34px;height:34px;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;color:var(--text-muted);text-decoration:none;font-size:11px;font-weight:700;transition:all .3s;cursor:pointer;}
         .social-link:hover{border-color:var(--gold);color:var(--gold);}
         .footer-col h4{font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--text-muted);margin-bottom:26px;font-weight:600;}
         .footer-col a{display:block;color:var(--text-muted);text-decoration:none;font-size:13px;margin-bottom:14px;transition:color .3s;font-weight:300;}
@@ -682,4 +682,10 @@ function submitForm(){
     .catch(function(){btn.disabled=false;btn.querySelector('span').textContent="Submit Application →";alert("Network error. Please try again or email us at executive@horus-ai.com");});
 }
 
-["fullName","company","email","phone","message"
+["fullName","company","email","phone","message"].forEach(function(id){
+    var el=document.getElementById(id);
+    if(el) el.addEventListener("input",function(){var e=document.getElementById("err-"+id);if(e)e.textContent="";el.style.borderColor="";});
+});
+</script>
+</body>
+</html>
