@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Elevate AI | Enterprise AI Systems That Multiply Revenue</title>
+    <title>HORUS | Enterprise AI Systems That Multiply Revenue</title>
     <meta name="description" content="We design AI infrastructures that automate growth, optimize operations, and increase profitability for any business.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,600&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
@@ -35,8 +35,11 @@
 
         /* ── HEADER ── */
         header{position:fixed;top:0;width:100%;height:var(--nav-h);display:flex;justify-content:space-between;align-items:center;padding:0 6%;z-index:1000;background:rgba(2,2,2,0.8);backdrop-filter:blur(32px);-webkit-backdrop-filter:blur(32px);border-bottom:1px solid var(--border);}
-        .logo{font-family:var(--font-d);font-size:21px;font-weight:600;letter-spacing:5px;color:var(--text);}
+        .logo{font-family:var(--font-d);font-size:21px;font-weight:600;letter-spacing:5px;color:var(--text);display:flex;align-items:center;gap:0;}
         .logo span{color:var(--gold);}
+        .logo-eye{display:inline-flex;align-items:center;justify-content:center;width:16px;height:16px;border:1.5px solid var(--gold);border-radius:50%;position:relative;flex-shrink:0;margin:0 5px 0 5px;box-shadow:0 0 8px rgba(201,168,76,0.5);animation:eyeGlow 3s ease-in-out infinite;}
+        .logo-eye::after{content:'';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:6px;height:6px;background:var(--gold);border-radius:50%;box-shadow:0 0 6px var(--gold);}
+        @keyframes eyeGlow{0%,100%{box-shadow:0 0 8px rgba(201,168,76,0.5);}50%{box-shadow:0 0 16px rgba(201,168,76,0.9),0 0 30px rgba(201,168,76,0.3);}}
         nav{display:flex;gap:36px;align-items:center;}
         nav a{color:var(--text-muted);text-decoration:none;font-size:10px;font-weight:500;text-transform:uppercase;letter-spacing:2px;transition:color .3s;position:relative;}
         nav a::after{content:'';position:absolute;bottom:-2px;left:0;width:0;height:1px;background:var(--gold);transition:width .3s;}
@@ -251,7 +254,7 @@
 
 <!-- ── HEADER ── -->
 <header>
-    <div class="logo">ELEV<span>A</span>TE</div>
+    <div class="logo"><span style="letter-spacing:5px;">H</span><span class="logo-eye"></span><span style="letter-spacing:5px;">RUS</span></div>
     <nav>
         <a href="#services">Services</a>
         <a href="#results">Results</a>
@@ -265,9 +268,9 @@
     <canvas id="heroCanvas"></canvas>
     <div class="hero-overlay"></div>
     <div class="hero-content reveal">
-        <div class="hero-eyebrow"><span class="hero-eyebrow-dot"></span>Trusted by Enterprise Leaders Worldwide</div>
-        <h1>Enterprise AI <span class="thin">that</span><br><em>Multiplies</em> Revenue</h1>
-        <p class="hero-sub">We design AI infrastructures that automate growth, optimize operations, and increase profitability for clinics, law firms, insurance agencies, and high-growth companies.</p>
+        <div class="hero-eyebrow"><span class="hero-eyebrow-dot"></span>The All-Seeing Enterprise Intelligence</div>
+        <h1>See Everything.<br><em>Miss Nothing.</em><br><span class="thin">Scale Without Limits.</span></h1>
+        <p class="hero-sub">HORUS is the AI operating system that sees what your business is losing — and eliminates it. Revenue leaks, missed leads, operational drag. We see it all, and we fix it.</p>
         <div class="hero-ctas">
             <a href="#contact" class="btn-gold"><span>Request Executive Consultation →</span></a>
             <a href="#services" class="btn-ghost">Explore Solutions</a>
@@ -384,7 +387,7 @@
         <div class="result-card"><span class="result-kpi counter" data-target="4">0</span><span style="font-size:12px;color:var(--gold);letter-spacing:1px;text-transform:uppercase;">× Faster Client Acquisition</span><h3>Boutique Law Firm</h3><p>AI-driven intake qualification and CRM automation converted 4× more inbound inquiries into retained clients in the first quarter.</p></div>
     </div>
     <div class="testimonials-grid reveal">
-        <div class="testimonial"><p>The AI infrastructure Elevate built didn't just automate our workflows — it fundamentally restructured how our revenue engine operates. We went from guessing to knowing exactly where every dollar was going and coming from.</p><div class="testimonial-author"><div class="author-avatar">M</div><div class="author-info"><strong>Marcus D.</strong><span>CEO, Meridian Capital Group</span></div></div></div>
+        <div class="testimonial"><p>The AI infrastructure HORUS built didn't just automate our workflows — it fundamentally restructured how our revenue engine operates. We went from guessing to knowing exactly where every dollar was going and coming from.</p><div class="testimonial-author"><div class="author-avatar">M</div><div class="author-info"><strong>Marcus D.</strong><span>CEO, Meridian Capital Group</span></div></div></div>
         <div class="testimonial"><p>Within 90 days, our patient scheduling was fully automated, our staff was freed from data entry, and our clinic's throughput increased by 40%. The ROI calculation was a no-brainer within the first month.</p><div class="testimonial-author"><div class="author-avatar">S</div><div class="author-info"><strong>Dr. Sofia R.</strong><span>Managing Director, Nexus Health Systems</span></div></div></div>
     </div>
     <div style="text-align:center;margin-top:60px;" class="reveal"><a href="#contact" class="btn-ghost">Request Full Case Study →</a></div>
@@ -395,8 +398,8 @@
     <img src="https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop&q=80&w=1600" alt="AI Systems">
     <div class="banner-overlay">
         <div class="banner-text">
-            <h2 class="display">AI That <em>Multiplies</em> Revenue<br>— Not Just Automation</h2>
-            <p>Every system measured by one metric: your bottom line</p>
+            <h2 class="display"><em>HORUS</em> Sees What<br>Others Miss</h2>
+            <p>The all-seeing AI operating system for enterprise revenue</p>
         </div>
     </div>
 </div>
@@ -428,7 +431,7 @@
             <span class="label">Zero-Friction Deployment</span>
             <h2 class="display" style="font-size:clamp(36px,4.5vw,58px);">Fluid integration.</h2>
             <div class="gold-line"></div>
-            <p class="body-text">Plug Elevate AI directly into your existing infrastructure. No complex migrations, zero downtime. Instant intelligence layered onto your current workflows from day one.</p>
+            <p class="body-text">Plug HORUS AI directly into your existing infrastructure. No complex migrations, zero downtime. Instant intelligence layered onto your current workflows from day one.</p>
         </div>
         <div class="infra-image-wrap"><img src="https://images.unsplash.com/photo-1639322537228-f710d846310a?auto=format&fit=crop&q=80&w=1000" alt="AI Integration" loading="lazy"></div>
     </div>
@@ -437,7 +440,7 @@
 <!-- ── AUTHORITY ── -->
 <div class="sw" id="authority">
     <div class="authority-inner reveal">
-        <span class="label">Why Elevate</span>
+        <span class="label">Why HORUS</span>
         <h2 class="display" style="font-size:clamp(44px,6vw,74px);">Built for 7 & 8<br>Figure Companies</h2>
         <div class="gold-line" style="margin:32px auto;"></div>
         <p class="body-text">We position ourselves not as a software vendor, but as a digital transformation partner. We work exclusively with businesses ready to scale with enterprise-grade AI infrastructure.</p>
@@ -474,8 +477,8 @@
                 We accept a limited number of new clients per quarter. Only serious inquiries from high-value businesses seeking transformational growth will receive a response.
             </div>
             <div style="margin-top:36px;">
-                <div class="contact-detail"><div class="contact-detail-icon">◎</div><span>executive@elevate-ai.com</span></div>
-                <div class="contact-detail"><div class="contact-detail-icon">◎</div><span>+1 (800) ELEVATE-AI</span></div>
+                <div class="contact-detail"><div class="contact-detail-icon">◎</div><span><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="badfc2dfd9cfced3ccdffadfd6dfccdbcedf97dbd394d9d5d7">[email&#160;protected]</a></span></div>
+                <div class="contact-detail"><div class="contact-detail-icon">◎</div><span>+1 (800) HORUS-AI</span></div>
             </div>
         </div>
         <div class="form-card reveal">
@@ -486,7 +489,7 @@
                 <div class="divider"></div>
                 <p style="font-size:12px;">We review every application carefully and respond only to high-fit partnerships within <strong style="color:var(--text);">48 business hours</strong>.</p>
             </div>
-            <form id="elevate-form" class="form-fields">
+            <form id="horus-form" class="form-fields">
                 <div class="form-row-2">
                     <div class="field-wrap"><input type="text" id="fullName" placeholder="Full Name" required><span class="field-error" id="err-fullName"></span></div>
                     <div class="field-wrap"><input type="text" id="company" placeholder="Company Name" required><span class="field-error" id="err-company"></span></div>
@@ -506,8 +509,8 @@
 <footer>
     <div class="footer-main">
         <div class="footer-brand">
-            <div class="logo">ELEV<span>A</span>TE</div>
-            <p>Building the autonomous cognitive infrastructure for the next generation of enterprise intelligence.</p>
+            <div class="logo"><span style="letter-spacing:5px;">H</span><span class="logo-eye"></span><span style="letter-spacing:5px;">RUS</span></div>
+            <p>The all-seeing AI operating system for the next generation of enterprise intelligence.</p>
             <div class="footer-social">
                 <a href="#" class="social-link">in</a><a href="#" class="social-link">tw</a><a href="#" class="social-link">yt</a><a href="#" class="social-link">ig</a>
             </div>
@@ -517,12 +520,12 @@
         <div class="footer-col"><h4>Legal</h4><a href="#">Privacy Policy</a><a href="#">Terms of Service</a><a href="#">Data Security</a><a href="#">Cookie Policy</a></div>
     </div>
     <div class="footer-bottom">
-        <p>© 2026 Elevate AI Solutions. All rights reserved.</p>
-        <p>Enterprise AI Infrastructure · Revenue Intelligence · Autonomous Business Systems</p>
+        <p>© 2026 HORUS AI Solutions. All rights reserved.</p>
+        <p>HORUS AI · The All-Seeing Enterprise · Revenue Intelligence</p>
     </div>
 </footer>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 // ── CUSTOM CURSOR ──
 const cur = document.getElementById('cursor');
 const ring = document.getElementById('cursor-ring');
@@ -671,18 +674,12 @@ function submitForm(){
     btn.disabled=true;btn.querySelector('span').textContent="Sending...";
     fetch(FORM_URL,{method:"POST",mode:"no-cors",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify({fullName:fullName,company:company,email:email,phone:phone,revenue:revenue,message:message})})
     .then(function(){
-        document.getElementById("elevate-form").style.display="none";
+        document.getElementById("horus-form").style.display="none";
         var s=document.getElementById("form-success");s.style.display="block";
         document.getElementById("success-msg").textContent="Thank you, "+fullName.split(" ")[0]+". Your application is under review. We've sent a confirmation to "+email+".";
         s.scrollIntoView({behavior:"smooth",block:"center"});
     })
-    .catch(function(){btn.disabled=false;btn.querySelector('span').textContent="Submit Application →";alert("Network error. Please try again or email us at executive@elevate-ai.com");});
+    .catch(function(){btn.disabled=false;btn.querySelector('span').textContent="Submit Application →";alert("Network error. Please try again or email us at executive@horus-ai.com");});
 }
 
-["fullName","company","email","phone","message"].forEach(function(id){
-    var el=document.getElementById(id);
-    if(el) el.addEventListener("input",function(){var e=document.getElementById("err-"+id);if(e)e.textContent="";el.style.borderColor="";});
-});
-</script>
-</body>
-</html>
+["fullName","company","email","phone","message"
