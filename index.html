@@ -234,6 +234,8 @@
                     <div class="field-wrap"><input type="text" id="fullName" placeholder="Full Name" required><span class="field-error" id="err-fullName"></span></div>
                     <div class="field-wrap"><input type="text" id="company" placeholder="Company Name" required><span class="field-error" id="err-company"></span></div>
                 </div>
+                <!-- ── CAMPO WEBSITE AGREGADO ── -->
+                <div class="field-wrap"><input type="text" id="website" placeholder="Company Website (e.g. www.yourcompany.com)"><span class="field-error" id="err-website"></span></div>
                 <div class="field-wrap"><input type="email" id="email" placeholder="Corporate Email" required><span class="field-error" id="err-email"></span></div>
                 <div class="field-wrap"><input type="tel" id="phone" placeholder="Phone Number" required><span class="field-error" id="err-phone"></span></div>
                 <select id="revenue"><option value="" disabled selected>Annual Revenue Range</option><option>$500K – $1M</option><option>$1M – $5M</option><option>$5M – $10M</option><option>$10M – $25M</option><option>$25M+</option></select>
@@ -319,17 +321,18 @@ if(bannerImg){window.addEventListener('scroll',()=>{const r=bannerImg.closest('.
 var FORM_URL = "https://script.google.com/macros/s/AKfycbxN7-xHoca2I6-dmtOKIR_VE7kUDGsSRYJzQTfx5yIS6JM5ol5OJXUk-eiZKPNxfyK0/exec";
 
 function showFieldError(id,msg){var e=document.getElementById("err-"+id);var i=document.getElementById(id);if(e)e.textContent=msg;if(i)i.style.borderColor="#e05c5c";}
-function clearErrors(){["fullName","company","email","phone","message"].forEach(function(id){var e=document.getElementById("err-"+id);var i=document.getElementById(id);if(e)e.textContent="";if(i)i.style.borderColor="";});}
+function clearErrors(){["fullName","company","website","email","phone","message"].forEach(function(id){var e=document.getElementById("err-"+id);var i=document.getElementById(id);if(e)e.textContent="";if(i)i.style.borderColor="";});}
 
 function submitForm(){
     clearErrors();
-    var fullName=document.getElementById("fullName").value.trim();
-    var company=document.getElementById("company").value.trim();
-    var email=document.getElementById("email").value.trim();
-    var phone=document.getElementById("phone").value.trim();
-    var revenue=document.getElementById("revenue").value;
-    var message=document.getElementById("message").value.trim();
-    var valid=true;
+    var fullName = document.getElementById("fullName").value.trim();
+    var company  = document.getElementById("company").value.trim();
+    var website  = document.getElementById("website").value.trim();  // ← NUEVO
+    var email    = document.getElementById("email").value.trim();
+    var phone    = document.getElementById("phone").value.trim();
+    var revenue  = document.getElementById("revenue").value;
+    var message  = document.getElementById("message").value.trim();
+    var valid = true;
     if(!fullName){showFieldError("fullName","Full name is required");valid=false;}
     if(!company){showFieldError("company","Company name is required");valid=false;}
     if(!email||!email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)){showFieldError("email","Enter a valid email");valid=false;}
@@ -338,7 +341,15 @@ function submitForm(){
     if(!valid)return;
     var btn=document.getElementById("submit-btn");
     btn.disabled=true;btn.querySelector('span').textContent="Sending...";
-    fetch(FORM_URL,{method:"POST",mode:"no-cors",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify({fullName:fullName,company:company,email:email,phone:phone,revenue:revenue,message:message})})
+    fetch(FORM_URL,{method:"POST",mode:"no-cors",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify({
+        fullName: fullName,
+        company:  company,
+        website:  website,   // ← NUEVO
+        email:    email,
+        phone:    phone,
+        revenue:  revenue,
+        message:  message
+    })})
     .then(function(){
         document.getElementById("horus-form").style.display="none";
         var s=document.getElementById("form-success");s.style.display="block";
@@ -351,7 +362,7 @@ function submitForm(){
     });
 }
 
-["fullName","company","email","phone","message"].forEach(function(id){
+["fullName","company","website","email","phone","message"].forEach(function(id){
     var el=document.getElementById(id);
     if(el)el.addEventListener("input",function(){var e=document.getElementById("err-"+id);if(e)e.textContent="";el.style.borderColor="";});
 });
