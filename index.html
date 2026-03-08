@@ -217,7 +217,7 @@
                 We accept a limited number of new clients per quarter. Only serious inquiries from high-value businesses seeking transformational growth will receive a response.
             </div>
             <div style="margin-top:36px;">
-                <div class="contact-detail"><div class="contact-detail-icon">◎</div><span>executive@horus-ai.com</span></div>
+                <div class="contact-detail"><div class="contact-detail-icon">◎</div><span><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="197c617c7a6c6d706f7c5971766b6c6a347870377a7674">[email&#160;protected]</a></span></div>
                 <div class="contact-detail"><div class="contact-detail-icon">◎</div><span>+1 (800) HORUS-AI</span></div>
             </div>
         </div>
@@ -238,6 +238,25 @@
                 <div class="field-wrap"><input type="text" id="website" placeholder="Company Website (e.g. www.yourcompany.com)"><span class="field-error" id="err-website"></span></div>
                 <div class="field-wrap"><input type="email" id="email" placeholder="Corporate Email" required><span class="field-error" id="err-email"></span></div>
                 <div class="field-wrap"><input type="tel" id="phone" placeholder="Phone Number" required><span class="field-error" id="err-phone"></span></div>
+                <!-- ── CAMPO INDUSTRIA AGREGADO ── -->
+                <select id="industry">
+                  <option value="" disabled selected>Industry / Sector</option>
+                  <option>Manufacturing & Industrial</option>
+                  <option>CNC / Machining</option>
+                  <option>Logistics & Supply Chain</option>
+                  <option>Industrial Automation</option>
+                  <option>Construction & Home Services</option>
+                  <option>Automotive</option>
+                  <option>Healthcare & Medical</option>
+                  <option>Legal & Financial Services</option>
+                  <option>Restaurant & Food Service</option>
+                  <option>Retail & Commerce</option>
+                  <option>Business Services & Agency</option>
+                  <option>Education</option>
+                  <option>Technology</option>
+                  <option>Real Estate</option>
+                  <option>Other</option>
+                </select>
                 <select id="revenue"><option value="" disabled selected>Annual Revenue Range</option><option>$500K – $1M</option><option>$1M – $5M</option><option>$5M – $10M</option><option>$10M – $25M</option><option>$25M+</option></select>
                 <div class="field-wrap"><textarea id="message" placeholder="Describe your business and what you want to automate or optimize..." required></textarea><span class="field-error" id="err-message"></span></div>
                 <button type="button" id="submit-btn" onclick="submitForm()"><span>Submit Application →</span></button>
@@ -266,7 +285,7 @@
     </div>
 </footer>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 // ── CUSTOM CURSOR ──
 const cur=document.getElementById('cursor');const ring=document.getElementById('cursor-ring');let mx=0,my=0,rx=0,ry=0;
 document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.left=mx+'px';cur.style.top=my+'px';});
@@ -330,6 +349,7 @@ function submitForm(){
     var website  = document.getElementById("website").value.trim();  // ← NUEVO
     var email    = document.getElementById("email").value.trim();
     var phone    = document.getElementById("phone").value.trim();
+    var industry = document.getElementById("industry").value;
     var revenue  = document.getElementById("revenue").value;
     var message  = document.getElementById("message").value.trim();
     var valid = true;
@@ -347,6 +367,7 @@ function submitForm(){
         website:  website,   // ← NUEVO
         email:    email,
         phone:    phone,
+        industry: industry,
         revenue:  revenue,
         message:  message
     })})
