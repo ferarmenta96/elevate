@@ -1,4 +1,65 @@
-<!DOCTYPE html><html lang="en"><head>    <meta charset="UTF-8">    <meta name="viewport" content="width=device-width, initial-scale=1.0">    <title>HORUS | Enterprise AI Systems That Multiply Revenue</title>    <meta name="description" content="We design AI infrastructures that automate growth, optimize operations, and increase profitability for any business.">    <link rel="preconnect" href="https://fonts.googleapis.com">    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,600&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.3.0/dist/chart.umd.min.js"></script>    <style>        :root {            --bg:#020202; --bg-card:#0a0a0a; --bg-elevated:#111;            --text:#f5f0e8; --text-muted:#5a5550;            --gold:#C9A84C; --gold-light:#E8CC7A; --gold-dim:rgba(201,168,76,0.1);            --border:rgba(201,168,76,0.14); --border-dim:rgba(255,255,255,0.04);            --nav-h:72px;            --font-d:'Cormorant Garamond',serif; --font-b:'DM Sans',sans-serif;        }        *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}        html{scroll-behavior:smooth;background:var(--bg);}        body{background:var(--bg);color:var(--text);overflow-x:hidden;-webkit-font-smoothing:antialiased;font-family:var(--font-b);cursor:none;}        ::-webkit-scrollbar{width:2px;}        ::-webkit-scrollbar-track{background:var(--bg);}        ::-webkit-scrollbar-thumb{background:var(--gold);}        #cursor{position:fixed;width:8px;height:8px;background:var(--gold);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:width .2s,height .2s,opacity .2s;}        #cursor-ring{position:fixed;width:32px;height:32px;border:1px solid rgba(201,168,76,0.4);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:transform .12s ease,width .3s,height .3s,border-color .3s;mix-blend-mode:difference;}        body:hover #cursor{opacity:1;}        body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");pointer-events:none;z-index:9990;opacity:.35;}        header{position:fixed;top:0;width:100%;height:var(--nav-h);display:flex;justify-content:space-between;align-items:center;padding:0 6%;z-index:1000;background:rgba(2,2,2,0.8);backdrop-filter:blur(32px);-webkit-backdrop-filter:blur(32px);border-bottom:1px solid var(--border);}        .logo{font-family:var(--font-d);font-size:21px;font-weight:600;letter-spacing:5px;color:var(--text);display:flex;align-items:center;gap:0;}        .logo span{color:var(--gold);}        .logo-eye{display:inline-flex;align-items:center;justify-content:center;width:16px;height:16px;border:1.5px solid var(--gold);border-radius:50%;position:relative;flex-shrink:0;margin:0 5px 0 5px;box-shadow:0 0 8px rgba(201,168,76,0.5);animation:eyeGlow 3s ease-in-out infinite;}        .logo-eye::after{content:'';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:6px;height:6px;background:var(--gold);border-radius:50%;box-shadow:0 0 6px var(--gold);}        @keyframes eyeGlow{0%,100%{box-shadow:0 0 8px rgba(201,168,76,0.5);}50%{box-shadow:0 0 16px rgba(201,168,76,0.9),0 0 30px rgba(201,168,76,0.3);}}        nav{display:flex;gap:36px;align-items:center;}        nav a{color:var(--text-muted);text-decoration:none;font-size:10px;font-weight:500;text-transform:uppercase;letter-spacing:2px;transition:color .3s;position:relative;}        nav a::after{content:'';position:absolute;bottom:-2px;left:0;width:0;height:1px;background:var(--gold);transition:width .3s;}        nav a:hover{color:var(--gold);}        nav a:hover::after{width:100%;}        .nav-cta{background:var(--gold)!important;color:#000!important;padding:10px 24px;border-radius:1px;font-weight:700!important;letter-spacing:2px!important;}        .nav-cta::after{display:none!important;}        .nav-cta:hover{background:var(--gold-light)!important;color:#000!important;}        .sw{max-width:1360px;margin:0 auto;padding:140px 6%;}        .label{font-size:9px;font-weight:600;letter-spacing:4px;text-transform:uppercase;color:var(--gold);margin-bottom:20px;display:flex;align-items:center;gap:12px;}        .label::before{content:'';width:24px;height:1px;background:var(--gold);display:inline-block;flex-shrink:0;}        .display{font-family:var(--font-d);font-weight:600;line-height:.95;letter-spacing:-.02em;}        .body-text{color:var(--text-muted);line-height:1.8;font-size:15px;margin-top:20px;font-weight:300;}        .gold-line{width:1px;height:60px;background:linear-gradient(to bottom,var(--gold),transparent);display:block;margin:28px 0;}        .reveal{opacity:0;transform:translateY(40px);}        .revealed{opacity:1!important;transform:translateY(0)!important;transition:opacity .9s cubic-bezier(.2,.8,.2,1),transform .9s cubic-bezier(.2,.8,.2,1);}        .btn-gold{display:inline-flex;align-items:center;gap:12px;padding:16px 38px;background:var(--gold);color:#000;font-family:var(--font-b);font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;text-decoration:none;border:none;cursor:pointer;transition:all .3s;position:relative;overflow:hidden;}        .btn-gold::before{content:'';position:absolute;inset:0;background:var(--gold-light);transform:scaleX(0);transform-origin:left;transition:transform .4s cubic-bezier(.2,.8,.2,1);}        .btn-gold:hover::before{transform:scaleX(1);}        .btn-gold span{position:relative;z-index:1;}        .btn-ghost{display:inline-flex;align-items:center;gap:12px;padding:15px 37px;background:transparent;color:var(--gold);font-family:var(--font-b);font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;text-decoration:none;border:1px solid rgba(201,168,76,0.4);cursor:pointer;transition:all .3s;}        .btn-ghost:hover{border-color:var(--gold);background:var(--gold-dim);transform:translateY(-2px);}        .hero{min-height:100vh;position:relative;display:flex;align-items:center;justify-content:center;text-align:center;overflow:hidden;padding-top:var(--nav-h);}        #heroCanvas{position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;}        .hero-overlay{position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 50% 20%,rgba(201,168,76,0.06) 0%,transparent 70%),linear-gradient(to bottom,transparent 50%,var(--bg) 100%);z-index:1;}        .hero-content{position:relative;z-index:2;max-width:1000px;padding:0 24px;}        .hero-eyebrow{display:inline-flex;align-items:center;gap:10px;padding:9px 22px;border:1px solid var(--border);font-size:10px;font-weight:500;letter-spacing:2px;color:var(--gold);margin-bottom:50px;background:rgba(201,168,76,0.04);text-transform:uppercase;}        .hero-eyebrow-dot{width:5px;height:5px;border-radius:50%;background:var(--gold);animation:pulse 2s infinite;}        @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.3;transform:scale(.8)}}        .hero h1{font-size:clamp(56px,8vw,104px);font-family:var(--font-d);font-weight:600;line-height:.92;margin-bottom:32px;letter-spacing:-.02em;}        .hero h1 em{font-style:italic;color:var(--gold);font-weight:400;}        .hero h1 .thin{font-weight:300;color:rgba(245,240,232,0.6);}        .hero-sub{font-size:clamp(15px,1.6vw,18px);max-width:620px;margin:0 auto;color:var(--text-muted);line-height:1.75;font-weight:300;}        .hero-ctas{display:flex;gap:16px;justify-content:center;margin-top:54px;flex-wrap:wrap;}        .hero-scroll{position:absolute;bottom:40px;left:50%;transform:translateX(-50%);z-index:2;display:flex;flex-direction:column;align-items:center;gap:8px;}        .hero-scroll span{font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--text-muted);}        .scroll-line{width:1px;height:50px;background:linear-gradient(to bottom,var(--gold),transparent);animation:scrollLine 2s ease infinite;}        @keyframes scrollLine{0%{transform:scaleY(0);transform-origin:top}50%{transform:scaleY(1);transform-origin:top}51%{transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}        .trusted-bar{margin-top:100px;display:flex;flex-direction:column;align-items:center;gap:22px;}        .trusted-label{font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--text-muted);}        .trusted-logos{display:flex;gap:48px;align-items:center;flex-wrap:wrap;justify-content:center;opacity:.22;filter:grayscale(1);}        .trusted-logos span{font-family:var(--font-d);font-size:14px;font-weight:600;letter-spacing:3px;text-transform:uppercase;}        .pain-center{text-align:center;max-width:740px;margin:0 auto;}        .pain-grid{display:grid;grid-template-columns:1fr 1fr;margin-top:80px;}        .pain-stat{padding:56px 50px;border:1px solid var(--border);margin:-1px 0 0 -1px;position:relative;overflow:hidden;transition:background .4s;}        .pain-stat::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(201,168,76,0.04) 0%,transparent 60%);opacity:0;transition:opacity .4s;}        .pain-stat:hover{background:rgba(201,168,76,0.02);}        .pain-stat:hover::after{opacity:1;}        .pain-accent{position:absolute;top:0;left:0;width:0;height:2px;background:linear-gradient(to right,var(--gold),transparent);transition:width .6s cubic-bezier(.2,.8,.2,1);}        .pain-stat:hover .pain-accent{width:100%;}        .pain-number{font-family:var(--font-d);font-size:clamp(60px,7vw,88px);font-weight:700;color:var(--gold);line-height:1;display:block;}        .pain-unit{font-size:14px;color:rgba(201,168,76,0.7);font-family:var(--font-d);font-style:italic;margin-top:4px;display:block;}        .pain-stat h3{font-family:var(--font-d);font-size:20px;margin-top:20px;font-weight:600;letter-spacing:.5px;}        .pain-stat p{font-size:13px;color:var(--text-muted);margin-top:10px;line-height:1.7;font-weight:300;}        .tier{margin-bottom:120px;}        .tier-header{display:flex;align-items:flex-start;gap:60px;margin-bottom:50px;}        .tier-num{font-family:var(--font-d);font-size:100px;font-weight:700;color:rgba(201,168,76,0.08);line-height:1;flex-shrink:0;margin-top:-10px;}        .tier-title-block h2{font-size:clamp(32px,4vw,54px);font-family:var(--font-d);font-weight:600;}        .tier-grid{display:grid;grid-template-columns:1.3fr 1fr;gap:1px;background:rgba(201,168,76,0.08);}        .tier-image{grid-row:span 2;overflow:hidden;min-height:440px;position:relative;}        .tier-image img{width:100%;height:100%;object-fit:cover;filter:grayscale(50%) brightness(0.65);transition:all 1.4s cubic-bezier(.2,.8,.2,1);display:block;}        .tier-image::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(201,168,76,0.08) 0%,transparent 50%);}        .tier:hover .tier-image img{filter:grayscale(0%) brightness(0.85);transform:scale(1.06);}        .service-item{background:var(--bg-card);padding:26px 30px;display:flex;align-items:center;gap:16px;transition:background .25s,padding-left .25s;}        .service-item:hover{background:var(--bg-elevated);padding-left:36px;}        .service-dot{width:5px;height:5px;border-radius:50%;background:var(--gold);flex-shrink:0;transition:transform .25s;}        .service-item:hover .service-dot{transform:scale(1.6);}        .service-item span{font-size:13px;font-weight:400;color:var(--text-muted);letter-spacing:.3px;transition:color .25s;}        .service-item:hover span{color:var(--text);}        .tier-cta-block{background:var(--bg-card);padding:30px;display:flex;align-items:center;justify-content:space-between;gap:20px;border-top:1px solid var(--border);}        .results-header{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:end;margin-bottom:70px;}        .results-header h2{font-size:clamp(40px,5vw,68px);font-family:var(--font-d);font-weight:600;}        .results-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);margin-bottom:2px;}        .result-card{background:var(--bg-card);padding:48px 36px;transition:background .3s;position:relative;overflow:hidden;}        .result-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(to right,transparent,var(--gold),transparent);opacity:0;transition:opacity .4s;}        .result-card:hover{background:var(--bg-elevated);}        .result-card:hover::before{opacity:1;}        .result-kpi{font-family:var(--font-d);font-size:60px;font-weight:700;color:var(--gold);line-height:1;display:block;}        .result-card h3{font-size:15px;font-weight:600;margin-top:16px;letter-spacing:.3px;}        .result-card p{font-size:13px;color:var(--text-muted);margin-top:10px;line-height:1.7;font-weight:300;}        .testimonials-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--border);}        .testimonial{background:var(--bg-card);padding:44px;position:relative;transition:background .3s;}        .testimonial:hover{background:var(--bg-elevated);}        .testimonial::before{content:'\201C';font-family:var(--font-d);font-size:120px;color:var(--gold);opacity:.08;position:absolute;top:10px;left:24px;line-height:1;}        .testimonial p{font-size:15px;line-height:1.8;color:rgba(245,240,232,0.8);font-weight:300;margin:0;position:relative;z-index:1;font-style:italic;}        .testimonial-author{margin-top:28px;display:flex;align-items:center;gap:14px;}        .author-avatar{width:44px;height:44px;border-radius:50%;background:var(--gold-dim);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-family:var(--font-d);font-weight:600;color:var(--gold);font-size:18px;flex-shrink:0;}        .author-info strong{display:block;font-size:13px;font-weight:600;letter-spacing:.3px;}        .author-info span{font-size:11px;color:var(--text-muted);letter-spacing:.5px;}        .full-banner{width:100%;height:460px;overflow:hidden;position:relative;border-top:1px solid var(--border);border-bottom:1px solid var(--border);}        .full-banner img{width:100%;height:130%;object-fit:cover;filter:grayscale(70%) brightness(0.45);display:block;}        .banner-overlay{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(2,2,2,0.5);}        .banner-text{text-align:center;padding:0 24px;}        .banner-text h2{font-family:var(--font-d);font-size:clamp(32px,5vw,68px);font-weight:600;line-height:.95;}        .banner-text h2 em{font-style:italic;color:var(--gold);}        .banner-text p{font-size:14px;color:rgba(245,240,232,0.5);margin-top:18px;letter-spacing:1px;text-transform:uppercase;}        .metrics-title{text-align:center;max-width:760px;margin:0 auto 60px;}        .metrics-title h2{font-size:clamp(40px,5vw,64px);}        .chart-wrap{background:var(--bg-card);border:1px solid var(--border);padding:50px;position:relative;overflow:hidden;}        .chart-wrap::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(to right,transparent,var(--gold),transparent);}        .chart-container-fix{position:relative;height:45vh;min-height:380px;}        .infra-grid{display:grid;grid-template-columns:1fr 1fr;gap:100px;align-items:center;}        .infra-image-wrap{overflow:hidden;position:relative;}        .infra-image-wrap::after{content:'';position:absolute;inset:0;border:1px solid var(--border);pointer-events:none;}        .infra-image-wrap img{width:100%;display:block;filter:grayscale(40%) brightness(0.7);transition:all 1.4s cubic-bezier(.2,.8,.2,1);}        .infra-grid:hover .infra-image-wrap img{filter:grayscale(0%) brightness(.9);transform:scale(1.04);}        .authority-inner{text-align:center;max-width:820px;margin:0 auto;}        .authority-badges{display:flex;justify-content:center;gap:12px;margin-top:64px;flex-wrap:wrap;}        .badge{border:1px solid var(--border);padding:18px 26px;display:flex;flex-direction:column;align-items:center;gap:10px;transition:border-color .3s,background .3s;cursor:pointer;position:relative;overflow:hidden;}        .badge::before{content:'';position:absolute;inset:0;background:var(--gold-dim);transform:scaleY(0);transform-origin:bottom;transition:transform .4s cubic-bezier(.2,.8,.2,1);}        .badge:hover::before{transform:scaleY(1);}        .badge:hover{border-color:var(--gold);}        .badge-icon{color:var(--gold);font-size:18px;position:relative;}        .badge span{font-size:9px;letter-spacing:2px;text-transform:uppercase;font-weight:600;color:var(--text-muted);position:relative;}        .split-authority{display:grid;grid-template-columns:1fr 1fr;gap:100px;align-items:center;margin-top:110px;}        .split-authority img{width:100%;aspect-ratio:4/3;object-fit:cover;filter:grayscale(40%) brightness(0.7);transition:all 1.4s;display:block;}        .split-authority:hover img{filter:grayscale(0%) brightness(.9);}        .img-frame{overflow:hidden;position:relative;}        .img-frame::after{content:'';position:absolute;inset:0;border:1px solid var(--border);pointer-events:none;}        .contact-inner{display:grid;grid-template-columns:1fr 1.2fr;gap:100px;}        .contact-info h2{font-size:clamp(36px,5vw,60px);}        .contact-disclaimer{margin-top:40px;padding:24px;border-left:2px solid var(--gold);background:rgba(201,168,76,0.04);font-size:12px;line-height:1.75;color:var(--text-muted);}        .contact-disclaimer strong{color:var(--gold);display:block;margin-bottom:8px;font-size:9px;letter-spacing:3px;text-transform:uppercase;}        .contact-detail{display:flex;align-items:center;gap:14px;margin-top:16px;}        .contact-detail-icon{width:36px;height:36px;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;color:var(--gold);font-size:14px;flex-shrink:0;}        .contact-detail span{font-size:13px;color:var(--text-muted);}        .form-card{background:var(--bg-card);border:1px solid var(--border);padding:52px;position:relative;overflow:hidden;}        .form-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(to right,transparent,var(--gold),transparent);}        .form-success{display:none;text-align:center;padding:60px 30px;}        .success-icon{font-family:var(--font-d);font-size:56px;color:var(--gold);margin-bottom:24px;display:block;}        .form-success h3{font-family:var(--font-d);font-size:36px;font-weight:600;margin-bottom:14px;}        .form-success p{color:var(--text-muted);font-size:14px;line-height:1.7;font-weight:300;}        .form-success .divider{width:1px;height:40px;background:linear-gradient(to bottom,var(--gold),transparent);margin:28px auto;}        .form-fields{display:flex;flex-direction:column;gap:12px;}        .form-row-2{display:grid;grid-template-columns:1fr 1fr;gap:12px;}        .field-wrap{display:flex;flex-direction:column;gap:4px;}        .field-error{font-size:10px;color:#e05c5c;min-height:14px;padding-left:2px;letter-spacing:.3px;}        input,textarea,select{padding:15px 18px;border:1px solid var(--border-dim);background:rgba(20,20,20,0.8);color:var(--text);font-family:var(--font-b);font-size:13px;transition:border-color .3s,background .3s;outline:none;width:100%;border-radius:0;}        input:focus,textarea:focus,select:focus{border-color:rgba(201,168,76,0.5);background:rgba(12,8,0,0.9);}        input::placeholder,textarea::placeholder{color:rgba(90,85,80,0.8);}        textarea{resize:vertical;min-height:110px;}        select option{background:#111;color:var(--text);}        #submit-btn{width:100%;padding:18px;background:var(--gold);color:#000;border:none;font-family:var(--font-b);font-weight:700;font-size:11px;letter-spacing:2.5px;text-transform:uppercase;cursor:pointer;transition:all .3s;margin-top:8px;position:relative;overflow:hidden;}        #submit-btn::before{content:'';position:absolute;inset:0;background:var(--gold-light);transform:scaleX(0);transform-origin:left;transition:transform .4s cubic-bezier(.2,.8,.2,1);}        #submit-btn:hover::before{transform:scaleX(1);}        #submit-btn span{position:relative;z-index:1;}        #submit-btn:disabled{opacity:.6;cursor:not-allowed;}        footer{border-top:1px solid var(--border);background:var(--bg);}        .footer-main{max-width:1360px;margin:0 auto;padding:90px 6% 56px;display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:60px;}        .footer-brand .logo{font-size:22px;}        .footer-brand p{font-size:13px;color:var(--text-muted);margin-top:18px;line-height:1.75;font-weight:300;max-width:260px;}        .footer-social{display:flex;gap:10px;margin-top:32px;}        .social-link{width:34px;height:34px;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;color:var(--text-muted);text-decoration:none;font-size:11px;font-weight:700;transition:all .3s;cursor:pointer;}        .social-link:hover{border-color:var(--gold);color:var(--gold);}        .footer-col h4{font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--text-muted);margin-bottom:26px;font-weight:600;}        .footer-col a{display:block;color:var(--text-muted);text-decoration:none;font-size:13px;margin-bottom:14px;transition:color .3s;font-weight:300;}        .footer-col a:hover{color:var(--gold);}        .footer-bottom{border-top:1px solid var(--border-dim);padding:28px 6%;max-width:1360px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;}        .footer-bottom p{font-size:11px;color:rgba(90,85,80,0.7);font-weight:300;letter-spacing:.5px;}        @media(max-width:1024px){.pain-grid,.tier-grid,.infra-grid,.contact-inner,.split-authority,.results-header{grid-template-columns:1fr;gap:50px;}.tier-image{grid-row:auto;min-height:280px;}.results-grid{grid-template-columns:1fr 1fr;}.footer-main{grid-template-columns:1fr 1fr;}}        @media(max-width:768px){nav a:not(.nav-cta){display:none;}.testimonials-grid,.results-grid,.form-row-2{grid-template-columns:1fr;}.tier-header{flex-direction:column;gap:16px;}.tier-num{font-size:60px;}.footer-main{grid-template-columns:1fr;gap:40px;}.footer-bottom{flex-direction:column;gap:12px;text-align:center;}.full-banner{height:320px;}body{cursor:auto;}#cursor,#cursor-ring{display:none;}}    </style></head><body>
+<!DOCTYPE html><html lang="en"><head>    <meta charset="UTF-8">    <meta name="viewport" content="width=device-width, initial-scale=1.0">    <title>HORUS | Enterprise AI Systems That Multiply Revenue</title>    <meta name="description" content="We design AI infrastructures that automate growth, optimize operations, and increase profitability for any business.">    <link rel="preconnect" href="https://fonts.googleapis.com">    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,600&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.3.0/dist/chart.umd.min.js"></script>    <style>        :root {            --bg:#020202; --bg-card:#0a0a0a; --bg-elevated:#111;            --text:#f5f0e8; --text-muted:#5a5550;            --gold:#C9A84C; --gold-light:#E8CC7A; --gold-dim:rgba(201,168,76,0.1);            --border:rgba(201,168,76,0.14); --border-dim:rgba(255,255,255,0.04);            --nav-h:72px;            --font-d:'Cormorant Garamond',serif; --font-b:'DM Sans',sans-serif;        }        *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}        html{scroll-behavior:smooth;background:var(--bg);}        body{background:var(--bg);color:var(--text);overflow-x:hidden;-webkit-font-smoothing:antialiased;font-family:var(--font-b);cursor:none;}        ::-webkit-scrollbar{width:2px;}        ::-webkit-scrollbar-track{background:var(--bg);}        ::-webkit-scrollbar-thumb{background:var(--gold);}        #cursor{position:fixed;width:8px;height:8px;background:var(--gold);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:width .2s,height .2s,opacity .2s;}        #cursor-ring{position:fixed;width:32px;height:32px;border:1px solid rgba(201,168,76,0.4);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:transform .12s ease,width .3s,height .3s,border-color .3s;mix-blend-mode:difference;}        body:hover #cursor{opacity:1;}        body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");pointer-events:none;z-index:9990;opacity:.35;}        header{position:fixed;top:0;width:100%;height:var(--nav-h);display:flex;justify-content:space-between;align-items:center;padding:0 6%;z-index:1000;background:rgba(2,2,2,0.8);backdrop-filter:blur(32px);-webkit-backdrop-filter:blur(32px);border-bottom:1px solid var(--border);}        .logo{font-family:var(--font-d);font-size:21px;font-weight:600;letter-spacing:5px;color:var(--text);display:flex;align-items:center;gap:0;}        .logo span{color:var(--gold);}        .logo-eye{display:inline-flex;align-items:center;justify-content:center;width:16px;height:16px;border:1.5px solid var(--gold);border-radius:50%;position:relative;flex-shrink:0;margin:0 5px 0 5px;box-shadow:0 0 8px rgba(201,168,76,0.5);animation:eyeGlow 3s ease-in-out infinite;}        .logo-eye::after{content:'';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:6px;height:6px;background:var(--gold);border-radius:50%;box-shadow:0 0 6px var(--gold);}        @keyframes eyeGlow{0%,100%{box-shadow:0 0 8px rgba(201,168,76,0.5);}50%{box-shadow:0 0 16px rgba(201,168,76,0.9),0 0 30px rgba(201,168,76,0.3);}}        nav{display:flex;gap:36px;align-items:center;}        nav a{color:var(--text-muted);text-decoration:none;font-size:10px;font-weight:500;text-transform:uppercase;letter-spacing:2px;transition:color .3s;position:relative;}        nav a::after{content:'';position:absolute;bottom:-2px;left:0;width:0;height:1px;background:var(--gold);transition:width .3s;}        nav a:hover{color:var(--gold);}        nav a:hover::after{width:100%;}        .nav-cta{background:var(--gold)!important;color:#000!important;padding:10px 24px;border-radius:1px;font-weight:700!important;letter-spacing:2px!important;}        .nav-cta::after{display:none!important;}        .nav-cta:hover{background:var(--gold-light)!important;color:#000!important;}        .sw{max-width:1360px;margin:0 auto;padding:140px 6%;}        .label{font-size:9px;font-weight:600;letter-spacing:4px;text-transform:uppercase;color:var(--gold);margin-bottom:20px;display:flex;align-items:center;gap:12px;}        .label::before{content:'';width:24px;height:1px;background:var(--gold);display:inline-block;flex-shrink:0;}        .display{font-family:var(--font-d);font-weight:600;line-height:.95;letter-spacing:-.02em;}        .body-text{color:var(--text-muted);line-height:1.8;font-size:15px;margin-top:20px;font-weight:300;}        .gold-line{width:1px;height:60px;background:linear-gradient(to bottom,var(--gold),transparent);display:block;margin:28px 0;}        .reveal{opacity:0;transform:translateY(40px);}        .revealed{opacity:1!important;transform:translateY(0)!important;transition:opacity .9s cubic-bezier(.2,.8,.2,1),transform .9s cubic-bezier(.2,.8,.2,1);}        .btn-gold{display:inline-flex;align-items:center;gap:12px;padding:16px 38px;background:var(--gold);color:#000;font-family:var(--font-b);font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;text-decoration:none;border:none;cursor:pointer;transition:all .3s;position:relative;overflow:hidden;}        .btn-gold::before{content:'';position:absolute;inset:0;background:var(--gold-light);transform:scaleX(0);transform-origin:left;transition:transform .4s cubic-bezier(.2,.8,.2,1);}        .btn-gold:hover::before{transform:scaleX(1);}        .btn-gold span{position:relative;z-index:1;}        .btn-ghost{display:inline-flex;align-items:center;gap:12px;padding:15px 37px;background:transparent;color:var(--gold);font-family:var(--font-b);font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;text-decoration:none;border:1px solid rgba(201,168,76,0.4);cursor:pointer;transition:all .3s;}        .btn-ghost:hover{border-color:var(--gold);background:var(--gold-dim);transform:translateY(-2px);}        .hero{min-height:100vh;position:relative;display:flex;align-items:center;justify-content:center;text-align:center;overflow:hidden;padding-top:var(--nav-h);}        #heroCanvas{position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;}        .hero-overlay{position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 50% 20%,rgba(201,168,76,0.06) 0%,transparent 70%),linear-gradient(to bottom,transparent 50%,var(--bg) 100%);z-index:1;}        .hero-content{position:relative;z-index:2;max-width:1000px;padding:0 24px;}        .hero-eyebrow{display:inline-flex;align-items:center;gap:10px;padding:9px 22px;border:1px solid var(--border);font-size:10px;font-weight:500;letter-spacing:2px;color:var(--gold);margin-bottom:50px;background:rgba(201,168,76,0.04);text-transform:uppercase;}        .hero-eyebrow-dot{width:5px;height:5px;border-radius:50%;background:var(--gold);animation:pulse 2s infinite;}        @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.3;transform:scale(.8)}}        .hero h1{font-size:clamp(56px,8vw,104px);font-family:var(--font-d);font-weight:600;line-height:.92;margin-bottom:32px;letter-spacing:-.02em;}        .hero h1 em{font-style:italic;color:var(--gold);font-weight:400;}        .hero h1 .thin{font-weight:300;color:rgba(245,240,232,0.6);}        .hero-sub{font-size:clamp(15px,1.6vw,18px);max-width:620px;margin:0 auto;color:var(--text-muted);line-height:1.75;font-weight:300;}        .hero-ctas{display:flex;gap:16px;justify-content:center;margin-top:54px;flex-wrap:wrap;}        .hero-scroll{position:absolute;bottom:40px;left:50%;transform:translateX(-50%);z-index:2;display:flex;flex-direction:column;align-items:center;gap:8px;}        .hero-scroll span{font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--text-muted);}        .scroll-line{width:1px;height:50px;background:linear-gradient(to bottom,var(--gold),transparent);animation:scrollLine 2s ease infinite;}        @keyframes scrollLine{0%{transform:scaleY(0);transform-origin:top}50%{transform:scaleY(1);transform-origin:top}51%{transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}        .trusted-bar{margin-top:100px;display:flex;flex-direction:column;align-items:center;gap:22px;}        .trusted-label{font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--text-muted);}        .trusted-logos{display:flex;gap:48px;align-items:center;flex-wrap:wrap;justify-content:center;opacity:.22;filter:grayscale(1);}        .trusted-logos span{font-family:var(--font-d);font-size:14px;font-weight:600;letter-spacing:3px;text-transform:uppercase;}        .pain-center{text-align:center;max-width:740px;margin:0 auto;}        .pain-grid{display:grid;grid-template-columns:1fr 1fr;margin-top:80px;}        .pain-stat{padding:56px 50px;border:1px solid var(--border);margin:-1px 0 0 -1px;position:relative;overflow:hidden;transition:background .4s;}        .pain-stat::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(201,168,76,0.04) 0%,transparent 60%);opacity:0;transition:opacity .4s;}        .pain-stat:hover{background:rgba(201,168,76,0.02);}        .pain-stat:hover::after{opacity:1;}        .pain-accent{position:absolute;top:0;left:0;width:0;height:2px;background:linear-gradient(to right,var(--gold),transparent);transition:width .6s cubic-bezier(.2,.8,.2,1);}        .pain-stat:hover .pain-accent{width:100%;}        .pain-number{font-family:var(--font-d);font-size:clamp(60px,7vw,88px);font-weight:700;color:var(--gold);line-height:1;display:block;}        .pain-unit{font-size:14px;color:rgba(201,168,76,0.7);font-family:var(--font-d);font-style:italic;margin-top:4px;display:block;}        .pain-stat h3{font-family:var(--font-d);font-size:20px;margin-top:20px;font-weight:600;letter-spacing:.5px;}        .pain-stat p{font-size:13px;color:var(--text-muted);margin-top:10px;line-height:1.7;font-weight:300;}        .tier{margin-bottom:120px;}        .tier-header{display:flex;align-items:flex-start;gap:60px;margin-bottom:50px;}        .tier-num{font-family:var(--font-d);font-size:100px;font-weight:700;color:rgba(201,168,76,0.08);line-height:1;flex-shrink:0;margin-top:-10px;}        .tier-title-block h2{font-size:clamp(32px,4vw,54px);font-family:var(--font-d);font-weight:600;}        .tier-grid{display:grid;grid-template-columns:1.3fr 1fr;gap:1px;background:rgba(201,168,76,0.08);}        .tier-image{grid-row:span 2;overflow:hidden;min-height:440px;position:relative;}        .tier-image img{width:100%;height:100%;object-fit:cover;filter:grayscale(50%) brightness(0.65);transition:all 1.4s cubic-bezier(.2,.8,.2,1);display:block;}        .tier-image::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(201,168,76,0.08) 0%,transparent 50%);}        .tier:hover .tier-image img{filter:grayscale(0%) brightness(0.85);transform:scale(1.06);}        .service-item{background:var(--bg-card);padding:26px 30px;display:flex;align-items:center;gap:16px;transition:background .25s,padding-left .25s;}        .service-item:hover{background:var(--bg-elevated);padding-left:36px;}        .service-dot{width:5px;height:5px;border-radius:50%;background:var(--gold);flex-shrink:0;transition:transform .25s;}        .service-item:hover .service-dot{transform:scale(1.6);}        .service-item span{font-size:13px;font-weight:400;color:var(--text-muted);letter-spacing:.3px;transition:color .25s;}        .service-item:hover span{color:var(--text);}        .tier-cta-block{background:var(--bg-card);padding:30px;display:flex;align-items:center;justify-content:space-between;gap:20px;border-top:1px solid var(--border);}        .results-header{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:end;margin-bottom:70px;}        .results-header h2{font-size:clamp(40px,5vw,68px);font-family:var(--font-d);font-weight:600;}        .results-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);margin-bottom:2px;}        .result-card{background:var(--bg-card);padding:48px 36px;transition:background .3s;position:relative;overflow:hidden;}        .result-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(to right,transparent,var(--gold),transparent);opacity:0;transition:opacity .4s;}        .result-card:hover{background:var(--bg-elevated);}        .result-card:hover::before{opacity:1;}        .result-kpi{font-family:var(--font-d);font-size:60px;font-weight:700;color:var(--gold);line-height:1;display:block;}        .result-card h3{font-size:15px;font-weight:600;margin-top:16px;letter-spacing:.3px;}        .result-card p{font-size:13px;color:var(--text-muted);margin-top:10px;line-height:1.7;font-weight:300;}        .testimonials-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--border);}        .testimonial{background:var(--bg-card);padding:44px;position:relative;transition:background .3s;}        .testimonial:hover{background:var(--bg-elevated);}        .testimonial::before{content:'\201C';font-family:var(--font-d);font-size:120px;color:var(--gold);opacity:.08;position:absolute;top:10px;left:24px;line-height:1;}        .testimonial p{font-size:15px;line-height:1.8;color:rgba(245,240,232,0.8);font-weight:300;margin:0;position:relative;z-index:1;font-style:italic;}        .testimonial-author{margin-top:28px;display:flex;align-items:center;gap:14px;}        .author-avatar{width:44px;height:44px;border-radius:50%;background:var(--gold-dim);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-family:var(--font-d);font-weight:600;color:var(--gold);font-size:18px;flex-shrink:0;}        .author-info strong{display:block;font-size:13px;font-weight:600;letter-spacing:.3px;}        .author-info span{font-size:11px;color:var(--text-muted);letter-spacing:.5px;}        .full-banner{width:100%;height:460px;overflow:hidden;position:relative;border-top:1px solid var(--border);border-bottom:1px solid var(--border);}        .full-banner img{width:100%;height:130%;object-fit:cover;filter:grayscale(70%) brightness(0.45);display:block;}        .banner-overlay{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(2,2,2,0.5);}        .banner-text{text-align:center;padding:0 24px;}        .banner-text h2{font-family:var(--font-d);font-size:clamp(32px,5vw,68px);font-weight:600;line-height:.95;}        .banner-text h2 em{font-style:italic;color:var(--gold);}        .banner-text p{font-size:14px;color:rgba(245,240,232,0.5);margin-top:18px;letter-spacing:1px;text-transform:uppercase;}        .metrics-title{text-align:center;max-width:760px;margin:0 auto 60px;}        .metrics-title h2{font-size:clamp(40px,5vw,64px);}        .chart-wrap{background:var(--bg-card);border:1px solid var(--border);padding:50px;position:relative;overflow:hidden;}        .chart-wrap::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(to right,transparent,var(--gold),transparent);}        .chart-container-fix{position:relative;height:45vh;min-height:380px;}        .infra-grid{display:grid;grid-template-columns:1fr 1fr;gap:100px;align-items:center;}        .infra-image-wrap{overflow:hidden;position:relative;}        .infra-image-wrap::after{content:'';position:absolute;inset:0;border:1px solid var(--border);pointer-events:none;}        .infra-image-wrap img{width:100%;display:block;filter:grayscale(40%) brightness(0.7);transition:all 1.4s cubic-bezier(.2,.8,.2,1);}        .infra-grid:hover .infra-image-wrap img{filter:grayscale(0%) brightness(.9);transform:scale(1.04);}        .authority-inner{text-align:center;max-width:820px;margin:0 auto;}        .authority-badges{display:flex;justify-content:center;gap:12px;margin-top:64px;flex-wrap:wrap;}        .badge{border:1px solid var(--border);padding:18px 26px;display:flex;flex-direction:column;align-items:center;gap:10px;transition:border-color .3s,background .3s;cursor:pointer;position:relative;overflow:hidden;}        .badge::before{content:'';position:absolute;inset:0;background:var(--gold-dim);transform:scaleY(0);transform-origin:bottom;transition:transform .4s cubic-bezier(.2,.8,.2,1);}        .badge:hover::before{transform:scaleY(1);}        .badge:hover{border-color:var(--gold);}        .badge-icon{color:var(--gold);font-size:18px;position:relative;}        .badge span{font-size:9px;letter-spacing:2px;text-transform:uppercase;font-weight:600;color:var(--text-muted);position:relative;}        .split-authority{display:grid;grid-template-columns:1fr 1fr;gap:100px;align-items:center;margin-top:110px;}        .split-authority img{width:100%;aspect-ratio:4/3;object-fit:cover;filter:grayscale(40%) brightness(0.7);transition:all 1.4s;display:block;}        .split-authority:hover img{filter:grayscale(0%) brightness(.9);}        .img-frame{overflow:hidden;position:relative;}        .img-frame::after{content:'';position:absolute;inset:0;border:1px solid var(--border);pointer-events:none;}        .contact-inner{display:grid;grid-template-columns:1fr 1.2fr;gap:100px;}        .contact-info h2{font-size:clamp(36px,5vw,60px);}        .contact-disclaimer{margin-top:40px;padding:24px;border-left:2px solid var(--gold);background:rgba(201,168,76,0.04);font-size:12px;line-height:1.75;color:var(--text-muted);}        .contact-disclaimer strong{color:var(--gold);display:block;margin-bottom:8px;font-size:9px;letter-spacing:3px;text-transform:uppercase;}        .contact-detail{display:flex;align-items:center;gap:14px;margin-top:16px;}        .contact-detail-icon{width:36px;height:36px;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;color:var(--gold);font-size:14px;flex-shrink:0;}        .contact-detail span{font-size:13px;color:var(--text-muted);}        .form-card{background:var(--bg-card);border:1px solid var(--border);padding:52px;position:relative;overflow:hidden;}        .form-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(to right,transparent,var(--gold),transparent);}        .form-success{display:none;text-align:center;padding:60px 30px;}        .success-icon{font-family:var(--font-d);font-size:56px;color:var(--gold);margin-bottom:24px;display:block;}        .form-success h3{font-family:var(--font-d);font-size:36px;font-weight:600;margin-bottom:14px;}        .form-success p{color:var(--text-muted);font-size:14px;line-height:1.7;font-weight:300;}        .form-success .divider{width:1px;height:40px;background:linear-gradient(to bottom,var(--gold),transparent);margin:28px auto;}        .form-fields{display:flex;flex-direction:column;gap:12px;}        .form-row-2{display:grid;grid-template-columns:1fr 1fr;gap:12px;}        .field-wrap{display:flex;flex-direction:column;gap:4px;}        .field-error{font-size:10px;color:#e05c5c;min-height:14px;padding-left:2px;letter-spacing:.3px;}        input,textarea,select{padding:15px 18px;border:1px solid var(--border-dim);background:rgba(20,20,20,0.8);color:var(--text);font-family:var(--font-b);font-size:13px;transition:border-color .3s,background .3s;outline:none;width:100%;border-radius:0;}        input:focus,textarea:focus,select:focus{border-color:rgba(201,168,76,0.5);background:rgba(12,8,0,0.9);}        input::placeholder,textarea::placeholder{color:rgba(90,85,80,0.8);}        textarea{resize:vertical;min-height:110px;}        select option{background:#111;color:var(--text);}        #submit-btn{width:100%;padding:18px;background:var(--gold);color:#000;border:none;font-family:var(--font-b);font-weight:700;font-size:11px;letter-spacing:2.5px;text-transform:uppercase;cursor:pointer;transition:all .3s;margin-top:8px;position:relative;overflow:hidden;}        #submit-btn::before{content:'';position:absolute;inset:0;background:var(--gold-light);transform:scaleX(0);transform-origin:left;transition:transform .4s cubic-bezier(.2,.8,.2,1);}        #submit-btn:hover::before{transform:scaleX(1);}        #submit-btn span{position:relative;z-index:1;}        #submit-btn:disabled{opacity:.6;cursor:not-allowed;}        footer{border-top:1px solid var(--border);background:var(--bg);}        .footer-main{max-width:1360px;margin:0 auto;padding:90px 6% 56px;display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:60px;}        .footer-brand .logo{font-size:22px;}        .footer-brand p{font-size:13px;color:var(--text-muted);margin-top:18px;line-height:1.75;font-weight:300;max-width:260px;}        .footer-social{display:flex;gap:10px;margin-top:32px;}        .social-link{width:34px;height:34px;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;color:var(--text-muted);text-decoration:none;font-size:11px;font-weight:700;transition:all .3s;cursor:pointer;}        .social-link:hover{border-color:var(--gold);color:var(--gold);}        .footer-col h4{font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--text-muted);margin-bottom:26px;font-weight:600;}        .footer-col a{display:block;color:var(--text-muted);text-decoration:none;font-size:13px;margin-bottom:14px;transition:color .3s;font-weight:300;}        .footer-col a:hover{color:var(--gold);}        .footer-bottom{border-top:1px solid var(--border-dim);padding:28px 6%;max-width:1360px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;}        .footer-bottom p{font-size:11px;color:rgba(90,85,80,0.7);font-weight:300;letter-spacing:.5px;}        @media(max-width:1024px){.pain-grid,.tier-grid,.infra-grid,.contact-inner,.split-authority,.results-header{grid-template-columns:1fr;gap:50px;}.tier-image{grid-row:auto;min-height:280px;}.results-grid{grid-template-columns:1fr 1fr;}.footer-main{grid-template-columns:1fr 1fr;}}        @media(max-width:768px){nav a:not(.nav-cta){display:none;}.testimonials-grid,.results-grid,.form-row-2{grid-template-columns:1fr;}.tier-header{flex-direction:column;gap:16px;}.tier-num{font-size:60px;}.footer-main{grid-template-columns:1fr;gap:40px;}.footer-bottom{flex-direction:column;gap:12px;text-align:center;}.full-banner{height:320px;}body{cursor:auto;}#cursor,#cursor-ring{display:none;}}
+
+        /* ═══════════════════════════════════════════════
+           HORUS AI CHAT WIDGET STYLES
+        ═══════════════════════════════════════════════ */
+        #horus-chat-trigger{position:fixed;bottom:36px;right:36px;z-index:9500;width:64px;height:64px;background:transparent;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.3s cubic-bezier(.2,.8,.2,1);padding:0;}
+        #horus-chat-trigger:hover .trigger-eye-ring{box-shadow:0 0 0 3px rgba(201,168,76,0.25),0 0 40px rgba(201,168,76,0.45);}
+        #horus-chat-trigger:hover .trigger-eye-pupil{transform:translate(-50%,-50%) scale(1.3);}
+        /* The eye symbol — mirrors .logo-eye */
+        .trigger-eye-ring{width:64px;height:64px;border:2px solid var(--gold);border-radius:50%;position:relative;display:flex;align-items:center;justify-content:center;background:#020202;box-shadow:0 0 0 1px rgba(201,168,76,0.2),0 8px 32px rgba(201,168,76,0.18);animation:eyeGlow 3s ease-in-out infinite;transition:box-shadow 0.3s;}
+        .trigger-eye-pupil{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:22px;height:22px;background:var(--gold);border-radius:50%;box-shadow:0 0 10px var(--gold),0 0 20px rgba(201,168,76,0.4);transition:transform 0.3s cubic-bezier(.2,.8,.2,1);}
+        /* X icon when open */
+        #horus-chat-trigger.is-open .trigger-eye-pupil{background:transparent;box-shadow:none;width:20px;height:20px;}
+        #horus-chat-trigger.is-open .trigger-eye-pupil::before,
+        #horus-chat-trigger.is-open .trigger-eye-pupil::after{content:'';position:absolute;top:50%;left:50%;width:20px;height:2px;background:var(--gold);border-radius:1px;}
+        #horus-chat-trigger.is-open .trigger-eye-pupil::before{transform:translate(-50%,-50%) rotate(45deg);}
+        #horus-chat-trigger.is-open .trigger-eye-pupil::after{transform:translate(-50%,-50%) rotate(-45deg);}
+        .chat-notif{position:absolute;top:-5px;right:-5px;width:20px;height:20px;background:#fff;color:#000;font-size:9px;font-weight:800;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--font-b);animation:badgePop 0.5s cubic-bezier(.2,.8,.2,1);}
+        @keyframes badgePop{0%{transform:scale(0);}70%{transform:scale(1.2);}100%{transform:scale(1);}}
+        #horus-chat-panel{position:fixed;bottom:116px;right:36px;z-index:9400;width:420px;max-width:calc(100vw - 48px);height:580px;max-height:calc(100vh - 160px);background:#080808;border:1px solid var(--border);display:flex;flex-direction:column;transform:translateY(20px) scale(0.96);opacity:0;pointer-events:none;transition:all 0.35s cubic-bezier(.2,.8,.2,1);transform-origin:bottom right;overflow:hidden;}
+        #horus-chat-panel::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(to right,transparent,var(--gold),transparent);}
+        #horus-chat-panel.is-open{transform:translateY(0) scale(1);opacity:1;pointer-events:all;}
+        .chat-header{padding:18px 22px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:14px;flex-shrink:0;background:rgba(201,168,76,0.03);}
+        .chat-header-eye{width:34px;height:34px;border:1.5px solid var(--gold);border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative;flex-shrink:0;animation:eyeGlow 3s ease-in-out infinite;}
+        .chat-header-eye::after{content:'';position:absolute;width:11px;height:11px;background:var(--gold);border-radius:50%;}
+        .chat-header-info{flex:1;}
+        .chat-header-name{font-family:var(--font-d);font-size:16px;font-weight:600;color:var(--text);letter-spacing:1px;}
+        .chat-header-status{font-size:10px;color:var(--gold);letter-spacing:2px;text-transform:uppercase;display:flex;align-items:center;gap:6px;margin-top:2px;}
+        .status-dot{width:5px;height:5px;background:var(--gold);border-radius:50%;animation:pulse 2s infinite;}
+        .chat-clear-btn{background:none;border:1px solid var(--border);color:var(--text-muted);font-size:9px;letter-spacing:2px;text-transform:uppercase;padding:6px 12px;cursor:pointer;font-family:var(--font-b);transition:all 0.2s;}
+        .chat-clear-btn:hover{border-color:var(--gold);color:var(--gold);}
+        #chat-messages{flex:1;overflow-y:auto;padding:18px 18px 6px;display:flex;flex-direction:column;gap:12px;scrollbar-width:thin;scrollbar-color:rgba(201,168,76,0.2) transparent;}
+        #chat-messages::-webkit-scrollbar{width:2px;}
+        #chat-messages::-webkit-scrollbar-thumb{background:rgba(201,168,76,0.3);}
+        .msg{display:flex;flex-direction:column;gap:3px;animation:msgSlide 0.3s cubic-bezier(.2,.8,.2,1);}
+        @keyframes msgSlide{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
+        .msg.user{align-items:flex-end;}
+        .msg.assistant{align-items:flex-start;}
+        .msg-bubble{max-width:86%;padding:11px 15px;font-size:13px;line-height:1.65;font-weight:300;}
+        .msg.user .msg-bubble{background:var(--gold);color:#000;font-weight:500;}
+        .msg.assistant .msg-bubble{background:rgba(255,255,255,0.04);border:1px solid var(--border);color:var(--text);}
+        .msg-meta{font-size:9px;letter-spacing:1px;color:rgba(90,85,80,0.6);text-transform:uppercase;padding:0 4px;}
+        .typing-indicator{display:flex;align-items:center;gap:5px;padding:12px 15px;background:rgba(255,255,255,0.04);border:1px solid var(--border);width:fit-content;}
+        .typing-dot{width:5px;height:5px;background:var(--gold);border-radius:50%;animation:typingBounce 1.2s ease-in-out infinite;}
+        .typing-dot:nth-child(2){animation-delay:0.2s;}
+        .typing-dot:nth-child(3){animation-delay:0.4s;}
+        @keyframes typingBounce{0%,60%,100%{transform:translateY(0);opacity:0.4;}30%{transform:translateY(-5px);opacity:1;}}
+        .suggestions{padding:0 18px 10px;display:flex;flex-direction:column;gap:5px;}
+        .suggestion-chip{padding:8px 13px;border:1px solid var(--border);background:transparent;color:var(--text-muted);font-family:var(--font-b);font-size:11px;cursor:pointer;text-align:left;transition:all 0.2s;letter-spacing:0.3px;}
+        .suggestion-chip:hover{border-color:var(--gold);color:var(--gold);background:var(--gold-dim);}
+        .chat-input-wrap{padding:14px 18px 18px;border-top:1px solid var(--border);display:flex;gap:10px;align-items:flex-end;flex-shrink:0;background:#050505;}
+        #chat-input{flex:1;resize:none;min-height:42px;max-height:100px;padding:11px 14px;font-size:13px;font-family:var(--font-b);line-height:1.5;background:rgba(20,20,20,0.8);border:1px solid var(--border-dim);color:var(--text);border-radius:0;transition:border-color 0.2s;outline:none;}
+        #chat-input:focus{border-color:rgba(201,168,76,0.4);}
+        #chat-send-btn{width:42px;height:42px;background:var(--gold);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:background 0.2s,transform 0.2s;color:#000;}
+        #chat-send-btn:hover{background:var(--gold-light);transform:scale(1.05);}
+        #chat-send-btn:disabled{opacity:0.4;cursor:not-allowed;transform:none;}
+        #chat-send-btn svg{width:16px;height:16px;}
+        .chat-footer-bar{text-align:center;padding:8px 0 10px;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:rgba(90,85,80,0.45);border-top:1px solid var(--border-dim);flex-shrink:0;background:#050505;}
+        .chat-footer-bar span{color:rgba(201,168,76,0.45);}
+        @media(max-width:480px){#horus-chat-panel{right:16px;bottom:100px;width:calc(100vw - 32px);}#horus-chat-trigger{right:20px;bottom:24px;}}
+    </style>
+</head><body>
 <div id="cursor"></div><div id="cursor-ring"></div>
 <header>
     <div class="logo"><span style="letter-spacing:5px;">H</span><span class="logo-eye"></span><span style="letter-spacing:5px;">RUS</span></div>
@@ -55,23 +116,12 @@
         <p class="body-text">HORUS operates through specialized strategic divisions, bringing enterprise-grade AI to every sector of your business.</p>
     </div>
     <div class="results-grid reveal">
-        <div class="result-card" style="padding: 56px 40px;">
-            <span style="font-size:10px;font-weight:600;color:var(--gold);letter-spacing:3px;text-transform:uppercase;">Agency</span>
-            <h3 style="font-family:var(--font-d);font-size:32px;color:var(--text);margin-top:12px;font-weight:600;">HORUS Growth</h3>
-            <p style="font-size:14px;margin-top:16px;">Revenue automation systems for professional services and high-growth businesses — AI lead qualification, CRM automation, client acquisition funnels, and intelligent follow-up systems.</p>
-        </div>
-        <div class="result-card" style="padding: 56px 40px;">
-            <span style="font-size:10px;font-weight:600;color:var(--gold);letter-spacing:3px;text-transform:uppercase;">Manufacturing</span>
-            <h3 style="font-family:var(--font-d);font-size:32px;color:var(--text);margin-top:12px;font-weight:600;">HORUS Industrial</h3>
-            <p style="font-size:14px;margin-top:16px;">Industrial AI systems for manufacturers and operational companies — predictive maintenance, production intelligence, inventory optimization, and real-time performance dashboards.</p>
-        </div>
-        <div class="result-card" style="padding: 56px 40px;">
-            <span style="font-size:10px;font-weight:600;color:var(--gold);letter-spacing:3px;text-transform:uppercase;">Consulting</span>
-            <h3 style="font-family:var(--font-d);font-size:32px;color:var(--text);margin-top:12px;font-weight:600;">HORUS Strategy</h3>
-            <p style="font-size:14px;margin-top:16px;">Executive AI architecture and digital transformation advisory for owners and plant managers seeking scalable, secure, enterprise-grade intelligence infrastructure.</p>
-        </div>
+        <div class="result-card" style="padding:56px 40px;"><span style="font-size:10px;font-weight:600;color:var(--gold);letter-spacing:3px;text-transform:uppercase;">Agency</span><h3 style="font-family:var(--font-d);font-size:32px;color:var(--text);margin-top:12px;font-weight:600;">HORUS Growth</h3><p style="font-size:14px;margin-top:16px;">Revenue automation systems for professional services and high-growth businesses — AI lead qualification, CRM automation, client acquisition funnels, and intelligent follow-up systems.</p></div>
+        <div class="result-card" style="padding:56px 40px;"><span style="font-size:10px;font-weight:600;color:var(--gold);letter-spacing:3px;text-transform:uppercase;">Manufacturing</span><h3 style="font-family:var(--font-d);font-size:32px;color:var(--text);margin-top:12px;font-weight:600;">HORUS Industrial</h3><p style="font-size:14px;margin-top:16px;">Industrial AI systems for manufacturers and operational companies — predictive maintenance, production intelligence, inventory optimization, and real-time performance dashboards.</p></div>
+        <div class="result-card" style="padding:56px 40px;"><span style="font-size:10px;font-weight:600;color:var(--gold);letter-spacing:3px;text-transform:uppercase;">Consulting</span><h3 style="font-family:var(--font-d);font-size:32px;color:var(--text);margin-top:12px;font-weight:600;">HORUS Strategy</h3><p style="font-size:14px;margin-top:16px;">Executive AI architecture and digital transformation advisory for owners and plant managers seeking scalable, secure, enterprise-grade intelligence infrastructure.</p></div>
     </div>
 </div>
+
 <div class="sw" id="services">
     <div style="text-align:center;max-width:700px;margin:0 auto 90px;" class="reveal">
         <span class="label">Our Solutions</span>
@@ -186,18 +236,9 @@
         <p class="body-text" style="margin-top:24px;">HORUS is engineered for plant managers, founders, and operational leaders who care about throughput, downtime, margin, and measurable performance — not vanity metrics.</p>
     </div>
     <div class="results-grid reveal" style="margin-top:60px;">
-        <div class="result-card" style="padding:48px 40px;">
-            <h3 style="font-family:var(--font-d);font-size:26px;font-weight:600;color:var(--gold);">Production Intelligence</h3>
-            <p class="body-text" style="margin-top:16px;">Identify bottlenecks, reduce downtime, and deploy predictive maintenance systems powered by real operational data.</p>
-        </div>
-        <div class="result-card" style="padding:48px 40px;">
-            <h3 style="font-family:var(--font-d);font-size:26px;font-weight:600;color:var(--gold);">Operational Automation</h3>
-            <p class="body-text" style="margin-top:16px;">Automate procurement, inventory tracking, reporting, and internal workflows to eliminate human friction across departments.</p>
-        </div>
-        <div class="result-card" style="padding:48px 40px;">
-            <h3 style="font-family:var(--font-d);font-size:26px;font-weight:600;color:var(--gold);">Revenue Systems</h3>
-            <p class="body-text" style="margin-top:16px;">AI-powered lead qualification, CRM automation, and client acquisition systems for professional firms and service-based operators.</p>
-        </div>
+        <div class="result-card" style="padding:48px 40px;"><h3 style="font-family:var(--font-d);font-size:26px;font-weight:600;color:var(--gold);">Production Intelligence</h3><p class="body-text" style="margin-top:16px;">Identify bottlenecks, reduce downtime, and deploy predictive maintenance systems powered by real operational data.</p></div>
+        <div class="result-card" style="padding:48px 40px;"><h3 style="font-family:var(--font-d);font-size:26px;font-weight:600;color:var(--gold);">Operational Automation</h3><p class="body-text" style="margin-top:16px;">Automate procurement, inventory tracking, reporting, and internal workflows to eliminate human friction across departments.</p></div>
+        <div class="result-card" style="padding:48px 40px;"><h3 style="font-family:var(--font-d);font-size:26px;font-weight:600;color:var(--gold);">Revenue Systems</h3><p class="body-text" style="margin-top:16px;">AI-powered lead qualification, CRM automation, and client acquisition systems for professional firms and service-based operators.</p></div>
     </div>
     <div class="reveal" style="text-align:center;max-width:820px;margin:60px auto 0;">
         <p class="body-text">We don't sell software licenses. We architect AI infrastructure inside real businesses — from manufacturing floors to professional service firms — so operators can scale with precision.</p>
@@ -212,55 +253,24 @@
             <h2 class="display" style="font-size:clamp(36px,5vw,58px);">Apply for Executive Strategy Session</h2>
             <div class="gold-line"></div>
             <p class="body-text">We work only with businesses ready to scale with enterprise AI infrastructure. This is not a sales call — it is a strategic audit of your operations.</p>
-            <div class="contact-disclaimer">
-                <strong>Confidential & Selective</strong>
-                We accept a limited number of new clients per quarter. Only serious inquiries from high-value businesses seeking transformational growth will receive a response.
-            </div>
+            <div class="contact-disclaimer"><strong>Confidential & Selective</strong>We accept a limited number of new clients per quarter. Only serious inquiries from high-value businesses seeking transformational growth will receive a response.</div>
             <div style="margin-top:36px;">
-                <div class="contact-detail"><div class="contact-detail-icon">◎</div><span><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="197c617c7a6c6d706f7c5971766b6c6a347870377a7674">[email&#160;protected]</a></span></div>
+                <div class="contact-detail"><div class="contact-detail-icon">◎</div><span><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="33564b565046475a4556735b5c414640404a4047565e505c1d505c5e">[email&#160;protected]</a></span></div>
                 <div class="contact-detail"><div class="contact-detail-icon">◎</div><span>+1 (800) HORUS-AI</span></div>
             </div>
         </div>
         <div class="form-card reveal">
-            <div class="form-success" id="form-success">
-                <span class="success-icon">✦</span>
-                <h3>Application Received</h3>
-                <p id="success-msg">Your application is under review. We've sent a confirmation to your inbox.</p>
-                <div class="divider"></div>
-                <p style="font-size:12px;">We review every application carefully and respond only to high-fit partnerships within <strong style="color:var(--text);">48 business hours</strong>.</p>
-            </div>
+            <div class="form-success" id="form-success"><span class="success-icon">✦</span><h3>Application Received</h3><p id="success-msg">Your application is under review.</p><div class="divider"></div><p style="font-size:12px;">We review every application carefully and respond only to high-fit partnerships within <strong style="color:var(--text);">48 business hours</strong>.</p></div>
             <form id="horus-form" class="form-fields">
-                <div class="form-row-2">
-                    <div class="field-wrap"><input type="text" id="fullName" placeholder="Full Name" required><span class="field-error" id="err-fullName"></span></div>
-                    <div class="field-wrap"><input type="text" id="company" placeholder="Company Name" required><span class="field-error" id="err-company"></span></div>
-                </div>
-                <!-- ── CAMPO WEBSITE AGREGADO ── -->
+                <div class="form-row-2"><div class="field-wrap"><input type="text" id="fullName" placeholder="Full Name" required><span class="field-error" id="err-fullName"></span></div><div class="field-wrap"><input type="text" id="company" placeholder="Company Name" required><span class="field-error" id="err-company"></span></div></div>
                 <div class="field-wrap"><input type="text" id="website" placeholder="Company Website (e.g. www.yourcompany.com)"><span class="field-error" id="err-website"></span></div>
                 <div class="field-wrap"><input type="email" id="email" placeholder="Corporate Email" required><span class="field-error" id="err-email"></span></div>
                 <div class="field-wrap"><input type="tel" id="phone" placeholder="Phone Number" required><span class="field-error" id="err-phone"></span></div>
-                <!-- ── CAMPO INDUSTRIA AGREGADO ── -->
-                <select id="industry">
-                  <option value="" disabled selected>Industry / Sector</option>
-                  <option>Manufacturing & Industrial</option>
-                  <option>CNC / Machining</option>
-                  <option>Logistics & Supply Chain</option>
-                  <option>Industrial Automation</option>
-                  <option>Construction & Home Services</option>
-                  <option>Automotive</option>
-                  <option>Healthcare & Medical</option>
-                  <option>Legal & Financial Services</option>
-                  <option>Restaurant & Food Service</option>
-                  <option>Retail & Commerce</option>
-                  <option>Business Services & Agency</option>
-                  <option>Education</option>
-                  <option>Technology</option>
-                  <option>Real Estate</option>
-                  <option>Other</option>
-                </select>
+                <select id="industry"><option value="" disabled selected>Industry / Sector</option><option>Manufacturing & Industrial</option><option>CNC / Machining</option><option>Logistics & Supply Chain</option><option>Industrial Automation</option><option>Construction & Home Services</option><option>Automotive</option><option>Healthcare & Medical</option><option>Legal & Financial Services</option><option>Restaurant & Food Service</option><option>Retail & Commerce</option><option>Business Services & Agency</option><option>Education</option><option>Technology</option><option>Real Estate</option><option>Other</option></select>
                 <select id="revenue"><option value="" disabled selected>Annual Revenue Range</option><option>$500K – $1M</option><option>$1M – $5M</option><option>$5M – $10M</option><option>$10M – $25M</option><option>$25M+</option></select>
                 <div class="field-wrap"><textarea id="message" placeholder="Describe your business and what you want to automate or optimize..." required></textarea><span class="field-error" id="err-message"></span></div>
                 <button type="button" id="submit-btn" onclick="submitForm()"><span>Submit Application →</span></button>
-                <p style="font-size:10px;color:var(--text-muted);text-align:center;margin-top:8px;letter-spacing:.3px;">By submitting you agree to our <a href="#" style="color:var(--gold);text-decoration:none;">Privacy Policy</a>. All information is strictly confidential.</p>
+                <p style="font-size:10px;color:var(--text-muted);text-align:center;margin-top:8px;">By submitting you agree to our <a href="#" style="color:var(--gold);text-decoration:none;">Privacy Policy</a>. All information is strictly confidential.</p>
             </form>
         </div>
     </div>
@@ -268,125 +278,289 @@
 
 <footer>
     <div class="footer-main">
-        <div class="footer-brand">
-            <div class="logo"><span style="letter-spacing:5px;">H</span><span class="logo-eye"></span><span style="letter-spacing:5px;">RUS</span></div>
-            <p>The all-seeing AI operating system for the next generation of enterprise intelligence.</p>
-            <div class="footer-social">
-                <a href="#" class="social-link">in</a><a href="#" class="social-link">tw</a><a href="#" class="social-link">yt</a><a href="#" class="social-link">ig</a>
-            </div>
-        </div>
+        <div class="footer-brand"><div class="logo"><span style="letter-spacing:5px;">H</span><span class="logo-eye"></span><span style="letter-spacing:5px;">RUS</span></div><p>The all-seeing AI operating system for the next generation of enterprise intelligence.</p><div class="footer-social"><a href="#" class="social-link">in</a><a href="#" class="social-link">tw</a><a href="#" class="social-link">yt</a><a href="#" class="social-link">ig</a></div></div>
         <div class="footer-col"><h4>Solutions</h4><a href="#">Voice AI Agents</a><a href="#">CRM Automation</a><a href="#">Inventory AI</a><a href="#">Revenue Intelligence</a><a href="#">Custom AI Apps</a></div>
         <div class="footer-col"><h4>Company</h4><a href="#">About Us</a><a href="#">Executive Team</a><a href="#">Case Studies</a><a href="#">Careers</a></div>
         <div class="footer-col"><h4>Legal</h4><a href="#">Privacy Policy</a><a href="#">Terms of Service</a><a href="#">Data Security</a><a href="#">Cookie Policy</a></div>
     </div>
-    <div class="footer-bottom">
-        <p>© 2026 HORUS AI Solutions. All rights reserved.</p>
-        <p>HORUS AI · The All-Seeing Enterprise · Revenue Intelligence</p>
-    </div>
+    <div class="footer-bottom"><p>© 2026 HORUS AI Solutions. All rights reserved.</p><p>HORUS AI · The All-Seeing Enterprise · Revenue Intelligence</p></div>
 </footer>
 
+<!-- ═══════════════════════════════════════
+     HORUS AI CHAT WIDGET
+═══════════════════════════════════════ -->
+<button id="horus-chat-trigger" onclick="toggleChat()" aria-label="Open HORUS AI Assistant">
+    <div class="trigger-eye-ring">
+        <div class="trigger-eye-pupil"></div>
+    </div>
+    <div class="chat-notif" id="chat-notif">1</div>
+</button>
+
+<div id="horus-chat-panel" role="dialog" aria-label="HORUS AI Assistant">
+    <div class="chat-header">
+        <div class="chat-header-eye"></div>
+        <div class="chat-header-info">
+            <div class="chat-header-name">HORUS Intelligence</div>
+            <div class="chat-header-status"><span class="status-dot"></span>Online · Ask me anything</div>
+        </div>
+        <button class="chat-clear-btn" onclick="clearChat()">Reset</button>
+    </div>
+    <div id="chat-messages"></div>
+    <div class="suggestions" id="chat-suggestions">
+        <button class="suggestion-chip" onclick="sendSuggestion(this)">How can HORUS help my manufacturing business?</button>
+        <button class="suggestion-chip" onclick="sendSuggestion(this)">What does AI automation cost for a mid-size company?</button>
+        <button class="suggestion-chip" onclick="sendSuggestion(this)">How fast can I see ROI from AI implementation?</button>
+    </div>
+    <div class="chat-input-wrap">
+        <textarea id="chat-input" placeholder="Ask about AI automation for your business..." rows="1"
+            onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendMessage();}"
+            oninput="this.style.height='42px';this.style.height=Math.min(this.scrollHeight,100)+'px'"></textarea>
+        <button id="chat-send-btn" onclick="sendMessage()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+        </button>
+    </div>
+    <div class="chat-footer-bar">Powered by <span>HORUS Intelligence</span> · GPT-4o</div>
+</div>
+
 <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
-// ── CUSTOM CURSOR ──
-const cur=document.getElementById('cursor');const ring=document.getElementById('cursor-ring');let mx=0,my=0,rx=0,ry=0;
-document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.left=mx+'px';cur.style.top=my+'px';});
-function animRing(){rx+=(mx-rx)*.12;ry+=(my-ry)*.12;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(animRing);}
-animRing();
-document.querySelectorAll('a,button,[onclick]').forEach(el=>{
-    el.addEventListener('mouseenter',()=>{cur.style.width='14px';cur.style.height='14px';ring.style.width='48px';ring.style.height='48px';ring.style.borderColor='rgba(201,168,76,0.7)';});
-    el.addEventListener('mouseleave',()=>{cur.style.width='8px';cur.style.height='8px';ring.style.width='32px';ring.style.height='32px';ring.style.borderColor='rgba(201,168,76,0.4)';});
-});
-// ── SCROLL ANIMATIONS ──
-const revealObs=new IntersectionObserver((entries)=>{entries.forEach(el=>{if(el.isIntersecting)el.target.classList.add('revealed');});},{threshold:0.06});
-document.querySelectorAll('.reveal').forEach((el,i)=>{el.style.transitionDelay=(i%3)*0.1+'s';revealObs.observe(el);});
-// ── THREE.JS HERO ──
-try{
-    const canvas=document.getElementById('heroCanvas');
-    const renderer=new THREE.WebGLRenderer({canvas,alpha:true,antialias:true});
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio,2));renderer.setSize(window.innerWidth,window.innerHeight);
-    const scene=new THREE.Scene();const camera=new THREE.PerspectiveCamera(70,window.innerWidth/window.innerHeight,0.1,1000);camera.position.z=28;
-    const count=600;const pos=new Float32Array(count*3);for(let i=0;i<count*3;i++)pos[i]=(Math.random()-.5)*75;
-    const geo=new THREE.BufferGeometry();geo.setAttribute('position',new THREE.BufferAttribute(pos,3));
-    const mat=new THREE.PointsMaterial({color:0xC9A84C,size:.07,transparent:true,opacity:.22});
-    const pts=new THREE.Points(geo,mat);scene.add(pts);
-    for(let i=0;i<10;i++){const lg=new THREE.BufferGeometry().setFromPoints([new THREE.Vector3((Math.random()-.5)*65,(Math.random()-.5)*65,(Math.random()-.5)*20),new THREE.Vector3((Math.random()-.5)*65,(Math.random()-.5)*65,(Math.random()-.5)*20)]);scene.add(new THREE.Line(lg,new THREE.LineBasicMaterial({color:0xC9A84C,transparent:true,opacity:.04})));}
-    const clk=new THREE.Clock();
-    (function anim(){requestAnimationFrame(anim);const t=clk.getElapsedTime();pts.rotation.y=t*.022;pts.rotation.x=Math.sin(t*.07)*.05;renderer.render(scene,camera);})();
-    window.addEventListener('resize',()=>{renderer.setSize(window.innerWidth,window.innerHeight);camera.aspect=window.innerWidth/window.innerHeight;camera.updateProjectionMatrix();});
-}catch(e){console.warn('WebGL unavailable');}
-// ── COUNTERS ──
-document.querySelectorAll('.counter').forEach(el=>{
-    const obs=new IntersectionObserver(entries=>{
-        if(entries[0].isIntersecting){
-            const target=parseFloat(el.dataset.target);const dur=2400,start=performance.now();
-            function upd(now){const p=Math.min((now-start)/dur,1);const e=1-Math.pow(1-p,4);el.textContent=target%1!==0?(target*e).toFixed(1):Math.floor(target*e);if(p<1)requestAnimationFrame(upd);else el.textContent=target%1!==0?target.toFixed(1):target;}
-            requestAnimationFrame(upd);obs.disconnect();
+// ══════════════════════════════════════════════════
+//  ⚠️  REEMPLAZA CON TU OPENAI API KEY
+// ══════════════════════════════════════════════════
+// ╔══════════════════════════════════════════════════════════╗
+// ║   PASO 1: PEGA TU OPENAI API KEY AQUÍ ABAJO             ║
+// ║   Ejemplo: const OPENAI_API_KEY = 'sk-proj-abc123...';  ║
+// ╚══════════════════════════════════════════════════════════╝
+const OPENAI_API_KEY = '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';
+
+const HORUS_SYSTEM = `Eres el asistente de inteligencia artificial de HORUS, integrado en el sitio oficial horussystemco.com. HORUS es una empresa de ingeniería de IA empresarial que diseña e implementa sistemas de automatización con inteligencia artificial para empresas de cualquier industria.
+
+Tu misión es ayudar a los visitantes a entender cómo HORUS puede transformar su negocio, responder sus preguntas con precisión y guiarlos hacia agendar una consulta ejecutiva gratuita.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+SOBRE HORUS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+HORUS no es una agencia de marketing ni un proveedor de software. Somos un socio de ingeniería de IA que implementa sistemas de automatización dentro de negocios reales — desde plantas industriales hasta despachos de abogados y clínicas médicas.
+
+Sitio web: horussystemco.com
+Email: info@horussystem.com
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+TRES DIVISIONES DE HORUS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+1. HORUS Growth (Agencia): Automatización de ventas y revenue para empresas de servicios — calificación de leads con IA, automatización de CRM, embudos de adquisición de clientes, seguimiento automático.
+
+2. HORUS Industrial (Manufactura): Sistemas de IA para fabricantes y empresas operativas — mantenimiento predictivo, inteligencia de producción, optimización de inventario, dashboards en tiempo real.
+
+3. HORUS Strategy (Consultoría): Arquitectura ejecutiva de IA y asesoría de transformación digital para dueños y gerentes que buscan infraestructura de inteligencia empresarial escalable y segura.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+TRES NIVELES DE SERVICIO
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+NIVEL 1 — Suite de Automatización IA:
+• Automatización de procesos administrativos
+• Chatbots para web y WhatsApp
+• Agentes de voz IA — 24/7 autónomos
+• Automatización de marketing de extremo a extremo
+• Generación de contenido y marca con IA
+→ Punto de entrada para cualquier empresa
+
+NIVEL 2 — Transformación de Crecimiento con IA:
+• Sistemas de inteligencia de revenue
+• Dashboards ejecutivos con IA
+• Automatización del customer journey
+• Calificación y priorización de leads con IA
+• IA de pricing y optimización de márgenes
+→ Para empresas en crecimiento de 7 cifras
+
+NIVEL 3 — Infraestructura Empresarial de IA:
+• Capa de operaciones IA — Sistema Operativo completo del negocio
+• Inventario predictivo inteligente
+• Inteligencia financiera y forecasting con IA
+• IA para RRHH y adquisición de talento
+• Automatización de seguridad y cumplimiento
+• Gemelo digital y expansión estratégica
+→ Para transformación empresarial de 8 cifras
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+CASOS DE ÉXITO REALES
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+• Agencia de seguros regional: +312% en revenue. IA de calificación de leads y seguimiento automático. Triplicó cierres en 8 meses.
+• Clínica médica multi-sede: -68% en costos administrativos. Automatización de registro de pacientes, agenda y facturación.
+• Despacho de abogados boutique: 4x más clientes en el primer trimestre. Calificación automática de consultas y CRM con IA.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+INDUSTRIAS QUE SERVIMOS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Manufactura e Industrial, CNC y Maquinado, Logística y Cadena de Suministro, Automatización Industrial, Construcción y Servicios al Hogar, Automotriz, Salud y Medicina, Legal y Servicios Financieros, Restaurantes y Gastronomía, Retail y Comercio, Agencias y Servicios Empresariales, Educación, Tecnología, Bienes Raíces.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+CÓMO AYUDAR AL VISITANTE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+1. Pregunta en qué industria está y cuál es su mayor reto operativo o de ventas.
+2. Explica concretamente qué sistema de HORUS resolvería ese problema.
+3. Usa datos y ejemplos reales de los casos de éxito cuando sea relevante.
+4. Siempre termina invitando a agendar una consulta ejecutiva gratuita en la sección de contacto.
+
+REGLAS DE COMPORTAMIENTO:
+- Responde en el idioma del visitante (español o inglés)
+- Tono sofisticado, seguro y orientado a resultados — como la marca HORUS
+- Respuestas concisas: máximo 3 párrafos cortos
+- Nunca inventes precios específicos — di que se definen en la consulta
+- Nunca menciones competidores
+- Si preguntan algo que no sabes, di que lo pueden resolver en la consulta ejecutiva`;
+
+let chatOpen = false;
+let chatMessages = [];
+let chatBusy = false;
+
+// Show notification badge after 4s
+setTimeout(() => {
+    const n = document.getElementById('chat-notif');
+    if (n) { n.style.display = 'flex'; }
+}, 4000);
+
+function toggleChat() {
+    chatOpen = !chatOpen;
+    const panel = document.getElementById('horus-chat-panel');
+    const trigger = document.getElementById('horus-chat-trigger');
+    const notif = document.getElementById('chat-notif');
+    panel.classList.toggle('is-open', chatOpen);
+    trigger.classList.toggle('is-open', chatOpen);
+    if (chatOpen) {
+        if (notif) notif.style.display = 'none';
+        // Send welcome on first open
+        if (chatMessages.length === 0) {
+            setTimeout(() => {
+                addMsg('assistant', 'Welcome. I\'m HORUS Intelligence — here to show you exactly how AI can transform your business.\n\nWhat industry are you in, and what\'s your biggest operational challenge right now?');
+            }, 300);
         }
-    },{threshold:.5});obs.observe(el);
-});
-// ── CHART ──
-document.addEventListener("DOMContentLoaded",function(){
-    Chart.defaults.color='#5a5550';Chart.defaults.font.family="'DM Sans',sans-serif";
-    const ctx=document.getElementById('dashboardChart')?.getContext('2d');if(!ctx)return;
-    const g1=ctx.createLinearGradient(0,0,0,380);g1.addColorStop(0,'rgba(201,168,76,0.28)');g1.addColorStop(1,'rgba(201,168,76,0)');
-    const g2=ctx.createLinearGradient(0,0,0,380);g2.addColorStop(0,'rgba(245,240,232,0.07)');g2.addColorStop(1,'rgba(245,240,232,0)');
-    new Chart(ctx,{type:'line',data:{labels:['Month 1','Month 2','Month 3','Month 6','Month 9','Month 12'],datasets:[{label:'Revenue Impact',data:[12,22,38,62,84,97],borderColor:'#C9A84C',backgroundColor:g1,borderWidth:1.5,fill:true,tension:.45,pointBackgroundColor:'#000',pointBorderColor:'#C9A84C',pointRadius:4,pointHoverRadius:6},{label:'Operational Efficiency',data:[8,18,30,55,72,89],borderColor:'rgba(245,240,232,0.3)',backgroundColor:g2,borderWidth:1,fill:true,tension:.45,pointBackgroundColor:'#000',pointBorderColor:'rgba(245,240,232,0.3)',pointRadius:3}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:true,labels:{color:'#5a5550',font:{size:11},usePointStyle:true,padding:28}},tooltip:{backgroundColor:'rgba(10,10,10,0.96)',titleColor:'#C9A84C',bodyColor:'#f5f0e8',padding:16,displayColors:false,borderColor:'rgba(201,168,76,0.2)',borderWidth:1}},scales:{y:{beginAtZero:true,max:100,grid:{color:'rgba(255,255,255,0.03)'},ticks:{callback:v=>v+'%',color:'#5a5550'},border:{display:false}},x:{grid:{display:false},ticks:{color:'#5a5550'},border:{display:false}}},interaction:{mode:'index',intersect:false}}});
-});
-// ── PARALLAX BANNER ──
-const bannerImg=document.querySelector('.full-banner img');
-if(bannerImg){window.addEventListener('scroll',()=>{const r=bannerImg.closest('.full-banner').getBoundingClientRect();const o=(r.top/window.innerHeight)*35;bannerImg.style.transform=`translateY(${o}px)`;});}
+        setTimeout(() => document.getElementById('chat-input')?.focus(), 400);
+    }
+}
+
+function addMsg(role, content) {
+    const msgs = document.getElementById('chat-messages');
+    const sugg = document.getElementById('chat-suggestions');
+    if (role === 'user' && sugg) sugg.style.display = 'none';
+
+    const wrap = document.createElement('div');
+    wrap.className = `msg ${role}`;
+
+    const meta = document.createElement('div');
+    meta.className = 'msg-meta';
+    meta.textContent = role === 'user' ? 'You' : 'HORUS';
+
+    const bubble = document.createElement('div');
+    bubble.className = 'msg-bubble';
+    bubble.innerHTML = content.replace(/\n/g, '<br>');
+
+    wrap.appendChild(meta);
+    wrap.appendChild(bubble);
+    msgs.appendChild(wrap);
+    msgs.scrollTop = msgs.scrollHeight;
+}
+
+function showTyping() {
+    const msgs = document.getElementById('chat-messages');
+    const el = document.createElement('div');
+    el.className = 'msg assistant';
+    el.id = 'horus-typing';
+    el.innerHTML = `<div class="msg-meta">HORUS</div><div class="typing-indicator"><div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div></div>`;
+    msgs.appendChild(el);
+    msgs.scrollTop = msgs.scrollHeight;
+}
+
+function removeTyping() {
+    document.getElementById('horus-typing')?.remove();
+}
+
+function sendSuggestion(btn) {
+    document.getElementById('chat-input').value = btn.textContent;
+    sendMessage();
+}
+
+async function sendMessage() {
+    if (chatBusy) return;
+    const input = document.getElementById('chat-input');
+    const sendBtn = document.getElementById('chat-send-btn');
+    const text = input.value.trim();
+    if (!text) return;
+
+    chatMessages.push({ role: 'user', content: text });
+    addMsg('user', text);
+    input.value = '';
+    input.style.height = '42px';
+
+    chatBusy = true;
+    sendBtn.disabled = true;
+    showTyping();
+
+    try {
+        const res = await fetch('https://api.openai.com/v1/chat/completions', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${OPENAI_API_KEY}`
+            },
+            body: JSON.stringify({
+                model: 'gpt-4o',
+                max_tokens: 400,
+                temperature: 0.75,
+                messages: [
+                    { role: 'system', content: HORUS_SYSTEM },
+                    ...chatMessages
+                ]
+            })
+        });
+
+        const data = await res.json();
+
+        if (!res.ok) throw new Error(data.error?.message || `Error ${res.status}`);
+
+        const reply = data.choices[0].message.content;
+        chatMessages.push({ role: 'assistant', content: reply });
+        removeTyping();
+        addMsg('assistant', reply);
+
+    } catch (err) {
+        removeTyping();
+        let msg = 'Something went wrong. Please try again.';
+        if (err.message.includes('429')) msg = 'Too many requests. Please wait a moment and try again.';
+        else if (err.message.includes('Failed to fetch') || err.message.includes('NetworkError')) msg = 'Connection error. Make sure the Worker URL is configured correctly.';
+        addMsg('assistant', msg);
+    } finally {
+        chatBusy = false;
+        sendBtn.disabled = false;
+        input.focus();
+    }
+}
+
+function clearChat() {
+    chatMessages = [];
+    document.getElementById('chat-messages').innerHTML = '';
+    const sugg = document.getElementById('chat-suggestions');
+    if (sugg) sugg.style.display = 'flex';
+    addMsg('assistant', 'Conversation reset. How can HORUS help your business today?');
+}
 </script>
 
 <script>
-var FORM_URL = "https://script.google.com/macros/s/AKfycbxN7-xHoca2I6-dmtOKIR_VE7kUDGsSRYJzQTfx5yIS6JM5ol5OJXUk-eiZKPNxfyK0/exec";
-
-function showFieldError(id,msg){var e=document.getElementById("err-"+id);var i=document.getElementById(id);if(e)e.textContent=msg;if(i)i.style.borderColor="#e05c5c";}
-function clearErrors(){["fullName","company","website","email","phone","message"].forEach(function(id){var e=document.getElementById("err-"+id);var i=document.getElementById(id);if(e)e.textContent="";if(i)i.style.borderColor="";});}
-
-function submitForm(){
-    clearErrors();
-    var fullName = document.getElementById("fullName").value.trim();
-    var company  = document.getElementById("company").value.trim();
-    var website  = document.getElementById("website").value.trim();  // ← NUEVO
-    var email    = document.getElementById("email").value.trim();
-    var phone    = document.getElementById("phone").value.trim();
-    var industry = document.getElementById("industry").value;
-    var revenue  = document.getElementById("revenue").value;
-    var message  = document.getElementById("message").value.trim();
-    var valid = true;
-    if(!fullName){showFieldError("fullName","Full name is required");valid=false;}
-    if(!company){showFieldError("company","Company name is required");valid=false;}
-    if(!email||!email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)){showFieldError("email","Enter a valid email");valid=false;}
-    if(!phone){showFieldError("phone","Phone number is required");valid=false;}
-    if(!message){showFieldError("message","Please describe your business");valid=false;}
-    if(!valid)return;
-    var btn=document.getElementById("submit-btn");
-    btn.disabled=true;btn.querySelector('span').textContent="Sending...";
-    fetch(FORM_URL,{method:"POST",mode:"no-cors",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify({
-        fullName: fullName,
-        company:  company,
-        website:  website,   // ← NUEVO
-        email:    email,
-        phone:    phone,
-        industry: industry,
-        revenue:  revenue,
-        message:  message
-    })})
-    .then(function(){
-        document.getElementById("horus-form").style.display="none";
-        var s=document.getElementById("form-success");s.style.display="block";
-        document.getElementById("success-msg").textContent="Thank you, "+fullName.split(" ")[0]+". Your application is under review. We've sent a confirmation to "+email+".";
-        s.scrollIntoView({behavior:"smooth",block:"center"});
-    })
-    .catch(function(){
-        btn.disabled=false;btn.querySelector('span').textContent="Submit Application →";
-        alert("Network error. Please try again or email us at executive@horus-ai.com");
-    });
-}
-
-["fullName","company","website","email","phone","message"].forEach(function(id){
-    var el=document.getElementById(id);
-    if(el)el.addEventListener("input",function(){var e=document.getElementById("err-"+id);if(e)e.textContent="";el.style.borderColor="";});
-});
+// ── PAGE SCRIPTS ──
+const cur=document.getElementById('cursor'),ring=document.getElementById('cursor-ring');let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.left=mx+'px';cur.style.top=my+'px';});
+function animRing(){rx+=(mx-rx)*.12;ry+=(my-ry)*.12;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(animRing);}animRing();
+document.querySelectorAll('a,button,[onclick]').forEach(el=>{el.addEventListener('mouseenter',()=>{cur.style.width='14px';cur.style.height='14px';ring.style.width='48px';ring.style.height='48px';ring.style.borderColor='rgba(201,168,76,0.7)';});el.addEventListener('mouseleave',()=>{cur.style.width='8px';cur.style.height='8px';ring.style.width='32px';ring.style.height='32px';ring.style.borderColor='rgba(201,168,76,0.4)';});});
+const revealObs=new IntersectionObserver(e=>e.forEach(el=>{if(el.isIntersecting)el.target.classList.add('revealed');}),{threshold:0.06});
+document.querySelectorAll('.reveal').forEach((el,i)=>{el.style.transitionDelay=(i%3)*0.1+'s';revealObs.observe(el);});
+try{const canvas=document.getElementById('heroCanvas');const renderer=new THREE.WebGLRenderer({canvas,alpha:true,antialias:true});renderer.setPixelRatio(Math.min(window.devicePixelRatio,2));renderer.setSize(window.innerWidth,window.innerHeight);const scene=new THREE.Scene();const camera=new THREE.PerspectiveCamera(70,window.innerWidth/window.innerHeight,0.1,1000);camera.position.z=28;const count=600;const pos=new Float32Array(count*3);for(let i=0;i<count*3;i++)pos[i]=(Math.random()-.5)*75;const geo=new THREE.BufferGeometry();geo.setAttribute('position',new THREE.BufferAttribute(pos,3));const mat=new THREE.PointsMaterial({color:0xC9A84C,size:.07,transparent:true,opacity:.22});const pts=new THREE.Points(geo,mat);scene.add(pts);for(let i=0;i<10;i++){const lg=new THREE.BufferGeometry().setFromPoints([new THREE.Vector3((Math.random()-.5)*65,(Math.random()-.5)*65,(Math.random()-.5)*20),new THREE.Vector3((Math.random()-.5)*65,(Math.random()-.5)*65,(Math.random()-.5)*20)]);scene.add(new THREE.Line(lg,new THREE.LineBasicMaterial({color:0xC9A84C,transparent:true,opacity:.04})));}const clk=new THREE.Clock();(function anim(){requestAnimationFrame(anim);const t=clk.getElapsedTime();pts.rotation.y=t*.022;pts.rotation.x=Math.sin(t*.07)*.05;renderer.render(scene,camera);})();window.addEventListener('resize',()=>{renderer.setSize(window.innerWidth,window.innerHeight);camera.aspect=window.innerWidth/window.innerHeight;camera.updateProjectionMatrix();});}catch(e){console.warn('WebGL unavailable');}
+document.querySelectorAll('.counter').forEach(el=>{const obs=new IntersectionObserver(entries=>{if(entries[0].isIntersecting){const target=parseFloat(el.dataset.target);const dur=2400,start=performance.now();function upd(now){const p=Math.min((now-start)/dur,1);const e=1-Math.pow(1-p,4);el.textContent=target%1!==0?(target*e).toFixed(1):Math.floor(target*e);if(p<1)requestAnimationFrame(upd);else el.textContent=target%1!==0?target.toFixed(1):target;}requestAnimationFrame(upd);obs.disconnect();}},{threshold:.5});obs.observe(el);});
+document.addEventListener("DOMContentLoaded",function(){Chart.defaults.color='#5a5550';Chart.defaults.font.family="'DM Sans',sans-serif";const ctx=document.getElementById('dashboardChart')?.getContext('2d');if(!ctx)return;const g1=ctx.createLinearGradient(0,0,0,380);g1.addColorStop(0,'rgba(201,168,76,0.28)');g1.addColorStop(1,'rgba(201,168,76,0)');const g2=ctx.createLinearGradient(0,0,0,380);g2.addColorStop(0,'rgba(245,240,232,0.07)');g2.addColorStop(1,'rgba(245,240,232,0)');new Chart(ctx,{type:'line',data:{labels:['Month 1','Month 2','Month 3','Month 6','Month 9','Month 12'],datasets:[{label:'Revenue Impact',data:[12,22,38,62,84,97],borderColor:'#C9A84C',backgroundColor:g1,borderWidth:1.5,fill:true,tension:.45,pointBackgroundColor:'#000',pointBorderColor:'#C9A84C',pointRadius:4,pointHoverRadius:6},{label:'Operational Efficiency',data:[8,18,30,55,72,89],borderColor:'rgba(245,240,232,0.3)',backgroundColor:g2,borderWidth:1,fill:true,tension:.45,pointBackgroundColor:'#000',pointBorderColor:'rgba(245,240,232,0.3)',pointRadius:3}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:true,labels:{color:'#5a5550',font:{size:11},usePointStyle:true,padding:28}},tooltip:{backgroundColor:'rgba(10,10,10,0.96)',titleColor:'#C9A84C',bodyColor:'#f5f0e8',padding:16,displayColors:false,borderColor:'rgba(201,168,76,0.2)',borderWidth:1}},scales:{y:{beginAtZero:true,max:100,grid:{color:'rgba(255,255,255,0.03)'},ticks:{callback:v=>v+'%',color:'#5a5550'},border:{display:false}},x:{grid:{display:false},ticks:{color:'#5a5550'},border:{display:false}}},interaction:{mode:'index',intersect:false}}});});
+const bannerImg=document.querySelector('.full-banner img');if(bannerImg){window.addEventListener('scroll',()=>{const r=bannerImg.closest('.full-banner').getBoundingClientRect();bannerImg.style.transform=`translateY(${(r.top/window.innerHeight)*35}px)`;});}
+var FORM_URL="https://script.google.com/macros/s/AKfycbxN7-xHoca2I6-dmtOKIR_VE7kUDGsSRYJzQTfx5yIS6JM5ol5OJXUk-eiZKPNxfyK0/exec";
+function showFieldError(id,msg){var e=document.getElementById("err-"+id),i=document.getElementById(id);if(e)e.textContent=msg;if(i)i.style.borderColor="#e05c5c";}
+function clearErrors(){["fullName","company","website","email","phone","message"].forEach(id=>{var e=document.getElementById("err-"+id),i=document.getElementById(id);if(e)e.textContent="";if(i)i.style.borderColor="";}); }
+function submitForm(){clearErrors();var fn=document.getElementById("fullName").value.trim(),co=document.getElementById("company").value.trim(),ws=document.getElementById("website").value.trim(),em=document.getElementById("email").value.trim(),ph=document.getElementById("phone").value.trim(),ind=document.getElementById("industry").value,rev=document.getElementById("revenue").value,msg=document.getElementById("message").value.trim(),valid=true;if(!fn){showFieldError("fullName","Full name is required");valid=false;}if(!co){showFieldError("company","Company name is required");valid=false;}if(!em||!em.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)){showFieldError("email","Enter a valid email");valid=false;}if(!ph){showFieldError("phone","Phone number is required");valid=false;}if(!msg){showFieldError("message","Please describe your business");valid=false;}if(!valid)return;var btn=document.getElementById("submit-btn");btn.disabled=true;btn.querySelector('span').textContent="Sending...";fetch(FORM_URL,{method:"POST",mode:"no-cors",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify({fullName:fn,company:co,website:ws,email:em,phone:ph,industry:ind,revenue:rev,message:msg})}).then(()=>{document.getElementById("horus-form").style.display="none";var s=document.getElementById("form-success");s.style.display="block";document.getElementById("success-msg").textContent="Thank you, "+fn.split(" ")[0]+". Your application is under review. We've sent a confirmation to "+em+".";s.scrollIntoView({behavior:"smooth",block:"center"});}).catch(()=>{btn.disabled=false;btn.querySelector('span').textContent="Submit Application →";alert("Network error. Please email us at info@horussystem.com");});}
+["fullName","company","website","email","phone","message"].forEach(id=>{var el=document.getElementById(id);if(el)el.addEventListener("input",()=>{var e=document.getElementById("err-"+id);if(e)e.textContent="";el.style.borderColor="";});});
 </script>
 </body>
 </html>
