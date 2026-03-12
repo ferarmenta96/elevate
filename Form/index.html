@@ -1,15 +1,4 @@
 <!DOCTYPE html>
-<!--
-╔══════════════════════════════════════════════════════╗
-║  HORUS — CONFIGURACIÓN                               ║
-║  Solo edita la línea de APPS_SCRIPT_URL de abajo     ║
-╚══════════════════════════════════════════════════════╝
--->
-<script>
-// ▼▼▼ PEGA AQUÍ TU URL DE GOOGLE APPS SCRIPT ▼▼▼
-const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxMkwaHOCkLu5ubtShs3w0b1ETlIYWOXyUp1ENHcE_qyDrlfFscyMbLH_eEvbsiMGxx/exec";
-// ▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲
-</script>
 <html lang="es">
 <head>
 <meta charset="UTF-8">
@@ -50,7 +39,6 @@ body {
 @keyframes fadeUp { from { opacity:0; transform:translateY(24px); } to { opacity:1; transform:translateY(0); } }
 @keyframes shimmer { 0%,100% { opacity:.6; } 50% { opacity:1; } }
 @keyframes spin { to { transform: rotate(360deg); } }
-@keyframes progressFill { from { width:0; } to { width:var(--target-width); } }
 @keyframes pulseGold { 0%,100% { box-shadow:0 0 0 0 rgba(200,153,30,.4); } 50% { box-shadow:0 0 0 8px rgba(200,153,30,0); } }
 
 .fade-up { animation: fadeUp .45s ease both; }
@@ -67,7 +55,6 @@ body {
   display: flex; align-items: center; justify-content: space-between;
 }
 .logo-wrap { display:flex; align-items:center; gap:14px; }
-.logo-svg circle { transition: opacity .3s; }
 .logo-text { font-family:'Playfair Display',serif; font-weight:700; font-size:22px; color:var(--gold); letter-spacing:.22em; }
 .logo-sub { font-family:'Barlow Condensed',sans-serif; font-size:10px; color:var(--text-dim); letter-spacing:.14em; margin-top:1px; }
 .topbar-right { font-family:'Barlow Condensed',sans-serif; font-size:11px; color:var(--text-dim); letter-spacing:.06em; }
@@ -343,7 +330,6 @@ body {
   .card-wrap { max-width:100%; margin:0; padding:0; }
   .card { background:#fff !important; border:none !important; box-shadow:none !important; padding:0 !important; }
   .print-only { display:block !important; }
-
   .pdf-header { background:#0D0D0D !important; padding:18px 24px; margin-bottom:0; }
   .pdf-header-logo { font-family:'Playfair Display',serif; font-size:22pt; color:#C8991E !important; letter-spacing:.2em; }
   .pdf-header-sub { font-family:'Barlow Condensed',sans-serif; font-size:9pt; color:#888 !important; letter-spacing:.12em; }
@@ -359,7 +345,6 @@ body {
   .pdf-vol-num { font-size:16pt; font-weight:700; color:#C8991E !important; font-family:'Barlow Condensed',sans-serif; }
   .pdf-vol-label { font-size:7pt; color:#888 !important; margin-top:2pt; font-family:'Barlow Condensed',sans-serif; }
   .pdf-ai { background:#FAFAFA !important; border-left:3pt solid #C8991E; padding:12pt 14pt; margin-bottom:10pt; }
-  .pdf-ai h3 { font-size:9pt; color:#C8991E !important; font-family:'Barlow Condensed',sans-serif; letter-spacing:.08em; margin-bottom:6pt; }
   .pdf-ai p { font-size:9pt; line-height:1.6; color:#333 !important; white-space:pre-wrap; }
   .pdf-auto { display:flex; gap:8pt; padding:7pt 0; border-bottom:0.5pt solid #F0F0F0; }
   .pdf-auto-num { background:#C8991E !important; color:#0D0D0D !important; width:18pt; height:18pt; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:8pt; font-weight:700; flex-shrink:0; font-family:'Barlow Condensed',sans-serif; }
@@ -420,6 +405,10 @@ body {
 <div class="print-only" id="pdfTemplate"></div>
 
 <script>
+// ▼▼▼ CONFIGURACIÓN — edita solo esta línea ▼▼▼
+const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxMkwaHOCkLu5ubtShs3w0b1ETlIYWOXyUp1ENHcE_qyDrlfFscyMbLH_eEvbsiMGxx/exec";
+// ▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲
+
 // ── STATE ─────────────────────────────────────────────────────────────
 let currentStep = 0;
 let analysisResult = null;
@@ -449,7 +438,6 @@ function chips(options, field, multi=false) {
     const l = typeof o==="object" ? o.label : o;
     const isArr = Array.isArray(form[field]);
     const sel = isArr ? form[field].includes(v) : form[field]===v;
-    // Usamos data-* para evitar que caracteres especiales rompan el onclick
     const safeVal = v.replace(/'/g, "&#39;");
     return `<button type="button" class="chip ${multi?'':'radio'} ${sel?'selected':''}"
       data-field="${field}" data-value="${safeVal}" data-multi="${multi}"
@@ -473,11 +461,12 @@ function handleChip(btn) {
 
 function val(field) { return form[field] || ""; }
 
+// FIX: oninput llama renderStep() para que el botón se reactive al escribir
 function input(label, field, placeholder, req=false) {
   return `<div class="field fade-up">
     <label>${label}${req?'<span class="req"> *</span>':''}</label>
     <input type="text" value="${val(field).replace(/"/g,'&quot;')}" placeholder="${placeholder}"
-      oninput="form['${field}']=this.value">
+      oninput="form['${field}']=this.value;renderStep()">
   </div>`;
 }
 
@@ -495,10 +484,12 @@ function select(label, field, options, req=false) {
   </div>`;
 }
 
+// FIX: textarea también llama renderStep() en oninput
 function textarea(label, field, placeholder) {
   return `<div class="field fade-up">
     <label>${label}</label>
-    <textarea placeholder="${placeholder}" oninput="form['${field}']=this.value">${val(field)}</textarea>
+    <textarea placeholder="${placeholder}"
+      oninput="form['${field}']=this.value;renderStep()">${val(field)}</textarea>
   </div>`;
 }
 
@@ -642,7 +633,7 @@ function getStepHTML(s) {
     <div class="obj-card fade-up">
       <p>"Si Horus funcionara perfectamente en tu negocio, ¿qué problema te gustaría que resolviera?"</p>
     </div>
-    ${textarea("Cuéntanos tu objetivo principal","objetivo","Ej. Quiero que cada lead que llegue por WhatsApp sea atendido en segundos sin depender de mi equipo. Quiero saber en tiempo real cuántos clientes tengo y cuántos se pierden...",)}
+    ${textarea("Cuéntanos tu objetivo principal","objetivo","Ej. Quiero que cada lead que llegue por WhatsApp sea atendido en segundos sin depender de mi equipo. Quiero saber en tiempo real cuántos clientes tengo y cuántos se pierden...")}
     <div class="info-box fade-up-2">
       <p>Con esta respuesta, <strong>Horus AI</strong> generará tu diagnóstico personalizado: la solución exacta, las automatizaciones recomendadas y el valor de negocio que generaremos juntos.</p>
     </div>`;
@@ -709,7 +700,7 @@ function renderStep() {
   // Buttons
   const btnBack = document.getElementById("btnBack");
   const btnNext = document.getElementById("btnNext");
-  const btnRow = document.getElementById("btnRow");
+  const btnRow  = document.getElementById("btnRow");
 
   if(currentStep===6) {
     btnRow.style.display = "none";
@@ -720,12 +711,10 @@ function renderStep() {
     btnNext.textContent = currentStep===5 ? "✨ Analizar con IA →" : "Continuar →";
   }
 
-  // Progress & step nav visible
   document.getElementById("progressWrap").style.display = currentStep===6 ? "none" : "block";
-  document.getElementById("stepNav").style.display = currentStep===6 ? "none" : "flex";
-  document.getElementById("heroSection").style.display = currentStep>0 ? "none" : "block";
-
-  document.getElementById("errorBox").style.display = "none";
+  document.getElementById("stepNav").style.display      = currentStep===6 ? "none" : "flex";
+  document.getElementById("heroSection").style.display  = currentStep>0   ? "none" : "block";
+  document.getElementById("errorBox").style.display     = "none";
 }
 
 function showError(msg) {
@@ -753,7 +742,7 @@ function prevStep() {
 // ── SUBMIT ────────────────────────────────────────────────────────────
 async function submitForm() {
   currentStep = 6;
-  renderStep(); // muestra spinner
+  renderStep();
   window.scrollTo({top:0,behavior:"smooth"});
 
   try {
@@ -805,7 +794,6 @@ function generarPDF() {
       <div class="pdf-field"><span class="pdf-field-label">Sucursales</span><span>${form.sucursales||"-"}</span></div>
       <div class="pdf-field"><span class="pdf-field-label">Responsable</span><span>${form.responsable||"-"}</span></div>
       <div class="pdf-field"><span class="pdf-field-label">Sistemas actuales</span><span>${form.sistemas.join(", ")||"-"}</span></div>
-
       <div class="pdf-sec">2. Diagnóstico de Problemas</div>
       <div class="pdf-field"><span class="pdf-field-label">Problema principal</span><span>${form.problemaPrincipal||"-"}</span></div>
       <div class="pdf-field"><span class="pdf-field-label">Procesos manuales</span><span>${form.procesosManuales.join(", ")||"-"}</span></div>
@@ -813,7 +801,6 @@ function generarPDF() {
       <div class="pdf-field"><span class="pdf-field-label">Tiempo de respuesta</span><span>${form.tiempoRespuesta||"-"}</span></div>
       <div class="pdf-field"><span class="pdf-field-label">Problemas inventario</span><span>${form.problemasInventario||"-"}</span></div>
       <div class="pdf-field"><span class="pdf-field-label">Objetivo principal</span><span>${form.objetivo||"-"}</span></div>
-
       <div class="pdf-sec">3. Volumen de Operación</div>
       <div class="pdf-vol">
         <div class="pdf-vol-card"><div class="pdf-vol-num">${form.correosDay||"-"}</div><div class="pdf-vol-label">Correos / día</div></div>
@@ -821,16 +808,12 @@ function generarPDF() {
         <div class="pdf-vol-card"><div class="pdf-vol-num">${form.clientesMes||"-"}</div><div class="pdf-vol-label">Clientes / mes</div></div>
         <div class="pdf-vol-card"><div class="pdf-vol-num">${form.productosInventario||"-"}</div><div class="pdf-vol-label">Inventario</div></div>
       </div>
-
       <div class="pdf-sec">4. Solución Horus (Análisis IA)</div>
       <div class="pdf-ai"><p>${a.solucion||"-"}</p></div>
-
       <div class="pdf-sec">5. Automatizaciones Recomendadas</div>
       ${autos.map((t,i)=>`<div class="pdf-auto"><div class="pdf-auto-num">${i+1}</div><span style="font-size:9pt;line-height:1.5;color:#333">${t.trim()}</span></div>`).join("")}
-
       <div class="pdf-sec">6. Valor que Generará Horus</div>
       <div class="pdf-valor">${a.valor||"-"}</div>
-
       <div class="pdf-sec">7. Accesos y Canales</div>
       <div class="pdf-field"><span class="pdf-field-label">Email</span><span>${form.emailTipo||"-"}</span></div>
       <div class="pdf-field"><span class="pdf-field-label">WhatsApp Business</span><span>${form.whatsappAdmin||"-"}</span></div>
