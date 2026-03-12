@@ -1,4 +1,15 @@
 <!DOCTYPE html>
+<!--
+╔══════════════════════════════════════════════════════╗
+║  HORUS — CONFIGURACIÓN                               ║
+║  Solo edita la línea de APPS_SCRIPT_URL de abajo     ║
+╚══════════════════════════════════════════════════════╝
+-->
+<script>
+// ▼▼▼ PEGA AQUÍ TU URL DE GOOGLE APPS SCRIPT ▼▼▼
+const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxMkwaHOCkLu5ubtShs3w0b1ETlIYWOXyUp1ENHcE_qyDrlfFscyMbLH_eEvbsiMGxx/exec";
+// ▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲
+</script>
 <html lang="es">
 <head>
 <meta charset="UTF-8">
@@ -409,9 +420,6 @@ body {
 <div class="print-only" id="pdfTemplate"></div>
 
 <script>
-// ── CONFIG ── reemplaza con tu URL de Google Apps Script desplegado
-const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxMkwaHOCkLu5ubtShs3w0b1ETlIYWOXyUp1ENHcE_qyDrlfFscyMbLH_eEvbsiMGxx/exec";
-
 // ── STATE ─────────────────────────────────────────────────────────────
 let currentStep = 0;
 let analysisResult = null;
@@ -441,12 +449,18 @@ function chips(options, field, multi=false) {
     const l = typeof o==="object" ? o.label : o;
     const isArr = Array.isArray(form[field]);
     const sel = isArr ? form[field].includes(v) : form[field]===v;
+    // Usamos data-* para evitar que caracteres especiales rompan el onclick
+    const safeVal = v.replace(/'/g, "&#39;");
     return `<button type="button" class="chip ${multi?'':'radio'} ${sel?'selected':''}"
-      onclick="toggleChip('${field}',${JSON.stringify(v)},${multi})">${l}</button>`;
+      data-field="${field}" data-value="${safeVal}" data-multi="${multi}"
+      onclick="handleChip(this)">${l}</button>`;
   }).join("");
 }
 
-function toggleChip(field, value, multi) {
+function handleChip(btn) {
+  const field = btn.dataset.field;
+  const value = btn.dataset.value;
+  const multi = btn.dataset.multi === "true";
   if(multi) {
     const arr = form[field];
     const idx = arr.indexOf(value);
