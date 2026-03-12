@@ -9,8 +9,8 @@
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 :root {
-  --gold: #C8991E; --gold-light: #E8B84B; --gold-pale: #FFF8E7;
-  --black: #0D0D0D; --dark: #111111; --dark2: #161616;
+  --gold: #C8991E; --gold-light: #E8B84B;
+  --black: #0D0D0D; --dark2: #161616;
   --gray1: #1E1E1E; --gray2: #2A2A2A; --gray3: #3A3A3A;
   --text: #E8E8E8; --text-muted: #888888; --text-dim: #555555;
 }
@@ -20,145 +20,125 @@ body { font-family:'Barlow',sans-serif; background:#080808; color:var(--text); m
 ::-webkit-scrollbar-track { background:#0A0A0A; }
 ::-webkit-scrollbar-thumb { background:var(--gold); border-radius:3px; }
 
-@keyframes fadeUp { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:translateY(0); } }
-@keyframes shimmer { 0%,100%{opacity:.6;} 50%{opacity:1;} }
-@keyframes spin { to { transform:rotate(360deg); } }
-@keyframes pulseGold { 0%,100%{box-shadow:0 0 0 0 rgba(200,153,30,.4);} 50%{box-shadow:0 0 0 8px rgba(200,153,30,0);} }
+@keyframes fadeUp { from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);} }
+@keyframes shimmer { 0%,100%{opacity:.6;}50%{opacity:1;} }
+@keyframes spin { to{transform:rotate(360deg);} }
+@keyframes pulseGold { 0%,100%{box-shadow:0 0 0 0 rgba(200,153,30,.4);}50%{box-shadow:0 0 0 8px rgba(200,153,30,0);} }
+.fade-up  { animation:fadeUp .4s ease both; }
+.fade-up-2{ animation:fadeUp .4s .07s ease both; }
+.fade-up-3{ animation:fadeUp .4s .14s ease both; }
 
-.fade-up { animation:fadeUp .4s ease both; }
-.fade-up-2 { animation:fadeUp .4s .07s ease both; }
-.fade-up-3 { animation:fadeUp .4s .14s ease both; }
+.topbar { position:sticky;top:0;z-index:200;background:rgba(8,8,8,.96);backdrop-filter:blur(12px);border-bottom:1px solid var(--gray1);padding:14px 32px;display:flex;align-items:center;justify-content:space-between; }
+.logo-wrap { display:flex;align-items:center;gap:14px; }
+.logo-text { font-family:'Playfair Display',serif;font-weight:700;font-size:22px;color:var(--gold);letter-spacing:.22em; }
+.logo-sub  { font-family:'Barlow Condensed',sans-serif;font-size:10px;color:var(--text-dim);letter-spacing:.14em;margin-top:1px; }
+.topbar-right { font-family:'Barlow Condensed',sans-serif;font-size:11px;color:var(--text-dim);letter-spacing:.06em; }
 
-/* TOPBAR */
-.topbar { position:sticky; top:0; z-index:200; background:rgba(8,8,8,.96); backdrop-filter:blur(12px); border-bottom:1px solid var(--gray1); padding:14px 32px; display:flex; align-items:center; justify-content:space-between; }
-.logo-wrap { display:flex; align-items:center; gap:14px; }
-.logo-text { font-family:'Playfair Display',serif; font-weight:700; font-size:22px; color:var(--gold); letter-spacing:.22em; }
-.logo-sub { font-family:'Barlow Condensed',sans-serif; font-size:10px; color:var(--text-dim); letter-spacing:.14em; margin-top:1px; }
-.topbar-right { font-family:'Barlow Condensed',sans-serif; font-size:11px; color:var(--text-dim); letter-spacing:.06em; }
+.hero { background:linear-gradient(180deg,#0F0F0F 0%,#080808 100%);border-bottom:1px solid var(--gray1);padding:52px 24px 40px;text-align:center; }
+.hero-eyebrow { font-family:'Barlow Condensed',sans-serif;font-size:11px;color:var(--gold);letter-spacing:.22em;text-transform:uppercase;margin-bottom:16px;display:flex;align-items:center;justify-content:center;gap:10px; }
+.hero-eyebrow::before,.hero-eyebrow::after{content:'';width:32px;height:1px;background:var(--gold);opacity:.4;}
+.hero h1 { font-family:'Playfair Display',serif;font-weight:700;font-size:clamp(26px,4vw,38px);color:#FFF;line-height:1.25;margin-bottom:14px; }
+.hero h1 span { background:linear-gradient(90deg,var(--gold) 0%,var(--gold-light) 50%,var(--gold) 100%);background-size:200%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:shimmer 3s ease infinite; }
+.hero-desc { font-family:'Barlow',sans-serif;font-size:14px;color:var(--text-muted);max-width:460px;margin:0 auto;line-height:1.7; }
 
-/* HERO */
-.hero { background:linear-gradient(180deg,#0F0F0F 0%,#080808 100%); border-bottom:1px solid var(--gray1); padding:52px 24px 40px; text-align:center; }
-.hero-eyebrow { font-family:'Barlow Condensed',sans-serif; font-size:11px; color:var(--gold); letter-spacing:.22em; text-transform:uppercase; margin-bottom:16px; display:flex; align-items:center; justify-content:center; gap:10px; }
-.hero-eyebrow::before,.hero-eyebrow::after { content:''; width:32px; height:1px; background:var(--gold); opacity:.4; }
-.hero h1 { font-family:'Playfair Display',serif; font-weight:700; font-size:clamp(26px,4vw,38px); color:#FFF; line-height:1.25; margin-bottom:14px; }
-.hero h1 span { background:linear-gradient(90deg,var(--gold) 0%,var(--gold-light) 50%,var(--gold) 100%); background-size:200%; -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; animation:shimmer 3s ease infinite; }
-.hero-desc { font-family:'Barlow',sans-serif; font-size:14px; color:var(--text-muted); max-width:460px; margin:0 auto; line-height:1.7; }
-
-/* STEP NAV */
-.step-nav { display:flex; align-items:center; justify-content:center; gap:0; padding:28px 24px 8px; max-width:680px; margin:0 auto; overflow-x:auto; }
-.step-item { display:flex; flex-direction:column; align-items:center; gap:5px; }
-.step-dot { width:34px; height:34px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-family:'Barlow Condensed',sans-serif; font-weight:600; font-size:13px; transition:all .3s; border:2px solid var(--gray2); color:var(--text-dim); background:transparent; }
-.step-dot.done { background:var(--gold); border-color:var(--gold); color:var(--black); }
-.step-dot.active { border-color:var(--gold); color:var(--gold); box-shadow:0 0 0 4px rgba(200,153,30,.15); animation:pulseGold 2s ease infinite; }
-.step-label { font-family:'Barlow Condensed',sans-serif; font-size:10px; color:var(--text-dim); letter-spacing:.06em; white-space:nowrap; transition:color .3s; }
+.step-nav { display:flex;align-items:center;justify-content:center;gap:0;padding:28px 24px 8px;max-width:680px;margin:0 auto;overflow-x:auto; }
+.step-item { display:flex;flex-direction:column;align-items:center;gap:5px; }
+.step-dot { width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:13px;transition:all .3s;border:2px solid var(--gray2);color:var(--text-dim);background:transparent; }
+.step-dot.done   { background:var(--gold);border-color:var(--gold);color:var(--black); }
+.step-dot.active { border-color:var(--gold);color:var(--gold);box-shadow:0 0 0 4px rgba(200,153,30,.15);animation:pulseGold 2s ease infinite; }
+.step-label { font-family:'Barlow Condensed',sans-serif;font-size:10px;color:var(--text-dim);letter-spacing:.06em;white-space:nowrap;transition:color .3s; }
 .step-label.active { color:var(--gold); }
-.step-connector { width:36px; height:1px; background:var(--gray2); margin:0 3px 18px; transition:background .3s; flex-shrink:0; }
+.step-connector { width:36px;height:1px;background:var(--gray2);margin:0 3px 18px;transition:background .3s;flex-shrink:0; }
 .step-connector.done { background:var(--gold); }
 
-/* PROGRESS */
-.progress-wrap { max-width:640px; margin:8px auto 0; padding:0 20px; }
-.progress-track { height:2px; background:var(--gray1); border-radius:2px; overflow:hidden; }
-.progress-fill { height:100%; background:linear-gradient(90deg,var(--gold),var(--gold-light)); transition:width .4s ease; }
-.progress-label { font-family:'Barlow Condensed',sans-serif; font-size:10px; color:var(--text-dim); text-align:center; margin-top:6px; letter-spacing:.05em; }
+.progress-wrap { max-width:640px;margin:8px auto 0;padding:0 20px; }
+.progress-track { height:2px;background:var(--gray1);border-radius:2px;overflow:hidden; }
+.progress-fill  { height:100%;background:linear-gradient(90deg,var(--gold),var(--gold-light));transition:width .4s ease; }
+.progress-label { font-family:'Barlow Condensed',sans-serif;font-size:10px;color:var(--text-dim);text-align:center;margin-top:6px;letter-spacing:.05em; }
 
-/* CARD */
-.card-wrap { max-width:640px; margin:24px auto 60px; padding:0 20px; }
-.card { background:var(--dark2); border:1px solid var(--gray1); border-radius:6px; padding:32px 30px 28px; box-shadow:0 8px 60px rgba(0,0,0,.6); }
+.card-wrap { max-width:640px;margin:24px auto 60px;padding:0 20px; }
+.card { background:var(--dark2);border:1px solid var(--gray1);border-radius:6px;padding:32px 30px 28px;box-shadow:0 8px 60px rgba(0,0,0,.6); }
 
-/* SECTION TITLE */
 .sec-title { margin-bottom:26px; }
-.sec-title-row { display:flex; align-items:center; gap:12px; margin-bottom:6px; }
+.sec-title-row { display:flex;align-items:center;gap:12px;margin-bottom:6px; }
 .sec-icon { font-size:20px; }
-.sec-title h2 { font-family:'Playfair Display',serif; font-weight:600; font-size:22px; color:#FFF; }
-.sec-title p { font-family:'Barlow',sans-serif; font-size:13px; color:var(--text-dim); padding-left:32px; line-height:1.5; }
-.sec-line { width:56px; height:2px; background:linear-gradient(90deg,var(--gold),transparent); margin-left:32px; margin-top:10px; }
+.sec-title h2 { font-family:'Playfair Display',serif;font-weight:600;font-size:22px;color:#FFF; }
+.sec-title p  { font-family:'Barlow',sans-serif;font-size:13px;color:var(--text-dim);padding-left:32px;line-height:1.5; }
+.sec-line { width:56px;height:2px;background:linear-gradient(90deg,var(--gold),transparent);margin-left:32px;margin-top:10px; }
 
-/* FIELDS */
 .field { margin-bottom:20px; }
-.field label { display:block; font-family:'Barlow Condensed',sans-serif; font-weight:500; font-size:11px; color:#999; letter-spacing:.12em; text-transform:uppercase; margin-bottom:8px; }
-.field label .req { color:var(--gold); }
-.field input, .field select, .field textarea { width:100%; padding:12px 16px; background:#0D0D0D; border:1px solid var(--gray2); border-radius:4px; color:var(--text); font-family:'Barlow',sans-serif; font-size:14px; outline:none; transition:border-color .2s, box-shadow .2s; appearance:none; }
-.field input::placeholder, .field textarea::placeholder { color:var(--text-dim); }
-.field input:focus, .field select:focus, .field textarea:focus { border-color:var(--gold); box-shadow:0 0 0 3px rgba(200,153,30,.1); }
-.field textarea { resize:vertical; min-height:90px; line-height:1.6; }
-.field select { cursor:pointer; background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23888' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E"); background-repeat:no-repeat; background-position:right 14px center; padding-right:36px; }
-.grid-2 { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+.field label { display:block;font-family:'Barlow Condensed',sans-serif;font-weight:500;font-size:11px;color:#999;letter-spacing:.12em;text-transform:uppercase;margin-bottom:8px; }
+.req { color:var(--gold); }
+.field input,.field select,.field textarea { width:100%;padding:12px 16px;background:#0D0D0D;border:1px solid var(--gray2);border-radius:4px;color:var(--text);font-family:'Barlow',sans-serif;font-size:14px;outline:none;transition:border-color .2s,box-shadow .2s;appearance:none; }
+.field input::placeholder,.field textarea::placeholder { color:var(--text-dim); }
+.field input:focus,.field select:focus,.field textarea:focus { border-color:var(--gold);box-shadow:0 0 0 3px rgba(200,153,30,.1); }
+.field textarea { resize:vertical;min-height:90px;line-height:1.6; }
+.field select { cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23888' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;padding-right:36px; }
+.grid-2 { display:grid;grid-template-columns:1fr 1fr;gap:16px; }
 
-/* CHIPS */
-.chip-group { display:flex; flex-wrap:wrap; gap:8px; }
-.chip { padding:7px 14px; background:transparent; border:1px solid var(--gray2); border-radius:3px; cursor:pointer; font-family:'Barlow Condensed',sans-serif; font-size:13px; color:var(--text-dim); letter-spacing:.03em; transition:all .18s ease; user-select:none; }
-.chip:hover { border-color:var(--gray3); color:#AAA; }
-.chip.selected { background:rgba(200,153,30,.12); border-color:var(--gold); color:var(--gold); }
-.chip.selected::before { content:'✓  '; font-weight:700; }
-.chip.radio.selected { background:var(--gold); color:var(--black); font-weight:600; }
-.chip.radio.selected::before { content:''; }
+.chip-group { display:flex;flex-wrap:wrap;gap:8px; }
+.chip { padding:7px 14px;background:transparent;border:1px solid var(--gray2);border-radius:3px;cursor:pointer;font-family:'Barlow Condensed',sans-serif;font-size:13px;color:var(--text-dim);letter-spacing:.03em;transition:all .18s ease;user-select:none; }
+.chip:hover { border-color:var(--gray3);color:#AAA; }
+.chip.sel-multi { background:rgba(200,153,30,.12);border-color:var(--gold);color:var(--gold); }
+.chip.sel-multi::before { content:'✓  ';font-weight:700; }
+.chip.sel-radio { background:var(--gold);color:var(--black);font-weight:600; }
 
-/* SUBBOX */
-.subbox { background:#0D0D0D; border:1px solid var(--gray1); border-radius:4px; padding:18px 20px; margin-bottom:18px; }
-.subbox-label { font-family:'Barlow Condensed',sans-serif; font-size:11px; color:var(--gold); letter-spacing:.14em; text-transform:uppercase; margin-bottom:14px; }
+.subbox { background:#0D0D0D;border:1px solid var(--gray1);border-radius:4px;padding:18px 20px;margin-bottom:18px; }
+.subbox-label { font-family:'Barlow Condensed',sans-serif;font-size:11px;color:var(--gold);letter-spacing:.14em;text-transform:uppercase;margin-bottom:14px; }
 
-/* VOL */
-.vol-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
-.vol-card { background:#0D0D0D; border:1px solid var(--gray1); border-radius:4px; padding:14px 16px; }
+.vol-grid { display:grid;grid-template-columns:1fr 1fr;gap:12px; }
+.vol-card { background:#0D0D0D;border:1px solid var(--gray1);border-radius:4px;padding:14px 16px; }
 
-/* INFO BOX */
-.info-box { background:rgba(200,153,30,.06); border:1px solid rgba(200,153,30,.2); border-radius:4px; padding:14px 16px; margin-top:16px; }
-.info-box p { font-family:'Barlow',sans-serif; font-size:12.5px; color:var(--text-dim); line-height:1.65; }
+.info-box { background:rgba(200,153,30,.06);border:1px solid rgba(200,153,30,.2);border-radius:4px;padding:14px 16px;margin-top:16px; }
+.info-box p { font-family:'Barlow',sans-serif;font-size:12.5px;color:var(--text-dim);line-height:1.65; }
 .info-box strong { color:var(--gold); }
 
-/* OBJ CARD */
-.obj-card { background:linear-gradient(135deg,#111 0%,#0E0E0E 100%); border:1px solid rgba(200,153,30,.2); border-radius:4px; padding:20px 24px; margin-bottom:22px; position:relative; overflow:hidden; }
-.obj-card::before { content:''; position:absolute; top:0; left:0; width:3px; height:100%; background:var(--gold); }
-.obj-card p { font-family:'Playfair Display',serif; font-size:16px; color:#DDD; line-height:1.7; font-style:italic; padding-left:16px; }
+.obj-card { background:linear-gradient(135deg,#111 0%,#0E0E0E 100%);border:1px solid rgba(200,153,30,.2);border-radius:4px;padding:20px 24px;margin-bottom:22px;position:relative;overflow:hidden; }
+.obj-card::before { content:'';position:absolute;top:0;left:0;width:3px;height:100%;background:var(--gold); }
+.obj-card p { font-family:'Playfair Display',serif;font-size:16px;color:#DDD;line-height:1.7;font-style:italic;padding-left:16px; }
 
-/* BUTTONS */
-.btn-row { display:flex; gap:12px; margin-top:26px; }
-.btn-back { flex:1; padding:14px; background:transparent; border:1px solid var(--gray2); border-radius:4px; cursor:pointer; font-family:'Barlow Condensed',sans-serif; font-weight:500; font-size:14px; color:var(--text-muted); letter-spacing:.08em; transition:all .2s; }
-.btn-back:hover { border-color:var(--gray3); color:#AAA; }
-.btn-next { flex:2.5; padding:14px; background:linear-gradient(135deg,var(--gold) 0%,var(--gold-light) 100%); border:none; border-radius:4px; cursor:pointer; font-family:'Barlow Condensed',sans-serif; font-weight:700; font-size:15px; color:var(--black); letter-spacing:.14em; text-transform:uppercase; transition:all .2s; box-shadow:0 4px 20px rgba(200,153,30,.25); }
-.btn-next:hover { box-shadow:0 6px 28px rgba(200,153,30,.4); transform:translateY(-1px); }
-.btn-next:disabled { background:var(--gray1); color:var(--gray3); box-shadow:none; cursor:not-allowed; transform:none; }
+/* BOTONES — parte del render dinámico */
+.btn-row { display:flex;gap:12px;margin-top:26px; }
+.btn-back { flex:1;padding:14px;background:transparent;border:1px solid var(--gray2);border-radius:4px;cursor:pointer;font-family:'Barlow Condensed',sans-serif;font-weight:500;font-size:14px;color:var(--text-muted);letter-spacing:.08em;transition:all .2s; }
+.btn-back:hover { border-color:var(--gray3);color:#AAA; }
+.btn-next { flex:2.5;padding:14px;background:linear-gradient(135deg,var(--gold) 0%,var(--gold-light) 100%);border:none;border-radius:4px;cursor:pointer;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:15px;color:var(--black);letter-spacing:.14em;text-transform:uppercase;transition:all .2s;box-shadow:0 4px 20px rgba(200,153,30,.25); }
+.btn-next:hover:not(:disabled) { box-shadow:0 6px 28px rgba(200,153,30,.4);transform:translateY(-1px); }
+.btn-next:disabled { background:var(--gray1) !important;color:var(--gray3) !important;box-shadow:none !important;cursor:not-allowed !important;transform:none !important;pointer-events:none; }
 
-/* LOADING */
-.loading-wrap { text-align:center; padding:56px 0; }
-.spinner { width:46px; height:46px; margin:0 auto 22px; border:3px solid var(--gray1); border-top-color:var(--gold); border-radius:50%; animation:spin .8s linear infinite; }
-.loading-title { font-family:'Playfair Display',serif; font-size:20px; color:#FFF; margin-bottom:8px; }
-.loading-sub { font-family:'Barlow',sans-serif; font-size:13px; color:var(--text-dim); }
+.loading-wrap { text-align:center;padding:56px 0; }
+.spinner { width:46px;height:46px;margin:0 auto 22px;border:3px solid var(--gray1);border-top-color:var(--gold);border-radius:50%;animation:spin .8s linear infinite; }
+.loading-title { font-family:'Playfair Display',serif;font-size:20px;color:#FFF;margin-bottom:8px; }
+.loading-sub   { font-family:'Barlow',sans-serif;font-size:13px;color:var(--text-dim); }
 
-/* RESULTS */
-.result-header { text-align:center; margin-bottom:28px; }
-.result-badge { display:inline-flex; align-items:center; gap:8px; background:rgba(200,153,30,.1); border:1px solid rgba(200,153,30,.3); border-radius:20px; padding:6px 16px; margin-bottom:16px; }
-.result-badge span { font-family:'Barlow Condensed',sans-serif; font-size:12px; color:var(--gold); letter-spacing:.08em; }
-.result-header h2 { font-family:'Playfair Display',serif; font-weight:700; font-size:26px; color:#FFF; margin-bottom:8px; }
-.result-meta { font-family:'Barlow Condensed',sans-serif; font-size:13px; color:var(--text-muted); }
-.score-pill { display:inline-block; background:var(--gold); color:var(--black); font-family:'Barlow Condensed',sans-serif; font-weight:700; font-size:14px; padding:3px 12px; border-radius:12px; margin-left:6px; }
-.ai-card { background:#0D0D0D; border:1px solid var(--gray1); border-left:3px solid var(--gold); border-radius:4px; padding:18px 20px; margin-bottom:14px; }
-.ai-card-title { display:flex; align-items:center; gap:8px; margin-bottom:10px; }
+.result-header { text-align:center;margin-bottom:28px; }
+.result-badge  { display:inline-flex;align-items:center;gap:8px;background:rgba(200,153,30,.1);border:1px solid rgba(200,153,30,.3);border-radius:20px;padding:6px 16px;margin-bottom:16px; }
+.result-badge span { font-family:'Barlow Condensed',sans-serif;font-size:12px;color:var(--gold);letter-spacing:.08em; }
+.result-header h2 { font-family:'Playfair Display',serif;font-weight:700;font-size:26px;color:#FFF;margin-bottom:8px; }
+.result-meta { font-family:'Barlow Condensed',sans-serif;font-size:13px;color:var(--text-muted); }
+.score-pill { display:inline-block;background:var(--gold);color:var(--black);font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:14px;padding:3px 12px;border-radius:12px;margin-left:6px; }
+
+.ai-card { background:#0D0D0D;border:1px solid var(--gray1);border-left:3px solid var(--gold);border-radius:4px;padding:18px 20px;margin-bottom:14px; }
+.ai-card-title { display:flex;align-items:center;gap:8px;margin-bottom:10px; }
 .ai-card-title span:first-child { font-size:16px; }
-.ai-card-title strong { font-family:'Barlow Condensed',sans-serif; font-weight:600; font-size:12px; color:var(--gold); letter-spacing:.1em; text-transform:uppercase; }
-.ai-card p { font-family:'Barlow',sans-serif; font-size:13.5px; color:#CCC; line-height:1.75; white-space:pre-wrap; }
-.auto-list { border:1px solid var(--gray1); border-radius:4px; overflow:hidden; margin-bottom:14px; }
-.auto-item { display:flex; align-items:flex-start; gap:12px; padding:10px 14px; border-bottom:1px solid var(--gray1); transition:background .15s; }
+.ai-card-title strong { font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:12px;color:var(--gold);letter-spacing:.1em;text-transform:uppercase; }
+.ai-card p { font-family:'Barlow',sans-serif;font-size:13.5px;color:#CCC;line-height:1.75;white-space:pre-wrap; }
+
+.auto-list { border:1px solid var(--gray1);border-radius:4px;overflow:hidden;margin-bottom:14px; }
+.auto-item { display:flex;align-items:flex-start;gap:12px;padding:10px 14px;border-bottom:1px solid var(--gray1);transition:background .15s; }
 .auto-item:last-child { border-bottom:none; }
 .auto-item:hover { background:rgba(200,153,30,.04); }
-.auto-num { min-width:22px; height:22px; background:var(--gold); border-radius:50%; display:flex; align-items:center; justify-content:center; font-family:'Barlow Condensed',sans-serif; font-weight:700; font-size:11px; color:var(--black); flex-shrink:0; margin-top:1px; }
-.auto-text { font-family:'Barlow',sans-serif; font-size:13px; color:#CCC; line-height:1.55; }
-.valor-box { background:rgba(200,153,30,.07); border:1px solid rgba(200,153,30,.25); border-radius:4px; padding:18px 20px; margin-bottom:14px; }
-.valor-box p { font-family:'Barlow',sans-serif; font-size:13.5px; color:#CCC; line-height:1.75; white-space:pre-wrap; }
-.btn-pdf { width:100%; padding:16px; background:linear-gradient(135deg,var(--gold) 0%,var(--gold-light) 100%); border:none; border-radius:4px; cursor:pointer; font-family:'Barlow Condensed',sans-serif; font-weight:700; font-size:16px; color:var(--black); letter-spacing:.16em; text-transform:uppercase; display:flex; align-items:center; justify-content:center; gap:10px; margin-top:6px; box-shadow:0 6px 28px rgba(200,153,30,.3); transition:all .2s; }
-.btn-pdf:hover { box-shadow:0 8px 36px rgba(200,153,30,.45); transform:translateY(-1px); }
-.error-box { background:#150808; border:1px solid #500; border-radius:4px; padding:12px 16px; margin-bottom:16px; }
-.error-box p { font-family:'Barlow',sans-serif; font-size:13px; color:#F88; line-height:1.5; }
-.print-only { display:none; }
+.auto-num  { min-width:22px;height:22px;background:var(--gold);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:11px;color:var(--black);flex-shrink:0;margin-top:1px; }
+.auto-text { font-family:'Barlow',sans-serif;font-size:13px;color:#CCC;line-height:1.55; }
 
-@media print {
-  *{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important;}
-  body{background:#fff!important;color:#111!important;font-size:9pt;}
-  .topbar,.hero,.step-nav,.progress-wrap,.btn-row,.btn-pdf{display:none!important;}
-  .card-wrap{max-width:100%;margin:0;padding:0;}
-  .card{background:#fff!important;border:none!important;box-shadow:none!important;padding:0!important;}
-  .print-only{display:block!important;}
-}
+.valor-box { background:rgba(200,153,30,.07);border:1px solid rgba(200,153,30,.25);border-radius:4px;padding:18px 20px;margin-bottom:14px; }
+.valor-box p { font-family:'Barlow',sans-serif;font-size:13.5px;color:#CCC;line-height:1.75;white-space:pre-wrap; }
+
+.btn-pdf { width:100%;padding:16px;background:linear-gradient(135deg,var(--gold) 0%,var(--gold-light) 100%);border:none;border-radius:4px;cursor:pointer;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:16px;color:var(--black);letter-spacing:.16em;text-transform:uppercase;display:flex;align-items:center;justify-content:center;gap:10px;margin-top:6px;box-shadow:0 6px 28px rgba(200,153,30,.3);transition:all .2s; }
+.btn-pdf:hover { box-shadow:0 8px 36px rgba(200,153,30,.45);transform:translateY(-1px); }
+
+.error-box { background:#150808;border:1px solid #500;border-radius:4px;padding:12px 16px;margin-bottom:16px; }
+.error-box p { font-family:'Barlow',sans-serif;font-size:13px;color:#F88;line-height:1.5; }
+.print-only { display:none; }
 </style>
 </head>
 <body>
@@ -192,14 +172,8 @@ body { font-family:'Barlow',sans-serif; background:#080808; color:var(--text); m
 </div>
 
 <div class="card-wrap">
-  <div class="card" id="mainCard">
-    <div id="stepContent"></div>
-    <div id="errorBox" class="error-box" style="display:none"><p id="errorMsg"></p></div>
-    <div class="btn-row" id="btnRow">
-      <button class="btn-back" id="btnBack" onclick="prevStep()" style="display:none">← Anterior</button>
-      <button class="btn-next" id="btnNext" onclick="nextStep()">Continuar →</button>
-    </div>
-  </div>
+  <!-- TODO el contenido dinámico va aquí, incluyendo los botones -->
+  <div class="card" id="mainCard"></div>
 </div>
 
 <div class="print-only" id="pdfTemplate"></div>
@@ -209,7 +183,6 @@ body { font-family:'Barlow',sans-serif; background:#080808; color:var(--text); m
 const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxMkwaHOCkLu5ubtShs3w0b1ETlIYWOXyUp1ENHcE_qyDrlfFscyMbLH_eEvbsiMGxx/exec";
 // ▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲
 
-// ── STATE
 let currentStep = 0;
 let analysisResult = null;
 let clientId = null;
@@ -227,162 +200,176 @@ const form = {
 
 const STEPS = ["Negocio","Problemas","Automatización","Volumen","Accesos","Objetivo"];
 
-// ── SOLO actualiza chips y botón sin re-renderizar inputs de texto
-function updateChips() {
-  // Re-renderizar solo los chip-groups que existan en el DOM
-  document.querySelectorAll('[data-chipgroup]').forEach(container => {
-    const field = container.dataset.chipgroup;
-    const multi = container.dataset.multi === "true";
-    container.querySelectorAll('.chip').forEach(btn => {
-      const v = btn.dataset.value;
-      const isArr = Array.isArray(form[field]);
-      const sel = isArr ? form[field].includes(v) : form[field] === v;
-      btn.className = `chip ${multi?'':'radio'} ${sel?'selected':''}`;
-    });
-  });
-  updateBtn();
+// ── canProceed
+function canProceed() {
+  if (currentStep === 0) return form.empresa.trim().length > 0 && form.industria !== "";
+  if (currentStep === 5) return form.objetivo.trim().length > 10;
+  return true;
 }
 
-function updateBtn() {
-  const btnNext = document.getElementById("btnNext");
-  if(btnNext) btnNext.disabled = !canProceed();
+// ── Helpers de chips (no re-renderizan nada)
+function chipHTML(v, l, field, multi) {
+  const isArr = Array.isArray(form[field]);
+  const sel   = isArr ? form[field].includes(v) : form[field] === v;
+  const cls   = sel ? (multi ? "chip sel-multi" : "chip sel-radio") : "chip";
+  const safe  = v.replace(/"/g, "&quot;");
+  return `<button type="button" class="${cls}"
+    data-field="${field}" data-value="${safe}" data-multi="${multi}"
+    onclick="pickChip(this)">${l}</button>`;
 }
 
-// ── CHIPS: no llama renderStep(), solo updateChips()
-function handleChip(btn) {
+function chips(options, field, multi) {
+  return options.map(o => {
+    const v = typeof o === "object" ? o.value : o;
+    const l = typeof o === "object" ? o.label : o;
+    return chipHTML(v, l, field, multi);
+  }).join("");
+}
+
+// pickChip: actualiza form y solo re-renderiza los chips del grupo tocado + el botón
+function pickChip(btn) {
   const field = btn.dataset.field;
   const value = btn.dataset.value;
   const multi = btn.dataset.multi === "true";
-  if(multi) {
+
+  if (multi) {
     const arr = form[field];
     const idx = arr.indexOf(value);
-    if(idx > -1) arr.splice(idx, 1); else arr.push(value);
+    if (idx > -1) arr.splice(idx, 1); else arr.push(value);
   } else {
     form[field] = value;
   }
-  updateChips(); // ← NO destruye el DOM, solo actualiza clases
+
+  // Actualizar solo el grupo de chips tocado
+  const group = btn.closest(".chip-group");
+  if (group) {
+    const options = Array.from(group.querySelectorAll(".chip")).map(b => b.dataset.value);
+    group.innerHTML = chips(options, field, multi);
+  }
+
+  // Actualizar solo el botón
+  refreshBtn();
 }
 
-// ── CHIP HTML
-function chipGroupHTML(options, field, multi=false) {
-  return options.map(o => {
-    const v = typeof o==="object" ? o.value : o;
-    const l = typeof o==="object" ? o.label : o;
-    const isArr = Array.isArray(form[field]);
-    const sel = isArr ? form[field].includes(v) : form[field] === v;
-    return `<button type="button" class="chip ${multi?'':'radio'} ${sel?'selected':''}"
-      data-field="${field}" data-value="${v.replace(/"/g,'&quot;')}" data-multi="${multi}"
-      onclick="handleChip(this)">${l}</button>`;
-  }).join("");
+// refreshBtn: actualiza estado del botón SIN tocar el DOM del paso
+function refreshBtn() {
+  const btn = document.getElementById("btnNext");
+  if (!btn) return;
+  const ok = canProceed();
+  btn.disabled = !ok;
+  btn.style.pointerEvents = ok ? "" : "none";
 }
 
-function chipGroup(label, field, options, multi=false) {
+// ── Helpers de campos
+function fInput(label, field, placeholder, req) {
+  const v = (form[field] || "").replace(/"/g, "&quot;");
   return `<div class="field">
-    <label>${label}</label>
-    <div class="chip-group" data-chipgroup="${field}" data-multi="${multi}">
-      ${chipGroupHTML(options, field, multi)}
-    </div>
-  </div>`;
-}
-
-// ── INPUTS: actualizan form pero NO llaman renderStep()
-function inputHTML(label, field, placeholder, req=false) {
-  const v = (form[field]||'').replace(/"/g,'&quot;');
-  return `<div class="field">
-    <label>${label}${req?'<span class="req"> *</span>':''}</label>
+    <label>${label}${req ? '<span class="req"> *</span>' : ""}</label>
     <input type="text" value="${v}" placeholder="${placeholder}"
-      oninput="form['${field}']=this.value;updateBtn()">
+      oninput="form['${field}']=this.value;refreshBtn()">
   </div>`;
 }
 
-function selectHTML(label, field, options, req=false) {
+function fSelect(label, field, options, req) {
   const opts = options.map(o => {
-    const v=typeof o==="object"?o.value:o, l=typeof o==="object"?o.label:o;
-    return `<option value="${v}" ${form[field]===v?"selected":""}>${l}</option>`;
+    const v = typeof o === "object" ? o.value : o;
+    const l = typeof o === "object" ? o.label : o;
+    return `<option value="${v}"${form[field] === v ? " selected" : ""}>${l}</option>`;
   }).join("");
   return `<div class="field">
-    <label>${label}${req?'<span class="req"> *</span>':''}</label>
-    <select onchange="form['${field}']=this.value;updateBtn()">
-      <option value="" disabled ${!form[field]?"selected":""}>Seleccionar...</option>
+    <label>${label}${req ? '<span class="req"> *</span>' : ""}</label>
+    <select onchange="form['${field}']=this.value;refreshBtn()">
+      <option value="" disabled${!form[field] ? " selected" : ""}>Seleccionar...</option>
       ${opts}
     </select>
   </div>`;
 }
 
-function textareaHTML(label, field, placeholder) {
-  const v = form[field]||'';
+function fTextarea(label, field, placeholder) {
+  const v = (form[field] || "").replace(/</g, "&lt;");
   return `<div class="field">
     <label>${label}</label>
     <textarea placeholder="${placeholder}"
-      oninput="form['${field}']=this.value;updateBtn()">${v}</textarea>
+      oninput="form['${field}']=this.value;refreshBtn()">${v}</textarea>
   </div>`;
 }
 
-// ── STEPS
-function getStepHTML(s) {
-  if(s===0) return `
+function fChipGroup(label, field, options, multi) {
+  return `<div class="field">
+    <label>${label}</label>
+    <div class="chip-group">${chips(options, field, multi)}</div>
+  </div>`;
+}
+
+// ── Botones HTML (se generan con el estado correcto en cada render)
+function botonesHTML() {
+  if (currentStep === 6) return "";
+  const ok      = canProceed();
+  const label   = currentStep === 5 ? "✨ Analizar con IA →" : "Continuar →";
+  const back    = currentStep > 0
+    ? `<button class="btn-back" onclick="prevStep()">← Anterior</button>` : "";
+  return `<div class="btn-row">
+    ${back}
+    <button class="btn-next" id="btnNext" onclick="nextStep()" ${ok ? "" : "disabled"}>${label}</button>
+  </div>`;
+}
+
+// ── Contenido de cada paso
+function stepContent() {
+  const s = currentStep;
+
+  if (s === 0) return `
     <div class="sec-title fade-up">
       <div class="sec-title-row"><span class="sec-icon">🏢</span><h2>Información del Negocio</h2></div>
       <p>Cuéntanos sobre tu empresa para entender el contexto.</p>
       <div class="sec-line"></div>
     </div>
-    ${inputHTML("Nombre de la empresa","empresa","Ej. Distribuidora Martínez S.A. de C.V.",true)}
-    ${selectHTML("Industria / Sector","industria",[
+    ${fInput("Nombre de la empresa", "empresa", "Ej. Distribuidora Martínez S.A. de C.V.", true)}
+    ${fSelect("Industria / Sector", "industria", [
       "Manufactura","Distribución y Logística","Retail / Comercio",
       "Servicios Profesionales","Salud y Médico","Construcción",
       "Tecnología","Educación","Alimentos y Bebidas","Automotriz",
       "Inmobiliaria","E-commerce","Turismo y Hospitalidad","Otro"
-    ],true)}
+    ], true)}
     <div class="grid-2">
-      ${selectHTML("No. de empleados","empleados",["1-5","6-15","16-30","31-50","51-100","101-250","+250"])}
-      <div class="field">
-        <label>¿Tienen sucursales?</label>
-        <div class="chip-group" data-chipgroup="sucursales" data-multi="false">
-          ${chipGroupHTML(["Solo una","2-5","Más de 5"],"sucursales",false)}
-        </div>
+      ${fSelect("No. de empleados", "empleados", ["1-5","6-15","16-30","31-50","51-100","101-250","+250"])}
+      <div class="field"><label>¿Tienen sucursales?</label>
+        <div class="chip-group">${chips(["Solo una","2-5","Más de 5"], "sucursales", false)}</div>
       </div>
     </div>
-    ${inputHTML("¿Quién maneja correos, clientes y pedidos?","responsable","Ej. El dueño, asistente, equipo de ventas...")}
-    ${chipGroup("¿Qué sistemas usan actualmente? (varios)","sistemas",[
+    ${fInput("¿Quién maneja correos, clientes y pedidos?", "responsable", "Ej. El dueño, asistente, equipo de ventas...")}
+    ${fChipGroup("¿Qué sistemas usan actualmente? (varios)", "sistemas", [
       "Excel / Hojas de cálculo","WhatsApp Business","Gmail","Outlook",
       "CRM (HubSpot, Salesforce...)","ERP (SAP, Odoo...)","Google Drive",
       "Redes Sociales","Solo papel / nada","Otro"
-    ],true)}`;
+    ], true)}`;
 
-  if(s===1) return `
+  if (s === 1) return `
     <div class="sec-title fade-up">
       <div class="sec-title-row"><span class="sec-icon">🔍</span><h2>Problemas Actuales</h2></div>
       <p>Identifiquemos los puntos de dolor en tu operación diaria.</p>
       <div class="sec-line"></div>
     </div>
-    ${textareaHTML("¿Qué parte de tu negocio te quita más tiempo?","problemaPrincipal","Ej. Responder cotizaciones, hacer seguimiento a clientes...")}
-    ${chipGroup("¿Qué procesos haces manualmente que quisieras automatizar?","procesosManuales",[
+    ${fTextarea("¿Qué parte de tu negocio te quita más tiempo?", "problemaPrincipal", "Ej. Responder cotizaciones, hacer seguimiento a clientes...")}
+    ${fChipGroup("¿Qué procesos haces manualmente que quisieras automatizar?", "procesosManuales", [
       "Responder correos","Seguimiento a leads","Envío de cotizaciones",
       "Control de inventario","Facturación","Reportes y estadísticas",
       "Agendar citas","Seguimiento post-venta","Publicaciones en redes","Otro"
-    ],true)}
+    ], true)}
     <div class="grid-2">
       <div class="field"><label>¿Se te pierden clientes o leads?</label>
-        <div class="chip-group" data-chipgroup="pierdeClientes" data-multi="false">
-          ${chipGroupHTML(["Sí, frecuentemente","A veces","Rara vez","No"],"pierdeClientes",false)}
-        </div></div>
+        <div class="chip-group">${chips(["Sí, frecuentemente","A veces","Rara vez","No"], "pierdeClientes", false)}</div></div>
       <div class="field"><label>¿Tardan mucho en responder mensajes?</label>
-        <div class="chip-group" data-chipgroup="tiempoRespuesta" data-multi="false">
-          ${chipGroupHTML(["+24 horas","4-24 horas","1-4 horas","Menos de 1 hora"],"tiempoRespuesta",false)}
-        </div></div>
+        <div class="chip-group">${chips(["+24 horas","4-24 horas","1-4 horas","Menos de 1 hora"], "tiempoRespuesta", false)}</div></div>
     </div>
     <div class="grid-2">
       <div class="field"><label>¿Problemas con inventario o pedidos?</label>
-        <div class="chip-group" data-chipgroup="problemasInventario" data-multi="false">
-          ${chipGroupHTML(["Sí, graves","Leves","No aplica"],"problemasInventario",false)}
-        </div></div>
+        <div class="chip-group">${chips(["Sí, graves","Leves","No aplica"], "problemasInventario", false)}</div></div>
       <div class="field"><label>¿Maquinaria o equipos que monitorear?</label>
-        <div class="chip-group" data-chipgroup="monitoreoEquipos" data-multi="false">
-          ${chipGroupHTML(["Sí","No"],"monitoreoEquipos",false)}
-        </div></div>
+        <div class="chip-group">${chips(["Sí","No"], "monitoreoEquipos", false)}</div></div>
     </div>`;
 
-  if(s===2) return `
+  if (s === 2) return `
     <div class="sec-title fade-up">
       <div class="sec-title-row"><span class="sec-icon">⚙️</span><h2>Automatización Deseada</h2></div>
       <p>Define qué módulos de Horus necesitas implementar.</p>
@@ -390,89 +377,73 @@ function getStepHTML(s) {
     </div>
     <div class="subbox fade-up">
       <div class="subbox-label">Clientes y Ventas</div>
-      ${chipGroup("¿Cómo llegan tus clientes actualmente?","comoLleganClientes",["Google / SEO","Facebook / Instagram","WhatsApp","Referencias","Visitas directas","LinkedIn","Otro"],true)}
+      ${fChipGroup("¿Cómo llegan tus clientes actualmente?", "comoLleganClientes",
+        ["Google / SEO","Facebook / Instagram","WhatsApp","Referencias","Visitas directas","LinkedIn","Otro"], true)}
       <div class="grid-2">
         <div class="field"><label>¿Captura automática de leads?</label>
-          <div class="chip-group" data-chipgroup="capturaLeads" data-multi="false">
-            ${chipGroupHTML(["Sí","No","Ya tengo algo"],"capturaLeads",false)}
-          </div></div>
+          <div class="chip-group">${chips(["Sí","No","Ya tengo algo"], "capturaLeads", false)}</div></div>
         <div class="field"><label>¿Respuestas automáticas?</label>
-          <div class="chip-group" data-chipgroup="respuestasAuto" data-multi="false">
-            ${chipGroupHTML(["Sí","No"],"respuestasAuto",false)}
-          </div></div>
+          <div class="chip-group">${chips(["Sí","No"], "respuestasAuto", false)}</div></div>
       </div>
     </div>
     <div class="subbox fade-up-2">
       <div class="subbox-label">Administración</div>
       <div class="grid-2">
         <div class="field"><label>¿Gestión de inventario?</label>
-          <div class="chip-group" data-chipgroup="gestionInventario" data-multi="false">
-            ${chipGroupHTML(["Sí","No"],"gestionInventario",false)}
-          </div></div>
+          <div class="chip-group">${chips(["Sí","No"], "gestionInventario", false)}</div></div>
         <div class="field"><label>¿Gestión de RFQ (cotizaciones)?</label>
-          <div class="chip-group" data-chipgroup="gestionRFQ" data-multi="false">
-            ${chipGroupHTML(["Sí","No"],"gestionRFQ",false)}
-          </div></div>
+          <div class="chip-group">${chips(["Sí","No"], "gestionRFQ", false)}</div></div>
         <div class="field"><label>¿Gestión de RMA (devoluciones)?</label>
-          <div class="chip-group" data-chipgroup="gestionRMA" data-multi="false">
-            ${chipGroupHTML(["Sí","No"],"gestionRMA",false)}
-          </div></div>
+          <div class="chip-group">${chips(["Sí","No"], "gestionRMA", false)}</div></div>
         <div class="field"><label>¿Seguimiento de pedidos?</label>
-          <div class="chip-group" data-chipgroup="seguimientoPedidos" data-multi="false">
-            ${chipGroupHTML(["Sí","No"],"seguimientoPedidos",false)}
-          </div></div>
+          <div class="chip-group">${chips(["Sí","No"], "seguimientoPedidos", false)}</div></div>
       </div>
     </div>
     <div class="subbox fade-up-3">
       <div class="subbox-label">Comunicación y Operación</div>
       <div class="grid-2">
         <div class="field"><label>¿Automatizar correos?</label>
-          <div class="chip-group" data-chipgroup="automatizarCorreos" data-multi="false">
-            ${chipGroupHTML(["Sí","No"],"automatizarCorreos",false)}
-          </div></div>
+          <div class="chip-group">${chips(["Sí","No"], "automatizarCorreos", false)}</div></div>
         <div class="field"><label>¿Automatizar WhatsApp?</label>
-          <div class="chip-group" data-chipgroup="automatizarWhatsApp" data-multi="false">
-            ${chipGroupHTML(["Sí","No"],"automatizarWhatsApp",false)}
-          </div></div>
+          <div class="chip-group">${chips(["Sí","No"], "automatizarWhatsApp", false)}</div></div>
         <div class="field"><label>¿Recordatorios automáticos?</label>
-          <div class="chip-group" data-chipgroup="recordatoriosAuto" data-multi="false">
-            ${chipGroupHTML(["Sí","No"],"recordatoriosAuto",false)}
-          </div></div>
+          <div class="chip-group">${chips(["Sí","No"], "recordatoriosAuto", false)}</div></div>
         <div class="field"><label>¿Monitoreo de máquinas / alertas?</label>
-          <div class="chip-group" data-chipgroup="monitoreoMaquinas" data-multi="false">
-            ${chipGroupHTML(["Sí","No"],"monitoreoMaquinas",false)}
-          </div></div>
+          <div class="chip-group">${chips(["Sí","No"], "monitoreoMaquinas", false)}</div></div>
       </div>
     </div>`;
 
-  if(s===3) return `
+  if (s === 3) return `
     <div class="sec-title fade-up">
       <div class="sec-title-row"><span class="sec-icon">📊</span><h2>Volumen de Operación</h2></div>
       <p>Esto nos permite dimensionar la solución correcta para tu escala.</p>
       <div class="sec-line"></div>
     </div>
     <div class="vol-grid fade-up">
-      <div class="vol-card">${selectHTML("Correos recibidos al día","correosDay",["1-10","11-30","31-50","51-100","+100"])}</div>
-      <div class="vol-card">${selectHTML("Mensajes de WhatsApp al día","whatsappDay",["1-10","11-30","31-50","51-100","+100"])}</div>
-      <div class="vol-card">${selectHTML("Clientes nuevos al mes","clientesMes",["1-10","11-30","31-100","101-500","+500"])}</div>
-      <div class="vol-card">${selectHTML("Productos en inventario","productosInventario",["No aplica","1-50","51-200","201-1,000","+1,000"])}</div>
+      <div class="vol-card">${fSelect("Correos al día",    "correosDay",         ["1-10","11-30","31-50","51-100","+100"])}</div>
+      <div class="vol-card">${fSelect("WhatsApp al día",   "whatsappDay",        ["1-10","11-30","31-50","51-100","+100"])}</div>
+      <div class="vol-card">${fSelect("Clientes al mes",   "clientesMes",        ["1-10","11-30","31-100","101-500","+500"])}</div>
+      <div class="vol-card">${fSelect("Productos inventario","productosInventario",["No aplica","1-50","51-200","201-1,000","+1,000"])}</div>
     </div>
     <div class="info-box fade-up-2">
-      <p>💡 <strong>¿Por qué importa el volumen?</strong> Un negocio con 10 correos/día necesita una arquitectura diferente a uno con +100. Horus se calibra exactamente a tu escala.</p>
+      <p>💡 <strong>¿Por qué importa el volumen?</strong> Horus se calibra exactamente a tu escala para que no pagues de más ni de menos.</p>
     </div>`;
 
-  if(s===4) return `
+  if (s === 4) return `
     <div class="sec-title fade-up">
       <div class="sec-title-row"><span class="sec-icon">🔐</span><h2>Accesos e Infraestructura</h2></div>
       <p>Necesitamos saber con qué herramientas conectar Horus.</p>
       <div class="sec-line"></div>
     </div>
-    ${chipGroup("¿Qué plataforma de email usan?","emailTipo",["Gmail / Google Workspace","Outlook / Microsoft 365","Servidor propio (SMTP)","Yahoo","Otro"])}
-    ${chipGroup("¿Quién administra WhatsApp Business?","whatsappAdmin",["El dueño","Un empleado específico","Múltiples personas","No usamos WhatsApp Business"])}
-    ${chipGroup("¿Dónde guardan sus datos actualmente?","usaSheets",["Google Sheets","Excel local","Ambos","CRM propio","Ninguno"])}
-    ${inputHTML("Página web (si tienen)","paginaWeb","https://minegocio.com  — o escribe 'No tenemos'")}`;
+    ${fChipGroup("¿Qué plataforma de email usan?", "emailTipo",
+      ["Gmail / Google Workspace","Outlook / Microsoft 365","Servidor propio (SMTP)","Yahoo","Otro"])}
+    ${fChipGroup("¿Quién administra WhatsApp Business?", "whatsappAdmin",
+      ["El dueño","Un empleado específico","Múltiples personas","No usamos WhatsApp Business"])}
+    ${fChipGroup("¿Dónde guardan sus datos actualmente?", "usaSheets",
+      ["Google Sheets","Excel local","Ambos","CRM propio","Ninguno"])}
+    ${fInput("Página web (si tienen)", "paginaWeb", "https://minegocio.com  — o escribe 'No tenemos'")}`;
 
-  if(s===5) return `
+  if (s === 5) return `
     <div class="sec-title fade-up">
       <div class="sec-title-row"><span class="sec-icon">🎯</span><h2>Tu Objetivo con Horus</h2></div>
       <p>La pregunta más importante del diagnóstico.</p>
@@ -481,171 +452,191 @@ function getStepHTML(s) {
     <div class="obj-card fade-up">
       <p>"Si Horus funcionara perfectamente en tu negocio, ¿qué problema te gustaría que resolviera?"</p>
     </div>
-    ${textareaHTML("Cuéntanos tu objetivo principal","objetivo","Ej. Quiero que cada lead que llegue por WhatsApp sea atendido en segundos sin depender de mi equipo...")}
+    ${fTextarea("Cuéntanos tu objetivo principal", "objetivo",
+      "Ej. Quiero que cada lead que llegue por WhatsApp sea atendido en segundos sin depender de mi equipo...")}
     <div class="info-box fade-up-2">
-      <p>Con esta respuesta, <strong>Horus AI</strong> generará tu diagnóstico personalizado: la solución exacta, las automatizaciones recomendadas y el valor de negocio que generaremos juntos.</p>
+      <p>Con esta respuesta, <strong>Horus AI</strong> generará tu diagnóstico personalizado.</p>
     </div>`;
 
-  if(s===6) {
-    if(!analysisResult) return `<div class="loading-wrap"><div class="spinner"></div><p class="loading-title">Analizando con Horus AI...</p><p class="loading-sub">Procesando tu diagnóstico y generando recomendaciones personalizadas</p></div>`;
-    const a = analysisResult;
-    const score = parseInt(a.score)||0;
-    const scoreLabel = score>=8?"🔥 ALTO POTENCIAL":score>=5?"⚡ POTENCIAL MEDIO":"📊 POTENCIAL ESTÁNDAR";
-    const autos = (a.automatizaciones||"").split("|").filter(x=>x.trim());
+  if (s === 6) {
+    if (!analysisResult) return `
+      <div class="loading-wrap">
+        <div class="spinner"></div>
+        <p class="loading-title">Analizando con Horus AI...</p>
+        <p class="loading-sub">Procesando tu diagnóstico y generando recomendaciones personalizadas</p>
+      </div>`;
+    const a     = analysisResult;
+    const score = parseInt(a.score) || 0;
+    const lbl   = score >= 8 ? "🔥 ALTO POTENCIAL" : score >= 5 ? "⚡ POTENCIAL MEDIO" : "📊 POTENCIAL ESTÁNDAR";
+    const autos = (a.automatizaciones || "").split("|").filter(x => x.trim());
     return `
       <div class="result-header fade-up">
         <div class="result-badge"><span>✨ Análisis completado</span></div>
-        <h2>Diagnóstico de <span style="color:var(--gold)">${form.empresa||"tu empresa"}</span></h2>
-        <div class="result-meta">ID: <strong style="color:var(--gold);font-family:'Barlow Condensed',sans-serif">${clientId}</strong>
+        <h2>Diagnóstico de <span style="color:var(--gold)">${form.empresa || "tu empresa"}</span></h2>
+        <div class="result-meta">
+          ID: <strong style="color:var(--gold);font-family:'Barlow Condensed',sans-serif">${clientId}</strong>
           &nbsp;·&nbsp; Score: <span class="score-pill">${a.score}/10</span>
-          &nbsp;·&nbsp; <span style="color:var(--gold)">${scoreLabel}</span></div>
+          &nbsp;·&nbsp; <span style="color:var(--gold)">${lbl}</span>
+        </div>
       </div>
       <div class="ai-card fade-up">
         <div class="ai-card-title"><span>🚀</span><strong>Solución Horus</strong></div>
-        <p>${a.solucion||""}</p>
+        <p>${a.solucion || ""}</p>
       </div>
       <div class="ai-card fade-up-2">
         <div class="ai-card-title"><span>⚙️</span><strong>Automatizaciones Recomendadas</strong></div>
         <div class="auto-list">
-          ${autos.map((t,i)=>`<div class="auto-item"><div class="auto-num">${i+1}</div><div class="auto-text">${t.trim()}</div></div>`).join("")}
+          ${autos.map((t,i) => `<div class="auto-item">
+            <div class="auto-num">${i+1}</div>
+            <div class="auto-text">${t.trim()}</div>
+          </div>`).join("")}
         </div>
       </div>
       <div class="valor-box fade-up-3">
         <div style="font-family:'Barlow Condensed',sans-serif;font-size:11px;color:var(--gold);letter-spacing:.1em;text-transform:uppercase;margin-bottom:10px;">💰 Valor que generará Horus</div>
-        <p>${a.valor||""}</p>
+        <p>${a.valor || ""}</p>
       </div>
-      ${a.resumen_ejecutivo?`<div class="info-box fade-up"><p><strong>Resumen ejecutivo:</strong> ${a.resumen_ejecutivo}</p></div>`:""}
+      ${a.resumen_ejecutivo ? `<div class="info-box fade-up"><p><strong>Resumen ejecutivo:</strong> ${a.resumen_ejecutivo}</p></div>` : ""}
       <button class="btn-pdf" onclick="generarPDF()">📄 &nbsp; Descargar Reporte PDF</button>`;
   }
+
+  return "";
 }
 
-// ── NAVIGATION
-function canProceed() {
-  if(currentStep===0) return form.empresa.trim().length > 0 && form.industria !== "";
-  if(currentStep===5) return form.objetivo.trim().length > 10;
-  return true;
-}
+// ── render principal: todo el card se reescribe en cambios de paso
+function render() {
+  const card = document.getElementById("mainCard");
 
-// renderStep: SOLO se llama al cambiar de paso (no en cada clic de chip)
-function renderStep() {
-  document.getElementById("stepContent").innerHTML = getStepHTML(currentStep);
+  // Error box persistente (fuera del innerHTML para no perder estado)
+  const errorHTML = `<div id="errorBox" class="error-box" style="display:none"><p id="errorMsg"></p></div>`;
 
-  const nav = document.getElementById("stepNav");
-  nav.innerHTML = STEPS.map((s,i) => {
-    const done=i<currentStep, active=i===currentStep;
+  card.innerHTML = stepContent() + errorHTML + botonesHTML();
+
+  // Step nav
+  document.getElementById("stepNav").innerHTML = STEPS.map((s, i) => {
+    const done = i < currentStep, active = i === currentStep;
     return `<div class="step-item">
-      <div class="step-dot ${done?"done":""} ${active?"active":""}">${done?"✓":i+1}</div>
+      <div class="step-dot ${done?"done":""} ${active?"active":""}">${done ? "✓" : i+1}</div>
       <div class="step-label ${active?"active":""}">${s}</div>
-    </div>${i<STEPS.length-1?`<div class="step-connector ${i<currentStep?"done":""}"></div>`:""}`;
+    </div>${i < STEPS.length-1 ? `<div class="step-connector ${i < currentStep?"done":""}"></div>` : ""}`;
   }).join("");
 
-  const pct = Math.round(((currentStep+1)/6)*100);
-  document.getElementById("progressFill").style.width = pct+"%";
+  // Progress
+  const pct = Math.round(((currentStep + 1) / 6) * 100);
+  document.getElementById("progressFill").style.width = pct + "%";
   document.getElementById("progressLabel").textContent = `Paso ${currentStep+1} de 6 · ${pct}% completado`;
 
-  const btnBack = document.getElementById("btnBack");
-  const btnNext = document.getElementById("btnNext");
-  const btnRow  = document.getElementById("btnRow");
-
-  if(currentStep===6) {
-    btnRow.style.display = "none";
-  } else {
-    btnRow.style.display = "flex";
-    btnBack.style.display = currentStep>0 ? "block" : "none";
-    btnNext.disabled = !canProceed();
-    btnNext.textContent = currentStep===5 ? "✨ Analizar con IA →" : "Continuar →";
-  }
-
-  document.getElementById("progressWrap").style.display = currentStep===6?"none":"block";
-  document.getElementById("stepNav").style.display      = currentStep===6?"none":"flex";
-  document.getElementById("heroSection").style.display  = currentStep>0?"none":"block";
-  document.getElementById("errorBox").style.display     = "none";
+  // Visibilidad de secciones
+  document.getElementById("progressWrap").style.display = currentStep === 6 ? "none" : "block";
+  document.getElementById("stepNav").style.display      = currentStep === 6 ? "none" : "flex";
+  document.getElementById("heroSection").style.display  = currentStep > 0   ? "none" : "block";
 }
 
 function showError(msg) {
   const box = document.getElementById("errorBox");
+  if (!box) return;
   document.getElementById("errorMsg").textContent = msg;
   box.style.display = "block";
-  box.scrollIntoView({behavior:"smooth",block:"center"});
+  box.scrollIntoView({ behavior:"smooth", block:"center" });
 }
 
 async function nextStep() {
-  if(!canProceed()) return;
-  if(currentStep===5) {
+  if (!canProceed()) return;
+  if (currentStep === 5) {
     await submitForm();
   } else {
     currentStep++;
-    renderStep();
-    window.scrollTo({top:0,behavior:"smooth"});
+    render();
+    window.scrollTo({ top:0, behavior:"smooth" });
   }
 }
 
 function prevStep() {
-  if(currentStep>0) { currentStep--; renderStep(); window.scrollTo({top:0,behavior:"smooth"}); }
+  if (currentStep > 0) {
+    currentStep--;
+    render();
+    window.scrollTo({ top:0, behavior:"smooth" });
+  }
 }
 
-// ── SUBMIT
 async function submitForm() {
   currentStep = 6;
-  renderStep();
-  window.scrollTo({top:0,behavior:"smooth"});
+  render();
+  window.scrollTo({ top:0, behavior:"smooth" });
   try {
     const resp = await fetch(APPS_SCRIPT_URL, {
-      method:"POST",
-      headers:{"Content-Type":"application/json"},
-      body:JSON.stringify({action:"analyze", data:form})
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ action:"analyze", data:form })
     });
-    if(!resp.ok) throw new Error(`Error HTTP ${resp.status}`);
+    if (!resp.ok) throw new Error("Error HTTP " + resp.status);
     const result = await resp.json();
-    if(!result.success) throw new Error(result.error||"Error desconocido");
+    if (!result.success) throw new Error(result.error || "Error desconocido");
     analysisResult = result.analysis;
-    clientId = result.clientId;
-    renderStep();
-    window.scrollTo({top:0,behavior:"smooth"});
+    clientId       = result.clientId;
+    render();
+    window.scrollTo({ top:0, behavior:"smooth" });
   } catch(e) {
     currentStep = 5;
-    renderStep();
+    render();
     showError("Error al conectar con el servidor. Detalle: " + e.message);
   }
 }
 
-// ── PDF
 function generarPDF() {
-  const a = analysisResult;
-  const autos = (a.automatizaciones||"").split("|").filter(x=>x.trim());
-  const fecha = new Date().toLocaleDateString("es-MX",{day:"2-digit",month:"2-digit",year:"numeric"});
-  const pdfHTML = `
+  const a     = analysisResult;
+  const autos = (a.automatizaciones || "").split("|").filter(x => x.trim());
+  const fecha = new Date().toLocaleDateString("es-MX", {day:"2-digit",month:"2-digit",year:"numeric"});
+  const row   = (l,v) => `<div style="display:grid;grid-template-columns:130pt 1fr;padding:5px 0;border-bottom:.5pt solid #F0F0F0;font-size:9pt;"><span style="color:#888;font-family:'Barlow Condensed',sans-serif;">${l}</span><span>${v||"-"}</span></div>`;
+  const sec   = t  => `<div style="background:#0D0D0D;color:#fff;padding:7px 14px;margin:16px 0 10px;font-family:'Barlow Condensed',sans-serif;font-size:10pt;letter-spacing:.1em;text-transform:uppercase;">${t}</div>`;
+
+  const body = `
     <div style="background:#0D0D0D;padding:18px 24px;">
       <div style="font-family:'Playfair Display',serif;font-size:22pt;color:#C8991E;letter-spacing:.2em;">HORUS</div>
       <div style="font-family:'Barlow Condensed',sans-serif;font-size:9pt;color:#888;letter-spacing:.12em;margin-top:3px;">REPORTE DE DIAGNÓSTICO Y PROPUESTA DE AUTOMATIZACIÓN CON IA</div>
     </div>
     <div style="background:#FFF8E7;padding:10px 24px;border-bottom:2pt solid #C8991E;display:flex;gap:32px;flex-wrap:wrap;">
-      ${[["ID Cliente",clientId],["Empresa",form.empresa],["Fecha",fecha],["Score",a.score+"/10"]].map(([l,v])=>`<div><div style="font-size:7pt;color:#888;text-transform:uppercase;font-family:'Barlow Condensed',sans-serif;">${l}</div><div style="font-size:13pt;font-weight:700;color:#C8991E;font-family:'Barlow Condensed',sans-serif;">${v}</div></div>`).join("")}
+      ${[["ID Cliente",clientId],["Empresa",form.empresa],["Fecha",fecha],["Score",a.score+"/10"]].map(([l,v])=>`
+        <div><div style="font-size:7pt;color:#888;text-transform:uppercase;font-family:'Barlow Condensed',sans-serif;">${l}</div>
+        <div style="font-size:13pt;font-weight:700;color:#C8991E;font-family:'Barlow Condensed',sans-serif;">${v}</div></div>`).join("")}
     </div>
     <div style="padding:16px 24px;">
-      <div style="background:#0D0D0D;color:#fff;padding:7px 14px;margin:16px 0 10px;font-family:'Barlow Condensed',sans-serif;font-size:10pt;letter-spacing:.1em;text-transform:uppercase;">1. Información del Negocio</div>
-      ${[["Empresa",form.empresa],["Industria",form.industria],["Empleados",form.empleados],["Sucursales",form.sucursales],["Responsable",form.responsable],["Sistemas",form.sistemas.join(", ")]].map(([l,v])=>`<div style="display:grid;grid-template-columns:130pt 1fr;padding:5px 0;border-bottom:.5pt solid #F0F0F0;font-size:9pt;"><span style="color:#888;font-family:'Barlow Condensed',sans-serif;">${l}</span><span>${v||"-"}</span></div>`).join("")}
-      <div style="background:#0D0D0D;color:#fff;padding:7px 14px;margin:16px 0 10px;font-family:'Barlow Condensed',sans-serif;font-size:10pt;letter-spacing:.1em;text-transform:uppercase;">2. Diagnóstico de Problemas</div>
-      ${[["Problema principal",form.problemaPrincipal],["Procesos manuales",form.procesosManuales.join(", ")],["¿Pierde clientes?",form.pierdeClientes],["Tiempo de respuesta",form.tiempoRespuesta],["Objetivo",form.objetivo]].map(([l,v])=>`<div style="display:grid;grid-template-columns:130pt 1fr;padding:5px 0;border-bottom:.5pt solid #F0F0F0;font-size:9pt;"><span style="color:#888;font-family:'Barlow Condensed',sans-serif;">${l}</span><span>${v||"-"}</span></div>`).join("")}
-      <div style="background:#0D0D0D;color:#fff;padding:7px 14px;margin:16px 0 10px;font-family:'Barlow Condensed',sans-serif;font-size:10pt;letter-spacing:.1em;text-transform:uppercase;">3. Solución Horus (IA)</div>
+      ${sec("1. Información del Negocio")}
+      ${row("Empresa",form.empresa)} ${row("Industria",form.industria)}
+      ${row("Empleados",form.empleados)} ${row("Sucursales",form.sucursales)}
+      ${row("Responsable",form.responsable)} ${row("Sistemas",form.sistemas.join(", "))}
+      ${sec("2. Diagnóstico de Problemas")}
+      ${row("Problema principal",form.problemaPrincipal)}
+      ${row("Procesos manuales",form.procesosManuales.join(", "))}
+      ${row("¿Pierde clientes?",form.pierdeClientes)}
+      ${row("Tiempo de respuesta",form.tiempoRespuesta)}
+      ${row("Objetivo",form.objetivo)}
+      ${sec("3. Solución Horus (IA)")}
       <div style="background:#FAFAFA;border-left:3pt solid #C8991E;padding:12pt 14pt;margin-bottom:10pt;font-size:9pt;line-height:1.6;color:#333;white-space:pre-wrap;">${a.solucion||"-"}</div>
-      <div style="background:#0D0D0D;color:#fff;padding:7px 14px;margin:16px 0 10px;font-family:'Barlow Condensed',sans-serif;font-size:10pt;letter-spacing:.1em;text-transform:uppercase;">4. Automatizaciones Recomendadas</div>
-      ${autos.map((t,i)=>`<div style="display:flex;gap:8pt;padding:7pt 0;border-bottom:.5pt solid #F0F0F0;align-items:flex-start;"><div style="background:#C8991E;color:#0D0D0D;width:18pt;height:18pt;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:8pt;font-weight:700;flex-shrink:0;font-family:'Barlow Condensed',sans-serif;">${i+1}</div><span style="font-size:9pt;line-height:1.5;color:#333;">${t.trim()}</span></div>`).join("")}
-      <div style="background:#0D0D0D;color:#fff;padding:7px 14px;margin:16px 0 10px;font-family:'Barlow Condensed',sans-serif;font-size:10pt;letter-spacing:.1em;text-transform:uppercase;">5. Valor que Generará Horus</div>
+      ${sec("4. Automatizaciones Recomendadas")}
+      ${autos.map((t,i)=>`<div style="display:flex;gap:8pt;padding:7pt 0;border-bottom:.5pt solid #F0F0F0;align-items:flex-start;">
+        <div style="background:#C8991E;color:#0D0D0D;width:18pt;height:18pt;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:8pt;font-weight:700;flex-shrink:0;">${i+1}</div>
+        <span style="font-size:9pt;line-height:1.5;color:#333;">${t.trim()}</span></div>`).join("")}
+      ${sec("5. Valor que Generará Horus")}
       <div style="background:#FFF8E7;border:1pt solid #C8991E;padding:12pt;font-size:9pt;line-height:1.7;color:#333;white-space:pre-wrap;">${a.valor||"-"}</div>
+      ${sec("6. Accesos")}
+      ${row("Email",form.emailTipo)} ${row("WhatsApp",form.whatsappAdmin)}
+      ${row("Base de datos",form.usaSheets)} ${row("Web",form.paginaWeb)}
     </div>
-    <div style="background:#0D0D0D;padding:10pt 24pt;text-align:center;color:#888;font-size:7.5pt;font-family:'Barlow Condensed',sans-serif;margin-top:20pt;">Horus System Co. &nbsp;|&nbsp; horussystemco.com &nbsp;|&nbsp; ${fecha}</div>`;
+    <div style="background:#0D0D0D;padding:10pt 24pt;text-align:center;color:#888;font-size:7.5pt;font-family:'Barlow Condensed',sans-serif;margin-top:20pt;">
+      Horus System Co. &nbsp;|&nbsp; horussystemco.com &nbsp;|&nbsp; ${fecha}
+    </div>`;
 
   const win = window.open("","_blank","width=900,height=700");
   win.document.write(`<!DOCTYPE html><html><head><meta charset="utf-8"><title>Horus — ${clientId}</title>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Barlow+Condensed:wght@400;600;700&family=Barlow:wght@400&display=swap" rel="stylesheet">
     <style>*{box-sizing:border-box;margin:0;padding:0;}body{font-family:'Barlow',sans-serif;background:#fff;}@media print{*{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important;}}</style>
-  </head><body>${pdfHTML}<script>window.onload=()=>{window.print();}<\/script></body></html>`);
+  </head><body>${body}<script>window.onload=()=>window.print();<\/script></body></html>`);
   win.document.close();
 }
 
-// ── INIT
-renderStep();
+// ── Arranque
+render();
 </script>
 </body>
 </html>
