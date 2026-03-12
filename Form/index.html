@@ -103,7 +103,7 @@ body { font-family:'Barlow',sans-serif; background:#080808; color:var(--text); m
 .btn-back:hover { border-color:var(--gray3);color:#AAA; }
 .btn-next { flex:2.5;padding:14px;background:linear-gradient(135deg,var(--gold) 0%,var(--gold-light) 100%);border:none;border-radius:4px;cursor:pointer;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:15px;color:var(--black);letter-spacing:.14em;text-transform:uppercase;transition:all .2s;box-shadow:0 4px 20px rgba(200,153,30,.25); }
 .btn-next:hover:not(:disabled) { box-shadow:0 6px 28px rgba(200,153,30,.4);transform:translateY(-1px); }
-.btn-next:disabled { background:var(--gray1) !important;color:var(--gray3) !important;box-shadow:none !important;cursor:not-allowed !important;transform:none !important;pointer-events:none; }
+.btn-next:disabled { background:#2A2A2A !important;color:#555 !important;box-shadow:none !important;cursor:not-allowed !important;transform:none !important; }
 
 .loading-wrap { text-align:center;padding:56px 0; }
 .spinner { width:46px;height:46px;margin:0 auto 22px;border:3px solid var(--gray1);border-top-color:var(--gold);border-radius:50%;animation:spin .8s linear infinite; }
@@ -202,8 +202,6 @@ const STEPS = ["Negocio","Problemas","Automatización","Volumen","Accesos","Obje
 
 // ── canProceed
 function canProceed() {
-  if (currentStep === 0) return form.empresa.trim().length > 0 && form.industria !== "";
-  if (currentStep === 5) return form.objetivo.trim().length > 10;
   return true;
 }
 
@@ -253,11 +251,7 @@ function pickChip(btn) {
 
 // refreshBtn: actualiza estado del botón SIN tocar el DOM del paso
 function refreshBtn() {
-  const btn = document.getElementById("btnNext");
-  if (!btn) return;
-  const ok = canProceed();
-  btn.disabled = !ok;
-  btn.style.pointerEvents = ok ? "" : "none";
+  // botón siempre habilitado
 }
 
 // ── Helpers de campos
@@ -310,7 +304,7 @@ function botonesHTML() {
     ? `<button class="btn-back" onclick="prevStep()">← Anterior</button>` : "";
   return `<div class="btn-row">
     ${back}
-    <button class="btn-next" id="btnNext" onclick="nextStep()" ${ok ? "" : "disabled"}>${label}</button>
+    <button class="btn-next" id="btnNext" onclick="nextStep()" >${label}</button>
   </div>`;
 }
 
