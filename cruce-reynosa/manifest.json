@@ -1,0 +1,36 @@
+{
+  "name": "Cruce Reynosa",
+  "short_name": "Cruce RNS",
+  "description": "Tiempo real de espera en los puentes internacionales de Reynosa, Tamaulipas. Powered by Horus System Co.",
+  "start_url": "/cruce-reynosa/",
+  "scope": "/cruce-reynosa/",
+  "display": "standalone",
+  "background_color": "#080808",
+  "theme_color": "#080808",
+  "orientation": "portrait-primary",
+  "lang": "es-MX",
+  "categories": ["utilities", "navigation", "travel"],
+  "icons": [
+    {
+      "src": "/cruce-reynosa/public/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/cruce-reynosa/public/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "screenshots": [],
+  "share_target": {
+    "action": "/cruce-reynosa/",
+    "method": "GET",
+    "params": {
+      "title": "title",
+      "text": "text"
+    }
+  }
+}
