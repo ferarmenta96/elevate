@@ -789,6 +789,92 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
       cursor: not-allowed;
     }
 
+    /* ── PHONE PROMO BOX ─────────────────────────── */
+    .phone-promo-box {
+      background: linear-gradient(135deg, #1a1300 0%, #120e00 100%);
+      border: 1px solid var(--gold-glow-strong);
+      border-radius: 12px;
+      padding: 14px 16px;
+      margin-bottom: 18px;
+      position: relative;
+      overflow: hidden;
+    }
+    .phone-promo-box::before {
+      content: '';
+      position: absolute;
+      top: -20px; right: -20px;
+      width: 80px; height: 80px;
+      border-radius: 50%;
+      background: #C9A84C15;
+      pointer-events: none;
+    }
+    .phone-promo-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 4px;
+    }
+    .phone-promo-badge {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 9px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: #080808;
+      background: var(--gold);
+      border-radius: 4px;
+      padding: 2px 7px;
+      text-transform: uppercase;
+    }
+    .phone-promo-title {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 15px;
+      font-weight: 900;
+      color: var(--gold-bright);
+      letter-spacing: 0.5px;
+      line-height: 1.2;
+    }
+    .phone-promo-sub {
+      font-size: 12px;
+      color: var(--text-dim);
+      margin-bottom: 10px;
+      line-height: 1.4;
+    }
+    .phone-input-wrap {
+      position: relative;
+    }
+    .phone-input-icon {
+      position: absolute;
+      left: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 15px;
+      pointer-events: none;
+    }
+    .phone-input {
+      width: 100%;
+      background: var(--surface3);
+      border: 1px solid var(--gold-dim);
+      border-radius: 8px;
+      padding: 11px 12px 11px 38px;
+      color: var(--text);
+      font-size: 14px;
+      font-family: 'Barlow', sans-serif;
+      letter-spacing: 0.5px;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .phone-input:focus {
+      outline: none;
+      border-color: var(--gold);
+      box-shadow: 0 0 0 2px #C9A84C18;
+    }
+    .phone-input::placeholder { color: var(--faint); }
+    .phone-promo-disclaimer {
+      font-size: 10px;
+      color: var(--muted);
+      margin-top: 7px;
+      letter-spacing: 0.3px;
+    }
+
     .success-screen {
       text-align: center;
       padding: 40px 20px;
@@ -1430,6 +1516,26 @@ function renderForm(bridge) {
           >${f.note}</textarea>
         </div>
 
+        <div class="phone-promo-box">
+          <div class="phone-promo-header">
+            <span class="phone-promo-badge">💵 Gana $20</span>
+          </div>
+          <div class="phone-promo-title">¡Deja tu número y gana dinero!</div>
+          <div class="phone-promo-sub">El usuario que más reportes envíe este mes se lleva <strong style="color:var(--gold)">$20 dólares</strong>. Deja tu número para que podamos contactarte. 🏆</div>
+          <div class="phone-input-wrap">
+            <span class="phone-input-icon">📱</span>
+            <input
+              type="tel"
+              class="phone-input"
+              placeholder="Ej: 8991234567 (opcional)"
+              value="${f.phone || ''}"
+              oninput="setPhone(this.value)"
+              maxlength="15"
+            />
+          </div>
+          <div class="phone-promo-disclaimer">🔒 Tu número es privado — solo se usa para el sorteo mensual.</div>
+        </div>
+
         <button class="submit-btn" ${canSubmit ? '' : 'disabled'} onclick="handleSubmit()">
           ${state.submitting ? 'Enviando...' : '🚀 Publicar Reporte'}
         </button>
@@ -1454,7 +1560,7 @@ window.selectBridge = (i) => {
 window.openForm = () => {
   state.showForm = true;
   state.submitDone = false;
-  state.formData = { position: '', lane: '', estimatedTime: '', note: '' };
+  state.formData = { position: '', lane: '', estimatedTime: '', note: '', phone: '' };
   render();
 };
 
@@ -1476,6 +1582,10 @@ window.setNote = (val) => {
   state.formData.note = val;
 };
 
+window.setPhone = (val) => {
+  state.formData.phone = val;
+};
+
 window.handleSubmit = async () => {
   if (!state.formData.position || !state.formData.lane || !state.formData.estimatedTime) return;
   state.submitting = true;
@@ -1489,6 +1599,7 @@ window.handleSubmit = async () => {
     lane: state.formData.lane,
     estimatedTime: state.formData.estimatedTime,
     note: state.formData.note,
+    phone: state.formData.phone || '',
     timestamp: new Date().toISOString(),
   };
 
