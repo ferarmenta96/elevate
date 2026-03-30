@@ -828,6 +828,105 @@
     /* Scrollbar */
     .content::-webkit-scrollbar { width: 0; }
     .modal-sheet::-webkit-scrollbar { width: 0; }
+
+    /* ── AD BANNER ───────────────────────────────── */
+    .ad-banner {
+      border-radius: 10px;
+      border: 1px solid var(--border-gold);
+      background: linear-gradient(135deg, #0f0d08 0%, #161208 100%);
+      padding: 12px 16px;
+      margin-bottom: 18px;
+      overflow: hidden;
+      position: relative;
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+      transition: background 0.6s ease, border-color 0.6s ease;
+    }
+    .ad-banner.slide-white {
+      background: linear-gradient(135deg, #ffffff 0%, #f0ede8 100%);
+      border-color: #ffffff60;
+    }
+    .ad-banner::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg, transparent, #ffffff18, transparent);
+      animation: adShimmer 3s ease-in-out infinite;
+    }
+    @keyframes adShimmer {
+      0%, 100% { opacity: 0; transform: translateX(-100%); }
+      50% { opacity: 1; transform: translateX(100%); }
+    }
+    .ad-label {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 8px;
+      letter-spacing: 2.5px;
+      color: var(--muted);
+      text-transform: uppercase;
+      font-weight: 700;
+      margin-bottom: 6px;
+      transition: color 0.4s ease;
+    }
+    .ad-banner.slide-white .ad-label { color: #9a8f80; }
+    .ad-slides { position: relative; height: 36px; }
+    .ad-slide {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      opacity: 0;
+      transform: translateY(8px);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+    .ad-slide.active { opacity: 1; transform: translateY(0); }
+    .ad-icon { font-size: 20px; flex-shrink: 0; }
+    .ad-text { }
+    .ad-headline {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 16px;
+      font-weight: 900;
+      color: var(--gold);
+      letter-spacing: 1px;
+      line-height: 1.1;
+      text-transform: uppercase;
+    }
+    .ad-headline-white {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 16px;
+      font-weight: 900;
+      letter-spacing: 1px;
+      line-height: 1.1;
+      text-transform: uppercase;
+      background: linear-gradient(90deg, #080808 0%, #3a2f00 50%, #080808 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .ad-sub {
+      font-family: 'Barlow', sans-serif;
+      font-size: 11px;
+      color: var(--text-dim);
+      margin-top: 1px;
+    }
+    .ad-sub-white {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 15px;
+      font-weight: 700;
+      color: #C9A84C;
+      margin-top: 2px;
+      letter-spacing: 0.5px;
+    }
+    .ad-dots { display: flex; gap: 4px; margin-top: 8px; }
+    .ad-dot {
+      width: 16px; height: 2px;
+      border-radius: 1px;
+      background: var(--border);
+      transition: background 0.3s ease, width 0.3s ease;
+    }
+    .ad-dot.active { background: var(--gold); width: 24px; }
+    .ad-banner.slide-white .ad-dot { background: #d0c8bc; }
+    .ad-banner.slide-white .ad-dot.active { background: #C9A84C; }
   </style>
 </head>
 <body>
@@ -1158,6 +1257,31 @@ function render() {
           📍 Estoy en la fila — Reportar ahora
         </button>
 
+        <!-- AD BANNER -->
+        <div class="ad-banner" id="adBanner">
+          <div class="ad-label">Publicidad</div>
+          <div class="ad-slides">
+            <div class="ad-slide active" id="adSlide0">
+              <div class="ad-icon">📣</div>
+              <div class="ad-text">
+                <div class="ad-headline-white">Anúnciate aquí</div>
+                <div class="ad-sub-white">info@horussystem.net · 956-556-9674</div>
+              </div>
+            </div>
+            <div class="ad-slide" id="adSlide1">
+              <div class="ad-icon">🤖</div>
+              <div class="ad-text">
+                <div class="ad-headline">AI Agents para tu negocio</div>
+                <div class="ad-sub">www.horussystemco.com</div>
+              </div>
+            </div>
+          </div>
+          <div class="ad-dots">
+            <div class="ad-dot active" id="adDot0"></div>
+            <div class="ad-dot" id="adDot1"></div>
+          </div>
+        </div>
+
         <!-- TIPS -->
         <div class="section-title">Consejos · ${bridge.name}</div>
         <div class="tips-box">
@@ -1224,6 +1348,9 @@ function render() {
     <!-- FORM MODAL -->
     ${state.showForm ? renderForm(bridge) : ''}
   `;
+
+  // Sync ad banner to current slide after each render
+  syncAdBanner();
 }
 
 function renderForm(bridge) {
@@ -1405,6 +1532,45 @@ window.addEventListener('beforeinstallprompt', (e) => {
     render();
   }
 });
+
+// ══════════════════════════════════════════
+// AD BANNER ROTATION
+// ══════════════════════════════════════════
+let adIndex = 0;
+const AD_COUNT = 2;
+
+// Runs on a global interval; queries DOM fresh each tick so it survives render()
+setInterval(() => {
+  const prev = adIndex;
+  adIndex = (adIndex + 1) % AD_COUNT;
+
+  const prevSlide = document.getElementById('adSlide' + prev);
+  const nextSlide = document.getElementById('adSlide' + adIndex);
+  const prevDot   = document.getElementById('adDot' + prev);
+  const nextDot   = document.getElementById('adDot' + adIndex);
+  const banner    = document.getElementById('adBanner');
+
+  if (!prevSlide || !nextSlide) return;
+
+  prevSlide.classList.remove('active');
+  nextSlide.classList.add('active');
+  if (prevDot)  prevDot.classList.remove('active');
+  if (nextDot)  nextDot.classList.add('active');
+  if (banner)   banner.classList.toggle('slide-white', adIndex === 0);
+}, 6000);
+
+// After each render(), syncs the banner DOM to the current adIndex
+function syncAdBanner() {
+  for (let i = 0; i < AD_COUNT; i++) {
+    const slide = document.getElementById('adSlide' + i);
+    const dot   = document.getElementById('adDot' + i);
+    if (!slide) continue;
+    slide.classList.toggle('active', i === adIndex);
+    if (dot) dot.classList.toggle('active', i === adIndex);
+  }
+  const banner = document.getElementById('adBanner');
+  if (banner) banner.classList.toggle('slide-white', adIndex === 0);
+}
 
 // ══════════════════════════════════════════
 // INIT
