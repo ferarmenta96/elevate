@@ -1,4 +1,4 @@
-const CACHE_NAME = 'cruce-reynosa-v10';
+const CACHE_NAME = 'cruce-reynosa-v12';
 const STATIC_ASSETS = [
   '/cruce-reynosa/',
   '/cruce-reynosa/index.html',
@@ -27,7 +27,7 @@ self.addEventListener('activate', (event) => {
           .map((name) => caches.delete(name))
       )
     ).then(() => {
-      // ✅ Fuerza recarga en todos los clientes abiertos
+      // Fuerza recarga en todos los clientes abiertos
       return self.clients.matchAll({ type: 'window' }).then((clients) => {
         clients.forEach((client) => client.navigate(client.url));
       });
@@ -38,12 +38,16 @@ self.addEventListener('activate', (event) => {
 
 // Fetch: Network-first para API, Cache-first para assets
 self.addEventListener('fetch', (event) => {
-  // ✅ Cache API no soporta POST/PUT/DELETE — dejar que el browser los maneje
   if (event.request.method !== 'GET') return;
   
   const url = new URL(event.request.url);
   
-  // API calls (Google Apps Script) — siempre red primero
+  // 🚨 IGNORAR GOOGLE MAPS Y APIS EXTERNAS (Para que el tráfico se actualice)
+  if (url.hostname.includes('googleapis.com') || url.hostname.includes('gstatic.com')) {
+    return; 
+  }
+
+  // API calls (Google Apps Script) — siempre red primero, NUNCA caché
   if (url.hostname.includes('script.google.com')) {
     event.respondWith(
       fetch(event.request).catch(() => {
@@ -72,7 +76,7 @@ self.addEventListener('fetch', (event) => {
     caches.match(event.request).then((cached) => {
       if (cached) return cached;
       return fetch(event.request).then((res) => {
-        if (res.ok) {
+        if (res.ok && url.protocol === 'https:') {
           const clone = res.clone();
           caches.open(CACHE_NAME).then((cache) => cache.put(event.request, clone));
         }
@@ -86,7 +90,7 @@ self.addEventListener('fetch', (event) => {
   );
 });
 
-// Push notifications (preparado para futuro)
+// Push notifications
 self.addEventListener('push', (event) => {
   if (!event.data) return;
   const data = event.data.json();
