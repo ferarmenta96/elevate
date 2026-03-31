@@ -33,6 +33,9 @@ self.addEventListener('activate', (event) => {
 
 // Fetch: Network-first para API, Cache-first para assets
 self.addEventListener('fetch', (event) => {
+  // ✅ Cache API no soporta POST/PUT/DELETE — dejar que el browser los maneje
+  if (event.request.method !== 'GET') return;
+
   const url = new URL(event.request.url);
 
   // API calls (Google Apps Script) — siempre red primero
