@@ -2,15 +2,12 @@
 <html lang="es">
 <head>
 
-  <!-- Google Tag Manager -->
-<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
 new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
 j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
 })(window,document,'script','dataLayer','GTM-P2RPXZMN');</script>
-<!-- End Google Tag Manager -->
-  
-  <meta charset="UTF-8" />
+<meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <meta name="theme-color" content="#0a0a0a" />
   <meta name="description" content="Tiempo real de espera en los puentes internacionales de Reynosa, Tamaulipas" />
@@ -992,12 +989,8 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 </head>
 <body>
 
-<!-- Google Tag Manager (noscript) -->
 <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-P2RPXZMN"
 height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-<!-- End Google Tag Manager (noscript) -->
-
-<!-- SPLASH SCREEN -->
 <div id="splash">
   <svg class="splash-eye" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
     <path d="M100 60 L160 140 L40 140 Z" fill="none" stroke="#C9A84C" stroke-width="3"/>
@@ -1017,20 +1010,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   </div>
 </div>
 
-<!-- APP -->
 <div id="app"></div>
 
-<!-- 
-╔════════════════════════════════════════════════════════════════╗
-║  🔑 PASO 1: AGREGA TU GOOGLE MAPS API KEY AQUÍ                ║
-║                                                                 ║
-║  Reemplaza "TU_API_KEY_AQUI" con tu clave de Google Maps       ║
-║  La API Key debe tener habilitado:                             ║
-║  - Routes API                                                   ║
-║  - Maps JavaScript API                                          ║
-║  - Directions API                                               ║
-╚════════════════════════════════════════════════════════════════╝
--->
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBTV1D9jJ4AFrpIHh4q4ee_a6mazAnfjPM&libraries=places"></script>
 
 <script>
@@ -1253,6 +1234,11 @@ const state = {
 
 async function fetchTrafficData(bridge) {
   try {
+    // 🔥 AHORRO DE API: No consultar Google Maps para Sentri y Peatonal
+    if (bridge.id === 'sentri_hidalgo' || bridge.id === 'peatonal_hidalgo') {
+      return null;
+    }
+
     // 🔥 VERIFICAR SI GOOGLE MAPS ESTÁ DISPONIBLE
     if (typeof google === 'undefined' || !google.maps) {
       console.warn('⚠️ Google Maps no está cargado. Verifica tu API Key.');
@@ -1416,6 +1402,22 @@ function getDynamicFactor(bridgeId) {
 // ══════════════════════════════════════════
 
 function detectQueueStart(trafficData, userReports, bridgeId) {
+  // 🔥 REGLA FIJA PARA SENTRI Y PEATONAL
+  if (bridgeId === 'sentri_hidalgo' || bridgeId === 'peatonal_hidalgo') {
+    const horaActual = new Date().getHours();
+    const esHoraPico = (horaActual === 6); 
+    
+    return {
+      status: esHoraPico ? 'moderado' : 'fluido',
+      queueLength: 0,
+      estimatedTime: esHoraPico ? 40 : 5,
+      queueStartSegment: null,
+      deltas: [],
+      isInQueue: false,
+      source: 'horario programado'
+    };
+  }
+
   console.log('🔍 Detectando inicio de fila...');
   console.log('📊 Datos de Google:', trafficData ? 'Disponibles' : 'No disponibles');
   console.log('👥 Reportes de usuarios:', userReports ? userReports.length : 0);
@@ -1843,7 +1845,6 @@ function render() {
   const status = statusMap[queueData.status] || statusMap.fluido;
 
   document.getElementById('app').innerHTML = `
-    <!-- HEADER -->
     <div class="header">
       <div class="header-top">
         <div class="logo">
@@ -1861,7 +1862,6 @@ function render() {
         </div>
       </div>
 
-      <!-- TABS -->
       <div class="tabs">
         ${BRIDGES.map((b, i) => `
           <div class="tab ${state.activeBridge === i ? 'active' : ''}" onclick="selectBridge(${i})">
@@ -1871,7 +1871,6 @@ function render() {
       </div>
     </div>
 
-    <!-- TRAFFIC CARD -->
     <div class="traffic-card">
       <div class="traffic-header">
         <div>
@@ -1895,7 +1894,6 @@ function render() {
       ` : ''}
     </div>
 
-    <!-- MAP -->
     <div class="map-container">
       <div id="map"></div>
       ${queueData.queueStartSegment ? `
@@ -1905,12 +1903,10 @@ function render() {
       ` : ''}
     </div>
 
-    <!-- REPORT BUTTON -->
     <button class="report-btn" onclick="openForm()">
       📍 Reportar Tiempo de Fila
     </button>
 
-    <!-- AD BANNER -->
     <div class="ad-banner" id="adBanner">
       <div class="ad-slide active" id="adSlide0">
         <div class="ad-content">
@@ -1930,7 +1926,6 @@ function render() {
       </div>
     </div>
 
-    <!-- REPORTS -->
     <div class="reports-section">
       <div class="section-title">Reportes Recientes</div>
       ${bridgeReports.length > 0 ? bridgeReports.slice(0, 10).map(r => `
@@ -1953,7 +1948,6 @@ function render() {
       `}
     </div>
 
-    <!-- BOTTOM NAV -->
     <div class="bottom-nav">
       <span>🔄 Auto-refresh 5min</span>
       <span style="color: var(--faint)">·</span>
@@ -1962,7 +1956,6 @@ function render() {
       <span>🤝 Comunidad</span>
     </div>
 
-    <!-- POWERED BY HORUS -->
     <div class="powered-by">
       <span class="powered-text">Powered by</span>
       <div class="powered-logo">
@@ -1971,7 +1964,6 @@ function render() {
       </div>
     </div>
 
-    <!-- INSTALL BANNER -->
     ${state.showInstallBanner ? `
       <div class="install-banner">
         <div style="font-size:22px">📲</div>
@@ -1984,7 +1976,6 @@ function render() {
       </div>
     ` : ''}
 
-    <!-- FORM MODAL -->
     ${state.showForm ? renderForm(bridge) : ''}
   `;
 
