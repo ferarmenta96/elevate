@@ -1,4 +1,4 @@
-const CACHE_NAME = 'cruce-reynosa-v9';
+const CACHE_NAME = 'cruce-reynosa-v10';
 const STATIC_ASSETS = [
   '/cruce-reynosa/',
   '/cruce-reynosa/index.html',
@@ -17,7 +17,7 @@ self.addEventListener('install', (event) => {
   self.skipWaiting();
 });
 
-// Activación: limpia caches viejos
+// Activación: limpia caches viejos y fuerza recarga
 self.addEventListener('activate', (event) => {
   event.waitUntil(
     caches.keys().then((cacheNames) =>
@@ -26,7 +26,12 @@ self.addEventListener('activate', (event) => {
           .filter((name) => name !== CACHE_NAME)
           .map((name) => caches.delete(name))
       )
-    )
+    ).then(() => {
+      // ✅ Fuerza recarga en todos los clientes abiertos
+      return self.clients.matchAll({ type: 'window' }).then((clients) => {
+        clients.forEach((client) => client.navigate(client.url));
+      });
+    })
   );
   self.clients.claim();
 });
@@ -35,9 +40,9 @@ self.addEventListener('activate', (event) => {
 self.addEventListener('fetch', (event) => {
   // ✅ Cache API no soporta POST/PUT/DELETE — dejar que el browser los maneje
   if (event.request.method !== 'GET') return;
-
+  
   const url = new URL(event.request.url);
-
+  
   // API calls (Google Apps Script) — siempre red primero
   if (url.hostname.includes('script.google.com')) {
     event.respondWith(
@@ -49,7 +54,7 @@ self.addEventListener('fetch', (event) => {
     );
     return;
   }
-
+  
   // Fuentes de Google — Cache-first
   if (url.hostname.includes('fonts.')) {
     event.respondWith(
@@ -61,7 +66,7 @@ self.addEventListener('fetch', (event) => {
     );
     return;
   }
-
+  
   // Assets estáticos — Cache-first con fallback a red
   event.respondWith(
     caches.match(event.request).then((cached) => {
