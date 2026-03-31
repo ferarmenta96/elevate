@@ -46,18 +46,15 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
       --text-dim: #b0a99a;
       --muted: #6b6459;
       --faint: #3a3530;
-      /* Horus Gold */
       --gold: #C9A84C;
       --gold-bright: #E2C46D;
       --gold-dim: #8a7035;
       --gold-glow: #C9A84C20;
       --gold-glow-strong: #C9A84C40;
-      /* Status colors */
       --green: #4ade80;
       --yellow: #fbbf24;
       --red: #f87171;
       --blue: #60a5fa;
-      /* Bridge accents — kept as variables, overridden per bridge */
       --accent: var(--gold);
       --accent-glow: var(--gold-glow);
       --accent-transparent: var(--gold-glow-strong);
@@ -198,7 +195,6 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
       position: relative;
       z-index: 10;
     }
-    /* Gold top line */
     .header::before {
       content: '';
       position: absolute;
@@ -220,14 +216,11 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
       gap: 12px;
     }
 
-    /* Horus Eye SVG logo */
     .logo-eye {
       width: 40px;
       height: 40px;
       flex-shrink: 0;
     }
-
-    .logo-text { }
 
     .logo-title {
       font-family: 'Cormorant Garamond', serif;
@@ -272,1145 +265,1406 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     }
 
     @keyframes pulse {
-      0%, 100% { opacity: 1; transform: scale(1); }
-      50% { opacity: 0.4; transform: scale(0.7); }
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.3; }
     }
 
-    /* ── BRIDGE TABS ─────────────────────────────── */
-    .bridge-tabs {
+    /* ── TABS ───────────────────────────────────── */
+    .tabs {
       display: flex;
-      gap: 0;
+      gap: 8px;
       overflow-x: auto;
-      -webkit-overflow-scrolling: touch;
       scrollbar-width: none;
+      -ms-overflow-style: none;
+      padding-bottom: 12px;
     }
-    .bridge-tabs::-webkit-scrollbar { display: none; }
+    .tabs::-webkit-scrollbar { display: none; }
 
-    .bridge-tab {
+    .tab {
       flex-shrink: 0;
-      background: none;
-      border: none;
-      border-bottom: 2px solid transparent;
-      padding: 8px 12px 11px;
-      color: var(--muted);
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 10px 14px;
       font-family: 'Barlow Condensed', sans-serif;
       font-size: 13px;
       font-weight: 700;
-      letter-spacing: 0.8px;
+      letter-spacing: 1px;
+      color: var(--text-dim);
       cursor: pointer;
       transition: all 0.2s;
-      white-space: nowrap;
       text-transform: uppercase;
+      white-space: nowrap;
     }
 
-    .bridge-tab.active {
-      color: var(--tab-color);
-      border-bottom-color: var(--tab-color);
+    .tab.active {
+      background: var(--accent-transparent);
+      border-color: var(--accent);
+      color: var(--accent);
+      box-shadow: 0 0 16px var(--accent-glow);
     }
 
-    /* ── SCROLLABLE CONTENT ──────────────────────── */
-    .content {
-      flex: 1;
-      overflow-y: auto;
-      padding: 16px;
-      padding-bottom: 100px;
-      -webkit-overflow-scrolling: touch;
+    .tab:hover:not(.active) {
+      background: var(--surface3);
+      border-color: var(--border-gold);
     }
 
-    /* ── STATUS HERO ─────────────────────────────── */
-    .status-hero {
-      border-radius: 12px;
-      padding: 22px;
-      margin-bottom: 14px;
+    /* ── TRAFFIC CARD ───────────────────────────── */
+    .traffic-card {
+      background: linear-gradient(135deg, var(--surface2) 0%, var(--surface) 100%);
+      border: 1px solid var(--border-gold);
+      border-radius: 16px;
+      padding: 20px;
+      margin: 16px 18px;
       position: relative;
       overflow: hidden;
-      border: 1px solid var(--accent-transparent);
     }
-    .status-hero::before {
+
+    .traffic-card::before {
       content: '';
       position: absolute;
-      top: -40px; right: -40px;
-      width: 160px; height: 160px;
-      border-radius: 50%;
-      background: var(--accent-glow);
-      pointer-events: none;
-    }
-    /* Horus-style corner accent */
-    .status-hero::after {
-      content: '';
-      position: absolute;
-      bottom: 0; left: 0;
-      width: 60px; height: 1px;
-      background: var(--accent-transparent);
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--accent), transparent);
     }
 
-    .status-label {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 10px;
-      letter-spacing: 2.5px;
-      color: var(--text-dim);
-      text-transform: uppercase;
-      margin-bottom: 6px;
-      font-weight: 600;
-    }
-
-    .status-time {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 44px;
-      font-weight: 700;
-      color: var(--accent);
-      line-height: 1;
-      margin-bottom: 8px;
-      letter-spacing: -1px;
-    }
-
-    .status-no-reports {
-      font-family: 'Barlow', sans-serif;
-      font-size: 15px;
-      color: var(--muted);
-      margin-bottom: 8px;
-      font-style: italic;
-    }
-
-    .status-meta {
-      font-size: 12px;
-      color: var(--text-dim);
-      line-height: 1.7;
-      margin-bottom: 12px;
-    }
-
-    .status-chips {
+    .traffic-header {
       display: flex;
-      gap: 6px;
-      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 16px;
     }
 
-    .chip {
+    .traffic-title {
       font-family: 'Barlow Condensed', sans-serif;
-      font-size: 11px;
-      background: rgba(255,255,255,0.05);
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      color: var(--muted);
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+
+    .traffic-time {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 48px;
+      font-weight: 600;
+      line-height: 1;
+      color: var(--text);
+    }
+
+    .traffic-status {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--surface3);
       border: 1px solid var(--border);
       border-radius: 20px;
-      padding: 3px 10px;
-      color: var(--text-dim);
-      font-weight: 600;
-      letter-spacing: 0.5px;
-    }
-
-    /* ── REPORT BUTTON ───────────────────────────── */
-    .report-btn {
-      width: 100%;
-      background: linear-gradient(135deg, var(--gold-dim) 0%, var(--gold) 100%);
-      color: #080808;
-      border: none;
-      border-radius: 10px;
-      padding: 16px;
+      padding: 6px 12px;
       font-family: 'Barlow Condensed', sans-serif;
-      font-weight: 900;
-      font-size: 15px;
-      letter-spacing: 2px;
-      cursor: pointer;
-      transition: all 0.2s;
-      box-shadow: 0 4px 24px #C9A84C30;
-      margin-bottom: 18px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1px;
       text-transform: uppercase;
-      -webkit-tap-highlight-color: transparent;
-    }
-    .report-btn:active {
-      transform: scale(0.98);
-      box-shadow: 0 2px 12px #C9A84C20;
     }
 
-    /* ── SECTION TITLE ───────────────────────────── */
-    .section-title {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 10px;
-      letter-spacing: 3px;
+    .status-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+    }
+
+    .status-fluido { color: var(--green); }
+    .status-fluido .status-dot { background: var(--green); }
+    .status-moderado { color: var(--yellow); }
+    .status-moderado .status-dot { background: var(--yellow); }
+    .status-pesado { color: var(--red); }
+    .status-pesado .status-dot { background: var(--red); }
+
+    .traffic-meta {
+      display: flex;
+      gap: 16px;
+      font-family: 'Barlow', sans-serif;
+      font-size: 13px;
+      color: var(--text-dim);
+      margin-top: 12px;
+    }
+
+    .meta-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    /* ── MAP CONTAINER ──────────────────────────── */
+    .map-container {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      margin: 0 18px 16px;
+      overflow: hidden;
+      height: 280px;
+      position: relative;
+    }
+
+    #map {
+      width: 100%;
+      height: 100%;
+    }
+
+    .map-loading {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--surface2);
       color: var(--muted);
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 13px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    .queue-indicator {
+      position: absolute;
+      bottom: 12px;
+      left: 12px;
+      background: rgba(0, 0, 0, 0.85);
+      backdrop-filter: blur(10px);
+      border: 1px solid var(--border-gold);
+      border-radius: 8px;
+      padding: 8px 12px;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 11px;
+      letter-spacing: 1px;
+      color: var(--gold);
       text-transform: uppercase;
       font-weight: 700;
-      margin-bottom: 10px;
+    }
+
+    /* ── REPORT BUTTON ──────────────────────────── */
+    .report-btn {
+      background: linear-gradient(135deg, var(--accent) 0%, var(--gold-dim) 100%);
+      border: 1px solid var(--gold-bright);
+      border-radius: 12px;
+      padding: 16px;
+      margin: 0 18px 16px;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 15px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: var(--bg);
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all 0.2s;
+      box-shadow: 0 4px 16px var(--gold-glow);
+    }
+
+    .report-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 24px var(--gold-glow-strong);
+    }
+
+    .report-btn:active {
+      transform: translateY(0);
+    }
+
+    /* ── REPORTS LIST ───────────────────────────── */
+    .reports-section {
+      flex: 1;
+      overflow-y: auto;
+      padding: 0 18px 100px;
+    }
+
+    .section-title {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      color: var(--muted);
+      text-transform: uppercase;
+      margin-bottom: 12px;
       display: flex;
       align-items: center;
       gap: 8px;
     }
+
+    .section-title::before {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(to right, transparent, var(--border));
+    }
+
     .section-title::after {
       content: '';
       flex: 1;
       height: 1px;
-      background: var(--border);
+      background: linear-gradient(to left, transparent, var(--border));
     }
 
-    /* ── TIPS BOX ────────────────────────────────── */
-    .tips-box {
-      background: var(--surface2);
-      border: 1px solid var(--border);
-      border-left: 2px solid var(--accent);
-      border-radius: 10px;
-      padding: 14px 16px;
-      margin-bottom: 18px;
-    }
-    .tips-box ul {
-      list-style: none;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-    .tips-box li {
-      font-size: 13px;
-      color: var(--text-dim);
-      padding-left: 14px;
-      position: relative;
-      line-height: 1.4;
-    }
-    .tips-box li::before {
-      content: '—';
-      position: absolute;
-      left: 0;
-      color: var(--accent);
-      font-size: 11px;
-    }
-
-    /* ── REPORT CARDS ────────────────────────────── */
     .report-card {
       background: var(--surface2);
       border: 1px solid var(--border);
-      border-radius: 10px;
+      border-radius: 12px;
       padding: 14px;
-      margin-bottom: 8px;
+      margin-bottom: 12px;
+      transition: all 0.2s;
+    }
+
+    .report-card:hover {
+      background: var(--surface3);
+      border-color: var(--border-gold);
+    }
+
+    .report-header {
       display: flex;
       justify-content: space-between;
       align-items: flex-start;
-      gap: 12px;
-      transition: border-color 0.2s;
+      margin-bottom: 10px;
     }
-    .report-card:hover { border-color: var(--border-gold); }
 
-    .report-pos {
-      font-family: 'Barlow Condensed', sans-serif;
+    .report-position {
+      font-family: 'Barlow', sans-serif;
       font-size: 14px;
-      font-weight: 700;
+      font-weight: 600;
       color: var(--text);
-      letter-spacing: 0.3px;
-      margin-bottom: 2px;
+      line-height: 1.3;
     }
-    .report-lane {
-      font-size: 12px;
-      color: var(--muted);
-    }
-    .report-note {
-      font-size: 12px;
-      color: var(--text-dim);
-      margin-top: 5px;
-      font-style: italic;
-    }
-    .report-right {
-      display: flex;
-      flex-direction: column;
-      align-items: flex-end;
-      gap: 5px;
-      flex-shrink: 0;
-    }
-    .wait-badge {
+
+    .report-time-badge {
+      background: var(--surface3);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 4px 8px;
       font-family: 'Barlow Condensed', sans-serif;
-      font-size: 12px;
-      font-weight: 800;
-      padding: 3px 9px;
-      border-radius: 20px;
-      color: #fff;
-      letter-spacing: 0.5px;
-    }
-    .report-ago {
       font-size: 11px;
-      color: var(--muted);
+      font-weight: 700;
+      letter-spacing: 1px;
+      color: var(--gold);
       white-space: nowrap;
     }
 
-    /* ── EMPTY STATE ─────────────────────────────── */
+    .report-meta {
+      display: flex;
+      gap: 12px;
+      font-family: 'Barlow', sans-serif;
+      font-size: 12px;
+      color: var(--text-dim);
+      margin-bottom: 8px;
+    }
+
+    .report-note {
+      font-family: 'Barlow', sans-serif;
+      font-size: 13px;
+      color: var(--muted);
+      font-style: italic;
+      line-height: 1.4;
+      padding: 8px;
+      background: var(--surface);
+      border-left: 2px solid var(--border-gold);
+      border-radius: 4px;
+    }
+
+    .report-timestamp {
+      font-family: 'Barlow', sans-serif;
+      font-size: 11px;
+      color: var(--faint);
+      margin-top: 8px;
+    }
+
     .empty-state {
       text-align: center;
       padding: 40px 20px;
-    }
-    .empty-state .emoji { font-size: 40px; margin-bottom: 10px; }
-    .empty-state .title {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 22px;
-      font-weight: 600;
-      color: var(--text-dim);
-    }
-    .empty-state .sub {
-      font-size: 13px;
       color: var(--muted);
-      margin-top: 5px;
     }
 
-    /* ── BOTTOM BAR ──────────────────────────────── */
-    .bottom-bar {
-      position: absolute;
-      bottom: 0; left: 0; right: 0;
-      background: var(--surface);
-      border-top: 1px solid var(--border);
-      padding: 10px 18px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      font-size: 11px;
-      color: var(--muted);
-      font-family: 'Barlow', sans-serif;
-      flex-shrink: 0;
+    .empty-emoji {
+      font-size: 48px;
+      margin-bottom: 12px;
     }
 
-    /* ── POWERED BY HORUS ────────────────────────── */
-    .powered-by {
-      position: absolute;
-      bottom: 0; left: 0; right: 0;
-      height: 36px;
-      background: #0a0a0a;
-      border-top: 1px solid var(--border);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 7px;
-      flex-shrink: 0;
-    }
-    .powered-text {
+    .empty-text {
       font-family: 'Barlow Condensed', sans-serif;
-      font-size: 9px;
+      font-size: 14px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    /* ── AD BANNER ───────────────────────────────── */
+    .ad-banner {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      margin: 0 18px 16px;
+      overflow: hidden;
+      height: 100px;
+      position: relative;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .ad-banner:hover {
+      border-color: var(--border-gold);
+      transform: translateY(-2px);
+    }
+
+    .ad-banner.slide-white {
+      background: #f8f8f8;
+    }
+
+    .ad-slide {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      opacity: 0;
+      transition: opacity 0.6s ease;
+    }
+
+    .ad-slide.active {
+      opacity: 1;
+    }
+
+    .ad-content {
+      text-align: center;
+    }
+
+    .ad-logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 28px;
+      font-weight: 600;
+      letter-spacing: 4px;
+      color: var(--gold);
+      margin-bottom: 4px;
+    }
+
+    .ad-tagline {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 11px;
       letter-spacing: 2px;
       color: var(--muted);
       text-transform: uppercase;
     }
-    .powered-logo {
-      display: flex;
-      align-items: center;
-      gap: 5px;
+
+    .slide-white .ad-tagline {
+      color: #666;
     }
-    .powered-horus {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 13px;
-      font-weight: 600;
-      letter-spacing: 3px;
-      color: var(--gold);
-      text-transform: uppercase;
+
+    .ad-indicators {
+      position: absolute;
+      bottom: 12px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 6px;
+    }
+
+    .ad-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--faint);
+      transition: all 0.3s;
+    }
+
+    .ad-dot.active {
+      background: var(--gold);
+      width: 20px;
+      border-radius: 3px;
+    }
+
+    .slide-white .ad-dot {
+      background: #ccc;
+    }
+
+    .slide-white .ad-dot.active {
+      background: var(--gold);
     }
 
     /* ── BOTTOM NAV ──────────────────────────────── */
     .bottom-nav {
-      position: absolute;
-      bottom: 36px; left: 0; right: 0;
+      position: fixed;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      max-width: 480px;
+      width: 100%;
       background: var(--surface);
       border-top: 1px solid var(--border);
-      padding: 8px 18px;
+      padding: 12px 18px;
       display: flex;
-      align-items: center;
       justify-content: center;
-      gap: 6px;
+      align-items: center;
+      gap: 8px;
+      font-family: 'Barlow', sans-serif;
       font-size: 11px;
       color: var(--muted);
+      z-index: 100;
+    }
+
+    .powered-by {
+      position: fixed;
+      bottom: 42px;
+      left: 50%;
+      transform: translateX(-50%);
+      max-width: 480px;
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 6px;
+      padding: 8px;
+      background: transparent;
+      z-index: 99;
+    }
+
+    .powered-text {
       font-family: 'Barlow', sans-serif;
+      font-size: 10px;
+      color: var(--faint);
+      letter-spacing: 1px;
+    }
+
+    .powered-logo {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .powered-horus {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 2px;
+      color: var(--gold-dim);
     }
 
     /* ── INSTALL BANNER ──────────────────────────── */
     .install-banner {
-      position: absolute;
-      bottom: 80px;
-      left: 12px; right: 12px;
+      position: fixed;
+      bottom: 56px;
+      left: 50%;
+      transform: translateX(-50%);
+      max-width: 440px;
+      width: calc(100% - 36px);
       background: var(--surface2);
-      border: 1px solid var(--gold-glow-strong);
+      border: 1px solid var(--border-gold);
       border-radius: 12px;
       padding: 14px;
       display: flex;
       align-items: center;
       gap: 12px;
-      box-shadow: 0 8px 32px #00000060;
-      animation: slideUp 0.3s ease;
+      z-index: 101;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.5);
     }
-    @keyframes slideUp {
-      from { transform: translateY(20px); opacity: 0; }
-      to { transform: translateY(0); opacity: 1; }
+
+    .install-banner-text {
+      flex: 1;
     }
-    .install-banner-text { flex: 1; }
+
     .install-banner-title {
       font-family: 'Barlow Condensed', sans-serif;
       font-size: 14px;
-      font-weight: 800;
+      font-weight: 700;
       color: var(--text);
-      letter-spacing: 0.5px;
+      letter-spacing: 1px;
     }
+
     .install-banner-sub {
-      font-size: 12px;
+      font-family: 'Barlow', sans-serif;
+      font-size: 11px;
       color: var(--muted);
       margin-top: 2px;
     }
+
     .install-btn {
       background: var(--gold);
-      color: #080808;
       border: none;
       border-radius: 8px;
-      padding: 8px 14px;
+      padding: 8px 16px;
       font-family: 'Barlow Condensed', sans-serif;
-      font-weight: 800;
-      font-size: 13px;
+      font-size: 12px;
+      font-weight: 700;
       letter-spacing: 1px;
+      color: var(--bg);
       cursor: pointer;
+      text-transform: uppercase;
     }
+
     .install-close {
-      background: none;
+      background: transparent;
       border: none;
       color: var(--muted);
       cursor: pointer;
-      font-size: 16px;
-      padding: 4px;
+      font-size: 18px;
+      padding: 4px 8px;
     }
 
     /* ── MODAL ───────────────────────────────────── */
     .modal-overlay {
-      position: absolute;
+      position: fixed;
       inset: 0;
-      background: rgba(0,0,0,0.7);
+      background: rgba(0, 0, 0, 0.85);
       backdrop-filter: blur(4px);
+      z-index: 1000;
       display: flex;
       align-items: flex-end;
-      z-index: 100;
+      justify-content: center;
+      animation: fadeIn 0.2s;
     }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
     .modal-sheet {
       background: var(--surface);
-      border-top: 1px solid var(--border-gold);
+      border: 1px solid var(--border-gold);
       border-radius: 20px 20px 0 0;
-      padding: 16px 20px 40px;
       width: 100%;
       max-height: 90vh;
       overflow-y: auto;
-      animation: sheetUp 0.3s cubic-bezier(0.16,1,0.3,1);
+      padding: 24px;
+      animation: slideUp 0.3s ease;
+      position: relative;
     }
-    @keyframes sheetUp {
+
+    @keyframes slideUp {
       from { transform: translateY(100%); }
       to { transform: translateY(0); }
     }
+
     .modal-handle {
-      width: 36px; height: 3px;
+      width: 40px;
+      height: 4px;
       background: var(--border);
       border-radius: 2px;
-      margin: 0 auto 16px;
-    }
-    .modal-title {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 26px;
-      font-weight: 700;
-      color: var(--text);
-      margin-bottom: 2px;
-      letter-spacing: 0.5px;
-    }
-    .modal-sub {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 11px;
-      letter-spacing: 2px;
-      color: var(--muted);
-      text-transform: uppercase;
-      margin-bottom: 20px;
+      margin: 0 auto 20px;
     }
 
-    .form-group { margin-bottom: 18px; }
+    .modal-title {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 22px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: var(--text);
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+
+    .modal-sub {
+      font-family: 'Barlow', sans-serif;
+      font-size: 13px;
+      color: var(--muted);
+      margin-bottom: 24px;
+    }
+
+    .form-group {
+      margin-bottom: 24px;
+    }
+
     .form-label {
       font-family: 'Barlow Condensed', sans-serif;
-      font-size: 10px;
-      letter-spacing: 2.5px;
-      color: var(--muted);
-      text-transform: uppercase;
+      font-size: 12px;
       font-weight: 700;
-      margin-bottom: 8px;
+      letter-spacing: 1px;
+      color: var(--text-dim);
+      text-transform: uppercase;
+      margin-bottom: 10px;
       display: block;
     }
+
     .option-grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
-      gap: 6px;
+      gap: 8px;
     }
+
     .option-btn {
       background: var(--surface2);
       border: 1px solid var(--border);
       border-radius: 8px;
-      padding: 10px 8px;
-      color: var(--text-dim);
-      font-size: 12px;
+      padding: 12px;
       font-family: 'Barlow', sans-serif;
+      font-size: 13px;
+      color: var(--text);
       cursor: pointer;
-      transition: all 0.15s;
+      transition: all 0.2s;
       text-align: center;
-      line-height: 1.3;
-      -webkit-tap-highlight-color: transparent;
     }
+
+    .option-btn:hover {
+      background: var(--surface3);
+      border-color: var(--border-gold);
+    }
+
     .option-btn.selected {
-      background: var(--gold-glow);
-      border-color: var(--gold);
-      color: var(--gold);
-      font-weight: 600;
+      background: var(--accent-transparent);
+      border-color: var(--accent);
+      color: var(--accent);
+      box-shadow: 0 0 12px var(--accent-glow);
     }
+
     .form-textarea {
       width: 100%;
       background: var(--surface2);
       border: 1px solid var(--border);
       border-radius: 8px;
       padding: 12px;
-      color: var(--text);
-      font-size: 13px;
       font-family: 'Barlow', sans-serif;
+      font-size: 14px;
+      color: var(--text);
       resize: none;
-      line-height: 1.5;
-    }
-    .form-textarea:focus {
       outline: none;
-      border-color: var(--gold-dim);
+      transition: all 0.2s;
     }
-    .form-textarea::placeholder { color: var(--muted); }
+
+    .form-textarea:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px var(--accent-glow);
+    }
+
+    .form-textarea::placeholder {
+      color: var(--muted);
+    }
 
     .submit-btn {
       width: 100%;
-      background: linear-gradient(135deg, var(--gold-dim), var(--gold));
-      color: #080808;
-      border: none;
-      border-radius: 10px;
+      background: linear-gradient(135deg, var(--accent) 0%, var(--gold-dim) 100%);
+      border: 1px solid var(--gold-bright);
+      border-radius: 12px;
       padding: 16px;
       font-family: 'Barlow Condensed', sans-serif;
-      font-weight: 900;
       font-size: 15px;
+      font-weight: 800;
       letter-spacing: 2px;
+      color: var(--bg);
       text-transform: uppercase;
       cursor: pointer;
       transition: all 0.2s;
-      box-shadow: 0 4px 20px #C9A84C30;
-      -webkit-tap-highlight-color: transparent;
-    }
-    .submit-btn:disabled {
-      background: var(--surface3);
-      box-shadow: none;
-      color: var(--faint);
-      cursor: not-allowed;
+      margin-top: 8px;
     }
 
-    /* ── PHONE PROMO BOX ─────────────────────────── */
-    .phone-promo-box {
-      background: linear-gradient(135deg, #1a1300 0%, #120e00 100%);
-      border: 1px solid var(--gold-glow-strong);
-      border-radius: 12px;
-      padding: 14px 16px;
-      margin-bottom: 18px;
-      position: relative;
-      overflow: hidden;
+    .submit-btn:hover:not(:disabled) {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 24px var(--gold-glow-strong);
     }
-    .phone-promo-box::before {
-      content: '';
-      position: absolute;
-      top: -20px; right: -20px;
-      width: 80px; height: 80px;
-      border-radius: 50%;
-      background: #C9A84C15;
-      pointer-events: none;
-    }
-    .phone-promo-header {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      margin-bottom: 4px;
-    }
-    .phone-promo-badge {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 9px;
-      font-weight: 800;
-      letter-spacing: 2px;
-      color: #080808;
-      background: var(--gold);
-      border-radius: 4px;
-      padding: 2px 7px;
-      text-transform: uppercase;
-    }
-    .phone-promo-title {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 15px;
-      font-weight: 900;
-      color: var(--gold-bright);
-      letter-spacing: 0.5px;
-      line-height: 1.2;
-    }
-    .phone-promo-sub {
-      font-size: 12px;
-      color: var(--text-dim);
-      margin-bottom: 10px;
-      line-height: 1.4;
-    }
-    .phone-input-wrap {
-      position: relative;
-    }
-    .phone-input-icon {
-      position: absolute;
-      left: 12px;
-      top: 50%;
-      transform: translateY(-50%);
-      font-size: 15px;
-      pointer-events: none;
-    }
-    .phone-input {
-      width: 100%;
-      background: var(--surface3);
-      border: 1px solid var(--gold-dim);
-      border-radius: 8px;
-      padding: 11px 12px 11px 38px;
-      color: var(--text);
-      font-size: 14px;
-      font-family: 'Barlow', sans-serif;
-      letter-spacing: 0.5px;
-      -webkit-tap-highlight-color: transparent;
-    }
-    .phone-input:focus {
-      outline: none;
-      border-color: var(--gold);
-      box-shadow: 0 0 0 2px #C9A84C18;
-    }
-    .phone-input::placeholder { color: var(--faint); }
-    .phone-promo-disclaimer {
-      font-size: 10px;
-      color: var(--muted);
-      margin-top: 7px;
-      letter-spacing: 0.3px;
+
+    .submit-btn:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
     }
 
     .success-screen {
       text-align: center;
       padding: 40px 20px;
     }
-    .success-screen .big-emoji { font-size: 56px; margin-bottom: 12px; }
-    .success-screen .title {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 28px;
-      font-weight: 700;
-      color: var(--green);
+
+    .big-emoji {
+      font-size: 64px;
+      margin-bottom: 16px;
     }
+
+    .success-screen .title {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 24px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: var(--text);
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
     .success-screen .sub {
+      font-family: 'Barlow', sans-serif;
       font-size: 14px;
       color: var(--muted);
-      margin-top: 6px;
     }
-
-    /* ── LOADING ─────────────────────────────────── */
-    .loading-screen {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      height: 200px;
-      gap: 14px;
-      color: var(--muted);
-      font-size: 12px;
-      letter-spacing: 1px;
-    }
-    .spinner {
-      width: 28px; height: 28px;
-      border: 2px solid var(--border);
-      border-top-color: var(--gold);
-      border-radius: 50%;
-      animation: spin 0.8s linear infinite;
-    }
-    @keyframes spin { to { transform: rotate(360deg); } }
-
-    /* ── iOS SAFE AREAS ──────────────────────────── */
-    @supports (padding-bottom: env(safe-area-inset-bottom)) {
-      .bottom-nav { padding-bottom: calc(8px + env(safe-area-inset-bottom)); }
-      .powered-by { padding-bottom: env(safe-area-inset-bottom); }
-      .content { padding-bottom: calc(100px + env(safe-area-inset-bottom)); }
-    }
-
-    /* Scrollbar */
-    .content::-webkit-scrollbar { width: 0; }
-    .modal-sheet::-webkit-scrollbar { width: 0; }
-
-    /* ── AD BANNER ───────────────────────────────── */
-    .ad-banner {
-      border-radius: 10px;
-      border: 1px solid var(--border-gold);
-      background: linear-gradient(135deg, #0f0d08 0%, #161208 100%);
-      padding: 12px 16px;
-      margin-bottom: 18px;
-      overflow: hidden;
-      position: relative;
-      cursor: pointer;
-      -webkit-tap-highlight-color: transparent;
-      transition: background 0.6s ease, border-color 0.6s ease;
-    }
-    .ad-banner.slide-white {
-      background: linear-gradient(135deg, #ffffff 0%, #f0ede8 100%);
-      border-color: #ffffff60;
-    }
-    .ad-banner::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(90deg, transparent, #ffffff18, transparent);
-      animation: adShimmer 3s ease-in-out infinite;
-    }
-    @keyframes adShimmer {
-      0%, 100% { opacity: 0; transform: translateX(-100%); }
-      50% { opacity: 1; transform: translateX(100%); }
-    }
-    .ad-label {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 8px;
-      letter-spacing: 2.5px;
-      color: var(--muted);
-      text-transform: uppercase;
-      font-weight: 700;
-      margin-bottom: 6px;
-      transition: color 0.4s ease;
-    }
-    .ad-banner.slide-white .ad-label { color: #9a8f80; }
-    .ad-slides { position: relative; height: 36px; }
-    .ad-slide {
-      position: absolute;
-      inset: 0;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      opacity: 0;
-      transform: translateY(8px);
-      transition: opacity 0.5s ease, transform 0.5s ease;
-    }
-    .ad-slide.active { opacity: 1; transform: translateY(0); }
-    .ad-icon { font-size: 20px; flex-shrink: 0; }
-    .ad-text { }
-    .ad-headline {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 16px;
-      font-weight: 900;
-      color: var(--gold);
-      letter-spacing: 1px;
-      line-height: 1.1;
-      text-transform: uppercase;
-    }
-    .ad-headline-white {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 16px;
-      font-weight: 900;
-      letter-spacing: 1px;
-      line-height: 1.1;
-      text-transform: uppercase;
-      background: linear-gradient(90deg, #080808 0%, #3a2f00 50%, #080808 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-    .ad-sub {
-      font-family: 'Barlow', sans-serif;
-      font-size: 11px;
-      color: var(--text-dim);
-      margin-top: 1px;
-    }
-    .ad-sub-white {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 15px;
-      font-weight: 700;
-      color: #C9A84C;
-      margin-top: 2px;
-      letter-spacing: 0.5px;
-    }
-    .ad-dots { display: flex; gap: 4px; margin-top: 8px; }
-    .ad-dot {
-      width: 16px; height: 2px;
-      border-radius: 1px;
-      background: var(--border);
-      transition: background 0.3s ease, width 0.3s ease;
-    }
-    .ad-dot.active { background: var(--gold); width: 24px; }
-    .ad-banner.slide-white .ad-dot { background: #d0c8bc; }
-    .ad-banner.slide-white .ad-dot.active { background: #C9A84C; }
   </style>
 </head>
 <body>
 
-  <!-- Google Tag Manager (noscript) -->
+<!-- Google Tag Manager (noscript) -->
 <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-P2RPXZMN"
 height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <!-- End Google Tag Manager (noscript) -->
 
-<!-- ── SPLASH SCREEN ─────────────────────────── -->
+<!-- SPLASH SCREEN -->
 <div id="splash">
-  <!-- Horus Eye SVG -->
-  <svg class="splash-eye" viewBox="0 0 100 60" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <g opacity="0.9">
-      <!-- Eye outline -->
-      <path d="M5 30 Q25 5 50 5 Q75 5 95 30 Q75 55 50 55 Q25 55 5 30Z" stroke="#C9A84C" stroke-width="2" fill="none"/>
-      <!-- Iris -->
-      <circle cx="50" cy="30" r="14" stroke="#C9A84C" stroke-width="1.5" fill="none"/>
-      <!-- Pupil -->
-      <circle cx="50" cy="30" r="7" fill="#C9A84C"/>
-      <!-- Lashes top left -->
-      <line x1="18" y1="18" x2="14" y2="10" stroke="#C9A84C" stroke-width="1.2"/>
-      <line x1="30" y1="10" x2="28" y2="2" stroke="#C9A84C" stroke-width="1.2"/>
-      <!-- Egyptian line bottom right -->
-      <path d="M72 42 L88 52 L80 52" stroke="#C9A84C" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-    </g>
+  <svg class="splash-eye" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+    <path d="M100 60 L160 140 L40 140 Z" fill="none" stroke="#C9A84C" stroke-width="3"/>
+    <line x1="70" y1="100" x2="70" y2="140" stroke="#C9A84C" stroke-width="2"/>
+    <line x1="100" y1="80" x2="100" y2="140" stroke="#C9A84C" stroke-width="2"/>
+    <line x1="130" y1="100" x2="130" y2="140" stroke="#C9A84C" stroke-width="2"/>
+    <circle cx="100" cy="90" r="8" fill="#C9A84C"/>
   </svg>
-
   <div class="splash-brand">HORUS</div>
   <div class="splash-tagline">System Co.</div>
   <div class="splash-divider"></div>
-  <div class="splash-app-name">CRUCE REYNOSA</div>
-  <div class="splash-app-sub">Puentes internacionales · Tiempo real</div>
-
+  <div class="splash-app-name">Cruce RNS</div>
+  <div class="splash-app-sub">Reynosa Border Crossings</div>
   <div class="splash-loading">
     <div class="splash-bar"><div class="splash-bar-fill"></div></div>
-    <div class="splash-loading-text">Cargando reportes...</div>
+    <div class="splash-loading-text">Cargando...</div>
   </div>
 </div>
 
-<!-- ── APP ───────────────────────────────────── -->
+<!-- APP -->
 <div id="app"></div>
 
-<script>
-// ══════════════════════════════════════════
-// SPLASH — ocultar después de 2s
-// ══════════════════════════════════════════
-window.addEventListener('load', () => {
-  setTimeout(() => {
-    document.getElementById('splash').classList.add('hidden');
-    setTimeout(() => {
-      const s = document.getElementById('splash');
-      if (s) s.remove();
-    }, 700);
-  }, 1800);
-});
+<!-- 
+╔════════════════════════════════════════════════════════════════╗
+║  🔑 PASO 1: AGREGA TU GOOGLE MAPS API KEY AQUÍ                ║
+║                                                                 ║
+║  Reemplaza "TU_API_KEY_AQUI" con tu clave de Google Maps       ║
+║  La API Key debe tener habilitado:                             ║
+║  - Routes API                                                   ║
+║  - Maps JavaScript API                                          ║
+║  - Directions API                                               ║
+╚════════════════════════════════════════════════════════════════╝
+-->
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBTV1D9jJ4AFrpIHh4q4ee_a6mazAnfjPM&libraries=places"></script>
 
-// ══════════════════════════════════════════
-// CONFIGURACIÓN
-// ══════════════════════════════════════════
+<script>
+
+// ╔════════════════════════════════════════════════════════════════╗
+// ║  ⚙️ PASO 2: CONFIGURACIÓN GENERAL                             ║
+// ╚════════════════════════════════════════════════════════════════╝
+
 const CONFIG = {
-  APPS_SCRIPT_URL: 'https://script.google.com/macros/s/AKfycby0En3LgCd9JLHNWH-DCMpmO8F6X6Xespgn2nrdHiPITNKO8Ea96GBiyHEmPI7hqfDD-Q/exec',
+  // 🔗 URL de tu Google Apps Script (la que copiaste al implementar)
+  APPS_SCRIPT_URL: 'https://script.google.com/macros/s/AKfycbxcEas5LhkGQluZK0MDXEYGYuJFgNLoZ2mGy_OYkbJaD9mhmQd0xHNpSwnIn53_9mVr6g/exec',
+  
+  // Intervalo de actualización (5 minutos)
   REFRESH_INTERVAL: 5 * 60 * 1000,
+  
+  // 🔧 CONFIGURACIÓN DEL ALGORITMO
+  ALGORITHM: {
+    // Peso de datos de Google vs Usuarios (deben sumar 1.0)
+    GOOGLE_WEIGHT: 0.7,        // 70% Google
+    USER_WEIGHT: 0.3,          // 30% Usuarios
+    
+    // Antigüedad máxima de reportes en minutos
+    MAX_REPORT_AGE_MINUTES: 30,
+    
+    // Número de reportes recientes a considerar para promedio
+    RECENT_REPORTS_COUNT: 20,
+    
+    // Umbral para detectar anomalías (aumento repentino de tiempo)
+    ANOMALY_THRESHOLD: 2.0,    // 2x el tiempo normal = anomalía
+  }
 };
 
-// ══════════════════════════════════════════
-// PUENTES
-// ══════════════════════════════════════════
+// ╔════════════════════════════════════════════════════════════════╗
+// ║  📍 PASO 3: COORDENADAS DE PUNTOS ESTRATÉGICOS                ║
+// ║                                                                 ║
+// ║  Para cada puente, define 6 puntos (P0 a P5):                  ║
+// ║  P0 = Zona lejana sin tráfico (base)                           ║
+// ║  P1 = Zona previa al congestionamiento                         ║
+// ║  P2 = Donde podría comenzar la fila                            ║
+// ║  P3 = Punto intermedio dentro de la fila                       ║
+// ║  P4 = Entrada al puente                                        ║
+// ║  P5 = Salida del puente (lado USA)                             ║
+// ║                                                                 ║
+// ║  Formato: { lat: LATITUD, lng: LONGITUD }                      ║
+// ╚════════════════════════════════════════════════════════════════╝
+
 const BRIDGES = [
   {
     id: 'anzalduas',
-    name: 'Anzaldúas',
-    emoji: '🌉',
-    type: '🚗 Solo Vehículos',
-    color: '#C9A84C',
-    bg: 'linear-gradient(135deg, #1a1408 0%, #0f0f0f 100%)',
-    accentGlow: '#C9A84C20',
-    accentTransparent: '#C9A84C35',
-    lanes: ['SENTRI / Ready Lane', 'Regular'],
-    tips: [
-      'Generalmente menos tráfico que Hidalgo',
-      'Buena alternativa en hora pico de Hidalgo',
-      'SENTRI disponible — ahorra mucho tiempo',
-      'Sin cruce peatonal',
-    ],
+    name: 'Anzalduas',
+    type: 'Internacional',
+    lanes: ['General', 'SENTRI', 'FAST'],
+    // 👇 AGREGA AQUÍ LAS COORDENADAS PARA ANZALDUAS
+    points: {
+      P0: { lng: 26.096610722637962, lat: -98.36040041694339 },  // ⬅️ MODIFICA ESTAS COORDENADAS
+      P1: { lat: 26.107717681717862, lng: -98.35275851243759 },  // ⬅️ MODIFICA ESTAS COORDENADAS
+      P2: { lat: 26.1140243781169, lng: -98.32108657295402 },  // ⬅️ MODIFICA ESTAS COORDENADAS
+      P3: { lat: 26.132241525955056, lng: -98.31455542056901 },  // ⬅️ MODIFICA ESTAS COORDENADAS
+      P4: { lat: 26.1441307666182, lng: -98.31249391533886 },  // ⬅️ MODIFICA ESTAS COORDENADAS
+      P5: { lat: 26.15674774040388, lng: -98.31149439752488 }   // ⬅️ MODIFICA ESTAS COORDENADAS
+    }
   },
   {
     id: 'hidalgo',
     name: 'Hidalgo',
-    emoji: '🌉',
-    type: '🚗 Vehículos Regular',
-    color: '#60a5fa',
-    bg: 'linear-gradient(135deg, #0a1628 0%, #0f0f0f 100%)',
-    accentGlow: '#60a5fa20',
-    accentTransparent: '#60a5fa35',
-    lanes: ['Regular'],
-    tips: [
-      'El más concurrido de los puentes',
-      'Evita viernes por la tarde y domingos noche',
-      'Para SENTRI usa la pestaña correspondiente',
-      'Para peatonal usa la pestaña correspondiente',
-    ],
+    type: 'Internacional',
+    lanes: ['General', 'SENTRI', 'Ready Lane'],
+    // 👇 AGREGA AQUÍ LAS COORDENADAS PARA HIDALGO
+    points: {
+      P0: { lat: 26.06816515980127, lng: -98.25943803654874 },  // ⬅️ MODIFICA ESTAS COORDENADAS
+      P1: { lat: 26.07352401153976, lng: -98.259313096837810 },  // ⬅️ MODIFICA ESTAS COORDENADAS
+      P2: { lat: 26.083253887692326, lng: -98.2659202780586 },  // ⬅️ MODIFICA ESTAS COORDENADAS
+      P3: { lat: 26.090226302061208, lng: -98.2678518075698 },  // ⬅️ MODIFICA ESTAS COORDENADAS
+      P4: { lat: 26.096705063895744, lng: -98.27041305729506},  // ⬅️ MODIFICA ESTAS COORDENADAS
+      P5: { lat: 26.107979371123385, lng: -98.2639254203004 }   // ⬅️ MODIFICA ESTAS COORDENADAS
+    }
   },
   {
     id: 'sentri_hidalgo',
-    name: 'Sentri Hidalgo',
-    emoji: '⚡',
-    type: '⚡ SENTRI / Ready Lane',
-    color: '#a78bfa',
-    bg: 'linear-gradient(135deg, #1a0f2e 0%, #0f0f0f 100%)',
-    accentGlow: '#a78bfa20',
-    accentTransparent: '#a78bfa35',
-    lanes: ['SENTRI', 'Ready Lane'],
-    tips: [
-      'Requiere tarjeta SENTRI o Global Entry',
-      'Generalmente el carril más rápido',
-      'Ready Lane acepta pasaportes con chip RFID',
-      'Mismo puente que Hidalgo, carril dedicado',
-    ],
+    name: 'Hidalgo SENTRI',
+    type: 'SENTRI/FAST',
+    lanes: ['SENTRI', 'FAST'],
+    // 👇 AGREGA AQUÍ LAS COORDENADAS PARA HIDALGO SENTRI
+    points: {
+      P0: { lat: 26.09882194406453, lng: -98.28455832178551 },  // ⬅️ MODIFICA ESTAS COORDENADAS
+      P1: { lat: 26.09643187175056, lng: -98.27587835510695 },  // ⬅️ MODIFICA ESTAS COORDENADAS
+      P2: { lat: 26.09296072541135, lng: -98.27064387138478 },  // ⬅️ MODIFICA ESTAS COORDENADAS
+      P3: { lat: 26.095559136078, lng: -98.27167089034293 },  // ⬅️ MODIFICA ESTAS COORDENADAS
+      P4: { lat: 26.09706658451357, lng: -98.270169013156830 },  // ⬅️ MODIFICA ESTAS COORDENADAS
+      P5: { lat: 26.105297703822483, lng: -98.26483514026881 }   // ⬅️ MODIFICA ESTAS COORDENADAS
+    }
   },
   {
     id: 'peatonal_hidalgo',
-    name: 'Peatonal Hidalgo',
-    emoji: '🚶',
-    type: '🚶 Cruce Peatonal',
-    color: '#fb923c',
-    bg: 'linear-gradient(135deg, #1f0f00 0%, #0f0f0f 100%)',
-    accentGlow: '#fb923c20',
-    accentTransparent: '#fb923c35',
-    lanes: ['Peatonal'],
-    tips: [
-      'Solo cruce a pie — sin vehículos',
-      'Lleva tu documentación en mano',
-      'Puede tener fila independiente a vehículos',
-      'Mismo puente que Hidalgo, acceso peatonal',
-    ],
+    name: 'Hidalgo Peatonal',
+    type: 'Peatonal',
+    lanes: ['General', 'Ready Lane'],
+    // 👇 AGREGA AQUÍ LAS COORDENADAS PARA HIDALGO PEATONAL
+    points: {
+      P0: { lat: 26.1005, lng: -98.2605 },  // ⬅️ MODIFICA ESTAS COORDENADAS
+      P1: { lat: 26.0985, lng: -98.2585 },  // ⬅️ MODIFICA ESTAS COORDENADAS
+      P2: { lat: 26.0965, lng: -98.2565 },  // ⬅️ MODIFICA ESTAS COORDENADAS
+      P3: { lat: 26.0945, lng: -98.2545 },  // ⬅️ MODIFICA ESTAS COORDENADAS
+      P4: { lat: 26.0925, lng: -98.2525 },  // ⬅️ MODIFICA ESTAS COORDENADAS
+      P5: { lat: 26.0905, lng: -98.2505 }   // ⬅️ MODIFICA ESTAS COORDENADAS
+    }
   },
   {
     id: 'pharr',
     name: 'Pharr',
-    emoji: '🌉',
-    type: '🚗 Solo Vehículos',
-    color: '#4ade80',
-    bg: 'linear-gradient(135deg, #061a10 0%, #0f0f0f 100%)',
-    accentGlow: '#4ade8020',
-    accentTransparent: '#4ade8035',
-    lanes: ['SENTRI / Ready Lane', 'Regular'],
-    tips: [
-      'Solo vehículos, sin cruce peatonal',
-      'SENTRI disponible',
-      'Verifica horario de apertura antes de ir',
-      'Menos conocido = a veces menos fila',
-    ],
-  },
+    type: 'Internacional',
+    lanes: ['General', 'SENTRI', 'FAST'],
+    // 👇 AGREGA AQUÍ LAS COORDENADAS PARA PHARR
+    points: {
+      P0: { lat: 26.0800, lng: -98.1900 },  // ⬅️ MODIFICA ESTAS COORDENADAS
+      P1: { lat: 26.0780, lng: -98.1880 },  // ⬅️ MODIFICA ESTAS COORDENADAS
+      P2: { lat: 26.0760, lng: -98.1860 },  // ⬅️ MODIFICA ESTAS COORDENADAS
+      P3: { lat: 26.0740, lng: -98.1840 },  // ⬅️ MODIFICA ESTAS COORDENADAS
+      P4: { lat: 26.0720, lng: -98.1820 },  // ⬅️ MODIFICA ESTAS COORDENADAS
+      P5: { lat: 26.0700, lng: -98.1800 }   // ⬅️ MODIFICA ESTAS COORDENADAS
+    }
+  }
 ];
 
-const TIME_OPTIONS = ['< 30 min', '30-60 min', '1 - 1.5 hrs', '1.5 - 2 hrs', '2 - 3 hrs', '> 3 hrs'];
-const TIME_COLORS = {
-  '< 30 min':   '#4ade80',
-  '30-60 min':  '#a3e635',
-  '1 - 1.5 hrs':'#fbbf24',
-  '1.5 - 2 hrs':'#f97316',
-  '2 - 3 hrs':  '#f87171',
-  '> 3 hrs':    '#7f1d1d',
-};
-
+// ══════════════════════════════════════════
+// CONSTANTES
+// ══════════════════════════════════════════
 const QUEUE_POSITIONS = [
-  'Inicio de la fila',
-  'Entrando al carril del puente',
-  'En la caseta de cobro',
-  'Casi pasando (5-10 min)',
+  'Antes del semáforo',
+  'Después del semáforo',
+  'A la altura de HEB',
+  'En el puente',
+  'Fluido (sin fila)'
+];
+
+const TIME_OPTIONS = [
+  '5-10 min',
+  '15-20 min',
+  '30-40 min',
+  '1 hora',
+  '1.5 horas',
+  '2+ horas'
 ];
 
 // ══════════════════════════════════════════
 // ESTADO
 // ══════════════════════════════════════════
-let state = {
+const state = {
   activeBridge: 0,
   reports: [],
-  loading: true,
+  trafficData: {},      // Datos de Google Maps
+  queueData: {},        // Datos calculados de fila
   showForm: false,
-  formData: { position: '', lane: '', estimatedTime: '', note: '' },
-  submitting: false,
   submitDone: false,
-  installPrompt: null,
+  submitting: false,
+  formData: { position: '', lane: '', estimatedTime: '', note: '' },
   showInstallBanner: false,
-  lastUpdated: null,
+  installPrompt: null,
+  map: null,
+  mapMarkers: [],
+  queuePolyline: null,
 };
 
 // ══════════════════════════════════════════
-// HELPERS
+// GOOGLE MAPS - CÁLCULO DE TRÁFICO
 // ══════════════════════════════════════════
-function timeAgo(dateStr) {
-  const diff = Math.floor((Date.now() - new Date(dateStr)) / 60000);
-  if (diff < 1) return 'Ahora mismo';
-  if (diff < 60) return `Hace ${diff} min`;
-  if (diff < 1440) return `Hace ${Math.floor(diff/60)}h ${diff%60}min`;
-  return `Hace ${Math.floor(diff/1440)} días`;
+
+async function fetchTrafficData(bridge) {
+  try {
+    const points = bridge.points;
+    const segments = [
+      { from: points.P0, to: points.P1, name: 'P0-P1' },
+      { from: points.P1, to: points.P2, name: 'P1-P2' },
+      { from: points.P2, to: points.P3, name: 'P2-P3' },
+      { from: points.P3, to: points.P4, name: 'P3-P4' },
+      { from: points.P4, to: points.P5, name: 'P4-P5' },
+    ];
+
+    const trafficTimes = [];
+    const normalTimes = [];
+
+    for (const segment of segments) {
+      // Calcular tiempo CON tráfico
+      const trafficTime = await getDirectionsTime(segment.from, segment.to, true);
+      // Calcular tiempo SIN tráfico
+      const normalTime = await getDirectionsTime(segment.from, segment.to, false);
+      
+      trafficTimes.push({ segment: segment.name, time: trafficTime });
+      normalTimes.push({ segment: segment.name, time: normalTime });
+    }
+
+    return { trafficTimes, normalTimes, bridge: bridge.id };
+  } catch (error) {
+    console.error('Error fetching traffic data:', error);
+    return null;
+  }
 }
 
-function getAvgWait(reports) {
-  const recent = reports.slice(0, 5).filter(r => {
-    const mins = (Date.now() - new Date(r.timestamp)) / 60000;
-    return mins < 90;
+async function getDirectionsTime(origin, destination, withTraffic) {
+  return new Promise((resolve, reject) => {
+    const directionsService = new google.maps.DirectionsService();
+    
+    const request = {
+      origin: new google.maps.LatLng(origin.lat, origin.lng),
+      destination: new google.maps.LatLng(destination.lat, destination.lng),
+      travelMode: google.maps.TravelMode.DRIVING,
+      drivingOptions: withTraffic ? {
+        departureTime: new Date(),
+        trafficModel: google.maps.TrafficModel.BEST_GUESS
+      } : undefined
+    };
+
+    directionsService.route(request, (result, status) => {
+      if (status === google.maps.DirectionsStatus.OK) {
+        const duration = result.routes[0].legs[0].duration.value; // segundos
+        resolve(duration / 60); // convertir a minutos
+      } else {
+        reject(new Error('Directions request failed: ' + status));
+      }
+    });
   });
-  if (!recent.length) return null;
-  const idx = recent.map(r => TIME_OPTIONS.indexOf(r.estimatedTime)).filter(i => i >= 0);
-  if (!idx.length) return null;
-  const avg = Math.round(idx.reduce((a,b) => a+b, 0) / idx.length);
-  return TIME_OPTIONS[Math.min(avg, TIME_OPTIONS.length - 1)];
-}
-
-function setBridgeVars(bridge) {
-  const root = document.documentElement;
-  root.style.setProperty('--accent', bridge.color);
-  root.style.setProperty('--accent-glow', bridge.accentGlow);
-  root.style.setProperty('--accent-transparent', bridge.accentTransparent);
-  root.style.setProperty('--tab-color', bridge.color);
-}
-
-// Horus Eye SVG for header (small)
-function horusEyeSVG(size = 40) {
-  return `<svg width="${size}" height="${Math.round(size*0.6)}" viewBox="0 0 100 60" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="M5 30 Q25 5 50 5 Q75 5 95 30 Q75 55 50 55 Q25 55 5 30Z" stroke="#C9A84C" stroke-width="2.5" fill="none"/>
-    <circle cx="50" cy="30" r="14" stroke="#C9A84C" stroke-width="2" fill="none"/>
-    <circle cx="50" cy="30" r="7" fill="#C9A84C"/>
-    <line x1="18" y1="18" x2="13" y2="9" stroke="#C9A84C" stroke-width="1.5"/>
-    <line x1="30" y1="10" x2="27" y2="1" stroke="#C9A84C" stroke-width="1.5"/>
-    <path d="M72 42 L88 52 L80 52" stroke="#C9A84C" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-  </svg>`;
 }
 
 // ══════════════════════════════════════════
-// API
+// ALGORITMO DE DETECCIÓN DE INICIO DE FILA
 // ══════════════════════════════════════════
+
+function detectQueueStart(trafficData, userReports) {
+  if (!trafficData) return null;
+
+  const { trafficTimes, normalTimes } = trafficData;
+  
+  // Calcular diferencias de tiempo (ΔT)
+  const deltas = trafficTimes.map((t, i) => ({
+    segment: t.segment,
+    delta: t.time - normalTimes[i].time,
+    trafficTime: t.time,
+    normalTime: normalTimes[i].time
+  }));
+
+  // Encontrar el primer segmento con ΔT significativo (> 2 minutos)
+  const queueStartSegment = deltas.find(d => d.delta > 2);
+  
+  if (!queueStartSegment) {
+    return { status: 'fluido', queueLength: 0, estimatedTime: 5 };
+  }
+
+  // Calcular longitud de fila y tiempo estimado
+  const queueLength = calculateQueueLength(queueStartSegment.segment);
+  const estimatedTime = deltas.reduce((sum, d) => sum + d.trafficTime, 0);
+
+  // Fusionar con datos de usuarios
+  const userEstimate = calculateUserEstimate(userReports);
+  const finalEstimate = fuseEstimates(estimatedTime, userEstimate);
+
+  return {
+    status: getTrafficStatus(finalEstimate),
+    queueLength,
+    estimatedTime: Math.round(finalEstimate),
+    queueStartSegment: queueStartSegment.segment,
+    deltas
+  };
+}
+
+function calculateQueueLength(startSegment) {
+  // Mapeo simple de segmento a distancia aproximada
+  const distances = {
+    'P0-P1': 0,
+    'P1-P2': 0.5,
+    'P2-P3': 1.0,
+    'P3-P4': 1.5,
+    'P4-P5': 2.0
+  };
+  return distances[startSegment] || 0;
+}
+
+function calculateUserEstimate(reports) {
+  if (!reports || reports.length === 0) return null;
+
+  const recentReports = reports
+    .filter(r => {
+      const age = (new Date() - new Date(r.timestamp)) / 1000 / 60; // minutos
+      return age < CONFIG.ALGORITHM.MAX_REPORT_AGE_MINUTES;
+    })
+    .slice(0, CONFIG.ALGORITHM.RECENT_REPORTS_COUNT);
+
+  if (recentReports.length === 0) return null;
+
+  // Convertir tiempos a minutos
+  const times = recentReports.map(r => parseTimeToMinutes(r.estimatedTime));
+  const avg = times.reduce((a, b) => a + b, 0) / times.length;
+  
+  return avg;
+}
+
+function parseTimeToMinutes(timeStr) {
+  const matches = timeStr.match(/(\d+)/g);
+  if (!matches) return 0;
+  if (timeStr.includes('hora')) {
+    return parseInt(matches[0]) * 60;
+  }
+  return parseInt(matches[0]);
+}
+
+function fuseEstimates(googleEstimate, userEstimate) {
+  if (!userEstimate) return googleEstimate;
+  
+  return (googleEstimate * CONFIG.ALGORITHM.GOOGLE_WEIGHT) + 
+         (userEstimate * CONFIG.ALGORITHM.USER_WEIGHT);
+}
+
+function getTrafficStatus(minutes) {
+  if (minutes < 15) return 'fluido';
+  if (minutes < 45) return 'moderado';
+  return 'pesado';
+}
+
+// ══════════════════════════════════════════
+// MAPA DE GOOGLE
+// ══════════════════════════════════════════
+
+function initMap(bridge) {
+  const mapContainer = document.getElementById('map');
+  if (!mapContainer) return;
+
+  // Centro del mapa en P2 (donde probablemente empieza la fila)
+  const center = bridge.points.P2;
+
+  state.map = new google.maps.Map(mapContainer, {
+    center: center,
+    zoom: 14,
+    styles: [
+      { elementType: 'geometry', stylers: [{ color: '#1a1a1a' }] },
+      { elementType: 'labels.text.stroke', stylers: [{ color: '#0a0a0a' }] },
+      { elementType: 'labels.text.fill', stylers: [{ color: '#746855' }] },
+      { featureType: 'road', elementType: 'geometry', stylers: [{ color: '#2a2a2a' }] },
+      { featureType: 'road', elementType: 'geometry.stroke', stylers: [{ color: '#212121' }] },
+      { featureType: 'road.highway', elementType: 'geometry', stylers: [{ color: '#3a3a3a' }] },
+      { featureType: 'water', elementType: 'geometry', stylers: [{ color: '#0f0f0f' }] },
+    ],
+    disableDefaultUI: true,
+    zoomControl: true,
+  });
+
+  // Dibujar puntos
+  drawBridgePoints(bridge);
+}
+
+function drawBridgePoints(bridge) {
+  // Limpiar marcadores previos
+  state.mapMarkers.forEach(m => m.setMap(null));
+  state.mapMarkers = [];
+
+  if (state.queuePolyline) {
+    state.queuePolyline.setMap(null);
+  }
+
+  const points = bridge.points;
+  
+  // Marcar todos los puntos
+  Object.entries(points).forEach(([name, coords]) => {
+    const marker = new google.maps.Marker({
+      position: coords,
+      map: state.map,
+      title: name,
+      icon: {
+        path: google.maps.SymbolPath.CIRCLE,
+        scale: 6,
+        fillColor: name === 'P4' ? '#C9A84C' : '#666',
+        fillOpacity: 1,
+        strokeColor: '#fff',
+        strokeWeight: 1,
+      }
+    });
+    state.mapMarkers.push(marker);
+  });
+
+  // Dibujar línea de la ruta
+  const path = Object.values(points);
+  const polyline = new google.maps.Polyline({
+    path: path,
+    geodesic: true,
+    strokeColor: '#C9A84C',
+    strokeOpacity: 0.6,
+    strokeWeight: 3,
+    map: state.map
+  });
+  
+  state.queuePolyline = polyline;
+
+  // Si hay datos de fila, resaltar el inicio
+  const queueData = state.queueData[bridge.id];
+  if (queueData && queueData.queueStartSegment) {
+    highlightQueueStart(queueData.queueStartSegment, points);
+  }
+}
+
+function highlightQueueStart(segment, points) {
+  // Extraer puntos del segmento (ej: "P1-P2" → P1 y P2)
+  const [start, end] = segment.split('-');
+  const startPoint = points[start];
+  const endPoint = points[end];
+
+  // Marcar inicio de fila con color rojo
+  const queueMarker = new google.maps.Marker({
+    position: startPoint,
+    map: state.map,
+    title: 'Inicio de Fila',
+    icon: {
+      path: google.maps.SymbolPath.CIRCLE,
+      scale: 10,
+      fillColor: '#f87171',
+      fillOpacity: 1,
+      strokeColor: '#fff',
+      strokeWeight: 2,
+    },
+    animation: google.maps.Animation.BOUNCE,
+  });
+  state.mapMarkers.push(queueMarker);
+}
+
+// ══════════════════════════════════════════
+// API - FETCH REPORTS
+// ══════════════════════════════════════════
+
 async function fetchReports() {
   try {
-    const res = await fetch(`${CONFIG.APPS_SCRIPT_URL}?action=getReports`);
-    const data = await res.json();
+    const response = await fetch(CONFIG.APPS_SCRIPT_URL + '?action=getReports');
+    const data = await response.json();
     state.reports = data.reports || [];
-    state.lastUpdated = new Date();
-  } catch (e) {
-    console.warn('Error fetching reports:', e);
+    
+    // Actualizar datos de tráfico para el puente activo
+    const activeBridge = BRIDGES[state.activeBridge];
+    const trafficData = await fetchTrafficData(activeBridge);
+    
+    if (trafficData) {
+      state.trafficData[activeBridge.id] = trafficData;
+      
+      // Calcular datos de fila
+      const bridgeReports = state.reports.filter(r => r.bridge === activeBridge.id);
+      const queueData = detectQueueStart(trafficData, bridgeReports);
+      state.queueData[activeBridge.id] = queueData;
+    }
+
+    render();
+    
+    // Actualizar mapa si está inicializado
+    if (state.map) {
+      drawBridgePoints(activeBridge);
+    }
+  } catch (error) {
+    console.error('Error fetching reports:', error);
   }
-  state.loading = false;
-  render();
 }
 
 async function submitReport(report) {
-  const res = await fetch(CONFIG.APPS_SCRIPT_URL, {
-    method: 'POST',
-    headers: { 'Content-Type': 'text/plain' },
-    body: JSON.stringify({ action: 'addReport', ...report }),
-  });
-  const data = await res.json();
-  return data.success;
+  try {
+    await fetch(CONFIG.APPS_SCRIPT_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action: 'addReport', ...report })
+    });
+  } catch (error) {
+    console.error('Error submitting report:', error);
+    throw error;
+  }
+}
+
+// ══════════════════════════════════════════
+// UTILIDADES
+// ══════════════════════════════════════════
+
+function timeAgo(isoString) {
+  const now = new Date();
+  const then = new Date(isoString);
+  const diffMs = now - then;
+  const diffMins = Math.floor(diffMs / 60000);
+  const diffHrs = Math.floor(diffMins / 60);
+
+  if (diffMins < 1) return 'Ahora';
+  if (diffMins < 60) return `${diffMins}m`;
+  if (diffHrs < 24) return `${diffHrs}h`;
+  return `${Math.floor(diffHrs / 24)}d`;
+}
+
+function horusEyeSVG(size) {
+  return `
+    <svg width="${size}" height="${size}" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" style="display:block">
+      <path d="M100 60 L160 140 L40 140 Z" fill="none" stroke="currentColor" stroke-width="3"/>
+      <line x1="70" y1="100" x2="70" y2="140" stroke="currentColor" stroke-width="2"/>
+      <line x1="100" y1="80" x2="100" y2="140" stroke="currentColor" stroke-width="2"/>
+      <line x1="130" y1="100" x2="130" y2="140" stroke="currentColor" stroke-width="2"/>
+      <circle cx="100" cy="90" r="8" fill="currentColor"/>
+    </svg>
+  `;
+}
+
+function setBridgeVars(bridge) {
+  const colorMap = {
+    anzalduas: '#C9A84C',
+    hidalgo: '#60a5fa',
+    sentri_hidalgo: '#4ade80',
+    peatonal_hidalgo: '#fbbf24',
+    pharr: '#f87171'
+  };
+  const color = colorMap[bridge.id] || '#C9A84C';
+  document.documentElement.style.setProperty('--accent', color);
+  document.documentElement.style.setProperty('--accent-glow', color + '20');
+  document.documentElement.style.setProperty('--accent-transparent', color + '40');
+  document.documentElement.style.setProperty('--tab-color', color);
 }
 
 // ══════════════════════════════════════════
 // RENDER
 // ══════════════════════════════════════════
+
 function render() {
   const bridge = BRIDGES[state.activeBridge];
+  const bridgeReports = state.reports.filter(r => r.bridge === bridge.id);
+  const queueData = state.queueData[bridge.id] || { 
+    status: 'fluido', 
+    estimatedTime: 0, 
+    queueLength: 0 
+  };
+
   setBridgeVars(bridge);
 
-  const bridgeReports = state.reports
-    .filter(r => r.bridge === bridge.id)
-    .sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+  const statusMap = {
+    fluido: { text: 'Fluido', class: 'status-fluido' },
+    moderado: { text: 'Moderado', class: 'status-moderado' },
+    pesado: { text: 'Pesado', class: 'status-pesado' }
+  };
 
-  const avgWait = getAvgWait(bridgeReports);
-  const latest = bridgeReports[0];
-  const recentCount = bridgeReports.filter(r => (Date.now() - new Date(r.timestamp)) < 90 * 60000).length;
+  const status = statusMap[queueData.status] || statusMap.fluido;
 
   document.getElementById('app').innerHTML = `
     <!-- HEADER -->
     <div class="header">
       <div class="header-top">
         <div class="logo">
-          <div class="logo-eye">${horusEyeSVG(44)}</div>
+          <div class="logo-eye" style="color: var(--gold)">
+            ${horusEyeSVG(40)}
+          </div>
           <div class="logo-text">
-            <div class="logo-title">Cruce Reynosa</div>
-            <div class="logo-sub">Tiempo Real · Puentes</div>
+            <div class="logo-title">Horus</div>
+            <div class="logo-sub">System Co.</div>
           </div>
         </div>
         <div class="live-badge">
           <div class="live-dot"></div>
-          EN VIVO
+          LIVE
         </div>
       </div>
-      <div class="bridge-tabs">
+
+      <!-- TABS -->
+      <div class="tabs">
         ${BRIDGES.map((b, i) => `
-          <button
-            class="bridge-tab ${i === state.activeBridge ? 'active' : ''}"
-            style="--tab-color: ${b.color}"
-            onclick="selectBridge(${i})"
-          >${b.name}</button>
+          <div class="tab ${state.activeBridge === i ? 'active' : ''}" onclick="selectBridge(${i})">
+            ${b.name}
+          </div>
         `).join('')}
       </div>
     </div>
 
-    <!-- CONTENT -->
-    <div class="content">
-      ${state.loading ? `
-        <div class="loading-screen">
-          <div class="spinner"></div>
-          <span>CARGANDO REPORTES</span>
+    <!-- TRAFFIC CARD -->
+    <div class="traffic-card">
+      <div class="traffic-header">
+        <div>
+          <div class="traffic-title">Tiempo Estimado</div>
+          <div class="traffic-time">${queueData.estimatedTime || 0} min</div>
         </div>
-      ` : `
-        <!-- STATUS HERO -->
-        <div class="status-hero" style="background: ${bridge.bg}; --accent-transparent: ${bridge.accentTransparent}; --accent-glow: ${bridge.accentGlow}">
-          <div class="status-label">Tiempo estimado ahora</div>
-          ${avgWait
-            ? `<div class="status-time">${avgWait}</div>`
-            : `<div class="status-no-reports">Sin reportes recientes</div>`
-          }
-          ${latest ? `
-            <div class="status-meta">
-              📍 Fila hasta: <strong style="color: var(--text)">${latest.position}</strong><br>
-              🕐 Último reporte: ${timeAgo(latest.timestamp)}
-            </div>
-          ` : `
-            <div class="status-meta" style="color: var(--faint)">Sé el primero en reportar hoy</div>
-          `}
-          <div class="status-chips">
-            <div class="chip">📊 ${recentCount} activos</div>
-            <div class="chip">${bridge.type}</div>
-            ${state.lastUpdated ? `<div class="chip">🔄 ${timeAgo(state.lastUpdated.toISOString())}</div>` : ''}
-          </div>
+        <div class="traffic-status ${status.class}">
+          <div class="status-dot"></div>
+          ${status.text}
         </div>
+      </div>
+      <div class="traffic-meta">
+        <div class="meta-item">📏 ${queueData.queueLength || 0} km de fila</div>
+        <div class="meta-item">🚗 ${bridge.lanes.length} carriles</div>
+      </div>
+    </div>
 
-        <!-- REPORT BUTTON -->
-        <button class="report-btn" onclick="openForm()">
-          📍 Estoy en la fila — Reportar ahora
-        </button>
-
-        <!-- AD BANNER -->
-        <div class="ad-banner" id="adBanner">
-          <div class="ad-label">Publicidad</div>
-          <div class="ad-slides">
-            <div class="ad-slide active" id="adSlide0">
-              <div class="ad-icon">📣</div>
-              <div class="ad-text">
-                <div class="ad-headline-white">Anúnciate aquí</div>
-                <div class="ad-sub-white">info@horussystem.net · 956-556-9674</div>
-              </div>
-            </div>
-            <div class="ad-slide" id="adSlide1">
-              <div class="ad-icon">🤖</div>
-              <div class="ad-text">
-                <div class="ad-headline">AI Agents para tu negocio</div>
-                <div class="ad-sub">www.horussystemco.com</div>
-              </div>
-            </div>
-          </div>
-          <div class="ad-dots">
-            <div class="ad-dot active" id="adDot0"></div>
-            <div class="ad-dot" id="adDot1"></div>
-          </div>
+    <!-- MAP -->
+    <div class="map-container">
+      <div id="map"></div>
+      ${queueData.queueStartSegment ? `
+        <div class="queue-indicator">
+          🚦 Fila inicia en ${queueData.queueStartSegment}
         </div>
+      ` : ''}
+    </div>
 
-        <!-- TIPS -->
-        <div class="section-title">Consejos · ${bridge.name}</div>
-        <div class="tips-box">
-          <ul>
-            ${bridge.tips.map(t => `<li>${t}</li>`).join('')}
-          </ul>
+    <!-- REPORT BUTTON -->
+    <button class="report-btn" onclick="openForm()">
+      📍 Reportar Tiempo de Fila
+    </button>
+
+    <!-- AD BANNER -->
+    <div class="ad-banner" id="adBanner">
+      <div class="ad-slide active" id="adSlide0">
+        <div class="ad-content">
+          <div class="ad-logo">HORUS</div>
+          <div class="ad-tagline">Vigilando la frontera</div>
         </div>
+      </div>
+      <div class="ad-slide" id="adSlide1">
+        <div class="ad-content" style="color: var(--gold)">
+          <div class="ad-logo" style="font-size: 22px">¿Negocio en la frontera?</div>
+          <div class="ad-tagline">Contáctanos: horus@system.co</div>
+        </div>
+      </div>
+      <div class="ad-indicators">
+        <div class="ad-dot active" id="adDot0"></div>
+        <div class="ad-dot" id="adDot1"></div>
+      </div>
+    </div>
 
-        <!-- REPORTS FEED -->
-        <div class="section-title">Reportes Recientes</div>
-        ${bridgeReports.length === 0 ? `
-          <div class="empty-state">
-            <div class="emoji">🔭</div>
-            <div class="title">Sin reportes todavía</div>
-            <div class="sub">¡Ayuda a la comunidad reportando la fila!</div>
+    <!-- REPORTS -->
+    <div class="reports-section">
+      <div class="section-title">Reportes Recientes</div>
+      ${bridgeReports.length > 0 ? bridgeReports.slice(0, 10).map(r => `
+        <div class="report-card">
+          <div class="report-header">
+            <div class="report-position">${r.position}</div>
+            <div class="report-time-badge">${r.estimatedTime}</div>
           </div>
-        ` : bridgeReports.slice(0, 15).map(r => `
-          <div class="report-card">
-            <div>
-              <div class="report-pos">${r.position}</div>
-              <div class="report-lane">${r.lane}</div>
-              ${r.note ? `<div class="report-note">"${r.note}"</div>` : ''}
-            </div>
-            <div class="report-right">
-              <span class="wait-badge" style="background: ${TIME_COLORS[r.estimatedTime] || '#6B7280'}">${r.estimatedTime}</span>
-              <div class="report-ago">${timeAgo(r.timestamp)}</div>
-            </div>
+          <div class="report-meta">
+            <span>🚗 ${r.lane}</span>
+            <span>⏱️ ${timeAgo(r.timestamp)}</span>
           </div>
-        `).join('')}
+          ${r.note ? `<div class="report-note">${r.note}</div>` : ''}
+        </div>
+      `).join('') : `
+        <div class="empty-state">
+          <div class="empty-emoji">🤷</div>
+          <div class="empty-text">No hay reportes recientes</div>
+        </div>
       `}
     </div>
 
@@ -1449,7 +1703,10 @@ function render() {
     ${state.showForm ? renderForm(bridge) : ''}
   `;
 
-  // Sync ad banner to current slide after each render
+  // Inicializar mapa después de renderizar
+  setTimeout(() => initMap(bridge), 100);
+  
+  // Sync ad banner
   syncAdBanner();
 }
 
@@ -1516,26 +1773,6 @@ function renderForm(bridge) {
           >${f.note}</textarea>
         </div>
 
-        <div class="phone-promo-box">
-          <div class="phone-promo-header">
-            <span class="phone-promo-badge">💵 Gana $20</span>
-          </div>
-          <div class="phone-promo-title">¡Deja tu número y gana dinero!</div>
-          <div class="phone-promo-sub">El usuario que más reportes envíe este mes se lleva <strong style="color:var(--gold)">$20 dólares</strong>. Deja tu número para que podamos contactarte. 🏆</div>
-          <div class="phone-input-wrap">
-            <span class="phone-input-icon">📱</span>
-            <input
-              type="tel"
-              class="phone-input"
-              placeholder="Ej: 8991234567 (opcional)"
-              value="${f.phone || ''}"
-              oninput="setPhone(this.value)"
-              maxlength="15"
-            />
-          </div>
-          <div class="phone-promo-disclaimer">🔒 Tu número es privado — solo se usa para el sorteo mensual.</div>
-        </div>
-
         <button class="submit-btn" ${canSubmit ? '' : 'disabled'} onclick="handleSubmit()">
           ${state.submitting ? 'Enviando...' : '🚀 Publicar Reporte'}
         </button>
@@ -1560,7 +1797,7 @@ window.selectBridge = (i) => {
 window.openForm = () => {
   state.showForm = true;
   state.submitDone = false;
-  state.formData = { position: '', lane: '', estimatedTime: '', note: '', phone: '' };
+  state.formData = { position: '', lane: '', estimatedTime: '', note: '' };
   render();
 };
 
@@ -1582,10 +1819,6 @@ window.setNote = (val) => {
   state.formData.note = val;
 };
 
-window.setPhone = (val) => {
-  state.formData.phone = val;
-};
-
 window.handleSubmit = async () => {
   if (!state.formData.position || !state.formData.lane || !state.formData.estimatedTime) return;
   state.submitting = true;
@@ -1599,7 +1832,6 @@ window.handleSubmit = async () => {
     lane: state.formData.lane,
     estimatedTime: state.formData.estimatedTime,
     note: state.formData.note,
-    phone: state.formData.phone || '',
     timestamp: new Date().toISOString(),
   };
 
@@ -1664,7 +1896,6 @@ window.addEventListener('beforeinstallprompt', (e) => {
 let adIndex = 0;
 const AD_COUNT = 2;
 
-// Runs on a global interval; queries DOM fresh each tick so it survives render()
 setInterval(() => {
   const prev = adIndex;
   adIndex = (adIndex + 1) % AD_COUNT;
@@ -1684,7 +1915,6 @@ setInterval(() => {
   if (banner)   banner.classList.toggle('slide-white', adIndex === 0);
 }, 6000);
 
-// After each render(), syncs the banner DOM to the current adIndex
 function syncAdBanner() {
   for (let i = 0; i < AD_COUNT; i++) {
     const slide = document.getElementById('adSlide' + i);
@@ -1700,6 +1930,13 @@ function syncAdBanner() {
 // ══════════════════════════════════════════
 // INIT
 // ══════════════════════════════════════════
+setTimeout(() => {
+  document.getElementById('splash').classList.add('hidden');
+  setTimeout(() => {
+    document.getElementById('splash').remove();
+  }, 600);
+}, 2000);
+
 setBridgeVars(BRIDGES[0]);
 render();
 fetchReports();
