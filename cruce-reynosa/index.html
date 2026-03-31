@@ -1,12 +1,13 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+
   <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-  'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-  })(window,document,'script','dataLayer','GTM-P2RPXZMN');</script>
-  <meta charset="UTF-8" />
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-P2RPXZMN');</script>
+<meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <meta name="theme-color" content="#0a0a0a" />
   <meta name="description" content="Tiempo real de espera en los puentes internacionales de Reynosa, Tamaulipas" />
@@ -422,6 +423,23 @@
       text-transform: uppercase;
     }
 
+    .queue-indicator {
+      position: absolute;
+      bottom: 12px;
+      left: 12px;
+      background: rgba(0, 0, 0, 0.85);
+      backdrop-filter: blur(10px);
+      border: 1px solid var(--border-gold);
+      border-radius: 8px;
+      padding: 8px 12px;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 11px;
+      letter-spacing: 1px;
+      color: var(--gold);
+      text-transform: uppercase;
+      font-weight: 700;
+    }
+
     /* ── REPORT BUTTON ──────────────────────────── */
     .report-btn {
       background: linear-gradient(135deg, var(--accent) 0%, var(--gold-dim) 100%);
@@ -446,6 +464,10 @@
       box-shadow: 0 6px 24px var(--gold-glow-strong);
     }
 
+    .report-btn:active {
+      transform: translateY(0);
+    }
+
     /* ── REPORTS LIST ───────────────────────────── */
     .reports-section {
       flex: 1;
@@ -466,11 +488,19 @@
       gap: 8px;
     }
 
-    .section-title::before, .section-title::after {
-      content: ''; flex: 1; height: 1px; 
+    .section-title::before {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(to right, transparent, var(--border));
     }
-    .section-title::before { background: linear-gradient(to right, transparent, var(--border)); }
-    .section-title::after { background: linear-gradient(to left, transparent, var(--border)); }
+
+    .section-title::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(to left, transparent, var(--border));
+    }
 
     .report-card {
       background: var(--surface2);
@@ -481,11 +511,84 @@
       transition: all 0.2s;
     }
 
-    .report-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; }
-    .report-position { font-family: 'Barlow', sans-serif; font-size: 14px; font-weight: 600; color: var(--text); }
-    .report-time-badge { background: var(--surface3); border: 1px solid var(--border); border-radius: 6px; padding: 4px 8px; font-family: 'Barlow Condensed', sans-serif; font-size: 11px; font-weight: 700; color: var(--gold); }
-    .report-meta { display: flex; gap: 12px; font-family: 'Barlow', sans-serif; font-size: 12px; color: var(--text-dim); margin-bottom: 8px; }
-    .report-note { font-family: 'Barlow', sans-serif; font-size: 13px; color: var(--muted); font-style: italic; line-height: 1.4; padding: 8px; background: var(--surface); border-left: 2px solid var(--border-gold); border-radius: 4px; }
+    .report-card:hover {
+      background: var(--surface3);
+      border-color: var(--border-gold);
+    }
+
+    .report-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 10px;
+    }
+
+    .report-position {
+      font-family: 'Barlow', sans-serif;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text);
+      line-height: 1.3;
+    }
+
+    .report-time-badge {
+      background: var(--surface3);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 4px 8px;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      color: var(--gold);
+      white-space: nowrap;
+    }
+
+    .report-meta {
+      display: flex;
+      gap: 12px;
+      font-family: 'Barlow', sans-serif;
+      font-size: 12px;
+      color: var(--text-dim);
+      margin-bottom: 8px;
+    }
+
+    .report-note {
+      font-family: 'Barlow', sans-serif;
+      font-size: 13px;
+      color: var(--muted);
+      font-style: italic;
+      line-height: 1.4;
+      padding: 8px;
+      background: var(--surface);
+      border-left: 2px solid var(--border-gold);
+      border-radius: 4px;
+    }
+
+    .report-timestamp {
+      font-family: 'Barlow', sans-serif;
+      font-size: 11px;
+      color: var(--faint);
+      margin-top: 8px;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 40px 20px;
+      color: var(--muted);
+    }
+
+    .empty-emoji {
+      font-size: 48px;
+      margin-bottom: 12px;
+    }
+
+    .empty-text {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 14px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
 
     /* ── AD BANNER ───────────────────────────────── */
     .ad-banner {
@@ -499,50 +602,396 @@
       cursor: pointer;
       transition: all 0.3s;
     }
-    .ad-banner.slide-white { background: #f8f8f8; }
-    .ad-slide { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; padding: 24px; opacity: 0; transition: opacity 0.6s ease; }
-    .ad-slide.active { opacity: 1; }
-    .ad-content { text-align: center; width: 100%; }
-    .ad-logo { font-family: 'Cormorant Garamond', serif; font-size: 36px; font-weight: 600; letter-spacing: 5px; color: var(--gold); margin-bottom: 8px; }
-    .ad-tagline { font-family: 'Barlow Condensed', sans-serif; font-size: 13px; letter-spacing: 3px; color: var(--muted); text-transform: uppercase; }
-    .slide-white .ad-tagline { color: #666; }
-    .ad-indicators { position: absolute; bottom: 12px; left: 50%; transform: translateX(-50%); display: flex; gap: 6px; }
-    .ad-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--faint); }
-    .ad-dot.active { background: var(--gold); width: 20px; border-radius: 3px; }
+
+    .ad-banner:hover {
+      border-color: var(--border-gold);
+      transform: translateY(-2px);
+    }
+
+    .ad-banner.slide-white {
+      background: #f8f8f8;
+    }
+
+    .ad-slide {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      opacity: 0;
+      transition: opacity 0.6s ease;
+    }
+
+    .ad-slide.active {
+      opacity: 1;
+    }
+
+    .ad-content {
+      text-align: center;
+      width: 100%;
+    }
+
+    .ad-logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 36px;
+      font-weight: 600;
+      letter-spacing: 5px;
+      color: var(--gold);
+      margin-bottom: 8px;
+      line-height: 1.2;
+    }
+
+    .ad-tagline {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 13px;
+      letter-spacing: 3px;
+      color: var(--muted);
+      text-transform: uppercase;
+      line-height: 1.4;
+    }
+
+    .slide-white .ad-tagline {
+      color: #666;
+    }
+
+    .ad-indicators {
+      position: absolute;
+      bottom: 12px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 6px;
+    }
+
+    .ad-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--faint);
+      transition: all 0.3s;
+    }
+
+    .ad-dot.active {
+      background: var(--gold);
+      width: 20px;
+      border-radius: 3px;
+    }
+
+    .slide-white .ad-dot {
+      background: #ccc;
+    }
+
+    .slide-white .ad-dot.active {
+      background: var(--gold);
+    }
 
     /* ── BOTTOM NAV ──────────────────────────────── */
     .bottom-nav {
-      position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); max-width: 480px; width: 100%;
-      background: var(--surface); border-top: 1px solid var(--border); padding: 12px 18px;
-      display: flex; justify-content: center; align-items: center; gap: 8px; font-family: 'Barlow', sans-serif; font-size: 11px; color: var(--muted); z-index: 100;
+      position: fixed;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      max-width: 480px;
+      width: 100%;
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      padding: 12px 18px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 8px;
+      font-family: 'Barlow', sans-serif;
+      font-size: 11px;
+      color: var(--muted);
+      z-index: 100;
     }
 
     .powered-by {
-      position: fixed; bottom: 42px; left: 50%; transform: translateX(-50%); max-width: 480px; width: 100%;
-      display: flex; justify-content: center; align-items: center; gap: 6px; padding: 8px; background: transparent; z-index: 99;
+      position: fixed;
+      bottom: 42px;
+      left: 50%;
+      transform: translateX(-50%);
+      max-width: 480px;
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 6px;
+      padding: 8px;
+      background: transparent;
+      z-index: 99;
     }
-    .powered-text { font-family: 'Barlow', sans-serif; font-size: 10px; color: var(--faint); letter-spacing: 1px; }
-    .powered-horus { font-family: 'Cormorant Garamond', serif; font-size: 12px; font-weight: 600; letter-spacing: 2px; color: var(--gold-dim); }
 
-    /* ── MODAL FORM ───────────────────────────────────── */
-    .modal-overlay { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(4px); z-index: 1000; display: flex; align-items: flex-end; justify-content: center; }
-    .modal-sheet { background: var(--surface); border: 1px solid var(--border-gold); border-radius: 20px 20px 0 0; width: 100%; max-height: 90vh; overflow-y: auto; padding: 24px; position: relative; }
-    .modal-handle { width: 40px; height: 4px; background: var(--border); border-radius: 2px; margin: 0 auto 20px; }
-    .modal-title { font-family: 'Barlow Condensed', sans-serif; font-size: 22px; font-weight: 800; letter-spacing: 2px; color: var(--text); text-transform: uppercase; margin-bottom: 4px; }
-    .modal-sub { font-family: 'Barlow', sans-serif; font-size: 13px; color: var(--muted); margin-bottom: 24px; }
-    .form-group { margin-bottom: 24px; }
-    .form-label { font-family: 'Barlow Condensed', sans-serif; font-size: 12px; font-weight: 700; letter-spacing: 1px; color: var(--text-dim); text-transform: uppercase; margin-bottom: 10px; display: block; }
-    .option-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
-    .option-btn { background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; padding: 12px; font-family: 'Barlow', sans-serif; font-size: 13px; color: var(--text); cursor: pointer; text-align: center; }
-    .option-btn.selected { background: var(--accent-transparent); border-color: var(--accent); color: var(--accent); box-shadow: 0 0 12px var(--accent-glow); }
-    .form-textarea { width: 100%; background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; padding: 12px; font-family: 'Barlow', sans-serif; font-size: 14px; color: var(--text); resize: none; outline: none; }
-    .submit-btn { width: 100%; background: linear-gradient(135deg, var(--accent) 0%, var(--gold-dim) 100%); border: 1px solid var(--gold-bright); border-radius: 12px; padding: 16px; font-family: 'Barlow Condensed', sans-serif; font-size: 15px; font-weight: 800; letter-spacing: 2px; color: var(--bg); text-transform: uppercase; cursor: pointer; margin-top: 8px; }
+    .powered-text {
+      font-family: 'Barlow', sans-serif;
+      font-size: 10px;
+      color: var(--faint);
+      letter-spacing: 1px;
+    }
+
+    .powered-logo {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .powered-horus {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 2px;
+      color: var(--gold-dim);
+    }
+
+    /* ── INSTALL BANNER ──────────────────────────── */
+    .install-banner {
+      position: fixed;
+      bottom: 56px;
+      left: 50%;
+      transform: translateX(-50%);
+      max-width: 440px;
+      width: calc(100% - 36px);
+      background: var(--surface2);
+      border: 1px solid var(--border-gold);
+      border-radius: 12px;
+      padding: 14px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      z-index: 101;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+    }
+
+    .install-banner-text {
+      flex: 1;
+    }
+
+    .install-banner-title {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text);
+      letter-spacing: 1px;
+    }
+
+    .install-banner-sub {
+      font-family: 'Barlow', sans-serif;
+      font-size: 11px;
+      color: var(--muted);
+      margin-top: 2px;
+    }
+
+    .install-btn {
+      background: var(--gold);
+      border: none;
+      border-radius: 8px;
+      padding: 8px 16px;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      color: var(--bg);
+      cursor: pointer;
+      text-transform: uppercase;
+    }
+
+    .install-close {
+      background: transparent;
+      border: none;
+      color: var(--muted);
+      cursor: pointer;
+      font-size: 18px;
+      padding: 4px 8px;
+    }
+
+    /* ── MODAL ───────────────────────────────────── */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.85);
+      backdrop-filter: blur(4px);
+      z-index: 1000;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      animation: fadeIn 0.2s;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    .modal-sheet {
+      background: var(--surface);
+      border: 1px solid var(--border-gold);
+      border-radius: 20px 20px 0 0;
+      width: 100%;
+      max-height: 90vh;
+      overflow-y: auto;
+      padding: 24px;
+      animation: slideUp 0.3s ease;
+      position: relative;
+    }
+
+    @keyframes slideUp {
+      from { transform: translateY(100%); }
+      to { transform: translateY(0); }
+    }
+
+    .modal-handle {
+      width: 40px;
+      height: 4px;
+      background: var(--border);
+      border-radius: 2px;
+      margin: 0 auto 20px;
+    }
+
+    .modal-title {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 22px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: var(--text);
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+
+    .modal-sub {
+      font-family: 'Barlow', sans-serif;
+      font-size: 13px;
+      color: var(--muted);
+      margin-bottom: 24px;
+    }
+
+    .form-group {
+      margin-bottom: 24px;
+    }
+
+    .form-label {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      color: var(--text-dim);
+      text-transform: uppercase;
+      margin-bottom: 10px;
+      display: block;
+    }
+
+    .option-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 8px;
+    }
+
+    .option-btn {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 12px;
+      font-family: 'Barlow', sans-serif;
+      font-size: 13px;
+      color: var(--text);
+      cursor: pointer;
+      transition: all 0.2s;
+      text-align: center;
+    }
+
+    .option-btn:hover {
+      background: var(--surface3);
+      border-color: var(--border-gold);
+    }
+
+    .option-btn.selected {
+      background: var(--accent-transparent);
+      border-color: var(--accent);
+      color: var(--accent);
+      box-shadow: 0 0 12px var(--accent-glow);
+    }
+
+    .form-textarea {
+      width: 100%;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 12px;
+      font-family: 'Barlow', sans-serif;
+      font-size: 14px;
+      color: var(--text);
+      resize: none;
+      outline: none;
+      transition: all 0.2s;
+    }
+
+    .form-textarea:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px var(--accent-glow);
+    }
+
+    .form-textarea::placeholder {
+      color: var(--muted);
+    }
+
+    .submit-btn {
+      width: 100%;
+      background: linear-gradient(135deg, var(--accent) 0%, var(--gold-dim) 100%);
+      border: 1px solid var(--gold-bright);
+      border-radius: 12px;
+      padding: 16px;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 15px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: var(--bg);
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all 0.2s;
+      margin-top: 8px;
+    }
+
+    .submit-btn:hover:not(:disabled) {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 24px var(--gold-glow-strong);
+    }
+
+    .submit-btn:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+
+    .success-screen {
+      text-align: center;
+      padding: 40px 20px;
+    }
+
+    .big-emoji {
+      font-size: 64px;
+      margin-bottom: 16px;
+    }
+
+    .success-screen .title {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 24px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: var(--text);
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    .success-screen .sub {
+      font-family: 'Barlow', sans-serif;
+      font-size: 14px;
+      color: var(--muted);
+    }
   </style>
 </head>
 <body>
 
-<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-P2RPXZMN" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-P2RPXZMN"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <div id="splash">
   <svg class="splash-eye" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
     <path d="M100 60 L160 140 L40 140 Z" fill="none" stroke="#C9A84C" stroke-width="3"/>
@@ -556,37 +1005,43 @@
   <div class="splash-divider"></div>
   <div class="splash-app-name">Cruce RNS</div>
   <div class="splash-app-sub">Reynosa Border Crossings</div>
+  <div class="splash-loading">
+    <div class="splash-bar"><div class="splash-bar-fill"></div></div>
+    <div class="splash-loading-text">Cargando...</div>
+  </div>
 </div>
 
 <div id="app"></div>
 
-<script src="https://maps.googleapis.com/maps/api/js?key=TU_API_KEY_AQUI&libraries=places"></script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBTV1D9jJ4AFrpIHh4q4ee_a6mazAnfjPM&libraries=places"></script>
 
 <script>
-// 🔴 PASO 2: TU URL DEL BACKEND DE GOOGLE APPS SCRIPT 🔴
+
+// ⚙️ CONFIGURACIÓN GENERAL
 const CONFIG = {
+  // 🔗 AQUI ESTA TU NUEVO BACKEND EN APPS SCRIPT
   APPS_SCRIPT_URL: 'https://script.google.com/macros/s/AKfycbyVRCfmU9E3kKKSOIwokc8q4gglO9TEDlvifxOh8CWp3Q3WYFr8znbHe4wseC6re8g/exec',
   REFRESH_INTERVAL: 5 * 60 * 1000,
 };
 
-// Se mantienen los 10 puntos en el frontend SOLO para dibujar la línea dorada del mapa de manera visual
+// 📍 COORDENADAS (Se mantienen solo para poder dibujar la línea del mapa)
 const BRIDGES = [
   {
     id: 'anzalduas', name: 'Anzalduas', type: 'Internacional', lanes: ['General', 'SENTRI', 'FAST'],
     points: {
-      P0: { lat: 26.096610722637962, lng: -98.36040041694339 }, P1: { lat: 26.107717681717862, lng: -98.35275851243759 }, P2: { lat: 26.1140243781169, lng: -98.32108657295402 }, P3: { lat: 26.132241525955056, lng: -98.31455542056901 }, P4: { lat: 26.13863433191444, lng: -98.31343900324282 }, P5: { lat: 26.14077921993775, lng: -98.31309651615652 }, P6: { lat: 26.1426312588012, lng: -98.31281926470751 }, P7: { lat: 26.145046917478332, lng: -98.31208128658041 }, P8: { lat: 26.14556248144121, lng: -98.31196122740076 }, P9: { lat: 26.146422048057648, lng: -98.31171982858521 }
+      P0: { lat: 26.096610722637962, lng: -98.36040041694339 }, P1: { lat: 26.107717681717862, lng: -98.35275851243759 }, P2: { lat: 26.1140243781169,   lng: -98.32108657295402 }, P3: { lat: 26.132241525955056, lng: -98.31455542056901 }, P4: { lat: 26.13863433191444, lng: -98.31343900324282 }, P5: { lat: 26.14077921993775, lng: -98.31309651615652  }, P6: { lat: 26.1426312588012, lng: -98.31281926470751 }, P7: { lat: 26.145046917478332, lng: -98.31208128658041 }, P8: { lat: 26.14556248144121, lng: -98.31196122740076  }, P9: { lat: 26.146422048057648, lng: -98.31171982858521 }
     }
   },
   {
     id: 'hidalgo', name: 'Hidalgo', type: 'Internacional', lanes: ['General', 'SENTRI', 'Ready Lane'],
     points: {
-      P0: { lat: 26.06816515980127, lng: -98.25943803654874 }, P1: { lat: 26.07352401153976, lng: -98.25931309683781 }, P2: { lat: 26.083253887692326, lng: -98.2659202780586 }, P3: { lat: 26.090226302061208, lng: -98.2678518075698 }, P4: { lat: 26.0930699512091, lng: -98.27083197851844 }, P5: { lat: 26.09430026899008, lng: -98.27129678242454 }, P6: { lat: 26.095230322058235, lng: -98.27101953097178 }, P7: { lat: 26.095808855306874, lng: -98.27090536861428 }, P8: { lat: 26.096592433710224, lng: -98.27048133698067 }, P9: { lat: 26.097895945054855, lng: -98.26954357471848 }
+      P0: { lat: 26.06816515980127,  lng: -98.25943803654874 }, P1: { lat: 26.07352401153976,  lng: -98.25931309683781 }, P2: { lat: 26.083253887692326, lng: -98.2659202780586  }, P3: { lat: 26.090226302061208, lng: -98.2678518075698  }, P4: { lat: 26.0930699512091, lng: -98.27083197851844 }, P5: { lat: 26.09430026899008, lng: -98.27129678242454 }, P6: { lat: 26.095230322058235, lng: -98.27101953097178 }, P7: { lat: 26.095808855306874, lng: -98.27090536861428 }, P8: { lat: 26.096592433710224, lng: -98.27048133698067  }, P9: { lat: 26.097895945054855, lng: -98.26954357471848  }
     }
   },
   {
     id: 'sentri_hidalgo', name: 'Hidalgo SENTRI', type: 'SENTRI/FAST', lanes: ['SENTRI', 'FAST'],
     points: {
-      P0: { lat: 26.09882194406453, lng: -98.28455832178551 }, P1: { lat: 26.09643187175056, lng: -98.27587835510695 }, P2: { lat: 26.09296072541135, lng: -98.27064387138478 }, P3: { lat: 26.095559136078, lng: -98.27167089034293 }, P4: { lat: 26.09706658451357, lng: -98.27016901315683 }, P5: { lat: 26.099, lng: -98.268 }, P6: { lat: 26.101, lng: -98.267 }, P7: { lat: 26.103, lng: -98.266 }, P8: { lat: 26.104, lng: -98.265 }, P9: { lat: 26.105297703822483, lng: -98.26483514026881 }
+      P0: { lat: 26.09882194406453, lng: -98.28455832178551 }, P1: { lat: 26.09643187175056, lng: -98.27587835510695 }, P2: { lat: 26.09296072541135, lng: -98.27064387138478 }, P3: { lat: 26.095559136078,   lng: -98.27167089034293 }, P4: { lat: 26.09706658451357, lng: -98.27016901315683 }, P5: { lat: 26.099,             lng: -98.268 }, P6: { lat: 26.101,             lng: -98.267 }, P7: { lat: 26.103,             lng: -98.266 }, P8: { lat: 26.104,             lng: -98.265 }, P9: { lat: 26.105297703822483, lng: -98.26483514026881 }
     }
   },
   {
@@ -611,25 +1066,16 @@ const state = {
   reports: [],
   serverTraffic: {},
   showForm: false,
+  submitDone: false,
   submitting: false,
   formData: { position: '', lane: '', estimatedTime: '', note: '' },
+  showInstallBanner: false,
+  installPrompt: null,
   map: null,
   mapMarkers: [],
-  queuePolyline: null
+  queuePolyline: null,
 };
 
-// ── API - FETCH DATA DESDE TU BACKEND ──
-async function fetchReports() {
-  try {
-    const response = await fetch(CONFIG.APPS_SCRIPT_URL + '?action=getReports&t=' + new Date().getTime());
-    const data = await response.json();
-    state.reports = data.reports || [];
-    state.serverTraffic = data.serverTraffic || {};
-    render();
-  } catch (error) {
-    console.error('Error fetching data:', error);
-  }
-}
 
 // ── LÓGICA DE FUSIÓN DE TIEMPO (Backend + Usuarios Reales) ──
 function getCalculatedQueueData(bridge) {
@@ -641,7 +1087,7 @@ function getCalculatedQueueData(bridge) {
   let finalStatus = serverData ? serverData.status : 'fluido';
 
   // Analizar reportes de usuarios de los últimos 30 minutos
-  const recentReports = bridgeReports.filter(r => (new Date() - new Date(r.timestamp)) / 60000 < 30);
+  const recentReports = bridgeReports.filter(r => (new Date() - new Date(r.timestamp)) / 60000 < 30).slice(0, 20);
   
   if (recentReports.length > 0) {
     let sum = 0;
@@ -659,13 +1105,127 @@ function getCalculatedQueueData(bridge) {
     finalStatus = finalTime < 15 ? 'fluido' : (finalTime < 45 ? 'moderado' : 'pesado');
   }
 
-  // Estimación visual de kilómetros para no dejar el UI vacío
+  // Pequeña lógica para indicar visualmente en el mapa de dónde a dónde llega la fila según el tiempo
+  let startSegment = null;
+  if (finalTime > 15 && finalTime <= 30) startSegment = 'P4-P5';
+  else if (finalTime > 30 && finalTime <= 50) startSegment = 'P3-P4';
+  else if (finalTime > 50) startSegment = 'P2-P3';
+
+  // Estimación visual de kilómetros
   let estimatedLength = (finalTime * 0.04).toFixed(1);
 
-  return { estimatedTime: finalTime, status: finalStatus, source: finalSource, queueLength: estimatedLength, reports: bridgeReports };
+  return { 
+    estimatedTime: finalTime, 
+    status: finalStatus, 
+    source: finalSource, 
+    queueLength: estimatedLength, 
+    queueStartSegment: startSegment,
+    isInQueue: finalTime >= 30,
+    reports: bridgeReports 
+  };
 }
 
-// ── UTILIDADES DE UI ──
+// ── MAPA DE GOOGLE ──
+function initMap(bridge) {
+  const mapContainer = document.getElementById('map');
+  if (!mapContainer || typeof google === 'undefined' || !google.maps) return;
+
+  const center = bridge.points.P2;
+
+  state.map = new google.maps.Map(mapContainer, {
+    center: center,
+    zoom: 14,
+    styles: [
+      { elementType: 'geometry', stylers: [{ color: '#1a1a1a' }] },
+      { elementType: 'labels.text.stroke', stylers: [{ color: '#0a0a0a' }] },
+      { elementType: 'labels.text.fill', stylers: [{ color: '#746855' }] },
+      { featureType: 'road', elementType: 'geometry', stylers: [{ color: '#2a2a2a' }] },
+      { featureType: 'road', elementType: 'geometry.stroke', stylers: [{ color: '#212121' }] },
+      { featureType: 'road.highway', elementType: 'geometry', stylers: [{ color: '#3a3a3a' }] },
+      { featureType: 'water', elementType: 'geometry', stylers: [{ color: '#0f0f0f' }] },
+    ],
+    disableDefaultUI: true,
+    zoomControl: true,
+  });
+
+  drawBridgePoints(bridge);
+}
+
+function drawBridgePoints(bridge) {
+  state.mapMarkers.forEach(m => m.setMap(null));
+  state.mapMarkers = [];
+  if (state.queuePolyline) state.queuePolyline.setMap(null);
+
+  const points = bridge.points;
+  
+  Object.entries(points).forEach(([name, coords]) => {
+    const marker = new google.maps.Marker({
+      position: coords, map: state.map, title: name,
+      icon: {
+        path: google.maps.SymbolPath.CIRCLE, scale: 6,
+        fillColor: name === 'P4' ? '#C9A84C' : '#666',
+        fillOpacity: 1, strokeColor: '#fff', strokeWeight: 1,
+      }
+    });
+    state.mapMarkers.push(marker);
+  });
+
+  const path = Object.values(points);
+  state.queuePolyline = new google.maps.Polyline({
+    path: path, geodesic: true, strokeColor: '#C9A84C', strokeOpacity: 0.6, strokeWeight: 3, map: state.map
+  });
+  
+  const queueData = getCalculatedQueueData(bridge);
+  if (queueData && queueData.queueStartSegment) {
+    highlightQueueStart(queueData.queueStartSegment, points);
+  }
+}
+
+function highlightQueueStart(segment, points) {
+  const [start, end] = segment.split('-');
+  const startPoint = points[start];
+
+  const queueMarker = new google.maps.Marker({
+    position: startPoint, map: state.map, title: 'Inicio de Fila',
+    icon: {
+      path: google.maps.SymbolPath.CIRCLE, scale: 10,
+      fillColor: '#f87171', fillOpacity: 1, strokeColor: '#fff', strokeWeight: 2,
+    },
+    animation: google.maps.Animation.BOUNCE,
+  });
+  state.mapMarkers.push(queueMarker);
+}
+
+// ── API - FETCH REPORTS ──
+async function fetchReports() {
+  try {
+    const response = await fetch(CONFIG.APPS_SCRIPT_URL + '?action=getReports&t=' + new Date().getTime());
+    const data = await response.json();
+    state.reports = data.reports || [];
+    state.serverTraffic = data.serverTraffic || {};
+    
+    render();
+    const activeBridge = BRIDGES[state.activeBridge];
+    if (state.map) drawBridgePoints(activeBridge);
+  } catch (error) {
+    console.error('Error fetching data:', error);
+  }
+}
+
+async function submitReport(report) {
+  try {
+    await fetch(CONFIG.APPS_SCRIPT_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action: 'addReport', ...report })
+    });
+  } catch (error) {
+    console.error('Error submitting report:', error);
+    throw error;
+  }
+}
+
+// ── UTILIDADES ──
 function timeAgo(isoString) {
   const diffMins = Math.floor((new Date() - new Date(isoString)) / 60000);
   if (diffMins < 1) return 'Ahora';
@@ -690,49 +1250,7 @@ function setBridgeVars(bridge) {
   document.documentElement.style.setProperty('--accent', color);
   document.documentElement.style.setProperty('--accent-glow', color + '20');
   document.documentElement.style.setProperty('--accent-transparent', color + '40');
-}
-
-// ── GOOGLE MAPS RENDERING ──
-function initMap(bridge) {
-  const mapContainer = document.getElementById('map');
-  if (!mapContainer || typeof google === 'undefined') return;
-
-  const center = bridge.points.P2 || bridge.points.P0;
-
-  state.map = new google.maps.Map(mapContainer, {
-    center: center, zoom: 14, disableDefaultUI: true, zoomControl: true,
-    styles: [
-      { elementType: 'geometry', stylers: [{ color: '#1a1a1a' }] },
-      { elementType: 'labels.text.stroke', stylers: [{ color: '#0a0a0a' }] },
-      { elementType: 'labels.text.fill', stylers: [{ color: '#746855' }] },
-      { featureType: 'road', elementType: 'geometry', stylers: [{ color: '#2a2a2a' }] },
-      { featureType: 'road', elementType: 'geometry.stroke', stylers: [{ color: '#212121' }] },
-      { featureType: 'water', elementType: 'geometry', stylers: [{ color: '#0f0f0f' }] }
-    ]
-  });
-
-  drawBridgePoints(bridge);
-}
-
-function drawBridgePoints(bridge) {
-  state.mapMarkers.forEach(m => m.setMap(null));
-  state.mapMarkers = [];
-  if (state.queuePolyline) state.queuePolyline.setMap(null);
-
-  const points = bridge.points;
-  
-  Object.entries(points).forEach(([name, coords]) => {
-    const marker = new google.maps.Marker({
-      position: coords, map: state.map, title: name,
-      icon: { path: google.maps.SymbolPath.CIRCLE, scale: 5, fillColor: '#666', fillOpacity: 1, strokeColor: '#fff', strokeWeight: 1 }
-    });
-    state.mapMarkers.push(marker);
-  });
-
-  const path = Object.values(points);
-  state.queuePolyline = new google.maps.Polyline({
-    path: path, geodesic: true, strokeColor: '#C9A84C', strokeOpacity: 0.6, strokeWeight: 3, map: state.map
-  });
+  document.documentElement.style.setProperty('--tab-color', color);
 }
 
 // ── RENDER PRINCIPAL ──
@@ -742,20 +1260,37 @@ function render() {
 
   setBridgeVars(bridge);
 
-  document.getElementById('app').innerHTML = `
+  const statusMap = {
+    fluido: { text: 'Fluido', class: 'status-fluido' },
+    moderado: { text: 'Moderado', class: 'status-moderado' },
+    pesado: { text: 'Pesado', class: 'status-pesado' }
+  };
+  const status = statusMap[queueData.status] || statusMap.fluido;
+
+  let htmlStr = `
     <div class="header">
       <div class="header-top">
         <div class="logo">
-          <div class="logo-eye" style="color: var(--gold)">${horusEyeSVG(40)}</div>
+          <div class="logo-eye" style="color: var(--gold)">
+            ${horusEyeSVG(40)}
+          </div>
           <div class="logo-text">
             <div class="logo-title">Horus</div>
             <div class="logo-sub">System Co.</div>
           </div>
         </div>
-        <div class="live-badge"><div class="live-dot"></div>LIVE</div>
+        <div class="live-badge">
+          <div class="live-dot"></div>
+          LIVE
+        </div>
       </div>
+
       <div class="tabs">
-        ${BRIDGES.map((b, i) => `<div class="tab ${state.activeBridge === i ? 'active' : ''}" onclick="selectBridge(${i})">${b.name}</div>`).join('')}
+        ${BRIDGES.map((b, i) => `
+          <div class="tab ${state.activeBridge === i ? 'active' : ''}" onclick="selectBridge(${i})">
+            ${b.name}
+          </div>
+        `).join('')}
       </div>
     </div>
 
@@ -763,26 +1298,37 @@ function render() {
       <div class="traffic-header">
         <div>
           <div class="traffic-title">Tiempo Estimado</div>
-          <div class="traffic-time">${queueData.estimatedTime} min</div>
+          <div class="traffic-time">${queueData.estimatedTime || 0} min</div>
         </div>
-        <div class="traffic-status status-${queueData.status}">
-          <div class="status-dot"></div>${queueData.status}
+        <div class="traffic-status ${status.class}">
+          <div class="status-dot"></div>
+          ${status.text}
         </div>
       </div>
       <div class="traffic-meta">
-        <div class="meta-item">📏 ~${queueData.queueLength} km fila</div>
+        <div class="meta-item">📏 ${queueData.queueLength || 0} km de fila</div>
         <div class="meta-item">🚗 ${bridge.lanes.length} carriles</div>
+        ${queueData.isInQueue ? `<div class="meta-item" style="color:var(--red)">🚨 En fila</div>` : ''}
       </div>
-      <div style="margin-top:10px;font-family:'Barlow Condensed',sans-serif;font-size:10px;color:var(--faint);text-transform:uppercase;">
-        Fuente: ${queueData.source}
-      </div>
+      ${queueData.source ? `
+        <div style="margin-top:10px;font-family:'Barlow Condensed',sans-serif;font-size:10px;letter-spacing:1.5px;color:var(--faint);text-transform:uppercase;">
+          Fuente: ${queueData.source}
+        </div>
+      ` : ''}
     </div>
 
     <div class="map-container">
       <div id="map"></div>
+      ${queueData.queueStartSegment ? `
+        <div class="queue-indicator">
+          🚦 Fila inicia aprox en ${queueData.queueStartSegment}
+        </div>
+      ` : ''}
     </div>
 
-    <button class="report-btn" onclick="openForm()">📍 Reportar Tiempo de Fila</button>
+    <button class="report-btn" onclick="openForm()">
+      📍 Reportar Tiempo de Fila
+    </button>
 
     <div class="ad-banner" id="adBanner">
       <div class="ad-slide active" id="adSlide0">
@@ -793,8 +1339,8 @@ function render() {
       </div>
       <div class="ad-slide" id="adSlide1">
         <div class="ad-content" style="color: var(--gold)">
-          <div class="ad-logo" style="font-size: 24px;">¿Negocio en la frontera?</div>
-          <div class="ad-tagline" style="margin-top: 8px;">info@horussystem.net</div>
+          <div class="ad-logo" style="font-size: 24px; line-height: 1.3;">¿Negocio en la frontera?</div>
+          <div class="ad-tagline" style="font-size: 14px; margin-top: 8px;">Contáctanos: info@horussystem.net</div>
         </div>
       </div>
       <div class="ad-indicators">
@@ -817,20 +1363,52 @@ function render() {
           </div>
           ${r.note ? `<div class="report-note">${r.note}</div>` : ''}
         </div>
-      `).join('') : `<div class="empty-state"><div class="empty-emoji">🤷</div><div class="empty-text">No hay reportes recientes</div></div>`}
+      `).join('') : `
+        <div class="empty-state">
+          <div class="empty-emoji">🤷</div>
+          <div class="empty-text">No hay reportes recientes</div>
+        </div>
+      `}
     </div>
 
     <div class="bottom-nav">
-      <span>🔄 Auto-refresh 5min</span><span style="color: var(--faint)">·</span>
-      <span>👥 Comunidad Activa</span>
-    </div>
-    <div class="powered-by">
-      <span class="powered-text">Powered by</span>
-      <div class="powered-logo">${horusEyeSVG(20)}<span class="powered-horus">HORUS</span></div>
+      <span>🔄 Auto-refresh 5min</span>
+      <span style="color: var(--faint)">·</span>
+      <span>👥 ${state.reports.length} reportes hoy</span>
+      <span style="color: var(--faint)">·</span>
+      <span>🤝 Comunidad</span>
     </div>
 
-    ${state.showForm ? renderForm(bridge) : ''}
+    <div class="powered-by">
+      <span class="powered-text">Powered by</span>
+      <div class="powered-logo">
+        ${horusEyeSVG(20)}
+        <span class="powered-horus">HORUS</span>
+      </div>
+    </div>
   `;
+
+  // INSTALL BANNER
+  if (state.showInstallBanner) {
+    htmlStr += `
+      <div class="install-banner">
+        <div style="font-size:22px">📲</div>
+        <div class="install-banner-text">
+          <div class="install-banner-title">Instalar en tu teléfono</div>
+          <div class="install-banner-sub">Acceso rápido desde tu pantalla de inicio</div>
+        </div>
+        <button class="install-btn" onclick="installApp()">Instalar</button>
+        <button class="install-close" onclick="dismissInstall()">✕</button>
+      </div>
+    `;
+  }
+
+  // FORM MODAL
+  if (state.showForm) {
+    htmlStr += renderForm(bridge);
+  }
+
+  document.getElementById('app').innerHTML = htmlStr;
 
   setTimeout(() => initMap(bridge), 100);
   syncAdBanner();
@@ -840,31 +1418,52 @@ function renderForm(bridge) {
   const f = state.formData;
   const canSubmit = f.position && f.lane && f.estimatedTime && !state.submitting;
 
+  if (state.submitDone) {
+    return `
+      <div class="modal-overlay">
+        <div class="modal-sheet" style="max-width:480px">
+          <div class="modal-handle"></div>
+          <div class="success-screen">
+            <div class="big-emoji">✅</div>
+            <div class="title">¡Reporte enviado!</div>
+            <div class="sub">Gracias por ayudar a la comunidad de Reynosa 🙌</div>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
   return `
-    <div class="modal-overlay" onclick="closeForm()">
-      <div class="modal-sheet" onclick="event.stopPropagation()">
+    <div class="modal-overlay" onclick="closeFormIfOutside(event)">
+      <div class="modal-sheet" style="max-width:480px" onclick="event.stopPropagation()">
         <div class="modal-handle"></div>
         <div class="modal-title">Reportar Fila</div>
-        <div class="modal-sub">${bridge.name}</div>
+        <div class="modal-sub">${bridge.name} · ${bridge.type}</div>
 
         <div class="form-group">
           <label class="form-label">¿Hasta dónde llega la fila?</label>
           <div class="option-grid">
-            ${QUEUE_POSITIONS.map(p => `<button class="option-btn ${f.position === p ? 'selected' : ''}" onclick="setField('position','${p}')">${p}</button>`).join('')}
+            ${QUEUE_POSITIONS.map(p => `
+              <button class="option-btn ${f.position === p ? 'selected' : ''}" onclick="setField('position','${p}')">${p}</button>
+            `).join('')}
           </div>
         </div>
 
         <div class="form-group">
           <label class="form-label">Carril</label>
           <div class="option-grid">
-            ${bridge.lanes.map(l => `<button class="option-btn ${f.lane === l ? 'selected' : ''}" onclick="setField('lane','${l}')">${l}</button>`).join('')}
+            ${bridge.lanes.map(l => `
+              <button class="option-btn ${f.lane === l ? 'selected' : ''}" onclick="setField('lane','${l}')">${l}</button>
+            `).join('')}
           </div>
         </div>
 
         <div class="form-group">
           <label class="form-label">Tiempo estimado de cruce</label>
           <div class="option-grid">
-            ${TIME_OPTIONS.map(t => `<button class="option-btn ${f.estimatedTime === t ? 'selected' : ''}" onclick="setField('estimatedTime','${t}')">${t}</button>`).join('')}
+            ${TIME_OPTIONS.map(t => `
+              <button class="option-btn ${f.estimatedTime === t ? 'selected' : ''}" onclick="setField('estimatedTime','${t}')">${t}</button>
+            `).join('')}
           </div>
         </div>
 
@@ -873,17 +1472,23 @@ function renderForm(bridge) {
           <textarea class="form-textarea" rows="2" placeholder="Ej: Están revisando mucho..." oninput="setNote(this.value)">${f.note}</textarea>
         </div>
 
-        <button class="submit-btn" ${canSubmit ? '' : 'disabled'} onclick="handleSubmit()">${state.submitting ? 'Enviando...' : '🚀 Publicar Reporte'}</button>
-        <button onclick="closeForm()" style="width:100%;background:none;border:none;color:var(--muted);font-size:13px;letter-spacing:1px;margin-top:12px;cursor:pointer;text-transform:uppercase;">Cancelar</button>
+        <button class="submit-btn" ${canSubmit ? '' : 'disabled'} onclick="handleSubmit()">
+          ${state.submitting ? 'Enviando...' : '🚀 Publicar Reporte'}
+        </button>
+
+        <button onclick="closeForm()" style="width:100%;background:none;border:none;color:var(--muted);font-size:13px;letter-spacing:1px;margin-top:12px;cursor:pointer;padding:8px;font-family:'Barlow Condensed',sans-serif;text-transform:uppercase">
+          Cancelar
+        </button>
       </div>
     </div>
   `;
 }
 
 // ── ACCIONES ──
-window.selectBridge = (i) => { state.activeBridge = i; render(); };
-window.openForm = () => { state.showForm = true; state.formData = { position: '', lane: '', estimatedTime: '', note: '' }; render(); };
+window.selectBridge = (i) => { state.activeBridge = i; state.showForm = false; render(); };
+window.openForm = () => { state.showForm = true; state.submitDone = false; state.formData = { position: '', lane: '', estimatedTime: '', note: '' }; render(); };
 window.closeForm = () => { state.showForm = false; render(); };
+window.closeFormIfOutside = (e) => { if (e.target.classList.contains('modal-overlay')) closeForm(); };
 window.setField = (key, val) => { state.formData[key] = val; render(); };
 window.setNote = (val) => { state.formData.note = val; };
 
@@ -892,43 +1497,68 @@ window.handleSubmit = async () => {
   state.submitting = true; render();
 
   const bridge = BRIDGES[state.activeBridge];
-  const report = { action: 'addReport', bridge: bridge.id, bridgeName: bridge.name, ...state.formData };
+  const report = { bridge: bridge.id, bridgeName: bridge.name, ...state.formData, timestamp: new Date().toISOString() };
 
   try {
-    await fetch(CONFIG.APPS_SCRIPT_URL, { method: 'POST', body: JSON.stringify(report) });
-    state.showForm = false; state.submitting = false;
-    fetchReports();
+    await submitReport(report);
+    state.submitDone = true; state.submitting = false; render();
+    setTimeout(async () => { await fetchReports(); closeForm(); }, 1500);
   } catch (e) {
-    console.error('Submit error:', e);
-    state.submitting = false; render();
+    state.submitting = false; state.submitDone = true; render();
+    setTimeout(closeForm, 2000);
   }
 };
 
-// ── AD BANNER ROTATION ──
+window.installApp = async () => {
+  if (state.installPrompt) {
+    state.installPrompt.prompt();
+    const { outcome } = await state.installPrompt.userChoice;
+    if (outcome === 'accepted') state.showInstallBanner = false;
+    state.installPrompt = null; render();
+  }
+};
+
+window.dismissInstall = () => {
+  state.showInstallBanner = false;
+  localStorage.setItem('install-dismissed', '1');
+  render();
+};
+
+// ── PWA & ADS ──
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => { navigator.serviceWorker.register('/cruce-reynosa/sw.js').catch(console.error); });
+}
+
+window.addEventListener('beforeinstallprompt', (e) => {
+  e.preventDefault(); state.installPrompt = e;
+  if (!localStorage.getItem('install-dismissed')) { state.showInstallBanner = true; render(); }
+});
+
 let adIndex = 0;
+const AD_COUNT = 2;
 setInterval(() => {
-  adIndex = (adIndex + 1) % 2;
+  adIndex = (adIndex + 1) % AD_COUNT;
   syncAdBanner();
 }, 6000);
 
 function syncAdBanner() {
-  for (let i = 0; i < 2; i++) {
+  for (let i = 0; i < AD_COUNT; i++) {
     const slide = document.getElementById('adSlide' + i);
-    const dot = document.getElementById('adDot' + i);
+    const dot   = document.getElementById('adDot' + i);
     if (slide) slide.classList.toggle('active', i === adIndex);
     if (dot) dot.classList.toggle('active', i === adIndex);
   }
+  const banner = document.getElementById('adBanner');
+  if (banner) banner.classList.toggle('slide-white', adIndex === 0);
 }
 
 // ── INIT ──
 setTimeout(() => {
-  const splash = document.getElementById('splash');
-  if (splash) {
-    splash.classList.add('hidden');
-    setTimeout(() => splash.remove(), 600);
-  }
+  document.getElementById('splash').classList.add('hidden');
+  setTimeout(() => { document.getElementById('splash').remove(); }, 600);
 }, 2000);
 
+setBridgeVars(BRIDGES[0]);
 render();
 fetchReports();
 setInterval(fetchReports, CONFIG.REFRESH_INTERVAL);
