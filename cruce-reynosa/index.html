@@ -66,7 +66,8 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
       color: var(--text);
       font-family: 'Barlow', sans-serif;
       height: 100%;
-      overflow: hidden;
+      overflow-x: hidden;
+      overflow-y: auto;
     }
 
     /* ── SPLASH SCREEN ──────────────────────────── */
@@ -177,13 +178,12 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 
     /* ── APP ────────────────────────────────────── */
     #app {
-      height: 100dvh;
+      min-height: 100vh;
       display: flex;
       flex-direction: column;
       max-width: 480px;
       margin: 0 auto;
       position: relative;
-      overflow: hidden;
     }
 
     /* ── HEADER ─────────────────────────────────── */
@@ -473,7 +473,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     /* ── REPORTS LIST ───────────────────────────── */
     .reports-section {
       flex: 1;
-      overflow-y: auto;
+      overflow-y: visible;
       padding: 0 18px 100px;
     }
 
@@ -599,7 +599,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
       border-radius: 12px;
       margin: 0 18px 16px;
       overflow: hidden;
-      height: 100px;
+      height: 140px;
       position: relative;
       cursor: pointer;
       transition: all 0.3s;
@@ -620,7 +620,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 20px;
+      padding: 24px;
       opacity: 0;
       transition: opacity 0.6s ease;
     }
@@ -631,23 +631,26 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 
     .ad-content {
       text-align: center;
+      width: 100%;
     }
 
     .ad-logo {
       font-family: 'Cormorant Garamond', serif;
-      font-size: 28px;
+      font-size: 36px;
       font-weight: 600;
-      letter-spacing: 4px;
+      letter-spacing: 5px;
       color: var(--gold);
-      margin-bottom: 4px;
+      margin-bottom: 8px;
+      line-height: 1.2;
     }
 
     .ad-tagline {
       font-family: 'Barlow Condensed', sans-serif;
-      font-size: 11px;
-      letter-spacing: 2px;
+      font-size: 13px;
+      letter-spacing: 3px;
       color: var(--muted);
       text-transform: uppercase;
+      line-height: 1.4;
     }
 
     .slide-white .ad-tagline {
@@ -1197,6 +1200,12 @@ const state = {
 
 async function fetchTrafficData(bridge) {
   try {
+    // 🔥 VERIFICAR SI GOOGLE MAPS ESTÁ DISPONIBLE
+    if (typeof google === 'undefined' || !google.maps) {
+      console.warn('⚠️ Google Maps no está cargado. Verifica tu API Key.');
+      return null;
+    }
+
     const points = bridge.points;
     const segments = [
       { from: points.P0, to: points.P1, name: 'P0-P1' },
@@ -1209,25 +1218,46 @@ async function fetchTrafficData(bridge) {
     const trafficTimes = [];
     const normalTimes = [];
 
+    console.log(`🗺️ Obteniendo tráfico para ${bridge.name}...`);
+
     for (const segment of segments) {
-      // Calcular tiempo CON tráfico
-      const trafficTime = await getDirectionsTime(segment.from, segment.to, true);
-      // Calcular tiempo SIN tráfico
-      const normalTime = await getDirectionsTime(segment.from, segment.to, false);
-      
-      trafficTimes.push({ segment: segment.name, time: trafficTime });
-      normalTimes.push({ segment: segment.name, time: normalTime });
+      try {
+        // Calcular tiempo CON tráfico
+        const trafficTime = await getDirectionsTime(segment.from, segment.to, true);
+        // Calcular tiempo SIN tráfico
+        const normalTime = await getDirectionsTime(segment.from, segment.to, false);
+        
+        trafficTimes.push({ segment: segment.name, time: trafficTime });
+        normalTimes.push({ segment: segment.name, time: normalTime });
+        
+        console.log(`✅ ${segment.name}: ${trafficTime.toFixed(1)}min (con tráfico) vs ${normalTime.toFixed(1)}min (sin tráfico)`);
+      } catch (segmentError) {
+        console.error(`❌ Error en segmento ${segment.name}:`, segmentError.message);
+        // Continuar con el siguiente segmento
+      }
     }
 
+    if (trafficTimes.length === 0) {
+      console.warn('⚠️ No se pudo obtener ningún dato de tráfico');
+      return null;
+    }
+
+    console.log(`✅ Datos de tráfico obtenidos exitosamente para ${bridge.name}`);
     return { trafficTimes, normalTimes, bridge: bridge.id };
   } catch (error) {
-    console.error('Error fetching traffic data:', error);
+    console.error('❌ Error general al obtener tráfico:', error);
     return null;
   }
 }
 
 async function getDirectionsTime(origin, destination, withTraffic) {
   return new Promise((resolve, reject) => {
+    // 🔥 VERIFICAR QUE GOOGLE MAPS ESTÉ DISPONIBLE
+    if (typeof google === 'undefined' || !google.maps) {
+      reject(new Error('Google Maps no está disponible'));
+      return;
+    }
+
     const directionsService = new google.maps.DirectionsService();
     
     const request = {
@@ -1245,7 +1275,20 @@ async function getDirectionsTime(origin, destination, withTraffic) {
         const duration = result.routes[0].legs[0].duration.value; // segundos
         resolve(duration / 60); // convertir a minutos
       } else {
-        reject(new Error('Directions request failed: ' + status));
+        // 🔥 MENSAJES DE ERROR MÁS CLAROS
+        let errorMsg = `Directions API error: ${status}`;
+        
+        if (status === 'ZERO_RESULTS') {
+          errorMsg = 'No se encontró ruta entre los puntos. Verifica las coordenadas.';
+        } else if (status === 'REQUEST_DENIED') {
+          errorMsg = 'API Key inválida o sin permisos. Verifica tu configuración.';
+        } else if (status === 'OVER_QUERY_LIMIT') {
+          errorMsg = 'Límite de consultas excedido. Espera unos minutos.';
+        } else if (status === 'INVALID_REQUEST') {
+          errorMsg = 'Solicitud inválida. Verifica las coordenadas.';
+        }
+        
+        reject(new Error(errorMsg));
       }
     });
   });
@@ -1256,7 +1299,48 @@ async function getDirectionsTime(origin, destination, withTraffic) {
 // ══════════════════════════════════════════
 
 function detectQueueStart(trafficData, userReports) {
-  if (!trafficData) return null;
+  console.log('🔍 Detectando inicio de fila...');
+  console.log('📊 Datos de Google:', trafficData ? 'Disponibles' : 'No disponibles');
+  console.log('👥 Reportes de usuarios:', userReports ? userReports.length : 0);
+
+  // 🔥 SI NO HAY DATOS DE GOOGLE, USAR SOLO REPORTES DE USUARIOS
+  if (!trafficData && userReports && userReports.length > 0) {
+    const userEstimate = calculateUserEstimate(userReports);
+    
+    console.log('⚙️ Usando SOLO reportes de usuarios');
+    console.log('⏱️ Tiempo estimado (usuarios):', userEstimate ? `${userEstimate.toFixed(1)} min` : 'N/A');
+    
+    if (userEstimate) {
+      return {
+        status: getTrafficStatus(userEstimate),
+        queueLength: 0,
+        estimatedTime: Math.round(userEstimate),
+        queueStartSegment: null,
+        deltas: [],
+        source: 'usuarios'
+      };
+    }
+    
+    // Si no hay reportes válidos, retornar fluido
+    console.log('⚠️ No hay reportes válidos de usuarios');
+    return { 
+      status: 'fluido', 
+      queueLength: 0, 
+      estimatedTime: 0,
+      source: 'sin-datos'
+    };
+  }
+  
+  // 🔥 SI NO HAY DATOS DE GOOGLE NI REPORTES, RETORNAR SIN DATOS
+  if (!trafficData) {
+    console.log('⚠️ Sin datos de Google ni reportes de usuarios');
+    return { 
+      status: 'fluido', 
+      queueLength: 0, 
+      estimatedTime: 0,
+      source: 'sin-datos'
+    };
+  }
 
   const { trafficTimes, normalTimes } = trafficData;
   
@@ -1268,27 +1352,63 @@ function detectQueueStart(trafficData, userReports) {
     normalTime: normalTimes[i].time
   }));
 
+  console.log('📈 Deltas calculados:', deltas.map(d => `${d.segment}: +${d.delta.toFixed(1)}min`).join(', '));
+
   // Encontrar el primer segmento con ΔT significativo (> 2 minutos)
   const queueStartSegment = deltas.find(d => d.delta > 2);
   
-  if (!queueStartSegment) {
-    return { status: 'fluido', queueLength: 0, estimatedTime: 5 };
+  // 🔥 SI NO HAY CONGESTION EN GOOGLE PERO SI HAY REPORTES DE USUARIOS
+  if (!queueStartSegment && userReports && userReports.length > 0) {
+    const userEstimate = calculateUserEstimate(userReports);
+    
+    console.log('⚙️ Google dice fluido, pero hay reportes de usuarios');
+    console.log('⏱️ Tiempo estimado (usuarios):', userEstimate ? `${userEstimate.toFixed(1)} min` : 'N/A');
+    
+    if (userEstimate) {
+      return {
+        status: getTrafficStatus(userEstimate),
+        queueLength: 0,
+        estimatedTime: Math.round(userEstimate),
+        queueStartSegment: null,
+        deltas,
+        source: 'usuarios'
+      };
+    }
   }
+  
+  if (!queueStartSegment) {
+    console.log('✅ No se detectó congestionamiento (fluido)');
+    return { 
+      status: 'fluido', 
+      queueLength: 0, 
+      estimatedTime: 5,
+      source: 'google' 
+    };
+  }
+
+  console.log('🚦 Inicio de fila detectado en:', queueStartSegment.segment);
 
   // Calcular longitud de fila y tiempo estimado
   const queueLength = calculateQueueLength(queueStartSegment.segment);
   const estimatedTime = deltas.reduce((sum, d) => sum + d.trafficTime, 0);
 
+  console.log('📏 Longitud de fila:', queueLength, 'km');
+  console.log('⏱️ Tiempo estimado (Google):', estimatedTime.toFixed(1), 'min');
+
   // Fusionar con datos de usuarios
   const userEstimate = calculateUserEstimate(userReports);
   const finalEstimate = fuseEstimates(estimatedTime, userEstimate);
+
+  console.log('⏱️ Tiempo estimado (usuarios):', userEstimate ? `${userEstimate.toFixed(1)} min` : 'N/A');
+  console.log('⏱️ Tiempo FINAL (fusionado):', finalEstimate.toFixed(1), 'min');
 
   return {
     status: getTrafficStatus(finalEstimate),
     queueLength,
     estimatedTime: Math.round(finalEstimate),
     queueStartSegment: queueStartSegment.segment,
-    deltas
+    deltas,
+    source: userEstimate ? 'fusionado' : 'google'
   };
 }
 
@@ -1459,27 +1579,44 @@ async function fetchReports() {
     const data = await response.json();
     state.reports = data.reports || [];
     
-    // Actualizar datos de tráfico para el puente activo
-    const activeBridge = BRIDGES[state.activeBridge];
-    const trafficData = await fetchTrafficData(activeBridge);
-    
-    if (trafficData) {
-      state.trafficData[activeBridge.id] = trafficData;
+    // 🔥 CALCULAR DATOS DE FILA PARA TODOS LOS PUENTES
+    for (const bridge of BRIDGES) {
+      const bridgeReports = state.reports.filter(r => r.bridge === bridge.id);
       
-      // Calcular datos de fila
-      const bridgeReports = state.reports.filter(r => r.bridge === activeBridge.id);
+      // Intentar obtener datos de tráfico de Google
+      let trafficData = null;
+      try {
+        trafficData = await fetchTrafficData(bridge);
+        if (trafficData) {
+          state.trafficData[bridge.id] = trafficData;
+        }
+      } catch (err) {
+        console.log(`No se pudo obtener tráfico de Google para ${bridge.name}:`, err);
+      }
+      
+      // Calcular datos de fila (con o sin datos de Google)
       const queueData = detectQueueStart(trafficData, bridgeReports);
-      state.queueData[activeBridge.id] = queueData;
+      state.queueData[bridge.id] = queueData;
     }
 
     render();
     
     // Actualizar mapa si está inicializado
+    const activeBridge = BRIDGES[state.activeBridge];
     if (state.map) {
       drawBridgePoints(activeBridge);
     }
   } catch (error) {
     console.error('Error fetching reports:', error);
+    
+    // 🔥 SI FALLA LA CONEXIÓN, CALCULAR CON DATOS LOCALES
+    for (const bridge of BRIDGES) {
+      const bridgeReports = state.reports.filter(r => r.bridge === bridge.id);
+      const queueData = detectQueueStart(null, bridgeReports);
+      state.queueData[bridge.id] = queueData;
+    }
+    
+    render();
   }
 }
 
@@ -1630,13 +1767,13 @@ function render() {
       <div class="ad-slide active" id="adSlide0">
         <div class="ad-content">
           <div class="ad-logo">HORUS</div>
-          <div class="ad-tagline">Anunciate con nosotros</div>
+          <div class="ad-tagline">Vigilando la frontera</div>
         </div>
       </div>
       <div class="ad-slide" id="adSlide1">
         <div class="ad-content" style="color: var(--gold)">
-          <div class="ad-logo" style="font-size: 22px">¿Negocio en la frontera?</div>
-          <div class="ad-tagline">Contáctanos: info@horussystem.net</div>
+          <div class="ad-logo" style="font-size: 24px; line-height: 1.3;">¿Negocio en la frontera?</div>
+          <div class="ad-tagline" style="font-size: 14px; margin-top: 8px;">Contáctanos: horus@system.co</div>
         </div>
       </div>
       <div class="ad-indicators">
@@ -1791,6 +1928,14 @@ function renderForm(bridge) {
 window.selectBridge = (i) => {
   state.activeBridge = i;
   state.showForm = false;
+  
+  // 🔥 RECALCULAR DATOS DEL PUENTE SELECCIONADO
+  const bridge = BRIDGES[i];
+  const bridgeReports = state.reports.filter(r => r.bridge === bridge.id);
+  const trafficData = state.trafficData[bridge.id] || null;
+  const queueData = detectQueueStart(trafficData, bridgeReports);
+  state.queueData[bridge.id] = queueData;
+  
   render();
 };
 
@@ -1836,17 +1981,19 @@ window.handleSubmit = async () => {
   };
 
   try {
-    state.reports.unshift(report);
+    // 🔥 PRIMERO: Enviar al servidor
+    await submitReport(report);
+    
+    // 🔥 SEGUNDO: Mostrar éxito
     state.submitDone = true;
     state.submitting = false;
     render();
 
-    await submitReport(report);
-
-    setTimeout(() => {
-      fetchReports();
+    // 🔥 TERCERO: Actualizar datos del servidor después de 1.5 segundos
+    setTimeout(async () => {
+      await fetchReports();
       closeForm();
-    }, 1800);
+    }, 1500);
   } catch (e) {
     console.error('Submit error:', e);
     state.submitting = false;
