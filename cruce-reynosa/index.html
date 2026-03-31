@@ -1717,7 +1717,7 @@ function highlightQueueStart(segment, points) {
 
 async function fetchReports() {
   try {
-    const response = await fetch(CONFIG.APPS_SCRIPT_URL + '?action=getReports');
+    const response = await fetch(CONFIG.APPS_SCRIPT_URL + '?action=getReports&t=' + new Date().getTime());
     const data = await response.json();
     state.reports = data.reports || [];
     
