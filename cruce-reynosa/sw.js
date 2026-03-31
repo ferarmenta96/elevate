@@ -1,4 +1,4 @@
-const CACHE_NAME = 'cruce-reynosa-v20';
+const CACHE_NAME = 'cruce-reynosa-v21';
 const STATIC_ASSETS = [
   '/cruce-reynosa/',
   '/cruce-reynosa/index.html',
@@ -36,18 +36,18 @@ self.addEventListener('activate', (event) => {
   self.clients.claim();
 });
 
-// Fetch: Network-first para API, Cache-first para assets
+// Fetch: Network-first para API y HTML, Cache-first para assets
 self.addEventListener('fetch', (event) => {
   if (event.request.method !== 'GET') return;
   
   const url = new URL(event.request.url);
   
-  // 🚨 IGNORAR GOOGLE MAPS Y APIS EXTERNAS (Para que el tráfico se actualice)
-  if (url.hostname.includes('googleapis.com') || url.hostname.includes('gstatic.com')) {
+  // 1. IGNORAR MAPAS Y APIS EXTERNAS (Google, Leaflet, CartoDB)
+  if (url.hostname.includes('googleapis.com') || url.hostname.includes('gstatic.com') || url.hostname.includes('cartocdn.com') || url.hostname.includes('leaflet')) {
     return; 
   }
 
-  // API calls (Google Apps Script) — siempre red primero, NUNCA caché
+  // 2. API calls (Google Apps Script) — siempre red primero, NUNCA caché
   if (url.hostname.includes('script.google.com')) {
     event.respondWith(
       fetch(event.request).catch(() => {
@@ -58,8 +58,25 @@ self.addEventListener('fetch', (event) => {
     );
     return;
   }
+
+  // 🚨 3. LA SOLUCIÓN: Network-First para tu página principal (HTML)
+  // Siempre intentará descargar tu última actualización primero.
+  if (event.request.mode === 'navigate') {
+    event.respondWith(
+      fetch(event.request).then((response) => {
+        return caches.open(CACHE_NAME).then((cache) => {
+          cache.put(event.request, response.clone());
+          return response;
+        });
+      }).catch(() => {
+        // Solo usa la caché si el usuario se quedó sin internet
+        return caches.match('/cruce-reynosa/index.html');
+      })
+    );
+    return;
+  }
   
-  // Fuentes de Google — Cache-first
+  // 4. Fuentes de Google — Cache-first
   if (url.hostname.includes('fonts.')) {
     event.respondWith(
       caches.match(event.request).then((cached) => cached || fetch(event.request).then((res) => {
@@ -71,7 +88,7 @@ self.addEventListener('fetch', (event) => {
     return;
   }
   
-  // Assets estáticos — Cache-first con fallback a red
+  // 5. Assets estáticos (Imágenes e iconos) — Cache-first con fallback a red
   event.respondWith(
     caches.match(event.request).then((cached) => {
       if (cached) return cached;
@@ -82,9 +99,7 @@ self.addEventListener('fetch', (event) => {
         }
         return res;
       }).catch(() => {
-        if (event.request.mode === 'navigate') {
-          return caches.match('/cruce-reynosa/index.html');
-        }
+        // El modo navigate ya se manejó arriba, no es necesario hacer nada aquí
       });
     })
   );
