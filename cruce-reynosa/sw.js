@@ -1,126 +1,1018 @@
-const CACHE_NAME = 'cruce-reynosa-v25';
-const STATIC_ASSETS = [
-  '/cruce-reynosa/',
-  '/cruce-reynosa/index.html',
-  '/cruce-reynosa/manifest.json',
-  '/cruce-reynosa/public/icon-192.png',
-  '/cruce-reynosa/public/icon-512.png',
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  
+  
+  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-P2RPXZMN');</script>
+<meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="theme-color" content="#0a0a0a" />
+  <meta name="description" content="Tiempo real de espera en los puentes internacionales de Reynosa, Tamaulipas" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Cruce Reynosa" />
+  <meta name="mobile-web-app-capable" content="yes" />
+
+  <meta property="og:title" content="Cruce Reynosa" />
+  <meta property="og:description" content="Cuanto esta la fila en el puente? Tiempo real, reportado por la comunidad." />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="https://raw.githubusercontent.com/TU_USUARIO/cruce-reynosa/main/public/og-image.png" />
+
+  <title>Cruce Reynosa</title>
+  
+  <link rel="manifest" href="/cruce-reynosa/manifest.json" />
+  <link rel="apple-touch-icon" href="/cruce-reynosa/public/icon-192.png" />
+  <link rel="icon" type="image/png" href="/cruce-reynosa/public/icon-192.png" />
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Barlow+Condensed:wght@400;600;700;800;900&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #080808;
+      --surface: #0f0f0f;
+      --surface2: #161616;
+      --surface3: #1e1e1e;
+      --border: #242424;
+      --border-gold: #C9A84C40;
+      --text: #f0ede8;
+      --text-dim: #b0a99a;
+      --muted: #6b6459;
+      --faint: #3a3530;
+      --gold: #C9A84C;
+      --gold-bright: #E2C46D;
+      --gold-dim: #8a7035;
+      --gold-glow: #C9A84C20;
+      --gold-glow-strong: #C9A84C40;
+      --green: #4ade80;
+      --yellow: #fbbf24;
+      --red: #f87171;
+      --blue: #60a5fa;
+      --accent: var(--gold);
+      --accent-glow: var(--gold-glow);
+      --accent-transparent: var(--gold-glow-strong);
+      --tab-color: var(--gold);
+    }
+
+    html, body { background: var(--bg); color: var(--text); font-family: 'Barlow', sans-serif; height: 100%; overflow-x: hidden; overflow-y: auto; }
+
+    #splash { position: fixed; inset: 0; background: var(--bg); display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 9999; gap: 0; transition: opacity 0.6s ease, transform 0.6s ease; }
+    #splash.hidden { opacity: 0; transform: scale(1.05); pointer-events: none; }
+    .splash-eye { width: 80px; height: 80px; margin-bottom: 20px; animation: splashPulse 2s ease-in-out infinite; }
+    @keyframes splashPulse { 0%, 100% { filter: drop-shadow(0 0 8px #C9A84C60); } 50% { filter: drop-shadow(0 0 24px #C9A84C90); } }
+    .splash-brand { font-family: 'Cormorant Garamond', serif; font-size: 42px; font-weight: 600; letter-spacing: 8px; color: var(--gold); text-transform: uppercase; line-height: 1; margin-bottom: 4px; }
+    .splash-tagline { font-family: 'Barlow Condensed', sans-serif; font-size: 11px; letter-spacing: 4px; color: var(--muted); text-transform: uppercase; margin-bottom: 48px; }
+    .splash-divider { width: 1px; height: 48px; background: linear-gradient(to bottom, transparent, var(--gold), transparent); margin-bottom: 24px; }
+    .splash-app-name { font-family: 'Barlow Condensed', sans-serif; font-size: 22px; font-weight: 800; letter-spacing: 3px; color: var(--text); text-transform: uppercase; }
+    .splash-app-sub { font-family: 'Barlow', sans-serif; font-size: 12px; color: var(--muted); letter-spacing: 1px; margin-top: 4px; }
+    .splash-loading { position: absolute; bottom: 48px; display: flex; flex-direction: column; align-items: center; gap: 10px; }
+    .splash-bar { width: 120px; height: 1px; background: var(--faint); border-radius: 1px; overflow: hidden; position: relative; }
+    .splash-bar-fill { height: 100%; background: var(--gold); animation: splashLoad 1.6s ease forwards; width: 0; }
+    @keyframes splashLoad { 0% { width: 0 } 60% { width: 80% } 100% { width: 100% } }
+    .splash-loading-text { font-family: 'Barlow', sans-serif; font-size: 10px; letter-spacing: 2px; color: var(--muted); text-transform: uppercase; }
+
+    #app { min-height: 100vh; display: flex; flex-direction: column; max-width: 480px; margin: 0 auto; position: relative; }
+    .header { background: var(--surface); border-bottom: 1px solid var(--border); padding: 14px 18px 0; flex-shrink: 0; position: relative; z-index: 10; }
+    .header::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, transparent, var(--gold), transparent); }
+    .header-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+    .logo { display: flex; align-items: center; gap: 12px; }
+    .logo-eye { width: 40px; height: 40px; flex-shrink: 0; }
+    .logo-title { font-family: 'Cormorant Garamond', serif; font-size: 20px; font-weight: 600; letter-spacing: 3px; line-height: 1; color: var(--gold); text-transform: uppercase; }
+    .logo-sub { font-family: 'Barlow Condensed', sans-serif; font-size: 9px; color: var(--muted); letter-spacing: 2.5px; text-transform: uppercase; font-weight: 600; margin-top: 2px; }
+    .live-badge { display: flex; align-items: center; gap: 5px; background: #4ade8015; border: 1px solid #4ade8030; border-radius: 20px; padding: 5px 10px; font-family: 'Barlow Condensed', sans-serif; font-size: 11px; color: var(--green); font-weight: 700; letter-spacing: 1px; }
+    .live-dot { width: 5px; height: 5px; background: var(--green); border-radius: 50%; animation: pulse 1.5s infinite; }
+    @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+
+    .tabs { display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none; -ms-overflow-style: none; padding-bottom: 12px; }
+    .tabs::-webkit-scrollbar { display: none; }
+    .tab { flex-shrink: 0; background: var(--surface2); border: 1px solid var(--border); border-radius: 12px; padding: 10px 14px; font-family: 'Barlow Condensed', sans-serif; font-size: 13px; font-weight: 700; letter-spacing: 1px; color: var(--text-dim); cursor: pointer; transition: all 0.2s; text-transform: uppercase; white-space: nowrap; }
+    .tab.active { background: var(--accent-transparent); border-color: var(--accent); color: var(--accent); box-shadow: 0 0 16px var(--accent-glow); }
+    .tab:hover:not(.active) { background: var(--surface3); border-color: var(--border-gold); }
+
+    .traffic-card { background: linear-gradient(135deg, var(--surface2) 0%, var(--surface) 100%); border: 1px solid var(--border-gold); border-radius: 16px; padding: 20px; margin: 16px 18px; position: relative; overflow: hidden; }
+    .traffic-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, transparent, var(--accent), transparent); }
+    .traffic-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 16px; }
+    .traffic-title { font-family: 'Barlow Condensed', sans-serif; font-size: 14px; font-weight: 700; letter-spacing: 2px; color: var(--muted); text-transform: uppercase; margin-bottom: 4px; }
+    .traffic-time { font-family: 'Cormorant Garamond', serif; font-size: 48px; font-weight: 600; line-height: 1; color: var(--text); }
+    .traffic-status { display: flex; align-items: center; gap: 6px; background: var(--surface3); border: 1px solid var(--border); border-radius: 20px; padding: 6px 12px; font-family: 'Barlow Condensed', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; }
+    .status-dot { width: 6px; height: 6px; border-radius: 50%; }
+    .status-fluido { color: var(--green); } .status-fluido .status-dot { background: var(--green); }
+    .status-moderado { color: var(--yellow); } .status-moderado .status-dot { background: var(--yellow); }
+    .status-pesado { color: var(--red); } .status-pesado .status-dot { background: var(--red); }
+    .traffic-meta { display: flex; gap: 16px; font-family: 'Barlow', sans-serif; font-size: 13px; color: var(--text-dim); margin-top: 12px; }
+    .meta-item { display: flex; align-items: center; gap: 6px; }
+
+    /* ══════════════════════════════════════════
+       AD BANNER — Diseño Elegante Horus
+    ══════════════════════════════════════════ */
+    .ad-banner {
+      border-radius: 12px;
+      margin: 0 18px 16px;
+      overflow: hidden;
+      height: 148px;
+      position: relative;
+      cursor: pointer;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .ad-banner:hover { transform: translateY(-2px); }
+
+    .ad-slide {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      transition: opacity 0.7s ease;
+      display: flex;
+      align-items: stretch;
+    }
+    .ad-slide.active { opacity: 1; }
+
+    /* Slide 0: Dark gold — HORUS identity */
+    .ad-slide-0 {
+      background: linear-gradient(135deg, #0d0b08 0%, #1c1508 55%, #0d0b08 100%);
+      border: 1px solid #C9A84C50;
+    }
+    .ad-slide-0::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    }
+    .ad-s0-left {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 20px 0 20px 22px;
+      position: relative;
+      z-index: 2;
+    }
+    .ad-s0-eyebrow {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 9px;
+      letter-spacing: 3px;
+      color: var(--gold-dim);
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+    .ad-s0-brand {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 38px;
+      font-weight: 600;
+      letter-spacing: 8px;
+      color: var(--gold);
+      text-transform: uppercase;
+      line-height: 1;
+      margin-bottom: 8px;
+    }
+    .ad-s0-sub {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 10px;
+      letter-spacing: 2.5px;
+      color: var(--muted);
+      text-transform: uppercase;
+    }
+    .ad-s0-right {
+      width: 110px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0.07;
+    }
+
+    /* Slide 1: Cream — Automatización */
+    .ad-slide-1 {
+      background: linear-gradient(135deg, #f5f0e8 0%, #ede5d4 100%);
+      border: 1px solid #d4c4a0;
+    }
+    .ad-s1-inner {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 18px 22px;
+      position: relative;
+      overflow: hidden;
+    }
+    .ad-s1-deco {
+      position: absolute;
+      right: -10px; top: 50%;
+      transform: translateY(-50%);
+      opacity: 0.07;
+      pointer-events: none;
+    }
+    .ad-s1-eyebrow {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 9px;
+      letter-spacing: 3px;
+      color: #8a7035;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+    .ad-s1-headline {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 22px;
+      font-weight: 600;
+      color: #1a1408;
+      line-height: 1.25;
+      margin-bottom: 10px;
+    }
+    .ad-s1-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .ad-pill-dark {
+      display: inline-block;
+      background: #1a1408;
+      color: #C9A84C;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 9px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      padding: 4px 10px;
+      border-radius: 3px;
+      flex-shrink: 0;
+    }
+    .ad-s1-contact {
+      font-family: 'Barlow', sans-serif;
+      font-size: 9px;
+      color: #8a7a5a;
+      letter-spacing: 0.3px;
+    }
+
+    /* Slide 2: Dark blue — Desarrollo digital */
+    .ad-slide-2 {
+      background: linear-gradient(135deg, #060a10 0%, #0b1220 55%, #060a10 100%);
+      border: 1px solid #60a5fa30;
+    }
+    .ad-slide-2::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, #60a5fa70, transparent);
+    }
+    .ad-s2-inner {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 18px 22px;
+    }
+    .ad-s2-eyebrow {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 9px;
+      letter-spacing: 3px;
+      color: #60a5fa60;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+    .ad-s2-headline {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 22px;
+      font-weight: 600;
+      color: #ddeeff;
+      line-height: 1.25;
+      margin-bottom: 10px;
+    }
+    .ad-s2-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .ad-pill-blue {
+      display: inline-block;
+      background: #60a5fa18;
+      border: 1px solid #60a5fa40;
+      color: #60a5fa;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 9px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      padding: 4px 10px;
+      border-radius: 3px;
+      flex-shrink: 0;
+    }
+    .ad-s2-contact {
+      font-family: 'Barlow', sans-serif;
+      font-size: 9px;
+      color: #60a5fa45;
+      letter-spacing: 0.3px;
+    }
+
+    /* Slide 3: Gold solid — Anunciate */
+    .ad-slide-3 {
+      background: linear-gradient(135deg, #C9A84C 0%, #E2C46D 50%, #C9A84C 100%);
+      border: 1px solid #E2C46D;
+      position: relative;
+      overflow: hidden;
+    }
+    .ad-slide-3::before {
+      content: 'HORUS';
+      position: absolute;
+      right: -18px; top: 50%;
+      transform: translateY(-50%) rotate(-90deg);
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 58px;
+      font-weight: 700;
+      letter-spacing: 10px;
+      color: rgba(0,0,0,0.10);
+      pointer-events: none;
+      white-space: nowrap;
+    }
+    .ad-s3-inner {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 18px 22px;
+      position: relative;
+      z-index: 2;
+    }
+    .ad-s3-eyebrow {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 9px;
+      letter-spacing: 3px;
+      color: #7a5010;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+    .ad-s3-headline {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 22px;
+      font-weight: 700;
+      color: #0d0b08;
+      line-height: 1.25;
+      margin-bottom: 10px;
+    }
+    .ad-s3-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .ad-pill-black {
+      display: inline-block;
+      background: #0d0b08;
+      color: #C9A84C;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 9px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      padding: 4px 10px;
+      border-radius: 3px;
+      flex-shrink: 0;
+    }
+    .ad-s3-contact {
+      font-family: 'Barlow', sans-serif;
+      font-size: 9px;
+      color: #7a5010;
+      letter-spacing: 0.3px;
+    }
+
+    /* Indicadores */
+    .ad-indicators {
+      position: absolute;
+      bottom: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 5px;
+      z-index: 10;
+    }
+    .ad-dot {
+      width: 5px; height: 5px;
+      border-radius: 50%;
+      transition: all 0.35s ease;
+    }
+    .ad-dot.on-dark  { background: rgba(255,255,255,0.25); }
+    .ad-dot.on-light { background: rgba(0,0,0,0.20); }
+    .ad-dot.active.on-dark  { width: 18px; border-radius: 3px; background: rgba(255,255,255,0.75); }
+    .ad-dot.active.on-light { width: 18px; border-radius: 3px; background: rgba(0,0,0,0.45); }
+    /* ══ FIN AD BANNER ══ */
+
+    .map-container { background: var(--surface2); border: 1px solid var(--border); border-radius: 12px; margin: 0 18px 16px; overflow: hidden; height: 280px; position: relative; z-index: 1;}
+    #map { width: 100%; height: 100%; background-color: var(--surface2) !important; }
+    .leaflet-queue-pulse { animation: mapMarkerPulse 1.5s infinite; transform-origin: center; }
+    @keyframes mapMarkerPulse { 0% { transform: scale(1); stroke-width: 2px; } 50% { transform: scale(1.5); stroke-width: 5px; } 100% { transform: scale(1); stroke-width: 2px; } }
+    .queue-indicator { position: absolute; bottom: 12px; left: 12px; background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(10px); border: 1px solid var(--border-gold); border-radius: 8px; padding: 8px 12px; font-family: 'Barlow Condensed', sans-serif; font-size: 11px; letter-spacing: 1px; color: var(--gold); text-transform: uppercase; font-weight: 700; z-index: 1000;}
+
+    .report-btn { background: linear-gradient(135deg, var(--accent) 0%, var(--gold-dim) 100%); border: 1px solid var(--gold-bright); border-radius: 12px; padding: 16px; margin: 0 18px 16px; font-family: 'Barlow Condensed', sans-serif; font-size: 15px; font-weight: 800; letter-spacing: 2px; color: var(--bg); text-transform: uppercase; cursor: pointer; transition: all 0.2s; box-shadow: 0 4px 16px var(--gold-glow); width: calc(100% - 36px); }
+    .report-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 24px var(--gold-glow-strong); }
+
+    .reports-section { flex: 1; overflow-y: visible; padding: 0 18px 100px; }
+    .section-title { font-family: 'Barlow Condensed', sans-serif; font-size: 12px; font-weight: 700; letter-spacing: 2px; color: var(--muted); text-transform: uppercase; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+    .section-title::before, .section-title::after { content: ''; flex: 1; height: 1px; }
+    .section-title::before { background: linear-gradient(to right, transparent, var(--border)); }
+    .section-title::after { background: linear-gradient(to left, transparent, var(--border)); }
+    .report-card { background: var(--surface2); border: 1px solid var(--border); border-radius: 12px; padding: 14px; margin-bottom: 12px; transition: all 0.2s; }
+    .report-card:hover { background: var(--surface3); border-color: var(--border-gold); }
+    .report-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; }
+    .report-position { font-family: 'Barlow', sans-serif; font-size: 14px; font-weight: 600; color: var(--text); line-height: 1.3; }
+    .report-time-badge { background: var(--surface3); border: 1px solid var(--border); border-radius: 6px; padding: 4px 8px; font-family: 'Barlow Condensed', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 1px; color: var(--gold); white-space: nowrap; }
+    .report-meta { display: flex; gap: 12px; font-family: 'Barlow', sans-serif; font-size: 12px; color: var(--text-dim); margin-bottom: 8px; }
+    .report-note { font-family: 'Barlow', sans-serif; font-size: 13px; color: var(--muted); font-style: italic; line-height: 1.4; padding: 8px; background: var(--surface); border-left: 2px solid var(--border-gold); border-radius: 4px; }
+    .empty-state { text-align: center; padding: 40px 20px; color: var(--muted); }
+    .empty-emoji { font-size: 48px; margin-bottom: 12px; }
+    .empty-text { font-family: 'Barlow Condensed', sans-serif; font-size: 14px; letter-spacing: 1px; text-transform: uppercase; }
+
+    .bottom-nav { position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); max-width: 480px; width: 100%; background: var(--surface); border-top: 1px solid var(--border); padding: 12px 18px; display: flex; justify-content: center; align-items: center; gap: 8px; font-family: 'Barlow', sans-serif; font-size: 11px; color: var(--muted); z-index: 100; }
+    .powered-by { position: fixed; bottom: 42px; left: 50%; transform: translateX(-50%); max-width: 480px; width: 100%; display: flex; justify-content: center; align-items: center; gap: 6px; padding: 8px; background: transparent; z-index: 99; }
+    .powered-text { font-family: 'Barlow', sans-serif; font-size: 10px; color: var(--faint); letter-spacing: 1px; }
+    .powered-horus { font-family: 'Cormorant Garamond', serif; font-size: 12px; font-weight: 600; letter-spacing: 2px; color: var(--gold-dim); }
+
+    /* ── PANEL RESUMEN PUENTES ── */
+    .bridges-summary { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; margin: 0 18px 16px; }
+    .bridge-pill { background: var(--surface2); border: 1px solid var(--border); border-radius: 10px; padding: 10px 6px 8px; text-align: center; cursor: pointer; transition: all 0.2s; position: relative; overflow: hidden; }
+    .bridge-pill::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: var(--pill-color, var(--border)); }
+    .bridge-pill.active-pill { border-color: var(--pill-color, var(--gold)); background: var(--surface3); box-shadow: 0 0 10px var(--pill-glow, transparent); }
+    .bridge-pill-name { font-family: 'Barlow Condensed', sans-serif; font-size: 9px; font-weight: 700; letter-spacing: 0.5px; color: var(--muted); text-transform: uppercase; margin-bottom: 5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .bridge-pill-time { font-family: 'Cormorant Garamond', serif; font-size: 18px; font-weight: 600; line-height: 1; color: var(--text); }
+    .bridge-pill-unit { font-family: 'Barlow', sans-serif; font-size: 8px; color: var(--muted); margin-top: 2px; }
+    .bridge-pill-dot { width: 5px; height: 5px; border-radius: 50%; margin: 4px auto 0; }
+
+    .install-banner { position: fixed; bottom: 56px; left: 50%; transform: translateX(-50%); max-width: 440px; width: calc(100% - 36px); background: var(--surface2); border: 1px solid var(--border-gold); border-radius: 12px; padding: 14px; display: flex; align-items: center; gap: 12px; z-index: 101; box-shadow: 0 8px 32px rgba(0,0,0,0.8); }
+    .install-banner-text { flex: 1; }
+    .install-banner-title { font-family: 'Barlow Condensed', sans-serif; font-size: 14px; font-weight: 700; color: var(--text); letter-spacing: 1px; }
+    .install-banner-sub { font-family: 'Barlow', sans-serif; font-size: 11px; color: var(--muted); margin-top: 2px; }
+    .install-btn { background: var(--gold); border: none; border-radius: 8px; padding: 8px 16px; font-family: 'Barlow Condensed', sans-serif; font-size: 12px; font-weight: 700; letter-spacing: 1px; color: var(--bg); cursor: pointer; text-transform: uppercase; }
+    .install-close { background: transparent; border: none; color: var(--muted); cursor: pointer; font-size: 18px; padding: 4px 8px; }
+
+    .modal-overlay { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(4px); z-index: 1000; display: flex; align-items: flex-end; justify-content: center; animation: fadeIn 0.2s; }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    .modal-sheet { background: var(--surface); border: 1px solid var(--border-gold); border-radius: 20px 20px 0 0; width: 100%; max-height: 90vh; overflow-y: auto; padding: 24px; animation: slideUp 0.3s ease; position: relative; }
+    @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+    .modal-handle { width: 40px; height: 4px; background: var(--border); border-radius: 2px; margin: 0 auto 20px; }
+    .modal-title { font-family: 'Barlow Condensed', sans-serif; font-size: 22px; font-weight: 800; letter-spacing: 2px; color: var(--text); text-transform: uppercase; margin-bottom: 4px; }
+    .modal-sub { font-family: 'Barlow', sans-serif; font-size: 13px; color: var(--muted); margin-bottom: 24px; }
+    .form-group { margin-bottom: 24px; }
+    .form-label { font-family: 'Barlow Condensed', sans-serif; font-size: 12px; font-weight: 700; letter-spacing: 1px; color: var(--text-dim); text-transform: uppercase; margin-bottom: 10px; display: block; }
+    .option-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
+    .option-btn { background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; padding: 12px; font-family: 'Barlow', sans-serif; font-size: 13px; color: var(--text); cursor: pointer; transition: all 0.2s; text-align: center; }
+    .option-btn:hover { background: var(--surface3); border-color: var(--border-gold); }
+    .option-btn.selected { background: var(--accent-transparent); border-color: var(--accent); color: var(--accent); box-shadow: 0 0 12px var(--accent-glow); }
+    .form-textarea { width: 100%; background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; padding: 12px; font-family: 'Barlow', sans-serif; font-size: 14px; color: var(--text); resize: none; outline: none; transition: all 0.2s; }
+    .form-textarea:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-glow); }
+    .form-textarea::placeholder { color: var(--muted); }
+    .submit-btn { width: 100%; background: linear-gradient(135deg, var(--accent) 0%, var(--gold-dim) 100%); border: 1px solid var(--gold-bright); border-radius: 12px; padding: 16px; font-family: 'Barlow Condensed', sans-serif; font-size: 15px; font-weight: 800; letter-spacing: 2px; color: var(--bg); text-transform: uppercase; cursor: pointer; transition: all 0.2s; margin-top: 8px; }
+    .submit-btn:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 6px 24px var(--gold-glow-strong); }
+    .submit-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+    .success-screen { text-align: center; padding: 40px 20px; }
+    .big-emoji { font-size: 64px; margin-bottom: 16px; }
+    .success-screen .title { font-family: 'Barlow Condensed', sans-serif; font-size: 24px; font-weight: 800; letter-spacing: 2px; color: var(--text); text-transform: uppercase; margin-bottom: 8px; }
+    .success-screen .sub { font-family: 'Barlow', sans-serif; font-size: 14px; color: var(--muted); }
+  </style>
+</head>
+<body>
+
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-P2RPXZMN"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+
+<div id="splash">
+  <svg class="splash-eye" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+    <path d="M100 60 L160 140 L40 140 Z" fill="none" stroke="#C9A84C" stroke-width="3"/>
+    <line x1="70" y1="100" x2="70" y2="140" stroke="#C9A84C" stroke-width="2"/>
+    <line x1="100" y1="80" x2="100" y2="140" stroke="#C9A84C" stroke-width="2"/>
+    <line x1="130" y1="100" x2="130" y2="140" stroke="#C9A84C" stroke-width="2"/>
+    <circle cx="100" cy="90" r="8" fill="#C9A84C"/>
+  </svg>
+  <div class="splash-brand">HORUS</div>
+  <div class="splash-tagline">System Co.</div>
+  <div class="splash-divider"></div>
+  <div class="splash-app-name">Cruce RNS</div>
+  <div class="splash-app-sub">Reynosa Border Crossings</div>
+  <div class="splash-loading">
+    <div class="splash-bar"><div class="splash-bar-fill"></div></div>
+    <div class="splash-loading-text">Cargando...</div>
+  </div>
+</div>
+
+<div id="app"></div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+
+<script>
+const CONFIG = {
+  APPS_SCRIPT_URL: 'https://script.google.com/macros/s/AKfycbyVRCfmU9E3kKKSOIwokc8q4gglO9TEDlvifxOh8CWp3Q3WYFr8znbHe4wseC6re8g/exec',
+  REFRESH_INTERVAL: 5 * 60 * 1000,
+};
+
+const BRIDGES = [
+  {
+    id: 'anzalduas', name: 'Anzalduas', type: 'Internacional', lanes: ['General', 'SENTRI', 'FAST'],
+    points: {
+      P0:{lat:26.096610722637962,lng:-98.36040041694339},P1:{lat:26.107717681717862,lng:-98.35275851243759},P2:{lat:26.1140243781169,lng:-98.32108657295402},P3:{lat:26.132241525955056,lng:-98.31455542056901},P4:{lat:26.13863433191444,lng:-98.31343900324282},P5:{lat:26.14077921993775,lng:-98.31309651615652},P6:{lat:26.1426312588012,lng:-98.31281926470751},P7:{lat:26.145046917478332,lng:-98.31208128658041},P8:{lat:26.14556248144121,lng:-98.31196122740076},P9:{lat:26.146422048057648,lng:-98.31171982858521}
+    }
+  },
+  {
+    id: 'hidalgo', name: 'Hidalgo', type: 'Internacional', lanes: ['General', 'SENTRI', 'Ready Lane'],
+    points: {
+      P0:{lat:26.06816515980127,lng:-98.25943803654874},P1:{lat:26.07352401153976,lng:-98.25931309683781},P2:{lat:26.083253887692326,lng:-98.2659202780586},P3:{lat:26.090226302061208,lng:-98.2678518075698},P4:{lat:26.0930699512091,lng:-98.27083197851844},P5:{lat:26.09430026899008,lng:-98.27129678242454},P6:{lat:26.095230322058235,lng:-98.27101953097178},P7:{lat:26.095808855306874,lng:-98.27090536861428},P8:{lat:26.096592433710224,lng:-98.27048133698067},P9:{lat:26.097895945054855,lng:-98.26954357471848}
+    }
+  },
+  {
+    id: 'sentri_hidalgo', name: 'SENTRI', type: 'SENTRI/FAST', lanes: ['SENTRI', 'FAST'],
+    points: {
+      P0:{lat:26.09882194406453,lng:-98.28455832178551},P1:{lat:26.09643187175056,lng:-98.27587835510695},P2:{lat:26.09296072541135,lng:-98.27064387138478},P3:{lat:26.095559136078,lng:-98.27167089034293},P4:{lat:26.09706658451357,lng:-98.27016901315683},P5:{lat:26.099,lng:-98.268},P6:{lat:26.101,lng:-98.267},P7:{lat:26.103,lng:-98.266},P8:{lat:26.104,lng:-98.265},P9:{lat:26.105297703822483,lng:-98.26483514026881}
+    }
+  },
+  {
+    id: 'peatonal_hidalgo', name: 'Peatonal', type: 'Peatonal', lanes: ['General', 'Ready Lane'],
+    points: {
+      P0:{lat:26.1005,lng:-98.2605},P1:{lat:26.0985,lng:-98.2585},P2:{lat:26.0965,lng:-98.2565},P3:{lat:26.0945,lng:-98.2545},P4:{lat:26.0935,lng:-98.2535},P5:{lat:26.0928,lng:-98.2528},P6:{lat:26.0922,lng:-98.2522},P7:{lat:26.0918,lng:-98.2518},P8:{lat:26.0912,lng:-98.2512},P9:{lat:26.0905,lng:-98.2505}
+    }
+  },
+  {
+    id: 'pharr', name: 'Pharr', type: 'Internacional', lanes: ['General', 'SENTRI', 'FAST'],
+    points: {
+      P0:{lat:26.068507962845153,lng:-98.20489651731435},P1:{lat:26.07450085216445,lng:-98.20388799444298},P2:{lat:26.07951791896548,lng:-98.20303462893644},P3:{lat:26.08132958469284,lng:-98.20272431420678},P4:{lat:26.083350255694075,lng:-98.2023364207947},P5:{lat:26.08491799371516,lng:-98.20206489541974},P6:{lat:26.08695602165513,lng:-98.20150244997225},P7:{lat:26.08763971111181,lng:-98.20100788587186},P8:{lat:26.088170982963497,lng:-98.2008866691806},P9:{lat:26.090100089187125,lng:-98.20142487129579}
+    }
+  }
 ];
 
-// Instalación: cachea assets estáticos
-self.addEventListener('install', (event) => {
-  event.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => {
-      return cache.addAll(STATIC_ASSETS);
-    })
-  );
-  self.skipWaiting();
-});
+const QUEUE_POSITIONS = ['Antes del semaforo','Despues del semaforo','A la altura de HEB','En el puente','Fluido (sin fila)'];
+const TIME_OPTIONS = ['5-10 min','15-20 min','30-40 min','1 hora','1.5 horas','2+ horas'];
 
-// Activación: limpia caches viejos y fuerza recarga
-self.addEventListener('activate', (event) => {
-  event.waitUntil(
-    caches.keys().then((cacheNames) =>
-      Promise.all(
-        cacheNames
-          .filter((name) => name !== CACHE_NAME)
-          .map((name) => caches.delete(name))
-      )
-    ).then(() => {
-      // Fuerza recarga en todos los clientes abiertos
-      return self.clients.matchAll({ type: 'window' }).then((clients) => {
-        clients.forEach((client) => client.navigate(client.url));
-      });
-    })
-  );
-  self.clients.claim();
-});
+const state = {
+  activeBridge: 0, reports: [], serverTraffic: {},
+  showForm: false, submitDone: false, submitting: false,
+  formData: { position:'', lane:'', estimatedTime:'', note:'' },
+  showInstallBanner: false, installPrompt: null, map: null, mapLayerGroup: null,
+};
 
-// Fetch: Network-first para API y HTML, Cache-first para assets
-self.addEventListener('fetch', (event) => {
-  if (event.request.method !== 'GET') return;
-  
-  const url = new URL(event.request.url);
-  
-  // 1. IGNORAR MAPAS Y APIS EXTERNAS (Google, Leaflet, CartoDB)
-  if (url.hostname.includes('googleapis.com') || url.hostname.includes('gstatic.com') || url.hostname.includes('cartocdn.com') || url.hostname.includes('leaflet')) {
-    return; 
+function getCalculatedQueueData(bridge) {
+  const serverData = state.serverTraffic[bridge.id];
+  const bridgeReports = state.reports.filter(r => r.bridge === bridge.id);
+
+  // Label amigable de fuente
+  const sourceLabel = {
+    'google':           'Google Maps',
+    'horario estimado': 'Horario estimado',
+    'horario programado': 'Horario programado',
+  };
+
+  let finalTime   = serverData ? serverData.estimatedTime : 5;
+  let finalSource = serverData ? (sourceLabel[serverData.source] || serverData.source) : 'Sin datos';
+  let finalStatus = serverData ? serverData.status : 'fluido';
+
+  const recentReports = bridgeReports.filter(r => (new Date() - new Date(r.timestamp)) / 60000 < 30).slice(0, 20);
+  if (recentReports.length > 0) {
+    let sum = 0;
+    recentReports.forEach(r => {
+      const match = r.estimatedTime.match(/\d+/);
+      let mins = match ? parseInt(match[0]) : 0;
+      if (r.estimatedTime.includes('hora')) mins *= 60;
+      sum += mins;
+    });
+    const userAvg = sum / recentReports.length;
+    finalTime   = Math.round((finalTime * 0.4) + (userAvg * 0.6));
+    finalSource = (serverData && serverData.source === 'google') ? 'Google + Comunidad' : 'Comunidad';
+    finalStatus = finalTime < 15 ? 'fluido' : (finalTime < 45 ? 'moderado' : 'pesado');
   }
 
-  // 2. API calls (Google Apps Script) — siempre red primero, NUNCA caché
-  if (url.hostname.includes('script.google.com')) {
-    event.respondWith(
-      fetch(event.request).catch(() => {
-        return new Response(JSON.stringify({ reports: [], error: 'Sin conexión' }), {
-          headers: { 'Content-Type': 'application/json' },
-        });
-      })
-    );
-    return;
-  }
+  let startSegment = null;
+  if (finalTime > 15 && finalTime <= 30) startSegment = 'P4-P5';
+  else if (finalTime > 30 && finalTime <= 50) startSegment = 'P3-P4';
+  else if (finalTime > 50) startSegment = 'P2-P3';
 
-  // 🚨 3. LA SOLUCIÓN: Network-First para tu página principal (HTML)
-  // Siempre intentará descargar tu última actualización primero.
-  if (event.request.mode === 'navigate') {
-    event.respondWith(
-      fetch(event.request).then((response) => {
-        return caches.open(CACHE_NAME).then((cache) => {
-          cache.put(event.request, response.clone());
-          return response;
-        });
-      }).catch(() => {
-        // Solo usa la caché si el usuario se quedó sin internet
-        return caches.match('/cruce-reynosa/index.html');
-      })
-    );
-    return;
-  }
+  return {
+    estimatedTime: finalTime, status: finalStatus, source: finalSource,
+    queueLength: (finalTime * 0.04).toFixed(1),
+    queueStartSegment: startSegment, isInQueue: finalTime >= 30, reports: bridgeReports
+  };
+}
+
+function initMap(bridge) {
+  const mapContainer = document.getElementById('map');
+  if (!mapContainer || typeof L === 'undefined') return;
+  if (state.map) { state.map.remove(); state.map = null; }
+  const center = bridge.points.P2 || bridge.points.P4;
+  state.map = L.map(mapContainer, { zoomControl: false, attributionControl: false }).setView([center.lat, center.lng], 14);
+  L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', { maxZoom: 19 }).addTo(state.map);
+  drawBridgePoints(bridge);
+}
+
+function drawBridgePoints(bridge) {
+  if (state.mapLayerGroup) state.mapLayerGroup.clearLayers();
+  else state.mapLayerGroup = L.layerGroup().addTo(state.map);
+  const points = bridge.points;
+  const path = [];
+  Object.entries(points).forEach(([name, coords]) => {
+    path.push([coords.lat, coords.lng]);
+    L.circleMarker([coords.lat, coords.lng], { radius: 4, fillColor: name === 'P4' ? '#C9A84C' : '#666', color: '#fff', weight: 1, fillOpacity: 1 }).addTo(state.mapLayerGroup);
+  });
+  L.polyline(path, { color: '#C9A84C', weight: 3, opacity: 0.6 }).addTo(state.mapLayerGroup);
+  const queueData = getCalculatedQueueData(bridge);
+  if (queueData && queueData.queueStartSegment) highlightQueueStart(queueData.queueStartSegment, points);
+}
+
+function highlightQueueStart(segment, points) {
+  const [start] = segment.split('-');
+  const startPoint = points[start];
+  if (!startPoint) return;
+  L.circleMarker([startPoint.lat, startPoint.lng], { radius: 8, fillColor: '#f87171', color: '#fff', weight: 2, fillOpacity: 1, className: 'leaflet-queue-pulse' }).addTo(state.mapLayerGroup);
+}
+
+async function fetchReports() {
+  try {
+    const response = await fetch(CONFIG.APPS_SCRIPT_URL + '?action=getReports&t=' + new Date().getTime());
+    const data = await response.json();
+    state.reports = data.reports || [];
+    state.serverTraffic = data.serverTraffic || {};
+    render();
+    if (state.map) drawBridgePoints(BRIDGES[state.activeBridge]);
+  } catch (error) { console.error('Error fetching data:', error); }
+}
+
+async function submitReport(report) {
+  await fetch(CONFIG.APPS_SCRIPT_URL, {
+    method: 'POST', headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ action: 'addReport', ...report })
+  });
+}
+
+function timeAgo(isoString) {
+  const diffMins = Math.floor((new Date() - new Date(isoString)) / 60000);
+  if (diffMins < 1) return 'Ahora';
+  if (diffMins < 60) return `${diffMins}m`;
+  return `${Math.floor(diffMins / 60)}h`;
+}
+
+function horusEyeSVG(size, color) {
+  const c = color || 'currentColor';
+  return `<svg width="${size}" height="${size}" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" style="display:block">
+    <path d="M100 60 L160 140 L40 140 Z" fill="none" stroke="${c}" stroke-width="3"/>
+    <line x1="70" y1="100" x2="70" y2="140" stroke="${c}" stroke-width="2"/>
+    <line x1="100" y1="80" x2="100" y2="140" stroke="${c}" stroke-width="2"/>
+    <line x1="130" y1="100" x2="130" y2="140" stroke="${c}" stroke-width="2"/>
+    <circle cx="100" cy="90" r="8" fill="${c}"/>
+  </svg>`;
+}
+
+function setBridgeVars(bridge) {
+  const colorMap = { anzalduas:'#C9A84C', hidalgo:'#60a5fa', sentri_hidalgo:'#4ade80', peatonal_hidalgo:'#fbbf24', pharr:'#f87171' };
+  const color = colorMap[bridge.id] || '#C9A84C';
+  document.documentElement.style.setProperty('--accent', color);
+  document.documentElement.style.setProperty('--accent-glow', color + '20');
+  document.documentElement.style.setProperty('--accent-transparent', color + '40');
+  document.documentElement.style.setProperty('--tab-color', color);
+}
+
+// ── AD SLIDES: on-dark = dots blancos, on-light = dots oscuros ──
+// Slide 0: dark → on-dark | Slide 1: cream → on-light | Slide 2: dark → on-dark | Slide 3: gold → on-light
+const AD_DOT_CLASS = ['on-dark', 'on-light', 'on-dark', 'on-light'];
+const AD_COUNT = 4;
+let adIndex = 0;
+
+
   
-  // 4. Fuentes de Google — Cache-first
-  if (url.hostname.includes('fonts.')) {
-    event.respondWith(
-      caches.match(event.request).then((cached) => cached || fetch(event.request).then((res) => {
-        const clone = res.clone();
-        caches.open(CACHE_NAME).then((cache) => cache.put(event.request, clone));
-        return res;
-      }))
-    );
-    return;
-  }
+function adBannerHTML() {
+  return `
+    <!-- Slide 0: Dark gold — HORUS identity -->
+    <div class="ad-slide ad-slide-0 active" id="adSlide0">
+      <div class="ad-s0-left">
+        <div class="ad-s0-eyebrow">Tecnologia de Frontera</div>
+        <div class="ad-s0-brand">HORUS</div>
+        <div class="ad-s0-sub">System Co. &mdash; Automatizacion Empresarial</div>
+      </div>
+      <div class="ad-s0-right">${horusEyeSVG(90, '#C9A84C')}</div>
+    </div>
+
+    <!-- Slide 1: Cream — Automatizacion -->
+    <div class="ad-slide ad-slide-1" id="adSlide1">
+      <div class="ad-s1-inner">
+        <div class="ad-s1-deco">${horusEyeSVG(110, '#C9A84C')}</div>
+        <div class="ad-s1-eyebrow">Servicios Horus</div>
+        <div class="ad-s1-headline">Automatiza tu negocio.<br>Vende mas, trabaja menos.</div>
+        <div class="ad-s1-row">
+          <span class="ad-pill-dark">Agenda tu demo</span>
+          <span class="ad-s1-contact">info@horussystem.net &nbsp;&middot;&nbsp; 956-556-9674</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 2: Dark blue — Desarrollo digital -->
+    <div class="ad-slide ad-slide-2" id="adSlide2">
+      <div class="ad-s2-inner">
+        <div class="ad-s2-eyebrow">Desarrollo Digital</div>
+        <div class="ad-s2-headline">Tu idea, convertida<br>en aplicacion real.</div>
+        <div class="ad-s2-row">
+          <span class="ad-pill-blue">Cotiza tu proyecto</span>
+          <span class="ad-s2-contact">info@horussystem.net &nbsp;&middot;&nbsp; 956-556-9674</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 3: Gold solid — Anunciate -->
+    <div class="ad-slide ad-slide-3" id="adSlide3">
+      <div class="ad-s3-inner">
+        <div class="ad-s3-eyebrow">Publicidad Fronteriza</div>
+        <div class="ad-s3-headline">Llega a miles de<br>personas diarias.</div>
+        <div class="ad-s3-row">
+          <span class="ad-pill-black">Anunciate aqui</span>
+          <span class="ad-s3-contact">info@horussystem.net &nbsp;&middot;&nbsp; 956-556-9674</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="ad-indicators">
+      ${Array.from({length: AD_COUNT}, (_, i) =>
+        `<div class="ad-dot ${AD_DOT_CLASS[0]}${i === 0 ? ' active' : ''}" id="adDot${i}"></div>`
+      ).join('')}
+    </div>
+  `;
+}
+
+
+
   
-  // 5. Assets estáticos (Imágenes e iconos) — Cache-first con fallback a red
-  event.respondWith(
-    caches.match(event.request).then((cached) => {
-      if (cached) return cached;
-      return fetch(event.request).then((res) => {
-        if (res.ok && url.protocol === 'https:') {
-          const clone = res.clone();
-          caches.open(CACHE_NAME).then((cache) => cache.put(event.request, clone));
-        }
-        return res;
-      }).catch(() => {
-        // El modo navigate ya se manejó arriba, no es necesario hacer nada aquí
-      });
-    })
-  );
+  
+// ── PANEL RESUMEN: todos los puentes de un vistazo ──────────
+function renderBridgesSummary(activeBridgeIndex) {
+  const colorMap = {
+    anzalduas:       { color: '#C9A84C', glow: '#C9A84C20' },
+    hidalgo:         { color: '#60a5fa', glow: '#60a5fa20' },
+    sentri_hidalgo:  { color: '#4ade80', glow: '#4ade8020' },
+    peatonal_hidalgo:{ color: '#fbbf24', glow: '#fbbf2420' },
+    pharr:           { color: '#f87171', glow: '#f8717120' },
+  };
+  const dotColors = { fluido: 'var(--green)', moderado: 'var(--yellow)', pesado: 'var(--red)' };
+
+  const pills = BRIDGES.map((b, i) => {
+    const qd       = getCalculatedQueueData(b);
+    const c        = colorMap[b.id] || { color: '#C9A84C', glow: '#C9A84C20' };
+    const isActive = i === activeBridgeIndex;
+    const dot      = dotColors[qd.status] || 'var(--green)';
+    return `
+      <div class="bridge-pill ${isActive ? 'active-pill' : ''}"
+           style="--pill-color:${c.color};--pill-glow:${c.glow}"
+           onclick="selectBridge(${i})">
+        <div class="bridge-pill-name">${b.name}</div>
+        <div class="bridge-pill-time">${qd.estimatedTime}</div>
+        <div class="bridge-pill-unit">min</div>
+        <div class="bridge-pill-dot" style="background:${dot}"></div>
+      </div>`;
+  }).join('');
+
+  return `<div class="bridges-summary">${pills}</div>`;
+}
+
+function render() {
+  const bridge = BRIDGES[state.activeBridge];
+  const queueData = getCalculatedQueueData(bridge);
+  setBridgeVars(bridge);
+
+  const statusMap = {
+    fluido: { text: 'Fluido', class: 'status-fluido' },
+    moderado: { text: 'Moderado', class: 'status-moderado' },
+    pesado: { text: 'Pesado', class: 'status-pesado' }
+  };
+  const status = statusMap[queueData.status] || statusMap.fluido;
+
+  let htmlStr = `
+    <div class="header">
+      <div class="header-top">
+        <div class="logo">
+          <div class="logo-eye" style="color: var(--gold)">${horusEyeSVG(40)}</div>
+          <div class="logo-text">
+            <div class="logo-title">Horus</div>
+            <div class="logo-sub">System Co.</div>
+          </div>
+        </div>
+        <div class="live-badge"><div class="live-dot"></div>LIVE</div>
+      </div>
+      <div class="tabs">
+        ${BRIDGES.map((b, i) => `<div class="tab ${state.activeBridge === i ? 'active' : ''}" onclick="selectBridge(${i})">${b.name}</div>`).join('')}
+      </div>
+    </div>
+
+    <div class="traffic-card">
+      <div class="traffic-header">
+        <div>
+          <div class="traffic-title">Tiempo Estimado</div>
+          <div class="traffic-time">${queueData.estimatedTime || 0} min</div>
+        </div>
+        <div class="traffic-status ${status.class}">
+          <div class="status-dot"></div>${status.text}
+        </div>
+      </div>
+      <div class="traffic-meta">
+        <div class="meta-item">${queueData.queueLength || 0} km de fila</div>
+        <div class="meta-item">${bridge.lanes.length} carriles</div>
+        ${queueData.isInQueue ? `<div class="meta-item" style="color:var(--red)">En fila</div>` : ''}
+      </div>
+      ${queueData.source ? `<div style="margin-top:10px;font-family:'Barlow Condensed',sans-serif;font-size:10px;letter-spacing:1.5px;color:var(--faint);text-transform:uppercase;">Fuente: ${queueData.source}</div>` : ''}
+    </div>
+
+    <!-- PANEL RESUMEN: todos los puentes -->
+    ${renderBridgesSummary(state.activeBridge)}
+
+    <!-- AD BANNER entre tiempo estimado y mapa -->
+    <div class="ad-banner" id="adBanner">${adBannerHTML()}</div>
+
+    <div class="map-container">
+      <div id="map"></div>
+      ${queueData.queueStartSegment ? `<div class="queue-indicator">Fila inicia aprox en ${queueData.queueStartSegment}</div>` : ''}
+    </div>
+
+    <button class="report-btn" onclick="openForm()">Reportar Tiempo de Fila</button>
+
+    <div class="reports-section">
+      <div class="section-title">Reportes Recientes</div>
+      ${queueData.reports.length > 0 ? queueData.reports.slice(0, 10).map(r => `
+        <div class="report-card">
+          <div class="report-header">
+            <div class="report-position">${r.position}</div>
+            <div class="report-time-badge">${r.estimatedTime}</div>
+          </div>
+          <div class="report-meta">
+            <span>${r.lane}</span>
+            <span>${timeAgo(r.timestamp)}</span>
+          </div>
+          ${r.note ? `<div class="report-note">${r.note}</div>` : ''}
+        </div>
+      `).join('') : `
+        <div class="empty-state">
+          <div class="empty-emoji">&#x1F937;</div>
+          <div class="empty-text">No hay reportes recientes</div>
+        </div>
+      `}
+    </div>
+
+    <div class="bottom-nav">
+      <span>Auto-refresh 5min</span>
+      <span style="color: var(--faint)">&middot;</span>
+      <span>${state.reports.length} reportes hoy</span>
+      <span style="color: var(--faint)">&middot;</span>
+      <span>Comunidad</span>
+    </div>
+
+    <div class="powered-by">
+      <span class="powered-text">Powered by</span>
+      <div style="display:flex;align-items:center;gap:5px;color:var(--gold-dim)">
+        ${horusEyeSVG(16)}
+        <span class="powered-horus">HORUS</span>
+      </div>
+    </div>
+  `;
+
+  if (state.showInstallBanner) {
+    htmlStr += `
+      <div class="install-banner">
+        <div style="font-size:22px">&#x1F4F2;</div>
+        <div class="install-banner-text">
+          <div class="install-banner-title">Instalar en tu telefono</div>
+          <div class="install-banner-sub">Acceso rapido desde tu pantalla de inicio</div>
+        </div>
+        <button class="install-btn" onclick="installApp()">Instalar</button>
+        <button class="install-close" onclick="dismissInstall()">&#x2715;</button>
+      </div>
+    `;
+  }
+
+  if (state.showForm) htmlStr += renderForm(bridge);
+
+  document.getElementById('app').innerHTML = htmlStr;
+  setTimeout(() => initMap(bridge), 100);
+  syncAdBanner();
+}
+
+function renderForm(bridge) {
+  const f = state.formData;
+  const canSubmit = f.position && f.lane && f.estimatedTime && !state.submitting;
+  if (state.submitDone) {
+    return `<div class="modal-overlay"><div class="modal-sheet" style="max-width:480px"><div class="modal-handle"></div>
+      <div class="success-screen"><div class="big-emoji">&#x2705;</div><div class="title">Reporte enviado</div>
+      <div class="sub">Gracias por ayudar a la comunidad de Reynosa</div></div></div></div>`;
+  }
+  return `
+    <div class="modal-overlay" onclick="closeFormIfOutside(event)">
+      <div class="modal-sheet" style="max-width:480px" onclick="event.stopPropagation()">
+        <div class="modal-handle"></div>
+        <div class="modal-title">Reportar Fila</div>
+        <div class="modal-sub">${bridge.name} &middot; ${bridge.type}</div>
+        <div class="form-group">
+          <label class="form-label">Hasta donde llega la fila</label>
+          <div class="option-grid">
+            ${QUEUE_POSITIONS.map(p => `<button class="option-btn ${f.position === p ? 'selected' : ''}" onclick="setField('position','${p}')">${p}</button>`).join('')}
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Carril</label>
+          <div class="option-grid">
+            ${bridge.lanes.map(l => `<button class="option-btn ${f.lane === l ? 'selected' : ''}" onclick="setField('lane','${l}')">${l}</button>`).join('')}
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Tiempo estimado de cruce</label>
+          <div class="option-grid">
+            ${TIME_OPTIONS.map(t => `<button class="option-btn ${f.estimatedTime === t ? 'selected' : ''}" onclick="setField('estimatedTime','${t}')">${t}</button>`).join('')}
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Comentario (opcional)</label>
+          <textarea class="form-textarea" rows="2" placeholder="Ej: Estan revisando mucho..." oninput="setNote(this.value)">${f.note}</textarea>
+        </div>
+        <button class="submit-btn" ${canSubmit ? '' : 'disabled'} onclick="handleSubmit()">
+          ${state.submitting ? 'Enviando...' : 'Publicar Reporte'}
+        </button>
+        <button onclick="closeForm()" style="width:100%;background:none;border:none;color:var(--muted);font-size:13px;letter-spacing:1px;margin-top:12px;cursor:pointer;padding:8px;font-family:'Barlow Condensed',sans-serif;text-transform:uppercase">Cancelar</button>
+      </div>
+    </div>
+  `;
+}
+
+window.selectBridge = (i) => { state.activeBridge = i; state.showForm = false; render(); };
+window.openForm = () => { state.showForm = true; state.submitDone = false; state.formData = { position:'', lane:'', estimatedTime:'', note:'' }; render(); };
+window.closeForm = () => { state.showForm = false; render(); };
+window.closeFormIfOutside = (e) => { if (e.target.classList.contains('modal-overlay')) closeForm(); };
+window.setField = (key, val) => { state.formData[key] = val; render(); };
+window.setNote = (val) => { state.formData.note = val; };
+
+window.handleSubmit = async () => {
+  if (!state.formData.position || !state.formData.lane || !state.formData.estimatedTime) return;
+  state.submitting = true; render();
+  const bridge = BRIDGES[state.activeBridge];
+  const report = { bridge: bridge.id, bridgeName: bridge.name, ...state.formData, timestamp: new Date().toISOString() };
+  try {
+    await submitReport(report);
+    state.submitDone = true; state.submitting = false; render();
+    setTimeout(async () => { await fetchReports(); closeForm(); }, 1500);
+  } catch (e) {
+    state.submitting = false; state.submitDone = true; render();
+    setTimeout(closeForm, 2000);
+  }
+};
+
+window.installApp = async () => {
+  if (state.installPrompt) {
+    state.installPrompt.prompt();
+    const { outcome } = await state.installPrompt.userChoice;
+    if (outcome === 'accepted') state.showInstallBanner = false;
+    state.installPrompt = null; render();
+  }
+};
+
+window.dismissInstall = () => {
+  state.showInstallBanner = false;
+  localStorage.setItem('install-dismissed', '1');
+  render();
+};
+
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/cruce-reynosa/sw.js')
+      .then(reg => reg.update()).catch(console.error);
+  });
+}
+
+window.addEventListener('beforeinstallprompt', (e) => {
+  e.preventDefault();
+  state.installPrompt = e;
+  // localStorage.removeItem('install-dismissed'); // descomenta para pruebas
+  if (!localStorage.getItem('install-dismissed')) { state.showInstallBanner = true; render(); }
 });
 
-// Push notifications
-self.addEventListener('push', (event) => {
-  if (!event.data) return;
-  const data = event.data.json();
-  event.waitUntil(
-    self.registration.showNotification(data.title || 'Cruce Reynosa', {
-      body: data.body,
-      icon: '/cruce-reynosa/public/icon-192.png',
-      badge: '/cruce-reynosa/public/icon-192.png',
-      vibrate: [200, 100, 200],
-      data: { url: '/cruce-reynosa/' },
-    })
-  );
-});
+// ── AD ROTATION ──
+setInterval(() => {
+  adIndex = (adIndex + 1) % AD_COUNT;
+  syncAdBanner();
+}, 6000);
 
-self.addEventListener('notificationclick', (event) => {
-  event.notification.close();
-  event.waitUntil(clients.openWindow('/cruce-reynosa/'));
-});
+function syncAdBanner() {
+  const dotClass = AD_DOT_CLASS[adIndex];
+  for (let i = 0; i < AD_COUNT; i++) {
+    const slide = document.getElementById('adSlide' + i);
+    const dot = document.getElementById('adDot' + i);
+    if (slide) slide.classList.toggle('active', i === adIndex);
+    if (dot) {
+      dot.className = 'ad-dot ' + dotClass + (i === adIndex ? ' active' : '');
+    }
+  }
+}
+
+// ── INIT ──
+setTimeout(() => {
+  document.getElementById('splash').classList.add('hidden');
+  setTimeout(() => { document.getElementById('splash').remove(); }, 600);
+}, 2000);
+
+setBridgeVars(BRIDGES[0]);
+render();
+fetchReports();
+setInterval(fetchReports, CONFIG.REFRESH_INTERVAL);
+</script>
+</body>
+</html>
