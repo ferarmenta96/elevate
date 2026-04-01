@@ -3,13 +3,13 @@
 <head>
   <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-P2RPXZMN');</script>
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-BD1YGC73WJ"></script>
-  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-BD1YGC73WJ');</script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config', 'G-BD1YGC73WJ');</script>
 
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
   <title>GALAX-IX — Horus Arcade</title>
   
-  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Cormorant+Garamond:wght@600;700&family=Barlow+Condensed:wght@400;700;800&family=Barlow:wght@400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Cormorant+Garamond:wght@600;700&family=Barlow+Condensed:wght@400;700;800&display=swap" rel="stylesheet">
 
   <style>
     :root {
@@ -17,8 +17,6 @@
       --neon-pink: #ff00aa;
       --gold: #C9A84C;
       --dark-bg: #02040a;
-      --surface: #0f0f0f;
-      --text: #f0ede8;
       --muted: #6b6459;
     }
 
@@ -34,173 +32,194 @@
       color: white;
     }
 
-    /* --- CONTENEDOR DEL JUEGO --- */
     #gameWrapper {
-      flex: 1; /* Ocupa todo el espacio menos el banner */
+      flex: 1;
       position: relative;
       width: 100%;
+      background: #000;
+      touch-action: none;
     }
 
     #gameCanvas {
       display: block;
       width: 100%;
       height: 100%;
-      image-rendering: pixelated;
     }
 
-    /* --- SECCIÓN DE BANNERS (PUBLICIDAD) --- */
+    /* --- ESTILOS DE BANNERS HORUS --- */
     #adsFooter {
-      height: 120px; /* Altura optimizada para no robar mucho espacio */
+      height: 125px;
       background: #000;
       border-top: 1px solid var(--gold);
       position: relative;
+      flex-shrink: 0;
     }
 
-    /* Estilos exactos de tus banners de Horus */
-    .ad-banner { width: 100%; height: 100%; position: relative; overflow: hidden; cursor: pointer; }
+    .ad-banner { width: 100%; height: 100%; position: relative; overflow: hidden; }
     .ad-slide { position: absolute; inset: 0; opacity: 0; transition: opacity 0.7s ease; display: flex; align-items: stretch; }
     .ad-slide.active { opacity: 1; }
 
-    /* Slides específicos */
     .ad-slide-0 { background: linear-gradient(135deg, #0d0b08 0%, #1c1508 55%, #0d0b08 100%); }
     .ad-slide-1 { background: linear-gradient(135deg, #f5f0e8 0%, #ede5d4 100%); }
     .ad-slide-2 { background: linear-gradient(135deg, #060a10 0%, #0b1220 55%, #060a10 100%); }
     .ad-slide-3 { background: linear-gradient(135deg, #C9A84C 0%, #E2C46D 50%, #C9A84C 100%); }
 
-    /* Contenido de los banners */
-    .ad-left { flex: 1; display: flex; flex-direction: column; justify-content: center; padding-left: 20px; z-index: 2; }
-    .ad-brand { font-family: 'Cormorant Garamond', serif; font-size: 24px; font-weight: 600; color: var(--gold); letter-spacing: 4px; text-transform: uppercase; }
-    .ad-eyebrow { font-family: 'Barlow Condensed', sans-serif; font-size: 8px; letter-spacing: 2px; color: var(--muted); text-transform: uppercase; margin-bottom: 4px; }
-    .ad-headline { font-family: 'Cormorant Garamond', serif; font-size: 16px; font-weight: 600; color: #1a1408; line-height: 1.2; }
-    .ad-pill { display: inline-block; padding: 3px 8px; border-radius: 3px; font-family: 'Barlow Condensed', sans-serif; font-size: 8px; font-weight: 800; text-transform: uppercase; margin-top: 8px; width: fit-content; }
-    
+    .ad-left { flex: 1; display: flex; flex-direction: column; justify-content: center; padding-left: 20px; }
+    .ad-brand { font-family: 'Cormorant Garamond', serif; font-size: 24px; color: var(--gold); letter-spacing: 4px; text-transform: uppercase; }
+    .ad-headline { font-family: 'Cormorant Garamond', serif; font-size: 16px; font-weight: 700; color: #1a1408; margin: 5px 0; }
     .on-dark .ad-headline { color: #ddeeff; }
-    .pill-gold { background: #1a1408; color: var(--gold); }
-    .pill-black { background: #0d0b08; color: var(--gold); }
-
-    .ad-indicators { position: absolute; bottom: 8px; left: 50%; transform: translateX(-50%); display: flex; gap: 5px; z-index: 10; }
-    .ad-dot { width: 5px; height: 5px; border-radius: 50%; transition: all 0.35s ease; }
+    
+    .ad-indicators { position: absolute; bottom: 10px; left: 50%; transform: translateX(-50%); display: flex; gap: 5px; }
+    .ad-dot { width: 6px; height: 6px; border-radius: 50%; transition: 0.3s; }
     .ad-dot.on-dark { background: rgba(255,255,255,0.2); }
-    .ad-dot.on-light { background: rgba(0,0,0,0.15); }
-    .ad-dot.active.on-dark { width: 15px; border-radius: 3px; background: rgba(255,255,255,0.7); }
-    .ad-dot.active.on-light { width: 15px; border-radius: 3px; background: rgba(0,0,0,0.4); }
+    .ad-dot.on-light { background: rgba(0,0,0,0.2); }
+    .ad-dot.active.on-dark { width: 18px; border-radius: 3px; background: white; }
+    .ad-dot.active.on-light { width: 18px; border-radius: 3px; background: black; }
 
-    /* UI del Juego */
-    #ui { position: absolute; top: 0; left: 0; right: 0; display: flex; justify-content: space-between; padding: 15px; pointer-events: none; }
-    .hud-box { background: rgba(0,0,0,0.7); border: 1px solid var(--neon-cyan); padding: 5px 10px; font-size: 8px; color: var(--neon-cyan); line-height: 1.5; }
-    #overlay { position: absolute; inset: 0; background: rgba(2,4,10,0.9); display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 100; }
-    #startBtn { background: transparent; border: 2px solid var(--neon-cyan); color: var(--neon-cyan); font-family: 'Press Start 2P'; padding: 15px 30px; cursor: pointer; }
-    #backBtn { position: absolute; top: 60px; left: 15px; background: none; border: 1px solid var(--muted); color: var(--muted); padding: 5px; font-size: 7px; text-decoration: none; z-index: 101; }
+    /* --- UI JUEGO --- */
+    #ui { position: absolute; top: 0; left: 0; right: 0; display: flex; justify-content: space-between; padding: 10px; pointer-events: none; }
+    .hud-box { background: rgba(0,0,0,0.7); border: 1px solid var(--neon-cyan); padding: 5px; font-size: 8px; color: var(--neon-cyan); }
+    #overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.85); display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 20; }
+    #startBtn { background: transparent; border: 2px solid var(--neon-cyan); color: var(--neon-cyan); font-family: 'Press Start 2P'; padding: 15px 25px; cursor: pointer; }
+    #backBtn { position: absolute; top: 55px; left: 10px; color: var(--muted); font-size: 8px; text-decoration: none; border: 1px solid var(--muted); padding: 4px; z-index: 30; }
+
+    /* Controles Mobile */
+    #controls { position: absolute; bottom: 20px; left: 0; right: 0; display: flex; justify-content: space-between; padding: 0 20px; pointer-events: none; }
+    .btn-ctrl { width: 60px; height: 60px; border-radius: 50%; border: 2px solid var(--neon-cyan); background: rgba(0,0,0,0.5); color: var(--neon-cyan); display: flex; align-items: center; justify-content: center; pointer-events: auto; }
+    .btn-fire { border-color: var(--neon-pink); color: var(--neon-pink); width: 70px; height: 70px; }
   </style>
 </head>
 <body>
 
   <div id="gameWrapper">
-    <a href="index.html" id="backBtn">← VOLVER AL MAPA</a>
+    <a href="index.html" id="backBtn">← VOLVER</a>
     <div id="ui">
       <div class="hud-box">SCORE<br><span id="scoreDisplay">000000</span></div>
-      <div class="hud-box" style="text-align:right">WAVE<br><span id="waveDisplay">1</span></div>
+      <div class="hud-box" style="text-align:right">LIVES<br><span id="livesDisplay">♥ ♥ ♥</span></div>
     </div>
+
     <canvas id="gameCanvas"></canvas>
+
+    <div id="controls">
+      <div style="display:flex; gap:10px;">
+        <div class="btn-ctrl" id="btnLeft">◀</div>
+        <div class="btn-ctrl" id="btnRight">▶</div>
+      </div>
+      <div class="btn-ctrl btn-fire" id="btnFire">✦</div>
+    </div>
     
     <div id="overlay">
-      <h1 style="color:var(--neon-cyan); font-size:18px; margin-bottom:20px;">GALAX-IX</h1>
-      <button id="startBtn">INSERT COIN</button>
-      <p style="font-size:7px; color:var(--muted); margin-top:20px;">◀ ▶ MOVER | ✦ DISPARAR</p>
+      <h1 style="color:var(--neon-cyan); font-size:16px; margin-bottom:25px;">GALAX-IX</h1>
+      <button id="startBtn">START GAME</button>
     </div>
   </div>
 
   <div id="adsFooter">
-    <div class="ad-banner" id="adBanner">
-      <div class="ad-slide ad-slide-0 active" id="adSlide0">
-        <div class="ad-left">
-          <div class="ad-eyebrow">Tecnología de Frontera</div>
-          <div class="ad-brand">HORUS</div>
-          <div class="ad-eyebrow" style="color:var(--gold)">System Co.</div>
-        </div>
-      </div>
-
-      <div class="ad-slide ad-slide-1" id="adSlide1">
-        <div class="ad-left">
-          <div class="ad-eyebrow" style="color:#8a7035">Servicios Horus</div>
-          <div class="ad-headline">Automatiza tu negocio.<br>Vende más, trabaja menos.</div>
-          <div class="ad-pill pill-gold">Agendar Demo</div>
-        </div>
-      </div>
-
-      <div class="ad-slide ad-slide-2 on-dark" id="adSlide2">
-        <div class="ad-left">
-          <div class="ad-eyebrow" style="color:#60a5fa60">Desarrollo Digital</div>
-          <div class="ad-headline">Tu idea convertida<br>en aplicación real.</div>
-          <div class="ad-pill" style="background:#60a5fa; color:#000">Cotizar</div>
-        </div>
-      </div>
-
-      <div class="ad-slide ad-slide-3" id="adSlide3">
-        <div class="ad-left">
-          <div class="ad-eyebrow" style="color:#7a5010">Publicidad</div>
-          <div class="ad-headline">Llega a miles de<br>personas diarias.</div>
-          <div class="ad-pill pill-black">Anúnciate aquí</div>
-        </div>
-      </div>
-
-      <div class="ad-indicators" id="adDotsContainer">
-        </div>
+    <div class="ad-banner">
+      <div class="ad-slide ad-slide-0 active" id="adSlide0"><div class="ad-left"><div class="ad-brand">HORUS</div></div></div>
+      <div class="ad-slide ad-slide-1" id="adSlide1"><div class="ad-left"><div class="ad-headline">Automatiza tu negocio.</div></div></div>
+      <div class="ad-slide ad-slide-2 on-dark" id="adSlide2"><div class="ad-left"><div class="ad-headline">Desarrollo Digital.</div></div></div>
+      <div class="ad-slide ad-slide-3" id="adSlide3"><div class="ad-left"><div class="ad-headline">Anúnciate aquí.</div></div></div>
+      <div class="ad-indicators" id="adDotsContainer"></div>
     </div>
   </div>
 
-  <script>
-    // --- LÓGICA DE LOS BANNERS ---
-    const AD_COUNT = 4;
-    const AD_CLASSES = ['on-dark', 'on-light', 'on-dark', 'on-light'];
-    let adIndex = 0;
+<script>
+// --- LÓGICA BANNERS ---
+const AD_COUNT = 4;
+const AD_TYPES = ['on-dark', 'on-light', 'on-dark', 'on-light'];
+let adIndex = 0;
 
-    function initAdDots() {
-      const container = document.getElementById('adDotsContainer');
-      container.innerHTML = Array.from({length: AD_COUNT}, (_, i) => 
-        `<div class="ad-dot ${AD_CLASSES[0]} ${i === 0 ? 'active' : ''}" id="adDot${i}"></div>`
-      ).join('');
+function updateAds() {
+  const container = document.getElementById('adDotsContainer');
+  container.innerHTML = Array.from({length:AD_COUNT}, (_,i) => `<div class="ad-dot ${AD_TYPES[adIndex]} ${i===adIndex?'active':''}"></div>`).join('');
+  for(let i=0; i<AD_COUNT; i++) document.getElementById(`adSlide${i}`).classList.toggle('active', i===adIndex);
+  adIndex = (adIndex + 1) % AD_COUNT;
+}
+setInterval(updateAds, 5000); updateAds();
+
+// --- LÓGICA JUEGO ---
+const canvas = document.getElementById('gameCanvas');
+const ctx = canvas.getContext('2d');
+let W, H, scale, player, enemies = [], bullets = [], enemyBullets = [], particles = [], score = 0, lives = 3, playing = false;
+
+function resize() {
+  W = canvas.width = document.getElementById('gameWrapper').clientWidth;
+  H = canvas.height = document.getElementById('gameWrapper').clientHeight;
+  scale = Math.min(W, H) / 400;
+}
+window.addEventListener('resize', resize); resize();
+
+function init() {
+  player = { x: W/2, y: H-80*scale, w: 30*scale, h: 25*scale, speed: 250*scale };
+  enemies = []; bullets = []; enemyBullets = []; score = 0; lives = 3;
+  spawnWave();
+}
+
+function spawnWave() {
+  for(let r=0; r<3; r++) {
+    for(let c=0; c<6; c++) {
+      enemies.push({ x: 50*scale + c*50*scale, y: 50*scale + r*40*scale, w: 25*scale, h: 20*scale, vx: 40*scale });
     }
+  }
+}
 
-    function rotateAds() {
-      adIndex = (adIndex + 1) % AD_COUNT;
-      const currentClass = AD_CLASSES[adIndex];
-      
-      for (let i = 0; i < AD_COUNT; i++) {
-        const slide = document.getElementById(`adSlide${i}`);
-        const dot = document.getElementById(`adDot${i}`);
-        slide.classList.toggle('active', i === adIndex);
-        dot.className = `ad-dot ${currentClass} ${i === adIndex ? 'active' : ''}`;
+function update(dt) {
+  if(!playing) return;
+  // Movimiento enemigos
+  let edge = false;
+  enemies.forEach(e => {
+    e.x += e.vx * dt;
+    if(e.x > W-e.w || e.x < 0) edge = true;
+  });
+  if(edge) enemies.forEach(e => { e.vx *= -1; e.y += 10*scale; });
+
+  // Balas
+  bullets.forEach((b, i) => {
+    b.y -= 400*scale*dt;
+    if(b.y < 0) bullets.splice(i, 1);
+    enemies.forEach((e, ei) => {
+      if(b.x > e.x && b.x < e.x+e.w && b.y > e.y && b.y < e.y+e.h) {
+        bullets.splice(i, 1); enemies.splice(ei, 1); score += 100;
+        document.getElementById('scoreDisplay').innerText = score.toString().padStart(6,'0');
       }
-    }
-
-    initAdDots();
-    setInterval(rotateAds, 6000);
-
-    // --- LÓGICA DEL JUEGO (RESIZABLE) ---
-    const canvas = document.getElementById('gameCanvas');
-    const ctx = canvas.getContext('2d');
-    let W, H, scale;
-
-    function resize() {
-      const wrapper = document.getElementById('gameWrapper');
-      W = wrapper.clientWidth;
-      H = wrapper.clientHeight;
-      canvas.width = W;
-      canvas.height = H;
-      scale = Math.min(W, H) / 400;
-    }
-
-    window.addEventListener('resize', resize);
-    resize();
-
-    // Aquí pegarías el resto de tu código del juego (update, draw, etc.)
-    // utilizando las variables W y H calculadas arriba.
-    
-    document.getElementById('startBtn').addEventListener('click', () => {
-      document.getElementById('overlay').style.display = 'none';
-      // initGame(); // Tu función de inicio
     });
-  </script>
+  });
+
+  if(enemies.length === 0) spawnWave();
+}
+
+function draw() {
+  ctx.fillStyle = '#000'; ctx.fillRect(0,0,W,H);
+  if(!playing) return;
+  
+  // Jugador
+  ctx.fillStyle = '#00ffff'; ctx.fillRect(player.x, player.y, player.w, player.h);
+  // Enemigos
+  ctx.fillStyle = '#ff00aa'; enemies.forEach(e => ctx.fillRect(e.x, e.y, e.w, e.h));
+  // Balas
+  ctx.fillStyle = '#ffff00'; bullets.forEach(b => ctx.fillRect(b.x, b.y, 4*scale, 10*scale));
+}
+
+let last = 0;
+function loop(ms) {
+  const dt = (ms - last) / 1000; last = ms;
+  update(dt); draw(); requestAnimationFrame(loop);
+}
+
+document.getElementById('startBtn').onclick = () => {
+  document.getElementById('overlay').style.display = 'none';
+  playing = true; init(); requestAnimationFrame(loop);
+};
+
+// Controles Táctiles
+let move = 0;
+document.getElementById('btnLeft').ontouchstart = () => move = -1;
+document.getElementById('btnRight').ontouchstart = () => move = 1;
+document.getElementById('btnLeft').ontouchend = document.getElementById('btnRight').ontouchend = () => move = 0;
+document.getElementById('btnFire').ontouchstart = () => { if(playing) bullets.push({x: player.x+player.w/2, y: player.y}); };
+
+setInterval(() => { if(playing && move !== 0) player.x = Math.max(0, Math.min(W-player.w, player.x + move*player.speed*0.016)); }, 16);
+</script>
 </body>
 </html>
