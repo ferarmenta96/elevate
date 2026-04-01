@@ -2,7 +2,8 @@
 <html lang="es">
 <head>
   
- <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+  
+  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
 new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
 j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
@@ -493,13 +494,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 
 <script>
-
-  
 const CONFIG = {
   APPS_SCRIPT_URL: 'https://script.google.com/macros/s/AKfycbyVRCfmU9E3kKKSOIwokc8q4gglO9TEDlvifxOh8CWp3Q3WYFr8znbHe4wseC6re8g/exec',
   REFRESH_INTERVAL: 5 * 60 * 1000,
 };
-  
 
 const BRIDGES = [
   {
@@ -514,32 +512,18 @@ const BRIDGES = [
       P0:{lat:26.06816515980127,lng:-98.25943803654874},P1:{lat:26.07352401153976,lng:-98.25931309683781},P2:{lat:26.083253887692326,lng:-98.2659202780586},P3:{lat:26.090226302061208,lng:-98.2678518075698},P4:{lat:26.0930699512091,lng:-98.27083197851844},P5:{lat:26.09430026899008,lng:-98.27129678242454},P6:{lat:26.095230322058235,lng:-98.27101953097178},P7:{lat:26.095808855306874,lng:-98.27090536861428},P8:{lat:26.096592433710224,lng:-98.27048133698067},P9:{lat:26.097895945054855,lng:-98.26954357471848}
     }
   },
-
   {
-    id: 'sentri_hidalgo', 
-    name: 'SENTRI', // Puedes dejarlo como 'SENTRI' para que se vea más limpio en el Tab
-    type: 'Carril Exclusivo', 
-    lanes: ['SENTRI'],
+    id: 'sentri_hidalgo', name: 'Hidalgo SENTRI', type: 'SENTRI/FAST', lanes: ['SENTRI', 'FAST'],
     points: {
-      P0:{lat:26.088665, lng:-98.283187}, // Inicio fila Sentri
-      P2:{lat:26.091560, lng:-98.278385}, // Punto intermedio 1
-      P4:{lat:26.094500, lng:-98.273500}, // Punto intermedio 2 (Cerca de la entrada)
-      P9:{lat:26.097895, lng:-98.269543}  // Salida del puente
+      P0:{lat:26.09882194406453,lng:-98.28455832178551},P1:{lat:26.09643187175056,lng:-98.27587835510695},P2:{lat:26.09296072541135,lng:-98.27064387138478},P3:{lat:26.095559136078,lng:-98.27167089034293},P4:{lat:26.09706658451357,lng:-98.27016901315683},P5:{lat:26.099,lng:-98.268},P6:{lat:26.101,lng:-98.267},P7:{lat:26.103,lng:-98.266},P8:{lat:26.104,lng:-98.265},P9:{lat:26.105297703822483,lng:-98.26483514026881}
     }
   },
   {
-    id: 'peatonal_hidalgo', 
-    name: 'Peatonal', 
-    type: 'Cruce a Pie', 
-    lanes: ['General', 'Ready Lane'],
+    id: 'peatonal_hidalgo', name: 'Hidalgo Peatonal', type: 'Peatonal', lanes: ['General', 'Ready Lane'],
     points: {
-      P0:{lat:26.095034, lng:-98.272108}, // Inicio fila peatonal
-      P4:{lat:26.096500, lng:-98.271000}, // Mitad del puente
-      P9:{lat:26.097895, lng:-98.269543}  // Salida
+      P0:{lat:26.1005,lng:-98.2605},P1:{lat:26.0985,lng:-98.2585},P2:{lat:26.0965,lng:-98.2565},P3:{lat:26.0945,lng:-98.2545},P4:{lat:26.0935,lng:-98.2535},P5:{lat:26.0928,lng:-98.2528},P6:{lat:26.0922,lng:-98.2522},P7:{lat:26.0918,lng:-98.2518},P8:{lat:26.0912,lng:-98.2512},P9:{lat:26.0905,lng:-98.2505}
     }
   },
-
-  
   {
     id: 'pharr', name: 'Pharr', type: 'Internacional', lanes: ['General', 'SENTRI', 'FAST'],
     points: {
@@ -561,9 +545,18 @@ const state = {
 function getCalculatedQueueData(bridge) {
   const serverData = state.serverTraffic[bridge.id];
   const bridgeReports = state.reports.filter(r => r.bridge === bridge.id);
-  let finalTime = serverData ? serverData.estimatedTime : 5;
-  let finalSource = serverData ? serverData.source : 'Sin datos';
+
+  // Label amigable de fuente
+  const sourceLabel = {
+    'google':           'Google Maps',
+    'horario estimado': 'Horario estimado',
+    'horario programado': 'Horario programado',
+  };
+
+  let finalTime   = serverData ? serverData.estimatedTime : 5;
+  let finalSource = serverData ? (sourceLabel[serverData.source] || serverData.source) : 'Sin datos';
   let finalStatus = serverData ? serverData.status : 'fluido';
+
   const recentReports = bridgeReports.filter(r => (new Date() - new Date(r.timestamp)) / 60000 < 30).slice(0, 20);
   if (recentReports.length > 0) {
     let sum = 0;
@@ -574,14 +567,16 @@ function getCalculatedQueueData(bridge) {
       sum += mins;
     });
     const userAvg = sum / recentReports.length;
-    finalTime = Math.round((finalTime * 0.4) + (userAvg * 0.6));
-    finalSource = 'Google + Comunidad';
+    finalTime   = Math.round((finalTime * 0.4) + (userAvg * 0.6));
+    finalSource = (serverData && serverData.source === 'google') ? 'Google + Comunidad' : 'Comunidad';
     finalStatus = finalTime < 15 ? 'fluido' : (finalTime < 45 ? 'moderado' : 'pesado');
   }
+
   let startSegment = null;
   if (finalTime > 15 && finalTime <= 30) startSegment = 'P4-P5';
   else if (finalTime > 30 && finalTime <= 50) startSegment = 'P3-P4';
   else if (finalTime > 50) startSegment = 'P2-P3';
+
   return {
     estimatedTime: finalTime, status: finalStatus, source: finalSource,
     queueLength: (finalTime * 0.04).toFixed(1),
