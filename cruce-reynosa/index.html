@@ -16,12 +16,12 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   <meta name="apple-mobile-web-app-title" content="Cruce Reynosa" />
   <meta name="mobile-web-app-capable" content="yes" />
 
-  <meta property="og:title" content="Cruce Reynosa 🌉" />
-  <meta property="og:description" content="¿Cuánto está la fila en el puente? Tiempo real, reportado por la comunidad." />
+  <meta property="og:title" content="Cruce Reynosa" />
+  <meta property="og:description" content="Cuanto esta la fila en el puente? Tiempo real, reportado por la comunidad." />
   <meta property="og:type" content="website" />
   <meta property="og:image" content="https://raw.githubusercontent.com/TU_USUARIO/cruce-reynosa/main/public/og-image.png" />
 
-  <title>Cruce Reynosa 🌉</title>
+  <title>Cruce Reynosa</title>
   
   <link rel="manifest" href="/cruce-reynosa/manifest.json" />
   <link rel="apple-touch-icon" href="/cruce-reynosa/public/icon-192.png" />
@@ -110,13 +110,302 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     .traffic-meta { display: flex; gap: 16px; font-family: 'Barlow', sans-serif; font-size: 13px; color: var(--text-dim); margin-top: 12px; }
     .meta-item { display: flex; align-items: center; gap: 6px; }
 
+    /* ══════════════════════════════════════════
+       AD BANNER — Diseño Elegante Horus
+    ══════════════════════════════════════════ */
+    .ad-banner {
+      border-radius: 12px;
+      margin: 0 18px 16px;
+      overflow: hidden;
+      height: 148px;
+      position: relative;
+      cursor: pointer;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .ad-banner:hover { transform: translateY(-2px); }
+
+    .ad-slide {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      transition: opacity 0.7s ease;
+      display: flex;
+      align-items: stretch;
+    }
+    .ad-slide.active { opacity: 1; }
+
+    /* Slide 0: Dark gold — HORUS identity */
+    .ad-slide-0 {
+      background: linear-gradient(135deg, #0d0b08 0%, #1c1508 55%, #0d0b08 100%);
+      border: 1px solid #C9A84C50;
+    }
+    .ad-slide-0::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    }
+    .ad-s0-left {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 20px 0 20px 22px;
+      position: relative;
+      z-index: 2;
+    }
+    .ad-s0-eyebrow {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 9px;
+      letter-spacing: 3px;
+      color: var(--gold-dim);
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+    .ad-s0-brand {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 38px;
+      font-weight: 600;
+      letter-spacing: 8px;
+      color: var(--gold);
+      text-transform: uppercase;
+      line-height: 1;
+      margin-bottom: 8px;
+    }
+    .ad-s0-sub {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 10px;
+      letter-spacing: 2.5px;
+      color: var(--muted);
+      text-transform: uppercase;
+    }
+    .ad-s0-right {
+      width: 110px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0.07;
+    }
+
+    /* Slide 1: Cream — Automatización */
+    .ad-slide-1 {
+      background: linear-gradient(135deg, #f5f0e8 0%, #ede5d4 100%);
+      border: 1px solid #d4c4a0;
+    }
+    .ad-s1-inner {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 18px 22px;
+      position: relative;
+      overflow: hidden;
+    }
+    .ad-s1-deco {
+      position: absolute;
+      right: -10px; top: 50%;
+      transform: translateY(-50%);
+      opacity: 0.07;
+      pointer-events: none;
+    }
+    .ad-s1-eyebrow {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 9px;
+      letter-spacing: 3px;
+      color: #8a7035;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+    .ad-s1-headline {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 22px;
+      font-weight: 600;
+      color: #1a1408;
+      line-height: 1.25;
+      margin-bottom: 10px;
+    }
+    .ad-s1-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .ad-pill-dark {
+      display: inline-block;
+      background: #1a1408;
+      color: #C9A84C;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 9px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      padding: 4px 10px;
+      border-radius: 3px;
+      flex-shrink: 0;
+    }
+    .ad-s1-contact {
+      font-family: 'Barlow', sans-serif;
+      font-size: 9px;
+      color: #8a7a5a;
+      letter-spacing: 0.3px;
+    }
+
+    /* Slide 2: Dark blue — Desarrollo digital */
+    .ad-slide-2 {
+      background: linear-gradient(135deg, #060a10 0%, #0b1220 55%, #060a10 100%);
+      border: 1px solid #60a5fa30;
+    }
+    .ad-slide-2::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, #60a5fa70, transparent);
+    }
+    .ad-s2-inner {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 18px 22px;
+    }
+    .ad-s2-eyebrow {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 9px;
+      letter-spacing: 3px;
+      color: #60a5fa60;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+    .ad-s2-headline {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 22px;
+      font-weight: 600;
+      color: #ddeeff;
+      line-height: 1.25;
+      margin-bottom: 10px;
+    }
+    .ad-s2-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .ad-pill-blue {
+      display: inline-block;
+      background: #60a5fa18;
+      border: 1px solid #60a5fa40;
+      color: #60a5fa;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 9px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      padding: 4px 10px;
+      border-radius: 3px;
+      flex-shrink: 0;
+    }
+    .ad-s2-contact {
+      font-family: 'Barlow', sans-serif;
+      font-size: 9px;
+      color: #60a5fa45;
+      letter-spacing: 0.3px;
+    }
+
+    /* Slide 3: Gold solid — Anunciate */
+    .ad-slide-3 {
+      background: linear-gradient(135deg, #C9A84C 0%, #E2C46D 50%, #C9A84C 100%);
+      border: 1px solid #E2C46D;
+      position: relative;
+      overflow: hidden;
+    }
+    .ad-slide-3::before {
+      content: 'HORUS';
+      position: absolute;
+      right: -18px; top: 50%;
+      transform: translateY(-50%) rotate(-90deg);
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 58px;
+      font-weight: 700;
+      letter-spacing: 10px;
+      color: rgba(0,0,0,0.10);
+      pointer-events: none;
+      white-space: nowrap;
+    }
+    .ad-s3-inner {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 18px 22px;
+      position: relative;
+      z-index: 2;
+    }
+    .ad-s3-eyebrow {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 9px;
+      letter-spacing: 3px;
+      color: #7a5010;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+    .ad-s3-headline {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 22px;
+      font-weight: 700;
+      color: #0d0b08;
+      line-height: 1.25;
+      margin-bottom: 10px;
+    }
+    .ad-s3-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .ad-pill-black {
+      display: inline-block;
+      background: #0d0b08;
+      color: #C9A84C;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 9px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      padding: 4px 10px;
+      border-radius: 3px;
+      flex-shrink: 0;
+    }
+    .ad-s3-contact {
+      font-family: 'Barlow', sans-serif;
+      font-size: 9px;
+      color: #7a5010;
+      letter-spacing: 0.3px;
+    }
+
+    /* Indicadores */
+    .ad-indicators {
+      position: absolute;
+      bottom: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 5px;
+      z-index: 10;
+    }
+    .ad-dot {
+      width: 5px; height: 5px;
+      border-radius: 50%;
+      transition: all 0.35s ease;
+    }
+    .ad-dot.on-dark  { background: rgba(255,255,255,0.25); }
+    .ad-dot.on-light { background: rgba(0,0,0,0.20); }
+    .ad-dot.active.on-dark  { width: 18px; border-radius: 3px; background: rgba(255,255,255,0.75); }
+    .ad-dot.active.on-light { width: 18px; border-radius: 3px; background: rgba(0,0,0,0.45); }
+    /* ══ FIN AD BANNER ══ */
+
     .map-container { background: var(--surface2); border: 1px solid var(--border); border-radius: 12px; margin: 0 18px 16px; overflow: hidden; height: 280px; position: relative; z-index: 1;}
     #map { width: 100%; height: 100%; background-color: var(--surface2) !important; }
-    
-    /* Animación del mapa de Leaflet */
     .leaflet-queue-pulse { animation: mapMarkerPulse 1.5s infinite; transform-origin: center; }
     @keyframes mapMarkerPulse { 0% { transform: scale(1); stroke-width: 2px; } 50% { transform: scale(1.5); stroke-width: 5px; } 100% { transform: scale(1); stroke-width: 2px; } }
-
     .queue-indicator { position: absolute; bottom: 12px; left: 12px; background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(10px); border: 1px solid var(--border-gold); border-radius: 8px; padding: 8px 12px; font-family: 'Barlow Condensed', sans-serif; font-size: 11px; letter-spacing: 1px; color: var(--gold); text-transform: uppercase; font-weight: 700; z-index: 1000;}
 
     .report-btn { background: linear-gradient(135deg, var(--accent) 0%, var(--gold-dim) 100%); border: 1px solid var(--gold-bright); border-radius: 12px; padding: 16px; margin: 0 18px 16px; font-family: 'Barlow Condensed', sans-serif; font-size: 15px; font-weight: 800; letter-spacing: 2px; color: var(--bg); text-transform: uppercase; cursor: pointer; transition: all 0.2s; box-shadow: 0 4px 16px var(--gold-glow); width: calc(100% - 36px); }
@@ -138,25 +427,11 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     .empty-emoji { font-size: 48px; margin-bottom: 12px; }
     .empty-text { font-family: 'Barlow Condensed', sans-serif; font-size: 14px; letter-spacing: 1px; text-transform: uppercase; }
 
-    .ad-banner { background: var(--surface2); border: 1px solid var(--border); border-radius: 12px; margin: 0 18px 16px; overflow: hidden; height: 140px; position: relative; cursor: pointer; transition: all 0.3s; }
-    .ad-banner:hover { border-color: var(--border-gold); transform: translateY(-2px); }
-    .ad-banner.slide-white { background: #f8f8f8; }
-    .ad-slide { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; padding: 24px; opacity: 0; transition: opacity 0.6s ease; }
-    .ad-slide.active { opacity: 1; }
-    .ad-content { text-align: center; width: 100%; }
-    .ad-logo { font-family: 'Cormorant Garamond', serif; font-size: 36px; font-weight: 600; letter-spacing: 5px; color: var(--gold); margin-bottom: 8px; line-height: 1.2; }
-    .ad-tagline { font-family: 'Barlow Condensed', sans-serif; font-size: 13px; letter-spacing: 3px; color: var(--muted); text-transform: uppercase; line-height: 1.4; }
-    .slide-white .ad-tagline { color: #666; }
-    .ad-indicators { position: absolute; bottom: 12px; left: 50%; transform: translateX(-50%); display: flex; gap: 6px; }
-    .ad-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--faint); transition: all 0.3s; }
-    .ad-dot.active { background: var(--gold); width: 20px; border-radius: 3px; }
-
     .bottom-nav { position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); max-width: 480px; width: 100%; background: var(--surface); border-top: 1px solid var(--border); padding: 12px 18px; display: flex; justify-content: center; align-items: center; gap: 8px; font-family: 'Barlow', sans-serif; font-size: 11px; color: var(--muted); z-index: 100; }
     .powered-by { position: fixed; bottom: 42px; left: 50%; transform: translateX(-50%); max-width: 480px; width: 100%; display: flex; justify-content: center; align-items: center; gap: 6px; padding: 8px; background: transparent; z-index: 99; }
     .powered-text { font-family: 'Barlow', sans-serif; font-size: 10px; color: var(--faint); letter-spacing: 1px; }
     .powered-horus { font-family: 'Cormorant Garamond', serif; font-size: 12px; font-weight: 600; letter-spacing: 2px; color: var(--gold-dim); }
 
-    /* ESTILOS DEL BANNER DE INSTALACIÓN PWA */
     .install-banner { position: fixed; bottom: 56px; left: 50%; transform: translateX(-50%); max-width: 440px; width: calc(100% - 36px); background: var(--surface2); border: 1px solid var(--border-gold); border-radius: 12px; padding: 14px; display: flex; align-items: center; gap: 12px; z-index: 101; box-shadow: 0 8px 32px rgba(0,0,0,0.8); }
     .install-banner-text { flex: 1; }
     .install-banner-title { font-family: 'Barlow Condensed', sans-serif; font-size: 14px; font-weight: 700; color: var(--text); letter-spacing: 1px; }
@@ -193,6 +468,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 
 <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-P2RPXZMN"
 height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+
 <div id="splash">
   <svg class="splash-eye" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
     <path d="M100 60 L160 140 L40 140 Z" fill="none" stroke="#C9A84C" stroke-width="3"/>
@@ -217,75 +493,61 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 
 <script>
-// ⚙️ CONFIGURACIÓN GENERAL
 const CONFIG = {
-  // 🔗 AQUI ESTA TU NUEVO BACKEND EN APPS SCRIPT
   APPS_SCRIPT_URL: 'https://script.google.com/macros/s/AKfycbyVRCfmU9E3kKKSOIwokc8q4gglO9TEDlvifxOh8CWp3Q3WYFr8znbHe4wseC6re8g/exec',
   REFRESH_INTERVAL: 5 * 60 * 1000,
 };
 
-// 📍 COORDENADAS DE LOS PUENTES
 const BRIDGES = [
   {
     id: 'anzalduas', name: 'Anzalduas', type: 'Internacional', lanes: ['General', 'SENTRI', 'FAST'],
     points: {
-      P0: { lat: 26.096610722637962, lng: -98.36040041694339 }, P1: { lat: 26.107717681717862, lng: -98.35275851243759 }, P2: { lat: 26.1140243781169,   lng: -98.32108657295402 }, P3: { lat: 26.132241525955056, lng: -98.31455542056901 }, P4: { lat: 26.13863433191444, lng: -98.31343900324282 }, P5: { lat: 26.14077921993775, lng: -98.31309651615652  }, P6: { lat: 26.1426312588012, lng: -98.31281926470751 }, P7: { lat: 26.145046917478332, lng: -98.31208128658041 }, P8: { lat: 26.14556248144121, lng: -98.31196122740076  }, P9: { lat: 26.146422048057648, lng: -98.31171982858521 }
+      P0:{lat:26.096610722637962,lng:-98.36040041694339},P1:{lat:26.107717681717862,lng:-98.35275851243759},P2:{lat:26.1140243781169,lng:-98.32108657295402},P3:{lat:26.132241525955056,lng:-98.31455542056901},P4:{lat:26.13863433191444,lng:-98.31343900324282},P5:{lat:26.14077921993775,lng:-98.31309651615652},P6:{lat:26.1426312588012,lng:-98.31281926470751},P7:{lat:26.145046917478332,lng:-98.31208128658041},P8:{lat:26.14556248144121,lng:-98.31196122740076},P9:{lat:26.146422048057648,lng:-98.31171982858521}
     }
   },
   {
     id: 'hidalgo', name: 'Hidalgo', type: 'Internacional', lanes: ['General', 'SENTRI', 'Ready Lane'],
     points: {
-      P0: { lat: 26.06816515980127,  lng: -98.25943803654874 }, P1: { lat: 26.07352401153976,  lng: -98.25931309683781 }, P2: { lat: 26.083253887692326, lng: -98.2659202780586  }, P3: { lat: 26.090226302061208, lng: -98.2678518075698  }, P4: { lat: 26.0930699512091, lng: -98.27083197851844 }, P5: { lat: 26.09430026899008, lng: -98.27129678242454 }, P6: { lat: 26.095230322058235, lng: -98.27101953097178 }, P7: { lat: 26.095808855306874, lng: -98.27090536861428 }, P8: { lat: 26.096592433710224, lng: -98.27048133698067  }, P9: { lat: 26.097895945054855, lng: -98.26954357471848  }
+      P0:{lat:26.06816515980127,lng:-98.25943803654874},P1:{lat:26.07352401153976,lng:-98.25931309683781},P2:{lat:26.083253887692326,lng:-98.2659202780586},P3:{lat:26.090226302061208,lng:-98.2678518075698},P4:{lat:26.0930699512091,lng:-98.27083197851844},P5:{lat:26.09430026899008,lng:-98.27129678242454},P6:{lat:26.095230322058235,lng:-98.27101953097178},P7:{lat:26.095808855306874,lng:-98.27090536861428},P8:{lat:26.096592433710224,lng:-98.27048133698067},P9:{lat:26.097895945054855,lng:-98.26954357471848}
     }
   },
   {
     id: 'sentri_hidalgo', name: 'Hidalgo SENTRI', type: 'SENTRI/FAST', lanes: ['SENTRI', 'FAST'],
     points: {
-      P0: { lat: 26.09882194406453, lng: -98.28455832178551 }, P1: { lat: 26.09643187175056, lng: -98.27587835510695 }, P2: { lat: 26.09296072541135, lng: -98.27064387138478 }, P3: { lat: 26.095559136078,   lng: -98.27167089034293 }, P4: { lat: 26.09706658451357, lng: -98.27016901315683 }, P5: { lat: 26.099,             lng: -98.268 }, P6: { lat: 26.101,             lng: -98.267 }, P7: { lat: 26.103,             lng: -98.266 }, P8: { lat: 26.104,             lng: -98.265 }, P9: { lat: 26.105297703822483, lng: -98.26483514026881 }
+      P0:{lat:26.09882194406453,lng:-98.28455832178551},P1:{lat:26.09643187175056,lng:-98.27587835510695},P2:{lat:26.09296072541135,lng:-98.27064387138478},P3:{lat:26.095559136078,lng:-98.27167089034293},P4:{lat:26.09706658451357,lng:-98.27016901315683},P5:{lat:26.099,lng:-98.268},P6:{lat:26.101,lng:-98.267},P7:{lat:26.103,lng:-98.266},P8:{lat:26.104,lng:-98.265},P9:{lat:26.105297703822483,lng:-98.26483514026881}
     }
   },
   {
     id: 'peatonal_hidalgo', name: 'Hidalgo Peatonal', type: 'Peatonal', lanes: ['General', 'Ready Lane'],
     points: {
-      P0: { lat: 26.1005, lng: -98.2605 }, P1: { lat: 26.0985, lng: -98.2585 }, P2: { lat: 26.0965, lng: -98.2565 }, P3: { lat: 26.0945, lng: -98.2545 }, P4: { lat: 26.0935, lng: -98.2535 }, P5: { lat: 26.0928, lng: -98.2528 }, P6: { lat: 26.0922, lng: -98.2522 }, P7: { lat: 26.0918, lng: -98.2518 }, P8: { lat: 26.0912, lng: -98.2512 }, P9: { lat: 26.0905, lng: -98.2505 }
+      P0:{lat:26.1005,lng:-98.2605},P1:{lat:26.0985,lng:-98.2585},P2:{lat:26.0965,lng:-98.2565},P3:{lat:26.0945,lng:-98.2545},P4:{lat:26.0935,lng:-98.2535},P5:{lat:26.0928,lng:-98.2528},P6:{lat:26.0922,lng:-98.2522},P7:{lat:26.0918,lng:-98.2518},P8:{lat:26.0912,lng:-98.2512},P9:{lat:26.0905,lng:-98.2505}
     }
   },
   {
     id: 'pharr', name: 'Pharr', type: 'Internacional', lanes: ['General', 'SENTRI', 'FAST'],
     points: {
-      P0: { lat: 26.068507962845153, lng: -98.20489651731435 }, P1: { lat: 26.07450085216445, lng: -98.20388799444298 }, P2: { lat: 26.07951791896548, lng: -98.20303462893644 }, P3: { lat: 26.08132958469284, lng: -98.20272431420678 }, P4: { lat: 26.083350255694075, lng: -98.2023364207947 }, P5: { lat: 26.08491799371516, lng: -98.20206489541974 }, P6: { lat: 26.08695602165513, lng: -98.20150244997225 }, P7: { lat: 26.08763971111181, lng: -98.20100788587186 }, P8: { lat: 26.088170982963497, lng: -98.2008866691806 }, P9: { lat: 26.090100089187125, lng: -98.20142487129579 }
+      P0:{lat:26.068507962845153,lng:-98.20489651731435},P1:{lat:26.07450085216445,lng:-98.20388799444298},P2:{lat:26.07951791896548,lng:-98.20303462893644},P3:{lat:26.08132958469284,lng:-98.20272431420678},P4:{lat:26.083350255694075,lng:-98.2023364207947},P5:{lat:26.08491799371516,lng:-98.20206489541974},P6:{lat:26.08695602165513,lng:-98.20150244997225},P7:{lat:26.08763971111181,lng:-98.20100788587186},P8:{lat:26.088170982963497,lng:-98.2008866691806},P9:{lat:26.090100089187125,lng:-98.20142487129579}
     }
   }
 ];
 
-const QUEUE_POSITIONS = ['Antes del semáforo', 'Después del semáforo', 'A la altura de HEB', 'En el puente', 'Fluido (sin fila)'];
-const TIME_OPTIONS = ['5-10 min', '15-20 min', '30-40 min', '1 hora', '1.5 horas', '2+ horas'];
+const QUEUE_POSITIONS = ['Antes del semaforo','Despues del semaforo','A la altura de HEB','En el puente','Fluido (sin fila)'];
+const TIME_OPTIONS = ['5-10 min','15-20 min','30-40 min','1 hora','1.5 horas','2+ horas'];
 
 const state = {
-  activeBridge: 0,
-  reports: [],
-  serverTraffic: {},
-  showForm: false,
-  submitDone: false,
-  submitting: false,
-  formData: { position: '', lane: '', estimatedTime: '', note: '' },
-  showInstallBanner: false,
-  installPrompt: null,
-  map: null,
-  mapLayerGroup: null, 
+  activeBridge: 0, reports: [], serverTraffic: {},
+  showForm: false, submitDone: false, submitting: false,
+  formData: { position:'', lane:'', estimatedTime:'', note:'' },
+  showInstallBanner: false, installPrompt: null, map: null, mapLayerGroup: null,
 };
 
-// ── LÓGICA DE FUSIÓN DE TIEMPO (Backend + Usuarios Reales) ──
 function getCalculatedQueueData(bridge) {
   const serverData = state.serverTraffic[bridge.id];
   const bridgeReports = state.reports.filter(r => r.bridge === bridge.id);
-
   let finalTime = serverData ? serverData.estimatedTime : 5;
   let finalSource = serverData ? serverData.source : 'Sin datos';
   let finalStatus = serverData ? serverData.status : 'fluido';
-
   const recentReports = bridgeReports.filter(r => (new Date() - new Date(r.timestamp)) / 60000 < 30).slice(0, 20);
-  
   if (recentReports.length > 0) {
     let sum = 0;
     recentReports.forEach(r => {
@@ -295,128 +557,70 @@ function getCalculatedQueueData(bridge) {
       sum += mins;
     });
     const userAvg = sum / recentReports.length;
-    
     finalTime = Math.round((finalTime * 0.4) + (userAvg * 0.6));
     finalSource = 'Google + Comunidad';
     finalStatus = finalTime < 15 ? 'fluido' : (finalTime < 45 ? 'moderado' : 'pesado');
   }
-
   let startSegment = null;
   if (finalTime > 15 && finalTime <= 30) startSegment = 'P4-P5';
   else if (finalTime > 30 && finalTime <= 50) startSegment = 'P3-P4';
   else if (finalTime > 50) startSegment = 'P2-P3';
-
-  let estimatedLength = (finalTime * 0.04).toFixed(1);
-
-  return { 
-    estimatedTime: finalTime, status: finalStatus, source: finalSource, queueLength: estimatedLength, 
-    queueStartSegment: startSegment, isInQueue: finalTime >= 30, reports: bridgeReports 
+  return {
+    estimatedTime: finalTime, status: finalStatus, source: finalSource,
+    queueLength: (finalTime * 0.04).toFixed(1),
+    queueStartSegment: startSegment, isInQueue: finalTime >= 30, reports: bridgeReports
   };
 }
 
-// 🟢 IMPLEMENTACIÓN DE MAPA GRATUITO CON LEAFLET 🟢
 function initMap(bridge) {
   const mapContainer = document.getElementById('map');
   if (!mapContainer || typeof L === 'undefined') return;
-
-  if (state.map) {
-    state.map.remove();
-    state.map = null;
-  }
-
+  if (state.map) { state.map.remove(); state.map = null; }
   const center = bridge.points.P2 || bridge.points.P4;
-
-  state.map = L.map(mapContainer, {
-    zoomControl: false,
-    attributionControl: false 
-  }).setView([center.lat, center.lng], 14);
-
-  L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
-    maxZoom: 19
-  }).addTo(state.map);
-
+  state.map = L.map(mapContainer, { zoomControl: false, attributionControl: false }).setView([center.lat, center.lng], 14);
+  L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', { maxZoom: 19 }).addTo(state.map);
   drawBridgePoints(bridge);
 }
 
 function drawBridgePoints(bridge) {
-  if (state.mapLayerGroup) {
-    state.mapLayerGroup.clearLayers();
-  } else {
-    state.mapLayerGroup = L.layerGroup().addTo(state.map);
-  }
-
+  if (state.mapLayerGroup) state.mapLayerGroup.clearLayers();
+  else state.mapLayerGroup = L.layerGroup().addTo(state.map);
   const points = bridge.points;
   const path = [];
-  
   Object.entries(points).forEach(([name, coords]) => {
     path.push([coords.lat, coords.lng]);
-    L.circleMarker([coords.lat, coords.lng], {
-      radius: 4,
-      fillColor: name === 'P4' ? '#C9A84C' : '#666',
-      color: '#fff',
-      weight: 1,
-      fillOpacity: 1
-    }).addTo(state.mapLayerGroup);
+    L.circleMarker([coords.lat, coords.lng], { radius: 4, fillColor: name === 'P4' ? '#C9A84C' : '#666', color: '#fff', weight: 1, fillOpacity: 1 }).addTo(state.mapLayerGroup);
   });
-
-  L.polyline(path, {
-    color: '#C9A84C',
-    weight: 3,
-    opacity: 0.6
-  }).addTo(state.mapLayerGroup);
-  
+  L.polyline(path, { color: '#C9A84C', weight: 3, opacity: 0.6 }).addTo(state.mapLayerGroup);
   const queueData = getCalculatedQueueData(bridge);
-  if (queueData && queueData.queueStartSegment) {
-    highlightQueueStart(queueData.queueStartSegment, points);
-  }
+  if (queueData && queueData.queueStartSegment) highlightQueueStart(queueData.queueStartSegment, points);
 }
 
 function highlightQueueStart(segment, points) {
-  const [start, end] = segment.split('-');
+  const [start] = segment.split('-');
   const startPoint = points[start];
-
   if (!startPoint) return;
-
-  L.circleMarker([startPoint.lat, startPoint.lng], {
-    radius: 8,
-    fillColor: '#f87171',
-    color: '#fff',
-    weight: 2,
-    fillOpacity: 1,
-    className: 'leaflet-queue-pulse'
-  }).addTo(state.mapLayerGroup);
+  L.circleMarker([startPoint.lat, startPoint.lng], { radius: 8, fillColor: '#f87171', color: '#fff', weight: 2, fillOpacity: 1, className: 'leaflet-queue-pulse' }).addTo(state.mapLayerGroup);
 }
 
-// ── API - FETCH REPORTS ──
 async function fetchReports() {
   try {
     const response = await fetch(CONFIG.APPS_SCRIPT_URL + '?action=getReports&t=' + new Date().getTime());
     const data = await response.json();
     state.reports = data.reports || [];
     state.serverTraffic = data.serverTraffic || {};
-    
     render();
-    const activeBridge = BRIDGES[state.activeBridge];
-    if (state.map) drawBridgePoints(activeBridge);
-  } catch (error) {
-    console.error('Error fetching data:', error);
-  }
+    if (state.map) drawBridgePoints(BRIDGES[state.activeBridge]);
+  } catch (error) { console.error('Error fetching data:', error); }
 }
 
 async function submitReport(report) {
-  try {
-    await fetch(CONFIG.APPS_SCRIPT_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ action: 'addReport', ...report })
-    });
-  } catch (error) {
-    console.error('Error submitting report:', error);
-    throw error;
-  }
+  await fetch(CONFIG.APPS_SCRIPT_URL, {
+    method: 'POST', headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ action: 'addReport', ...report })
+  });
 }
 
-// ── UTILIDADES ──
 function timeAgo(isoString) {
   const diffMins = Math.floor((new Date() - new Date(isoString)) / 60000);
   if (diffMins < 1) return 'Ahora';
@@ -424,19 +628,19 @@ function timeAgo(isoString) {
   return `${Math.floor(diffMins / 60)}h`;
 }
 
-function horusEyeSVG(size) {
-  return `
-    <svg width="${size}" height="${size}" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" style="display:block">
-      <path d="M100 60 L160 140 L40 140 Z" fill="none" stroke="currentColor" stroke-width="3"/>
-      <line x1="70" y1="100" x2="70" y2="140" stroke="currentColor" stroke-width="2"/>
-      <line x1="100" y1="80" x2="100" y2="140" stroke="currentColor" stroke-width="2"/>
-      <line x1="130" y1="100" x2="130" y2="140" stroke="currentColor" stroke-width="2"/>
-      <circle cx="100" cy="90" r="8" fill="currentColor"/>
-    </svg>`;
+function horusEyeSVG(size, color) {
+  const c = color || 'currentColor';
+  return `<svg width="${size}" height="${size}" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" style="display:block">
+    <path d="M100 60 L160 140 L40 140 Z" fill="none" stroke="${c}" stroke-width="3"/>
+    <line x1="70" y1="100" x2="70" y2="140" stroke="${c}" stroke-width="2"/>
+    <line x1="100" y1="80" x2="100" y2="140" stroke="${c}" stroke-width="2"/>
+    <line x1="130" y1="100" x2="130" y2="140" stroke="${c}" stroke-width="2"/>
+    <circle cx="100" cy="90" r="8" fill="${c}"/>
+  </svg>`;
 }
 
 function setBridgeVars(bridge) {
-  const colorMap = { anzalduas: '#C9A84C', hidalgo: '#60a5fa', sentri_hidalgo: '#4ade80', peatonal_hidalgo: '#fbbf24', pharr: '#f87171' };
+  const colorMap = { anzalduas:'#C9A84C', hidalgo:'#60a5fa', sentri_hidalgo:'#4ade80', peatonal_hidalgo:'#fbbf24', pharr:'#f87171' };
   const color = colorMap[bridge.id] || '#C9A84C';
   document.documentElement.style.setProperty('--accent', color);
   document.documentElement.style.setProperty('--accent-glow', color + '20');
@@ -444,11 +648,78 @@ function setBridgeVars(bridge) {
   document.documentElement.style.setProperty('--tab-color', color);
 }
 
-// ── RENDER PRINCIPAL ──
+// ── AD SLIDES: on-dark = dots blancos, on-light = dots oscuros ──
+// Slide 0: dark → on-dark | Slide 1: cream → on-light | Slide 2: dark → on-dark | Slide 3: gold → on-light
+const AD_DOT_CLASS = ['on-dark', 'on-light', 'on-dark', 'on-light'];
+const AD_COUNT = 4;
+let adIndex = 0;
+
+
+  
+function adBannerHTML() {
+  return `
+    <!-- Slide 0: Dark gold — HORUS identity -->
+    <div class="ad-slide ad-slide-0 active" id="adSlide0">
+      <div class="ad-s0-left">
+        <div class="ad-s0-eyebrow">Tecnologia de Frontera</div>
+        <div class="ad-s0-brand">HORUS</div>
+        <div class="ad-s0-sub">System Co. &mdash; Automatizacion Empresarial</div>
+      </div>
+      <div class="ad-s0-right">${horusEyeSVG(90, '#C9A84C')}</div>
+    </div>
+
+    <!-- Slide 1: Cream — Automatizacion -->
+    <div class="ad-slide ad-slide-1" id="adSlide1">
+      <div class="ad-s1-inner">
+        <div class="ad-s1-deco">${horusEyeSVG(110, '#C9A84C')}</div>
+        <div class="ad-s1-eyebrow">Servicios Horus</div>
+        <div class="ad-s1-headline">Automatiza tu negocio.<br>Vende mas, trabaja menos.</div>
+        <div class="ad-s1-row">
+          <span class="ad-pill-dark">Agenda tu demo</span>
+          <span class="ad-s1-contact">info@horussystem.net &nbsp;&middot;&nbsp; 956-556-9674</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 2: Dark blue — Desarrollo digital -->
+    <div class="ad-slide ad-slide-2" id="adSlide2">
+      <div class="ad-s2-inner">
+        <div class="ad-s2-eyebrow">Desarrollo Digital</div>
+        <div class="ad-s2-headline">Tu idea, convertida<br>en aplicacion real.</div>
+        <div class="ad-s2-row">
+          <span class="ad-pill-blue">Cotiza tu proyecto</span>
+          <span class="ad-s2-contact">info@horussystem.net &nbsp;&middot;&nbsp; 956-556-9674</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 3: Gold solid — Anunciate -->
+    <div class="ad-slide ad-slide-3" id="adSlide3">
+      <div class="ad-s3-inner">
+        <div class="ad-s3-eyebrow">Publicidad Fronteriza</div>
+        <div class="ad-s3-headline">Llega a miles de<br>personas diarias.</div>
+        <div class="ad-s3-row">
+          <span class="ad-pill-black">Anunciate aqui</span>
+          <span class="ad-s3-contact">info@horussystem.net &nbsp;&middot;&nbsp; 956-556-9674</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="ad-indicators">
+      ${Array.from({length: AD_COUNT}, (_, i) =>
+        `<div class="ad-dot ${AD_DOT_CLASS[0]}${i === 0 ? ' active' : ''}" id="adDot${i}"></div>`
+      ).join('')}
+    </div>
+  `;
+}
+
+
+
+  
+  
 function render() {
   const bridge = BRIDGES[state.activeBridge];
   const queueData = getCalculatedQueueData(bridge);
-
   setBridgeVars(bridge);
 
   const statusMap = {
@@ -462,26 +733,16 @@ function render() {
     <div class="header">
       <div class="header-top">
         <div class="logo">
-          <div class="logo-eye" style="color: var(--gold)">
-            ${horusEyeSVG(40)}
-          </div>
+          <div class="logo-eye" style="color: var(--gold)">${horusEyeSVG(40)}</div>
           <div class="logo-text">
             <div class="logo-title">Horus</div>
             <div class="logo-sub">System Co.</div>
           </div>
         </div>
-        <div class="live-badge">
-          <div class="live-dot"></div>
-          LIVE
-        </div>
+        <div class="live-badge"><div class="live-dot"></div>LIVE</div>
       </div>
-
       <div class="tabs">
-        ${BRIDGES.map((b, i) => `
-          <div class="tab ${state.activeBridge === i ? 'active' : ''}" onclick="selectBridge(${i})">
-            ${b.name}
-          </div>
-        `).join('')}
+        ${BRIDGES.map((b, i) => `<div class="tab ${state.activeBridge === i ? 'active' : ''}" onclick="selectBridge(${i})">${b.name}</div>`).join('')}
       </div>
     </div>
 
@@ -492,53 +753,26 @@ function render() {
           <div class="traffic-time">${queueData.estimatedTime || 0} min</div>
         </div>
         <div class="traffic-status ${status.class}">
-          <div class="status-dot"></div>
-          ${status.text}
+          <div class="status-dot"></div>${status.text}
         </div>
       </div>
       <div class="traffic-meta">
-        <div class="meta-item">📏 ${queueData.queueLength || 0} km de fila</div>
-        <div class="meta-item">🚗 ${bridge.lanes.length} carriles</div>
-        ${queueData.isInQueue ? `<div class="meta-item" style="color:var(--red)">🚨 En fila</div>` : ''}
+        <div class="meta-item">${queueData.queueLength || 0} km de fila</div>
+        <div class="meta-item">${bridge.lanes.length} carriles</div>
+        ${queueData.isInQueue ? `<div class="meta-item" style="color:var(--red)">En fila</div>` : ''}
       </div>
-      ${queueData.source ? `
-        <div style="margin-top:10px;font-family:'Barlow Condensed',sans-serif;font-size:10px;letter-spacing:1.5px;color:var(--faint);text-transform:uppercase;">
-          Fuente: ${queueData.source}
-        </div>
-      ` : ''}
+      ${queueData.source ? `<div style="margin-top:10px;font-family:'Barlow Condensed',sans-serif;font-size:10px;letter-spacing:1.5px;color:var(--faint);text-transform:uppercase;">Fuente: ${queueData.source}</div>` : ''}
     </div>
+
+    <!-- AD BANNER entre tiempo estimado y mapa -->
+    <div class="ad-banner" id="adBanner">${adBannerHTML()}</div>
 
     <div class="map-container">
       <div id="map"></div>
-      ${queueData.queueStartSegment ? `
-        <div class="queue-indicator">
-          🚦 Fila inicia aprox en ${queueData.queueStartSegment}
-        </div>
-      ` : ''}
+      ${queueData.queueStartSegment ? `<div class="queue-indicator">Fila inicia aprox en ${queueData.queueStartSegment}</div>` : ''}
     </div>
 
-    <button class="report-btn" onclick="openForm()">
-      📍 Reportar Tiempo de Fila
-    </button>
-
-    <div class="ad-banner" id="adBanner">
-      <div class="ad-slide active" id="adSlide0">
-        <div class="ad-content">
-          <div class="ad-logo">HORUS</div>
-          <div class="ad-tagline">Servicios de Automatización</div>
-        </div>
-      </div>
-      <div class="ad-slide" id="adSlide1">
-        <div class="ad-content" style="color: var(--gold)">
-          <div class="ad-logo" style="font-size: 24px; line-height: 1.3;">¿Negocio en la frontera?</div>
-          <div class="ad-tagline" style="font-size: 14px; margin-top: 8px;">Contáctanos: info@horussystem.net</div>
-        </div>
-      </div>
-      <div class="ad-indicators">
-        <div class="ad-dot active" id="adDot0"></div>
-        <div class="ad-dot" id="adDot1"></div>
-      </div>
-    </div>
+    <button class="report-btn" onclick="openForm()">Reportar Tiempo de Fila</button>
 
     <div class="reports-section">
       <div class="section-title">Reportes Recientes</div>
@@ -549,58 +783,53 @@ function render() {
             <div class="report-time-badge">${r.estimatedTime}</div>
           </div>
           <div class="report-meta">
-            <span>🚗 ${r.lane}</span>
-            <span>⏱️ ${timeAgo(r.timestamp)}</span>
+            <span>${r.lane}</span>
+            <span>${timeAgo(r.timestamp)}</span>
           </div>
           ${r.note ? `<div class="report-note">${r.note}</div>` : ''}
         </div>
       `).join('') : `
         <div class="empty-state">
-          <div class="empty-emoji">🤷</div>
+          <div class="empty-emoji">&#x1F937;</div>
           <div class="empty-text">No hay reportes recientes</div>
         </div>
       `}
     </div>
 
     <div class="bottom-nav">
-      <span>🔄 Auto-refresh 5min</span>
-      <span style="color: var(--faint)">·</span>
-      <span>👥 ${state.reports.length} reportes hoy</span>
-      <span style="color: var(--faint)">·</span>
-      <span>🤝 Comunidad</span>
+      <span>Auto-refresh 5min</span>
+      <span style="color: var(--faint)">&middot;</span>
+      <span>${state.reports.length} reportes hoy</span>
+      <span style="color: var(--faint)">&middot;</span>
+      <span>Comunidad</span>
     </div>
 
     <div class="powered-by">
       <span class="powered-text">Powered by</span>
-      <div class="powered-logo">
-        ${horusEyeSVG(20)}
+      <div style="display:flex;align-items:center;gap:5px;color:var(--gold-dim)">
+        ${horusEyeSVG(16)}
         <span class="powered-horus">HORUS</span>
       </div>
     </div>
   `;
 
-  // INSTALL BANNER
   if (state.showInstallBanner) {
     htmlStr += `
       <div class="install-banner">
-        <div style="font-size:22px">📲</div>
+        <div style="font-size:22px">&#x1F4F2;</div>
         <div class="install-banner-text">
-          <div class="install-banner-title">Instalar en tu teléfono</div>
-          <div class="install-banner-sub">Acceso rápido desde tu pantalla de inicio</div>
+          <div class="install-banner-title">Instalar en tu telefono</div>
+          <div class="install-banner-sub">Acceso rapido desde tu pantalla de inicio</div>
         </div>
         <button class="install-btn" onclick="installApp()">Instalar</button>
-        <button class="install-close" onclick="dismissInstall()">✕</button>
+        <button class="install-close" onclick="dismissInstall()">&#x2715;</button>
       </div>
     `;
   }
 
-  // FORM MODAL
-  if (state.showForm) {
-    htmlStr += renderForm(bridge);
-  }
+  if (state.showForm) htmlStr += renderForm(bridge);
 
   document.getElementById('app').innerHTML = htmlStr;
-
   setTimeout(() => initMap(bridge), 100);
   syncAdBanner();
 }
@@ -608,76 +837,50 @@ function render() {
 function renderForm(bridge) {
   const f = state.formData;
   const canSubmit = f.position && f.lane && f.estimatedTime && !state.submitting;
-
   if (state.submitDone) {
-    return `
-      <div class="modal-overlay">
-        <div class="modal-sheet" style="max-width:480px">
-          <div class="modal-handle"></div>
-          <div class="success-screen">
-            <div class="big-emoji">✅</div>
-            <div class="title">¡Reporte enviado!</div>
-            <div class="sub">Gracias por ayudar a la comunidad de Reynosa 🙌</div>
-          </div>
-        </div>
-      </div>
-    `;
+    return `<div class="modal-overlay"><div class="modal-sheet" style="max-width:480px"><div class="modal-handle"></div>
+      <div class="success-screen"><div class="big-emoji">&#x2705;</div><div class="title">Reporte enviado</div>
+      <div class="sub">Gracias por ayudar a la comunidad de Reynosa</div></div></div></div>`;
   }
-
   return `
     <div class="modal-overlay" onclick="closeFormIfOutside(event)">
       <div class="modal-sheet" style="max-width:480px" onclick="event.stopPropagation()">
         <div class="modal-handle"></div>
         <div class="modal-title">Reportar Fila</div>
-        <div class="modal-sub">${bridge.name} · ${bridge.type}</div>
-
+        <div class="modal-sub">${bridge.name} &middot; ${bridge.type}</div>
         <div class="form-group">
-          <label class="form-label">¿Hasta dónde llega la fila?</label>
+          <label class="form-label">Hasta donde llega la fila</label>
           <div class="option-grid">
-            ${QUEUE_POSITIONS.map(p => `
-              <button class="option-btn ${f.position === p ? 'selected' : ''}" onclick="setField('position','${p}')">${p}</button>
-            `).join('')}
+            ${QUEUE_POSITIONS.map(p => `<button class="option-btn ${f.position === p ? 'selected' : ''}" onclick="setField('position','${p}')">${p}</button>`).join('')}
           </div>
         </div>
-
         <div class="form-group">
           <label class="form-label">Carril</label>
           <div class="option-grid">
-            ${bridge.lanes.map(l => `
-              <button class="option-btn ${f.lane === l ? 'selected' : ''}" onclick="setField('lane','${l}')">${l}</button>
-            `).join('')}
+            ${bridge.lanes.map(l => `<button class="option-btn ${f.lane === l ? 'selected' : ''}" onclick="setField('lane','${l}')">${l}</button>`).join('')}
           </div>
         </div>
-
         <div class="form-group">
           <label class="form-label">Tiempo estimado de cruce</label>
           <div class="option-grid">
-            ${TIME_OPTIONS.map(t => `
-              <button class="option-btn ${f.estimatedTime === t ? 'selected' : ''}" onclick="setField('estimatedTime','${t}')">${t}</button>
-            `).join('')}
+            ${TIME_OPTIONS.map(t => `<button class="option-btn ${f.estimatedTime === t ? 'selected' : ''}" onclick="setField('estimatedTime','${t}')">${t}</button>`).join('')}
           </div>
         </div>
-
         <div class="form-group">
           <label class="form-label">Comentario (opcional)</label>
-          <textarea class="form-textarea" rows="2" placeholder="Ej: Están revisando mucho..." oninput="setNote(this.value)">${f.note}</textarea>
+          <textarea class="form-textarea" rows="2" placeholder="Ej: Estan revisando mucho..." oninput="setNote(this.value)">${f.note}</textarea>
         </div>
-
         <button class="submit-btn" ${canSubmit ? '' : 'disabled'} onclick="handleSubmit()">
-          ${state.submitting ? 'Enviando...' : '🚀 Publicar Reporte'}
+          ${state.submitting ? 'Enviando...' : 'Publicar Reporte'}
         </button>
-
-        <button onclick="closeForm()" style="width:100%;background:none;border:none;color:var(--muted);font-size:13px;letter-spacing:1px;margin-top:12px;cursor:pointer;padding:8px;font-family:'Barlow Condensed',sans-serif;text-transform:uppercase">
-          Cancelar
-        </button>
+        <button onclick="closeForm()" style="width:100%;background:none;border:none;color:var(--muted);font-size:13px;letter-spacing:1px;margin-top:12px;cursor:pointer;padding:8px;font-family:'Barlow Condensed',sans-serif;text-transform:uppercase">Cancelar</button>
       </div>
     </div>
   `;
 }
 
-// ── ACCIONES ──
 window.selectBridge = (i) => { state.activeBridge = i; state.showForm = false; render(); };
-window.openForm = () => { state.showForm = true; state.submitDone = false; state.formData = { position: '', lane: '', estimatedTime: '', note: '' }; render(); };
+window.openForm = () => { state.showForm = true; state.submitDone = false; state.formData = { position:'', lane:'', estimatedTime:'', note:'' }; render(); };
 window.closeForm = () => { state.showForm = false; render(); };
 window.closeFormIfOutside = (e) => { if (e.target.classList.contains('modal-overlay')) closeForm(); };
 window.setField = (key, val) => { state.formData[key] = val; render(); };
@@ -686,10 +889,8 @@ window.setNote = (val) => { state.formData.note = val; };
 window.handleSubmit = async () => {
   if (!state.formData.position || !state.formData.lane || !state.formData.estimatedTime) return;
   state.submitting = true; render();
-
   const bridge = BRIDGES[state.activeBridge];
   const report = { bridge: bridge.id, bridgeName: bridge.name, ...state.formData, timestamp: new Date().toISOString() };
-
   try {
     await submitReport(report);
     state.submitDone = true; state.submitting = false; render();
@@ -711,46 +912,40 @@ window.installApp = async () => {
 
 window.dismissInstall = () => {
   state.showInstallBanner = false;
-  // 🟢 SOLUCIÓN DEL BOTÓN: Guardo la preferencia de que lo ocultaste
   localStorage.setItem('install-dismissed', '1');
   render();
 };
 
-// ── PWA & ADS ──
 if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => { navigator.serviceWorker.register('/cruce-reynosa/sw.js').catch(console.error); });
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/cruce-reynosa/sw.js')
+      .then(reg => reg.update()).catch(console.error);
+  });
 }
 
 window.addEventListener('beforeinstallprompt', (e) => {
-  e.preventDefault(); 
+  e.preventDefault();
   state.installPrompt = e;
-  
-  // 🟢 TRAMPA TEMPORAL (Quita esto después si no quieres forzarlo): 
-  // Elimino la regla del localStorage para que puedas ver el botón emergente mientras haces pruebas.
-  localStorage.removeItem('install-dismissed');
-  
-  if (!localStorage.getItem('install-dismissed')) { 
-    state.showInstallBanner = true; 
-    render(); 
-  }
+  // localStorage.removeItem('install-dismissed'); // descomenta para pruebas
+  if (!localStorage.getItem('install-dismissed')) { state.showInstallBanner = true; render(); }
 });
 
-let adIndex = 0;
-const AD_COUNT = 2;
+// ── AD ROTATION ──
 setInterval(() => {
   adIndex = (adIndex + 1) % AD_COUNT;
   syncAdBanner();
 }, 6000);
 
 function syncAdBanner() {
+  const dotClass = AD_DOT_CLASS[adIndex];
   for (let i = 0; i < AD_COUNT; i++) {
     const slide = document.getElementById('adSlide' + i);
-    const dot   = document.getElementById('adDot' + i);
+    const dot = document.getElementById('adDot' + i);
     if (slide) slide.classList.toggle('active', i === adIndex);
-    if (dot) dot.classList.toggle('active', i === adIndex);
+    if (dot) {
+      dot.className = 'ad-dot ' + dotClass + (i === adIndex ? ' active' : '');
+    }
   }
-  const banner = document.getElementById('adBanner');
-  if (banner) banner.classList.toggle('slide-white', adIndex === 0);
 }
 
 // ── INIT ──
