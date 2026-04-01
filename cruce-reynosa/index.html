@@ -18,7 +18,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   <meta name="mobile-web-app-capable" content="yes" />
 
   <meta property="og:title" content="Cruce Reynosa" />
-  <meta property="og:description" content="Cómo esta la fila en el puente? Tiempo real, Powered by Horus." />
+  <meta property="og:description" content="Cuanto esta la fila en el puente? Tiempo real, reportado por la comunidad." />
   <meta property="og:type" content="website" />
   <meta property="og:image" content="https://raw.githubusercontent.com/TU_USUARIO/cruce-reynosa/main/public/og-image.png" />
 
@@ -433,6 +433,16 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     .powered-text { font-family: 'Barlow', sans-serif; font-size: 10px; color: var(--faint); letter-spacing: 1px; }
     .powered-horus { font-family: 'Cormorant Garamond', serif; font-size: 12px; font-weight: 600; letter-spacing: 2px; color: var(--gold-dim); }
 
+    /* ── PANEL RESUMEN PUENTES ── */
+    .bridges-summary { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; margin: 0 18px 16px; }
+    .bridge-pill { background: var(--surface2); border: 1px solid var(--border); border-radius: 10px; padding: 10px 6px 8px; text-align: center; cursor: pointer; transition: all 0.2s; position: relative; overflow: hidden; }
+    .bridge-pill::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: var(--pill-color, var(--border)); }
+    .bridge-pill.active-pill { border-color: var(--pill-color, var(--gold)); background: var(--surface3); box-shadow: 0 0 10px var(--pill-glow, transparent); }
+    .bridge-pill-name { font-family: 'Barlow Condensed', sans-serif; font-size: 9px; font-weight: 700; letter-spacing: 0.5px; color: var(--muted); text-transform: uppercase; margin-bottom: 5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .bridge-pill-time { font-family: 'Cormorant Garamond', serif; font-size: 18px; font-weight: 600; line-height: 1; color: var(--text); }
+    .bridge-pill-unit { font-family: 'Barlow', sans-serif; font-size: 8px; color: var(--muted); margin-top: 2px; }
+    .bridge-pill-dot { width: 5px; height: 5px; border-radius: 50%; margin: 4px auto 0; }
+
     .install-banner { position: fixed; bottom: 56px; left: 50%; transform: translateX(-50%); max-width: 440px; width: calc(100% - 36px); background: var(--surface2); border: 1px solid var(--border-gold); border-radius: 12px; padding: 14px; display: flex; align-items: center; gap: 12px; z-index: 101; box-shadow: 0 8px 32px rgba(0,0,0,0.8); }
     .install-banner-text { flex: 1; }
     .install-banner-title { font-family: 'Barlow Condensed', sans-serif; font-size: 14px; font-weight: 700; color: var(--text); letter-spacing: 1px; }
@@ -729,6 +739,36 @@ function adBannerHTML() {
 
   
   
+// ── PANEL RESUMEN: todos los puentes de un vistazo ──────────
+function renderBridgesSummary(activeBridgeIndex) {
+  const colorMap = {
+    anzalduas:       { color: '#C9A84C', glow: '#C9A84C20' },
+    hidalgo:         { color: '#60a5fa', glow: '#60a5fa20' },
+    sentri_hidalgo:  { color: '#4ade80', glow: '#4ade8020' },
+    peatonal_hidalgo:{ color: '#fbbf24', glow: '#fbbf2420' },
+    pharr:           { color: '#f87171', glow: '#f8717120' },
+  };
+  const dotColors = { fluido: 'var(--green)', moderado: 'var(--yellow)', pesado: 'var(--red)' };
+
+  const pills = BRIDGES.map((b, i) => {
+    const qd       = getCalculatedQueueData(b);
+    const c        = colorMap[b.id] || { color: '#C9A84C', glow: '#C9A84C20' };
+    const isActive = i === activeBridgeIndex;
+    const dot      = dotColors[qd.status] || 'var(--green)';
+    return `
+      <div class="bridge-pill ${isActive ? 'active-pill' : ''}"
+           style="--pill-color:${c.color};--pill-glow:${c.glow}"
+           onclick="selectBridge(${i})">
+        <div class="bridge-pill-name">${b.name}</div>
+        <div class="bridge-pill-time">${qd.estimatedTime}</div>
+        <div class="bridge-pill-unit">min</div>
+        <div class="bridge-pill-dot" style="background:${dot}"></div>
+      </div>`;
+  }).join('');
+
+  return `<div class="bridges-summary">${pills}</div>`;
+}
+
 function render() {
   const bridge = BRIDGES[state.activeBridge];
   const queueData = getCalculatedQueueData(bridge);
@@ -775,6 +815,9 @@ function render() {
       </div>
       ${queueData.source ? `<div style="margin-top:10px;font-family:'Barlow Condensed',sans-serif;font-size:10px;letter-spacing:1.5px;color:var(--faint);text-transform:uppercase;">Fuente: ${queueData.source}</div>` : ''}
     </div>
+
+    <!-- PANEL RESUMEN: todos los puentes -->
+    ${renderBridgesSummary(state.activeBridge)}
 
     <!-- AD BANNER entre tiempo estimado y mapa -->
     <div class="ad-banner" id="adBanner">${adBannerHTML()}</div>
