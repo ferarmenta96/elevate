@@ -393,6 +393,160 @@
       letter-spacing: 0.3px;
     }
 
+    /* ══════════════════════════════════════════
+       ██████████████████████████████████████████
+       ██  CAMBIO 1 DE 3 — CSS SLIDE KEMPER   ██
+       ██████████████████████████████████████████
+       Slide 4: Kemper Life — Navy + Rojo
+    ══════════════════════════════════════════ */
+    .ad-slide-4 {
+      background: linear-gradient(135deg, #0a1628 0%, #132040 60%, #0e1b36 100%);
+      border: 1px solid #1e3a6e;
+      display: flex;
+      align-items: stretch;
+    }
+    .ad-slide-4::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, #c41230, #e8192c, #c41230);
+    }
+    .ad-kemper-left {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 14px 12px 14px 18px;
+      border-right: 1px solid #1e3a6e;
+    }
+    .ad-kemper-logo {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 18px;
+      font-weight: 900;
+      letter-spacing: 1px;
+      color: #ffffff;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+      line-height: 1;
+    }
+    .ad-kemper-logo span {
+      color: #e8192c;
+      font-weight: 400;
+      font-style: italic;
+      text-transform: none;
+    }
+    .ad-kemper-headline {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 17px;
+      font-weight: 700;
+      color: #ffffff;
+      line-height: 1.2;
+      margin-bottom: 8px;
+    }
+    .ad-kemper-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+    }
+    .ad-kemper-tag {
+      border: 1px solid rgba(255,255,255,0.35);
+      border-radius: 2px;
+      padding: 2px 5px;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 8px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      color: rgba(255,255,255,0.8);
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+    .ad-kemper-right {
+      width: 148px;
+      flex-shrink: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 12px 14px;
+    }
+    .ad-kemper-agent {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 0.3px;
+      color: #f0c040;
+      text-decoration: underline;
+      text-decoration-color: #f0c040;
+      margin-bottom: 1px;
+    }
+    .ad-kemper-role {
+      font-family: 'Barlow', sans-serif;
+      font-size: 8px;
+      color: rgba(255,255,255,0.55);
+      margin-bottom: 6px;
+    }
+    .ad-kemper-callnow {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 7px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      color: rgba(255,255,255,0.45);
+      text-transform: uppercase;
+      margin-bottom: 2px;
+    }
+    .ad-kemper-phone {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 18px;
+      font-weight: 900;
+      color: #f0c040;
+      line-height: 1;
+      margin-bottom: 2px;
+      letter-spacing: 0.5px;
+    }
+    .ad-kemper-altphones {
+      font-family: 'Barlow', sans-serif;
+      font-size: 7.5px;
+      color: rgba(255,255,255,0.5);
+      margin-bottom: 7px;
+    }
+    .ad-kemper-divider {
+      height: 1px;
+      background: rgba(255,255,255,0.12);
+      margin-bottom: 6px;
+    }
+    .ad-kemper-email {
+      font-family: 'Barlow', sans-serif;
+      font-size: 7.5px;
+      color: rgba(255,255,255,0.5);
+      margin-bottom: 2px;
+      display: flex;
+      align-items: center;
+      gap: 3px;
+    }
+    .ad-kemper-address {
+      font-family: 'Barlow', sans-serif;
+      font-size: 7px;
+      color: rgba(255,255,255,0.35);
+      margin-bottom: 6px;
+      line-height: 1.3;
+    }
+    .ad-kemper-cta {
+      display: inline-block;
+      background: #e8192c;
+      color: #fff;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 8px;
+      font-weight: 800;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      padding: 3px 8px;
+      border-radius: 2px;
+      align-self: flex-start;
+    }
+    /* ██████████████████████████████████████████
+       ██         FIN CAMBIO 1 DE 3            ██
+       ██████████████████████████████████████████ */
+
     /* Indicadores */
     .ad-indicators {
       position: absolute;
@@ -574,7 +728,6 @@ function getCalculatedQueueData(bridge) {
   const serverData = state.serverTraffic[bridge.id];
   const bridgeReports = state.reports.filter(r => r.bridge === bridge.id);
 
-  // Label amigable de fuente
   const sourceLabel = {
     'google':           'Google Maps',
     'horario estimado': 'Horario estimado',
@@ -688,10 +841,17 @@ function setBridgeVars(bridge) {
   document.documentElement.style.setProperty('--tab-color', color);
 }
 
-// ── AD SLIDES: on-dark = dots blancos, on-light = dots oscuros ──
-// Slide 0: dark → on-dark | Slide 1: cream → on-light | Slide 2: dark → on-dark | Slide 3: gold → on-light
-const AD_DOT_CLASS = ['on-dark', 'on-light', 'on-dark', 'on-light'];
-const AD_COUNT = 4;
+/* ██████████████████████████████████████████
+   ██  CAMBIO 2 DE 3 — AD_DOT_CLASS y      ██
+   ██  AD_COUNT: de 4 → 5                  ██
+   ██████████████████████████████████████████ */
+// Slide 0: Horus dark → on-dark | Slide 1: Kemper navy → on-dark | Slide 2: cream → on-light | Slide 3: dark blue → on-dark | Slide 4: gold → on-light
+const AD_DOT_CLASS = ['on-dark', 'on-dark', 'on-light', 'on-dark', 'on-light'];
+const AD_COUNT = 5;
+/* ██████████████████████████████████████████
+   ██         FIN CAMBIO 2 DE 3            ██
+   ██████████████████████████████████████████ */
+
 let adIndex = 0;
 
 
@@ -708,8 +868,34 @@ function adBannerHTML() {
       <div class="ad-s0-right">${horusEyeSVG(90, '#C9A84C')}</div>
     </div>
 
-    <!-- Slide 1: Cream — Automatizacion -->
-    <div class="ad-slide ad-slide-1" id="adSlide1">
+    <!-- Slide 1: Kemper Life -->
+    <div class="ad-slide ad-slide-4" id="adSlide1">
+      <div class="ad-kemper-left">
+        <div class="ad-kemper-logo">KEMPER <span>Life</span></div>
+        <div class="ad-kemper-headline">¿Tu familia está<br>protegida?</div>
+        <div class="ad-kemper-tags">
+          <span class="ad-kemper-tag">Vida</span>
+          <span class="ad-kemper-tag">Accidentes</span>
+          <span class="ad-kemper-tag">Cáncer</span>
+          <span class="ad-kemper-tag">Corazón</span>
+          <span class="ad-kemper-tag">Incendio</span>
+        </div>
+      </div>
+      <div class="ad-kemper-right">
+        <div class="ad-kemper-agent">Minerva San Miguel</div>
+        <div class="ad-kemper-role">Sales Agent · Kemper Life</div>
+        <div class="ad-kemper-callnow">Llámame ahora</div>
+        <div class="ad-kemper-phone">956-732-3290</div>
+        <div class="ad-kemper-altphones">T 956-686-4891 · F 956-686-4270</div>
+        <div class="ad-kemper-divider"></div>
+        <div class="ad-kemper-email">📧 msanmiguel@kemper.com</div>
+        <div class="ad-kemper-address">400 W. Nolana, Suite L&amp;M · McAllen, TX 78504</div>
+        <div class="ad-kemper-cta">kemper.com</div>
+      </div>
+    </div>
+
+    <!-- Slide 2: Cream — Automatizacion -->
+    <div class="ad-slide ad-slide-1" id="adSlide2">
       <div class="ad-s1-inner">
         <div class="ad-s1-deco">${horusEyeSVG(110, '#C9A84C')}</div>
         <div class="ad-s1-eyebrow">Servicios Horus</div>
@@ -721,8 +907,8 @@ function adBannerHTML() {
       </div>
     </div>
 
-    <!-- Slide 2: Dark blue — Desarrollo digital -->
-    <div class="ad-slide ad-slide-2" id="adSlide2">
+    <!-- Slide 3: Dark blue — Desarrollo digital -->
+    <div class="ad-slide ad-slide-2" id="adSlide3">
       <div class="ad-s2-inner">
         <div class="ad-s2-eyebrow">Desarrollo Digital</div>
         <div class="ad-s2-headline">Tu idea, convertida<br>en aplicacion real.</div>
@@ -733,8 +919,8 @@ function adBannerHTML() {
       </div>
     </div>
 
-    <!-- Slide 3: Gold solid — Anunciate -->
-    <div class="ad-slide ad-slide-3" id="adSlide3">
+    <!-- Slide 4: Gold solid — Anunciate -->
+    <div class="ad-slide ad-slide-3" id="adSlide4">
       <div class="ad-s3-inner">
         <div class="ad-s3-eyebrow">Publicidad Fronteriza</div>
         <div class="ad-s3-headline">Llega a miles de<br>personas diarias.</div>
@@ -1000,7 +1186,6 @@ if ('serviceWorker' in navigator) {
 window.addEventListener('beforeinstallprompt', (e) => {
   e.preventDefault();
   state.installPrompt = e;
-  // localStorage.removeItem('install-dismissed'); // descomenta para pruebas
   if (!localStorage.getItem('install-dismissed')) { state.showInstallBanner = true; render(); }
 });
 
