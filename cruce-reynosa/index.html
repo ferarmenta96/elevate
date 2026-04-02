@@ -146,7 +146,7 @@
     }
     .ad-slide.active { opacity: 1; }
 
-    /* Slide 0: Dark gold — HORUS identity */
+    /* Slide 0 (css): Dark gold — HORUS identity */
     .ad-slide-0 {
       background: linear-gradient(135deg, #0d0b08 0%, #1c1508 55%, #0d0b08 100%);
       border: 1px solid #C9A84C50;
@@ -200,7 +200,7 @@
       opacity: 0.07;
     }
 
-    /* Slide 1: Cream — Automatización */
+    /* Slide 1 (css): Cream — Automatización */
     .ad-slide-1 {
       background: linear-gradient(135deg, #f5f0e8 0%, #ede5d4 100%);
       border: 1px solid #d4c4a0;
@@ -262,7 +262,7 @@
       letter-spacing: 0.3px;
     }
 
-    /* Slide 2: Dark blue — Desarrollo digital */
+    /* Slide 2 (css): Dark blue — Desarrollo digital */
     .ad-slide-2 {
       background: linear-gradient(135deg, #060a10 0%, #0b1220 55%, #060a10 100%);
       border: 1px solid #60a5fa30;
@@ -323,7 +323,7 @@
       letter-spacing: 0.3px;
     }
 
-    /* Slide 3: Gold solid — Anunciate */
+    /* Slide 3 (css): Gold solid — Anunciate */
     .ad-slide-3 {
       background: linear-gradient(135deg, #C9A84C 0%, #E2C46D 50%, #C9A84C 100%);
       border: 1px solid #E2C46D;
@@ -393,12 +393,7 @@
       letter-spacing: 0.3px;
     }
 
-    /* ══════════════════════════════════════════
-       ██████████████████████████████████████████
-       ██  CAMBIO 1 DE 3 — CSS SLIDE KEMPER   ██
-       ██████████████████████████████████████████
-       Slide 4: Kemper Life — Navy + Rojo
-    ══════════════════════════════════════════ */
+    /* Slide 4 (css): Kemper Life — Navy + Rojo */
     .ad-slide-4 {
       background: linear-gradient(135deg, #0a1628 0%, #132040 60%, #0e1b36 100%);
       border: 1px solid #1e3a6e;
@@ -543,9 +538,104 @@
       border-radius: 2px;
       align-self: flex-start;
     }
-    /* ██████████████████████████████████████████
-       ██         FIN CAMBIO 1 DE 3            ██
-       ██████████████████████████████████████████ */
+
+    /* Slide 5 (css): Blanco — Anúnciate Aquí */
+    .ad-slide-5 {
+      background: #ffffff;
+      border: 2px solid #C9A84C;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      align-items: stretch;
+    }
+    .ad-slide-5::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, #C9A84C, #f59e0b, #C9A84C);
+    }
+    .ad-slide-5::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, #C9A84C, #f59e0b, #C9A84C);
+    }
+    .ad-s5-inner {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 14px 22px;
+      text-align: center;
+      position: relative;
+      z-index: 2;
+    }
+    .ad-s5-eyebrow {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 9px;
+      letter-spacing: 4px;
+      color: #8a7035;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+    .ad-s5-headline {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 32px;
+      font-weight: 900;
+      letter-spacing: 3px;
+      color: #0d0b08;
+      text-transform: uppercase;
+      line-height: 1.05;
+      margin-bottom: 4px;
+    }
+    .ad-s5-headline span {
+      color: #C9A84C;
+    }
+    .ad-s5-sub {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      color: #555;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+    .ad-s5-divider {
+      width: 40px;
+      height: 2px;
+      background: #C9A84C;
+      margin: 0 auto 10px;
+      border-radius: 1px;
+    }
+    .ad-s5-contact-row {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 3px;
+    }
+    .ad-s5-contact-item {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 13px;
+      font-weight: 700;
+      color: #0d0b08;
+      letter-spacing: 0.5px;
+    }
+    .ad-s5-badge {
+      display: inline-block;
+      background: #0d0b08;
+      color: #C9A84C;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 8px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      padding: 3px 10px;
+      border-radius: 3px;
+      margin-top: 8px;
+    }
 
     /* Indicadores */
     .ad-indicators {
@@ -729,8 +819,8 @@ function getCalculatedQueueData(bridge) {
   const bridgeReports = state.reports.filter(r => r.bridge === bridge.id);
 
   const sourceLabel = {
-    'google':           'Google Maps',
-    'horario estimado': 'Horario estimado',
+    'google':             'Google Maps',
+    'horario estimado':   'Horario estimado',
     'horario programado': 'Horario programado',
   };
 
@@ -841,31 +931,33 @@ function setBridgeVars(bridge) {
   document.documentElement.style.setProperty('--tab-color', color);
 }
 
-/* ██████████████████████████████████████████
-   ██  CAMBIO 2 DE 3 — AD_DOT_CLASS y      ██
-   ██  AD_COUNT: de 4 → 5                  ██
-   ██████████████████████████████████████████ */
-// Slide 0: Horus dark → on-dark | Slide 1: Kemper navy → on-dark | Slide 2: cream → on-light | Slide 3: dark blue → on-dark | Slide 4: gold → on-light
-const AD_DOT_CLASS = ['on-dark', 'on-dark', 'on-light', 'on-dark', 'on-light'];
-const AD_COUNT = 5;
-/* ██████████████████████████████████████████
-   ██         FIN CAMBIO 2 DE 3            ██
-   ██████████████████████████████████████████ */
+// Orden de slides en rotación:
+// 0: blanco (Anúnciate) → on-light
+// 1: Kemper navy       → on-dark
+// 2: Horus dark gold   → on-dark
+// 3: cream             → on-light
+// 4: dark blue         → on-dark
+// 5: gold solid        → on-light
+const AD_DOT_CLASS = ['on-light', 'on-dark', 'on-dark', 'on-light', 'on-dark', 'on-light'];
+const AD_COUNT = 6;
 
 let adIndex = 0;
 
-
-  
 function adBannerHTML() {
   return `
-    <!-- Slide 0: Dark gold — HORUS identity -->
-    <div class="ad-slide ad-slide-0 active" id="adSlide0">
-      <div class="ad-s0-left">
-        <div class="ad-s0-eyebrow">Tecnologia de Frontera</div>
-        <div class="ad-s0-brand">HORUS</div>
-        <div class="ad-s0-sub">System Co. &mdash; Automatizacion Empresarial</div>
+    <!-- Slide 0: Blanco — Anúnciate Aquí (NUEVO, primera posición) -->
+    <div class="ad-slide ad-slide-5 active" id="adSlide0">
+      <div class="ad-s5-inner">
+        <div class="ad-s5-eyebrow">Espacio Publicitario Disponible</div>
+        <div class="ad-s5-headline">¡ANÚN<span>CIATE</span><br>AQUÍ!</div>
+        <div class="ad-s5-sub">Miles de cruces diarios te ven</div>
+        <div class="ad-s5-divider"></div>
+        <div class="ad-s5-contact-row">
+          <div class="ad-s5-contact-item">✉ info@horussystem.net</div>
+          <div class="ad-s5-contact-item">📞 (956) 485-5182</div>
+        </div>
+        <div class="ad-s5-badge">Reserva tu espacio</div>
       </div>
-      <div class="ad-s0-right">${horusEyeSVG(90, '#C9A84C')}</div>
     </div>
 
     <!-- Slide 1: Kemper Life -->
@@ -894,8 +986,18 @@ function adBannerHTML() {
       </div>
     </div>
 
-    <!-- Slide 2: Cream — Automatizacion -->
-    <div class="ad-slide ad-slide-1" id="adSlide2">
+    <!-- Slide 2: Dark gold — HORUS identity (movido de posición 0 a posición 2) -->
+    <div class="ad-slide ad-slide-0" id="adSlide2">
+      <div class="ad-s0-left">
+        <div class="ad-s0-eyebrow">Tecnologia de Frontera</div>
+        <div class="ad-s0-brand">HORUS</div>
+        <div class="ad-s0-sub">System Co. &mdash; Automatizacion Empresarial</div>
+      </div>
+      <div class="ad-s0-right">${horusEyeSVG(90, '#C9A84C')}</div>
+    </div>
+
+    <!-- Slide 3: Cream — Automatizacion -->
+    <div class="ad-slide ad-slide-1" id="adSlide3">
       <div class="ad-s1-inner">
         <div class="ad-s1-deco">${horusEyeSVG(110, '#C9A84C')}</div>
         <div class="ad-s1-eyebrow">Servicios Horus</div>
@@ -907,8 +1009,8 @@ function adBannerHTML() {
       </div>
     </div>
 
-    <!-- Slide 3: Dark blue — Desarrollo digital -->
-    <div class="ad-slide ad-slide-2" id="adSlide3">
+    <!-- Slide 4: Dark blue — Desarrollo digital -->
+    <div class="ad-slide ad-slide-2" id="adSlide4">
       <div class="ad-s2-inner">
         <div class="ad-s2-eyebrow">Desarrollo Digital</div>
         <div class="ad-s2-headline">Tu idea, convertida<br>en aplicacion real.</div>
@@ -919,8 +1021,8 @@ function adBannerHTML() {
       </div>
     </div>
 
-    <!-- Slide 4: Gold solid — Anunciate -->
-    <div class="ad-slide ad-slide-3" id="adSlide4">
+    <!-- Slide 5: Gold solid — Anunciate (existente) -->
+    <div class="ad-slide ad-slide-3" id="adSlide5">
       <div class="ad-s3-inner">
         <div class="ad-s3-eyebrow">Publicidad Fronteriza</div>
         <div class="ad-s3-headline">Llega a miles de<br>personas diarias.</div>
@@ -939,10 +1041,6 @@ function adBannerHTML() {
   `;
 }
 
-
-
-  
-  
 // ── PANEL RESUMEN: todos los puentes de un vistazo ──────────
 function renderBridgesSummary(activeBridgeIndex) {
   const colorMap = {
@@ -980,9 +1078,9 @@ function render() {
   setBridgeVars(bridge);
 
   const statusMap = {
-    fluido: { text: 'Fluido', class: 'status-fluido' },
+    fluido:   { text: 'Fluido',   class: 'status-fluido'   },
     moderado: { text: 'Moderado', class: 'status-moderado' },
-    pesado: { text: 'Pesado', class: 'status-pesado' }
+    pesado:   { text: 'Pesado',   class: 'status-pesado'   }
   };
   const status = statusMap[queueData.status] || statusMap.fluido;
 
@@ -1024,7 +1122,7 @@ function render() {
     <!-- PANEL RESUMEN: todos los puentes -->
     ${renderBridgesSummary(state.activeBridge)}
 
-    <!-- AD BANNER entre tiempo estimado y mapa -->
+    <!-- AD BANNER -->
     <div class="ad-banner" id="adBanner">${adBannerHTML()}</div>
 
     <div class="map-container">
@@ -1199,7 +1297,7 @@ function syncAdBanner() {
   const dotClass = AD_DOT_CLASS[adIndex];
   for (let i = 0; i < AD_COUNT; i++) {
     const slide = document.getElementById('adSlide' + i);
-    const dot = document.getElementById('adDot' + i);
+    const dot   = document.getElementById('adDot'   + i);
     if (slide) slide.classList.toggle('active', i === adIndex);
     if (dot) {
       dot.className = 'ad-dot ' + dotClass + (i === adIndex ? ' active' : '');
