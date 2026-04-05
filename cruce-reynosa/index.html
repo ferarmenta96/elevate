@@ -1,10 +1,9 @@
 <!DOCTYPE html>
-
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <meta name="theme-color" content="#ffffff" />
+  <meta name="theme-color" content="#0a0a0a" />
   <meta name="description" content="Tiempo real de espera en los puentes internacionales de Reynosa, Tamaulipas" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
@@ -13,354 +12,303 @@
   <meta property="og:title" content="Cruce Reynosa" />
   <meta property="og:description" content="Cuanto esta la fila en el puente? Tiempo real, reportado por la comunidad." />
   <meta property="og:type" content="website" />
-  <meta property="og:image" content="https://raw.githubusercontent.com/TU_USUARIO/cruce-reynosa/main/public/og-image.png" />
-
   <title>Cruce Reynosa</title>
 
-  <!-- 1. Google Tag Manager -->
-
-  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-  'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-  })(window,document,'script','dataLayer','GTM-P2RPXZMN');</script>
-
-  <!-- 2. Google Analytics 4 -->
-
+  <!-- Google Tag Manager -->
+  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-P2RPXZMN');</script>
+  <!-- Google Analytics 4 -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-BD1YGC73WJ"></script>
-
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'G-BD1YGC73WJ');
-  </script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-BD1YGC73WJ');</script>
 
   <link rel="manifest" href="/cruce-reynosa/manifest.json" />
   <link rel="apple-touch-icon" href="/cruce-reynosa/public/icon-192.png" />
   <link rel="icon" type="image/png" href="/cruce-reynosa/public/icon-192.png" />
-
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Barlow+Condensed:wght@400;600;700;800;900&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
 
+  <!--
+  ═══════════════════════════════════════════════════
+   ADS.JS — Publicidad separada del código principal.
+   Para editar anuncios: abre ads.js, NO este archivo.
+   Debe estar en la misma carpeta que index.html.
+  ═══════════════════════════════════════════════════
+  -->
+  <script src="ads.js"></script>
+
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
+    /* ═══════════════════════════════════════
+       TOKENS — shared mobile + desktop
+    ═══════════════════════════════════════ */
     :root {
-      --bg: #ffffff;
-      --surface: #f9f9f9;
-      --surface2: #f2f2f2;
-      --surface3: #eaeaea;
-      --border: #dddddd;
-      --border-gold: #C9A84C40;
-      --text: #111111;
-      --text-dim: #555555;
-      --muted: #777777;
-      --faint: #aaaaaa;
-      --gold: #C9A84C;
-      --gold-bright: #E2C46D;
-      --gold-dim: #8a7035;
-      --gold-glow: #C9A84C20;
-      --gold-glow-strong: #C9A84C40;
-      --green: #22c55e;
-      --yellow: #f59e0b;
-      --red: #ef4444;
-      --blue: #3b82f6;
-      --accent: var(--gold);
-      --accent-glow: var(--gold-glow);
+      --bg: #ffffff; --surface: #f9f9f9; --surface2: #f2f2f2; --surface3: #eaeaea;
+      --border: #dddddd; --border-gold: #C9A84C40;
+      --text: #111111; --text-dim: #555555; --muted: #777777; --faint: #aaaaaa;
+      --gold: #C9A84C; --gold-bright: #E2C46D; --gold-dim: #8a7035;
+      --gold-glow: #C9A84C20; --gold-glow-strong: #C9A84C40;
+      --green: #22c55e; --yellow: #f59e0b; --red: #ef4444;
+      --accent: var(--gold); --accent-glow: var(--gold-glow);
       --accent-transparent: var(--gold-glow-strong);
-      --tab-color: var(--gold);
+
+      /* Desktop dark theme tokens */
+      --dk-bg: #07070a;
+      --dk-surface: #0e0e14;
+      --dk-surface2: #13131c;
+      --dk-surface3: #1a1a26;
+      --dk-border: #ffffff0f;
+      --dk-border-gold: #C9A84C25;
+      --dk-text: #e8e6e0;
+      --dk-muted: #6b6878;
+      --dk-faint: #3a3848;
     }
 
-    html, body { background: #ffffff !important; color: var(--text); font-family: 'Barlow', sans-serif; height: 100%; overflow-x: hidden; overflow-y: auto; }
+    html, body { height: 100%; overflow-x: hidden; }
 
-    #splash { position: fixed; inset: 0; background: var(--bg); display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 9999; gap: 0; transition: opacity 0.6s ease, transform 0.6s ease; }
+    /* ═══════════════════════════════════════
+       SPLASH
+    ═══════════════════════════════════════ */
+    #splash {
+      position: fixed; inset: 0; background: #ffffff;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      z-index: 9999; transition: opacity 0.6s ease, transform 0.6s ease;
+    }
     #splash.hidden { opacity: 0; transform: scale(1.05); pointer-events: none; }
     .splash-eye { width: 80px; height: 80px; margin-bottom: 20px; animation: splashPulse 2s ease-in-out infinite; }
-    @keyframes splashPulse { 0%, 100% { filter: drop-shadow(0 0 8px #C9A84C60); } 50% { filter: drop-shadow(0 0 24px #C9A84C90); } }
-    .splash-brand { font-family: 'Cormorant Garamond', serif; font-size: 42px; font-weight: 600; letter-spacing: 8px; color: var(--gold); text-transform: uppercase; line-height: 1; margin-bottom: 4px; }
-    .splash-tagline { font-family: 'Barlow Condensed', sans-serif; font-size: 11px; letter-spacing: 4px; color: var(--muted); text-transform: uppercase; margin-bottom: 48px; }
-    .splash-divider { width: 1px; height: 48px; background: linear-gradient(to bottom, transparent, var(--gold), transparent); margin-bottom: 24px; }
-    .splash-app-name { font-family: 'Barlow Condensed', sans-serif; font-size: 22px; font-weight: 800; letter-spacing: 3px; color: var(--text); text-transform: uppercase; }
-    .splash-app-sub { font-family: 'Barlow', sans-serif; font-size: 12px; color: var(--muted); letter-spacing: 1px; margin-top: 4px; }
-    .splash-loading { position: absolute; bottom: 48px; display: flex; flex-direction: column; align-items: center; gap: 10px; }
-    .splash-bar { width: 120px; height: 1px; background: var(--faint); border-radius: 1px; overflow: hidden; position: relative; }
-    .splash-bar-fill { height: 100%; background: var(--gold); animation: splashLoad 1.6s ease forwards; width: 0; }
-    @keyframes splashLoad { 0% { width: 0 } 60% { width: 80% } 100% { width: 100% } }
-    .splash-loading-text { font-family: 'Barlow', sans-serif; font-size: 10px; letter-spacing: 2px; color: var(--muted); text-transform: uppercase; }
+    @keyframes splashPulse { 0%,100%{filter:drop-shadow(0 0 8px #C9A84C60)} 50%{filter:drop-shadow(0 0 24px #C9A84C90)} }
+    .splash-brand { font-family:'Cormorant Garamond',serif; font-size:42px; font-weight:600; letter-spacing:8px; color:var(--gold); text-transform:uppercase; line-height:1; margin-bottom:4px; }
+    .splash-tagline { font-family:'Barlow Condensed',sans-serif; font-size:11px; letter-spacing:4px; color:var(--muted); text-transform:uppercase; margin-bottom:48px; }
+    .splash-divider { width:1px; height:48px; background:linear-gradient(to bottom,transparent,var(--gold),transparent); margin-bottom:24px; }
+    .splash-app-name { font-family:'Barlow Condensed',sans-serif; font-size:22px; font-weight:800; letter-spacing:3px; color:#111; text-transform:uppercase; }
+    .splash-app-sub { font-family:'Barlow',sans-serif; font-size:12px; color:var(--muted); letter-spacing:1px; margin-top:4px; }
+    .splash-loading { position:absolute; bottom:48px; display:flex; flex-direction:column; align-items:center; gap:10px; }
+    .splash-bar { width:120px; height:1px; background:var(--faint); border-radius:1px; overflow:hidden; }
+    .splash-bar-fill { height:100%; background:var(--gold); animation:splashLoad 1.6s ease forwards; }
+    @keyframes splashLoad { 0%{width:0} 60%{width:80%} 100%{width:100%} }
+    .splash-loading-text { font-family:'Barlow',sans-serif; font-size:10px; letter-spacing:2px; color:var(--muted); text-transform:uppercase; }
 
-    #app { min-height: 100vh; display: flex; flex-direction: column; max-width: 480px; margin: 0 auto; position: relative; }
-    .header { background: var(--surface); border-bottom: 1px solid var(--border); padding: 14px 18px 0; flex-shrink: 0; position: relative; z-index: 10; }
-    .header::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, transparent, var(--gold), transparent); }
-    .header-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
-    .logo { display: flex; align-items: center; gap: 12px; }
-    .logo-eye { width: 40px; height: 40px; flex-shrink: 0; }
-    .logo-title { font-family: 'Cormorant Garamond', serif; font-size: 20px; font-weight: 600; letter-spacing: 3px; line-height: 1; color: var(--gold); text-transform: uppercase; }
-    .logo-sub { font-family: 'Barlow Condensed', sans-serif; font-size: 9px; color: var(--muted); letter-spacing: 2.5px; text-transform: uppercase; font-weight: 600; margin-top: 2px; }
-    .live-badge { display: flex; align-items: center; gap: 5px; background: #4ade8015; border: 1px solid #4ade8030; border-radius: 20px; padding: 5px 10px; font-family: 'Barlow Condensed', sans-serif; font-size: 11px; color: var(--green); font-weight: 700; letter-spacing: 1px; }
-    .live-dot { width: 5px; height: 5px; background: var(--green); border-radius: 50%; animation: pulse 1.5s infinite; }
-    @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+    /* ═══════════════════════════════════════
+       MOBILE LAYOUT (default, ≤ 1023px)
+    ═══════════════════════════════════════ */
+    body { background:var(--bg); color:var(--text); font-family:'Barlow',sans-serif; overflow-y:auto; }
+    #app-mobile { display:block; }
+    #app-desktop { display:none; }
 
-    .tabs { display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none; -ms-overflow-style: none; padding-bottom: 12px; }
-    .tabs::-webkit-scrollbar { display: none; }
-    .tab { flex-shrink: 0; background: var(--surface2); border: 1px solid var(--border); border-radius: 12px; padding: 10px 14px; font-family: 'Barlow Condensed', sans-serif; font-size: 13px; font-weight: 700; letter-spacing: 1px; color: var(--text-dim); cursor: pointer; transition: all 0.2s; text-transform: uppercase; white-space: nowrap; }
-    .tab.active { background: var(--accent-transparent); border-color: var(--accent); color: var(--accent); box-shadow: 0 0 16px var(--accent-glow); }
-    .tab:hover:not(.active) { background: var(--surface3); border-color: var(--border-gold); }
+    /* ── mobile header ── */
+    .m-header { background:var(--surface); border-bottom:1px solid var(--border); padding:14px 18px 0; position:relative; z-index:10; flex-shrink:0; }
+    .m-header::before { content:''; position:absolute; top:0; left:0; right:0; height:2px; background:linear-gradient(90deg,transparent,var(--gold),transparent); }
+    .m-header-top { display:flex; align-items:center; justify-content:space-between; margin-bottom:14px; }
+    .m-logo { display:flex; align-items:center; gap:12px; }
+    .m-logo-title { font-family:'Cormorant Garamond',serif; font-size:20px; font-weight:600; letter-spacing:3px; color:var(--gold); text-transform:uppercase; }
+    .m-logo-sub { font-family:'Barlow Condensed',sans-serif; font-size:9px; color:var(--muted); letter-spacing:2.5px; text-transform:uppercase; font-weight:600; margin-top:2px; }
+    .live-badge { display:flex; align-items:center; gap:5px; background:#4ade8015; border:1px solid #4ade8030; border-radius:20px; padding:5px 10px; font-family:'Barlow Condensed',sans-serif; font-size:11px; color:var(--green); font-weight:700; letter-spacing:1px; }
+    .live-dot { width:5px; height:5px; background:var(--green); border-radius:50%; animation:pulse 1.5s infinite; }
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
+    .m-tabs { display:flex; gap:8px; overflow-x:auto; scrollbar-width:none; padding-bottom:12px; }
+    .m-tabs::-webkit-scrollbar { display:none; }
+    .m-tab { flex-shrink:0; background:var(--surface2); border:1px solid var(--border); border-radius:12px; padding:10px 14px; font-family:'Barlow Condensed',sans-serif; font-size:13px; font-weight:700; letter-spacing:1px; color:var(--text-dim); cursor:pointer; transition:all 0.2s; text-transform:uppercase; white-space:nowrap; }
+    .m-tab.active { background:var(--accent-transparent); border-color:var(--accent); color:var(--accent); box-shadow:0 0 16px var(--accent-glow); }
 
-    .traffic-card { background: linear-gradient(135deg, var(--surface2) 0%, var(--surface) 100%); border: 1px solid var(--border-gold); border-radius: 16px; padding: 20px; margin: 16px 18px; position: relative; overflow: hidden; }
-    .traffic-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, transparent, var(--accent), transparent); }
-    .traffic-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 16px; }
-    .traffic-title { font-family: 'Barlow Condensed', sans-serif; font-size: 14px; font-weight: 700; letter-spacing: 2px; color: var(--muted); text-transform: uppercase; margin-bottom: 4px; }
-    .traffic-time { font-family: 'Cormorant Garamond', serif; font-size: 48px; font-weight: 600; line-height: 1; color: var(--text); }
-    .traffic-status { display: flex; align-items: center; gap: 6px; background: var(--surface3); border: 1px solid var(--border); border-radius: 20px; padding: 6px 12px; font-family: 'Barlow Condensed', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; }
-    .status-dot { width: 6px; height: 6px; border-radius: 50%; }
-    .status-fluido { color: var(--green); } .status-fluido .status-dot { background: var(--green); }
-    .status-moderado { color: var(--yellow); } .status-moderado .status-dot { background: var(--yellow); }
-    .status-pesado { color: var(--red); } .status-pesado .status-dot { background: var(--red); }
-    .traffic-meta { display: flex; gap: 16px; font-family: 'Barlow', sans-serif; font-size: 13px; color: var(--text-dim); margin-top: 12px; }
-    .meta-item { display: flex; align-items: center; gap: 6px; }
+    /* ── mobile traffic card ── */
+    .m-traffic-card { background:linear-gradient(135deg,var(--surface2) 0%,var(--surface) 100%); border:1px solid var(--border-gold); border-radius:16px; padding:20px; margin:16px 18px; position:relative; overflow:hidden; }
+    .m-traffic-card::before { content:''; position:absolute; top:0; left:0; right:0; height:2px; background:linear-gradient(90deg,transparent,var(--accent),transparent); }
+    .m-traffic-header { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:16px; }
+    .m-traffic-title { font-family:'Barlow Condensed',sans-serif; font-size:14px; font-weight:700; letter-spacing:2px; color:var(--muted); text-transform:uppercase; margin-bottom:4px; }
+    .m-traffic-time { font-family:'Cormorant Garamond',serif; font-size:48px; font-weight:600; line-height:1; color:var(--text); }
+    .m-traffic-status { display:flex; align-items:center; gap:6px; background:var(--surface3); border:1px solid var(--border); border-radius:20px; padding:6px 12px; font-family:'Barlow Condensed',sans-serif; font-size:11px; font-weight:700; letter-spacing:1px; text-transform:uppercase; }
+    .m-status-dot { width:6px; height:6px; border-radius:50%; }
+    .m-status-fluido { color:var(--green); } .m-status-fluido .m-status-dot { background:var(--green); }
+    .m-status-moderado { color:var(--yellow); } .m-status-moderado .m-status-dot { background:var(--yellow); }
+    .m-status-pesado { color:var(--red); } .m-status-pesado .m-status-dot { background:var(--red); }
+    .m-traffic-meta { display:flex; gap:16px; font-family:'Barlow',sans-serif; font-size:13px; color:var(--text-dim); margin-top:12px; }
 
-    /* -- SMALL AD BANNER -- */
-    .ad-banner { border-radius: 12px; margin: 0 18px 16px; overflow: hidden; height: 148px; position: relative; cursor: pointer; transition: transform 0.3s ease, box-shadow 0.3s ease; }
-    .ad-banner:hover { transform: translateY(-2px); }
-    .ad-slide { position: absolute; inset: 0; opacity: 0; transition: opacity 0.7s ease; display: flex; align-items: stretch; }
-    .ad-slide.active { opacity: 1; }
+    /* ── mobile map ── */
+    .m-map-container { background:var(--surface2); border:1px solid var(--border); border-radius:12px; margin:0 18px 16px; overflow:hidden; height:280px; position:relative; z-index:1; }
+    .m-report-btn { background:linear-gradient(135deg,var(--accent) 0%,var(--gold-dim) 100%); border:1px solid var(--gold-bright); border-radius:12px; padding:16px; margin:0 18px 16px; font-family:'Barlow Condensed',sans-serif; font-size:15px; font-weight:800; letter-spacing:2px; color:#fff; text-transform:uppercase; cursor:pointer; transition:all 0.2s; box-shadow:0 4px 16px var(--gold-glow); width:calc(100% - 36px); }
+    .m-report-btn:hover { transform:translateY(-2px); box-shadow:0 6px 24px var(--gold-glow-strong); }
+    .m-reports-section { flex:1; padding:0 18px 100px; }
+    .m-section-title { font-family:'Barlow Condensed',sans-serif; font-size:12px; font-weight:700; letter-spacing:2px; color:var(--muted); text-transform:uppercase; margin-bottom:12px; display:flex; align-items:center; gap:8px; }
+    .m-section-title::before,.m-section-title::after { content:''; flex:1; height:1px; }
+    .m-section-title::before { background:linear-gradient(to right,transparent,var(--border)); }
+    .m-section-title::after { background:linear-gradient(to left,transparent,var(--border)); }
+    .m-report-card { background:var(--surface2); border:1px solid var(--border); border-radius:12px; padding:14px; margin-bottom:12px; }
+    .m-report-card:hover { background:var(--surface3); border-color:var(--border-gold); }
+    .m-report-header { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:10px; }
+    .m-report-position { font-family:'Barlow',sans-serif; font-size:14px; font-weight:600; color:var(--text); }
+    .m-report-time-badge { background:var(--surface3); border:1px solid var(--border); border-radius:6px; padding:4px 8px; font-family:'Barlow Condensed',sans-serif; font-size:11px; font-weight:700; letter-spacing:1px; color:var(--gold); white-space:nowrap; }
+    .m-report-meta { display:flex; gap:12px; font-family:'Barlow',sans-serif; font-size:12px; color:var(--text-dim); margin-bottom:8px; }
+    .m-report-note { font-family:'Barlow',sans-serif; font-size:13px; color:var(--muted); font-style:italic; line-height:1.4; padding:8px; background:var(--surface); border-left:2px solid var(--border-gold); border-radius:4px; }
+    .m-empty-state { text-align:center; padding:40px 20px; color:var(--muted); }
+    .m-empty-emoji { font-size:48px; margin-bottom:12px; }
+    .m-empty-text { font-family:'Barlow Condensed',sans-serif; font-size:14px; letter-spacing:1px; text-transform:uppercase; }
+    .m-bottom-nav { position:fixed; bottom:0; left:50%; transform:translateX(-50%); max-width:480px; width:100%; background:var(--surface); border-top:1px solid var(--border); padding:12px 18px; display:flex; justify-content:center; align-items:center; gap:8px; font-family:'Barlow',sans-serif; font-size:11px; color:var(--muted); z-index:100; }
+    .m-powered-by { position:fixed; bottom:42px; left:50%; transform:translateX(-50%); max-width:480px; width:100%; display:flex; justify-content:center; align-items:center; gap:6px; padding:8px; z-index:99; }
+    .m-powered-text { font-family:'Barlow',sans-serif; font-size:10px; color:var(--faint); letter-spacing:1px; }
+    .m-powered-horus { font-family:'Cormorant Garamond',serif; font-size:12px; font-weight:600; letter-spacing:2px; color:var(--gold-dim); }
+    .m-bridges-summary { display:flex; gap:8px; margin:0 18px 16px; overflow-x:auto; scrollbar-width:none; padding-bottom:4px; }
+    .m-bridges-summary::-webkit-scrollbar { display:none; }
+    .m-bridge-pill { background:var(--surface2); border:1px solid var(--border); border-radius:10px; padding:10px 6px 8px; text-align:center; cursor:pointer; transition:all 0.2s; position:relative; overflow:hidden; flex-shrink:0; min-width:68px; }
+    .m-bridge-pill::before { content:''; position:absolute; top:0; left:0; right:0; height:2px; background:var(--pill-color,var(--border)); }
+    .m-bridge-pill.active-pill { border-color:var(--pill-color,var(--gold)); background:var(--surface3); box-shadow:0 0 10px var(--pill-glow,transparent); }
+    .m-bridge-pill-name { font-family:'Barlow Condensed',sans-serif; font-size:9px; font-weight:700; letter-spacing:0.5px; color:var(--muted); text-transform:uppercase; margin-bottom:5px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .m-bridge-pill-time { font-family:'Cormorant Garamond',serif; font-size:18px; font-weight:600; line-height:1; color:var(--text); }
+    .m-bridge-pill-unit { font-family:'Barlow',sans-serif; font-size:8px; color:var(--muted); margin-top:2px; }
+    .m-bridge-pill-dot { width:5px; height:5px; border-radius:50%; margin:4px auto 0; }
+    #map-mobile { width:100%; height:100%; background-color:var(--surface2) !important; }
+    .leaflet-queue-pulse { animation:mapMarkerPulse 1.5s infinite; transform-origin:center; }
+    @keyframes mapMarkerPulse { 0%{transform:scale(1)} 50%{transform:scale(1.5)} 100%{transform:scale(1)} }
+    .m-queue-indicator { position:absolute; bottom:12px; left:12px; background:rgba(0,0,0,0.85); backdrop-filter:blur(10px); border:1px solid var(--border-gold); border-radius:8px; padding:8px 12px; font-family:'Barlow Condensed',sans-serif; font-size:11px; letter-spacing:1px; color:var(--gold); text-transform:uppercase; font-weight:700; z-index:1000; }
 
-    /* SLIDE 0: Anunciate */
-    .ad-slide-new { background: #ffffff; border: 1px solid #d4bc82; display: flex; align-items: stretch; }
-    .ad-slide-new::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 5px; background: linear-gradient(90deg, #b8922a, #E2C46D, #C9A84C, #b8922a); }
-    .ad-slide-new::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 5px; background: linear-gradient(90deg, #b8922a, #E2C46D, #C9A84C, #b8922a); z-index: 2; }
-    .ad-new-left { flex: 1; display: flex; flex-direction: column; justify-content: center; padding: 12px 0 12px 18px; position: relative; z-index: 2; }
-    .ad-new-eyebrow { font-family: 'Barlow Condensed', sans-serif; font-size: 8px; letter-spacing: 3.5px; color: #888; text-transform: uppercase; margin-bottom: 4px; font-weight: 600; }
-    .ad-new-headline { font-family: 'Barlow Condensed', sans-serif; font-size: 38px; font-weight: 900; line-height: 0.95; text-transform: uppercase; margin-bottom: 6px; letter-spacing: -0.5px; }
-    .ad-new-headline .black { color: #0d0d0d; }
-    .ad-new-headline .gold  { color: #C9A84C; }
-    .ad-new-tagline { font-family: 'Barlow Condensed', sans-serif; font-size: 8.5px; letter-spacing: 2.5px; color: #888; text-transform: uppercase; font-weight: 600; }
-    .ad-new-divider { width: 1px; margin: 14px 0; background: linear-gradient(to bottom, transparent, #C9A84C, transparent); flex-shrink: 0; align-self: stretch; }
-    .ad-new-right { width: 164px; flex-shrink: 0; display: flex; flex-direction: column; justify-content: center; align-items: flex-start; padding: 10px 14px 14px; gap: 5px; position: relative; z-index: 2; }
-    .ad-new-contact-row { display: flex; align-items: center; gap: 6px; }
-    .ad-new-icon { font-size: 13px; flex-shrink: 0; line-height: 1; }
-    .ad-new-contact-text { font-family: 'Barlow Condensed', sans-serif; font-size: 11px; font-weight: 700; color: #0d0d0d; letter-spacing: 0.2px; line-height: 1.2; }
-    .ad-new-cta { margin-top: 6px; display: inline-block; background: #0d0d0d; color: #ffffff; font-family: 'Barlow Condensed', sans-serif; font-size: 8px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; padding: 5px 12px; border-radius: 2px; align-self: stretch; text-align: center; white-space: nowrap; }
+    /* ── mobile install banner ── */
+    .install-banner { position:fixed; bottom:56px; left:50%; transform:translateX(-50%); max-width:440px; width:calc(100% - 36px); background:var(--surface2); border:1px solid var(--border-gold); border-radius:12px; padding:14px; display:flex; align-items:center; gap:12px; z-index:101; box-shadow:0 8px 32px rgba(0,0,0,0.8); }
+    .install-banner-text { flex:1; }
+    .install-banner-title { font-family:'Barlow Condensed',sans-serif; font-size:14px; font-weight:700; color:var(--text); letter-spacing:1px; }
+    .install-banner-sub { font-family:'Barlow',sans-serif; font-size:11px; color:var(--muted); margin-top:2px; }
+    .install-btn { background:var(--gold); border:none; border-radius:8px; padding:8px 16px; font-family:'Barlow Condensed',sans-serif; font-size:12px; font-weight:700; letter-spacing:1px; color:#fff; cursor:pointer; text-transform:uppercase; }
+    .install-close { background:transparent; border:none; color:var(--muted); cursor:pointer; font-size:18px; padding:4px 8px; }
 
-    /* Slide 1: Dark gold */
-    .ad-slide-0 { background: linear-gradient(135deg, #0d0b08 0%, #1c1508 55%, #0d0b08 100%); border: 1px solid #C9A84C50; }
-    .ad-slide-0::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px; background: linear-gradient(90deg, transparent, var(--gold), transparent); }
-    .ad-s0-left { flex: 1; display: flex; flex-direction: column; justify-content: center; padding: 20px 0 20px 22px; position: relative; z-index: 2; }
-    .ad-s0-eyebrow { font-family: 'Barlow Condensed', sans-serif; font-size: 9px; letter-spacing: 3px; color: var(--gold-dim); text-transform: uppercase; margin-bottom: 8px; }
-    .ad-s0-brand { font-family: 'Cormorant Garamond', serif; font-size: 38px; font-weight: 600; letter-spacing: 8px; color: var(--gold); text-transform: uppercase; line-height: 1; margin-bottom: 8px; }
-    .ad-s0-sub { font-family: 'Barlow Condensed', sans-serif; font-size: 10px; letter-spacing: 2.5px; color: var(--muted); text-transform: uppercase; }
-    .ad-s0-right { width: 110px; display: flex; align-items: center; justify-content: center; opacity: 0.07; }
+    /* ── modal (shared) ── */
+    .modal-overlay { position:fixed; inset:0; background:rgba(0,0,0,0.85); backdrop-filter:blur(4px); z-index:1000; display:flex; align-items:flex-end; justify-content:center; animation:fadeIn 0.2s; }
+    @keyframes fadeIn { from{opacity:0} to{opacity:1} }
+    .modal-sheet { background:var(--surface); border:1px solid var(--border-gold); border-radius:20px 20px 0 0; width:100%; max-width:520px; max-height:90vh; overflow-y:auto; padding:24px; animation:slideUp 0.3s ease; }
+    @keyframes slideUp { from{transform:translateY(100%)} to{transform:translateY(0)} }
+    .modal-handle { width:40px; height:4px; background:var(--border); border-radius:2px; margin:0 auto 20px; }
+    .modal-title { font-family:'Barlow Condensed',sans-serif; font-size:22px; font-weight:800; letter-spacing:2px; color:var(--text); text-transform:uppercase; margin-bottom:4px; }
+    .modal-sub { font-family:'Barlow',sans-serif; font-size:13px; color:var(--muted); margin-bottom:24px; }
+    .form-group { margin-bottom:24px; }
+    .form-label { font-family:'Barlow Condensed',sans-serif; font-size:12px; font-weight:700; letter-spacing:1px; color:var(--text-dim); text-transform:uppercase; margin-bottom:10px; display:block; }
+    .option-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:8px; }
+    .option-btn { background:var(--surface2); border:1px solid var(--border); border-radius:8px; padding:12px; font-family:'Barlow',sans-serif; font-size:13px; color:var(--text); cursor:pointer; transition:all 0.2s; text-align:center; }
+    .option-btn.selected { background:var(--accent-transparent); border-color:var(--accent); color:var(--accent); box-shadow:0 0 12px var(--accent-glow); }
+    .form-textarea { width:100%; background:var(--surface2); border:1px solid var(--border); border-radius:8px; padding:12px; font-family:'Barlow',sans-serif; font-size:14px; color:var(--text); resize:none; outline:none; transition:all 0.2s; }
+    .form-textarea:focus { border-color:var(--accent); box-shadow:0 0 0 3px var(--accent-glow); }
+    .form-textarea::placeholder { color:var(--muted); }
+    .submit-btn { width:100%; background:linear-gradient(135deg,var(--accent) 0%,var(--gold-dim) 100%); border:1px solid var(--gold-bright); border-radius:12px; padding:16px; font-family:'Barlow Condensed',sans-serif; font-size:15px; font-weight:800; letter-spacing:2px; color:#fff; text-transform:uppercase; cursor:pointer; transition:all 0.2s; margin-top:8px; }
+    .submit-btn:hover:not(:disabled) { transform:translateY(-2px); box-shadow:0 6px 24px var(--gold-glow-strong); }
+    .submit-btn:disabled { opacity:0.4; cursor:not-allowed; }
+    .success-screen { text-align:center; padding:40px 20px; }
+    .big-emoji { font-size:64px; margin-bottom:16px; }
+    .success-screen .title { font-family:'Barlow Condensed',sans-serif; font-size:24px; font-weight:800; letter-spacing:2px; color:var(--text); text-transform:uppercase; margin-bottom:8px; }
+    .success-screen .sub { font-family:'Barlow',sans-serif; font-size:14px; color:var(--muted); }
 
-    /* Slide 2: Cream */
-    .ad-slide-1 { background: linear-gradient(135deg, #f5f0e8 0%, #ede5d4 100%); border: 1px solid #d4c4a0; }
-    .ad-s1-inner { flex: 1; display: flex; flex-direction: column; justify-content: center; padding: 18px 22px; position: relative; overflow: hidden; }
-    .ad-s1-deco { position: absolute; right: -10px; top: 50%; transform: translateY(-50%); opacity: 0.07; pointer-events: none; }
-    .ad-s1-eyebrow { font-family: 'Barlow Condensed', sans-serif; font-size: 9px; letter-spacing: 3px; color: #8a7035; text-transform: uppercase; margin-bottom: 6px; }
-    .ad-s1-headline { font-family: 'Cormorant Garamond', serif; font-size: 22px; font-weight: 600; color: #1a1408; line-height: 1.25; margin-bottom: 10px; }
-    .ad-s1-row { display: flex; align-items: center; gap: 12px; }
-    .ad-pill-dark { display: inline-block; background: #1a1408; color: #C9A84C; font-family: 'Barlow Condensed', sans-serif; font-size: 9px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; padding: 4px 10px; border-radius: 3px; flex-shrink: 0; }
-    .ad-s1-contact { font-family: 'Barlow', sans-serif; font-size: 9px; color: #8a7a5a; letter-spacing: 0.3px; }
+    /* ═══════════════════════════════════════════════════════
+       DESKTOP LAYOUT (≥ 1024px)  —  WAR ROOM DARK DASHBOARD
+    ═══════════════════════════════════════════════════════ */
+    @media (min-width: 1024px) {
+      body { background:var(--dk-bg); color:var(--dk-text); overflow:hidden; height:100vh; }
+      #app-mobile { display:none !important; }
+      #app-desktop { display:flex; flex-direction:column; height:100vh; overflow:hidden; }
 
-    /* Slide 3: Dark blue */
-    .ad-slide-2 { background: linear-gradient(135deg, #060a10 0%, #0b1220 55%, #060a10 100%); border: 1px solid #60a5fa30; }
-    .ad-slide-2::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px; background: linear-gradient(90deg, transparent, #60a5fa70, transparent); }
-    .ad-s2-inner { flex: 1; display: flex; flex-direction: column; justify-content: center; padding: 18px 22px; }
-    .ad-s2-eyebrow { font-family: 'Barlow Condensed', sans-serif; font-size: 9px; letter-spacing: 3px; color: #60a5fa60; text-transform: uppercase; margin-bottom: 6px; }
-    .ad-s2-headline { font-family: 'Cormorant Garamond', serif; font-size: 22px; font-weight: 600; color: #ddeeff; line-height: 1.25; margin-bottom: 10px; }
-    .ad-s2-row { display: flex; align-items: center; gap: 12px; }
-    .ad-pill-blue { display: inline-block; background: #60a5fa18; border: 1px solid #60a5fa40; color: #60a5fa; font-family: 'Barlow Condensed', sans-serif; font-size: 9px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; padding: 4px 10px; border-radius: 3px; flex-shrink: 0; }
-    .ad-s2-contact { font-family: 'Barlow', sans-serif; font-size: 9px; color: #60a5fa45; letter-spacing: 0.3px; }
+      .dk-header { height:58px; flex-shrink:0; background:var(--dk-surface); border-bottom:1px solid var(--dk-border); display:flex; align-items:center; padding:0 28px; gap:0; position:relative; z-index:20; }
+      .dk-header::after { content:''; position:absolute; bottom:0; left:0; right:0; height:1px; background:linear-gradient(90deg,transparent 0%,#C9A84C60 30%,#C9A84C60 70%,transparent 100%); }
+      .dk-logo-area { display:flex; align-items:center; gap:14px; margin-right:32px; flex-shrink:0; }
+      .dk-logo-title { font-family:'Cormorant Garamond',serif; font-size:22px; font-weight:600; letter-spacing:5px; color:var(--gold); text-transform:uppercase; line-height:1; }
+      .dk-logo-sep { width:1px; height:22px; background:var(--dk-border); margin:0 4px; }
+      .dk-logo-sub { font-family:'Barlow Condensed',sans-serif; font-size:9px; color:var(--dk-muted); letter-spacing:3px; text-transform:uppercase; font-weight:600; }
+      .dk-header-bridges { display:flex; gap:6px; flex:1; overflow-x:auto; scrollbar-width:none; }
+      .dk-header-bridges::-webkit-scrollbar { display:none; }
+      .dk-bridge-tab { flex-shrink:0; display:flex; align-items:center; gap:8px; padding:6px 14px; border-radius:6px; border:1px solid transparent; cursor:pointer; transition:all 0.2s; font-family:'Barlow Condensed',sans-serif; font-size:12px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; color:var(--dk-muted); white-space:nowrap; }
+      .dk-bridge-tab:hover { background:var(--dk-surface2); color:var(--dk-text); }
+      .dk-bridge-tab.active { background:var(--dk-surface2); border-color:var(--dk-border-gold); color:var(--gold); }
+      .dk-bridge-tab-dot { width:6px; height:6px; border-radius:50%; flex-shrink:0; }
+      .dk-bridge-tab-time { font-family:'Cormorant Garamond',serif; font-size:16px; font-weight:600; color:inherit; }
+      .dk-header-right { display:flex; align-items:center; gap:16px; margin-left:24px; flex-shrink:0; }
+      .dk-live-badge { display:flex; align-items:center; gap:6px; background:#22c55e10; border:1px solid #22c55e30; border-radius:20px; padding:5px 12px; font-family:'Barlow Condensed',sans-serif; font-size:11px; color:#22c55e; font-weight:700; letter-spacing:1px; }
+      .dk-live-dot { width:5px; height:5px; background:#22c55e; border-radius:50%; animation:pulse 1.5s infinite; }
+      .dk-report-btn-header { background:linear-gradient(135deg,#C9A84C,#8a7035); border:none; border-radius:6px; padding:7px 18px; font-family:'Barlow Condensed',sans-serif; font-size:11px; font-weight:800; letter-spacing:2px; color:#0a0a0a; text-transform:uppercase; cursor:pointer; transition:all 0.2s; }
+      .dk-report-btn-header:hover { opacity:0.85; transform:translateY(-1px); }
 
-    /* Slide 4: Gold solid */
-    .ad-slide-3 { background: linear-gradient(135deg, #C9A84C 0%, #E2C46D 50%, #C9A84C 100%); border: 1px solid #E2C46D; position: relative; overflow: hidden; }
-    .ad-slide-3::before { content: 'HORUS'; position: absolute; right: -18px; top: 50%; transform: translateY(-50%) rotate(-90deg); font-family: 'Cormorant Garamond', serif; font-size: 58px; font-weight: 700; letter-spacing: 10px; color: rgba(0,0,0,0.10); pointer-events: none; white-space: nowrap; }
-    .ad-s3-inner { flex: 1; display: flex; flex-direction: column; justify-content: center; padding: 18px 22px; position: relative; z-index: 2; }
-    .ad-s3-eyebrow { font-family: 'Barlow Condensed', sans-serif; font-size: 9px; letter-spacing: 3px; color: #7a5010; text-transform: uppercase; margin-bottom: 6px; }
-    .ad-s3-headline { font-family: 'Cormorant Garamond', serif; font-size: 22px; font-weight: 700; color: #0d0b08; line-height: 1.25; margin-bottom: 10px; }
-    .ad-s3-row { display: flex; align-items: center; gap: 12px; }
-    .ad-pill-black { display: inline-block; background: #0d0b08; color: #C9A84C; font-family: 'Barlow Condensed', sans-serif; font-size: 9px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; padding: 4px 10px; border-radius: 3px; flex-shrink: 0; }
-    .ad-s3-contact { font-family: 'Barlow', sans-serif; font-size: 9px; color: #7a5010; letter-spacing: 0.3px; }
+      .dk-body { flex:1; display:grid; grid-template-columns:300px 1fr 300px; overflow:hidden; }
 
-    /* Slide 5: Kemper Life */
-    .ad-slide-4 { background: linear-gradient(135deg, #0a1628 0%, #132040 60%, #0e1b36 100%); border: 1px solid #1e3a6e; display: flex; align-items: stretch; }
-    .ad-slide-4::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, #c41230, #e8192c, #c41230); }
-    .ad-kemper-left { flex: 1; display: flex; flex-direction: column; justify-content: center; padding: 14px 12px 14px 18px; border-right: 1px solid #1e3a6e; }
-    .ad-kemper-logo { font-family: 'Barlow Condensed', sans-serif; font-size: 18px; font-weight: 900; letter-spacing: 1px; color: #ffffff; text-transform: uppercase; margin-bottom: 6px; line-height: 1; }
-    .ad-kemper-logo span { color: #e8192c; font-weight: 400; font-style: italic; text-transform: none; }
-    .ad-kemper-headline { font-family: 'Barlow Condensed', sans-serif; font-size: 17px; font-weight: 700; color: #ffffff; line-height: 1.2; margin-bottom: 8px; }
-    .ad-kemper-tags { display: flex; flex-wrap: wrap; gap: 4px; }
-    .ad-kemper-tag { border: 1px solid rgba(255,255,255,0.35); border-radius: 2px; padding: 2px 5px; font-family: 'Barlow Condensed', sans-serif; font-size: 8px; font-weight: 700; letter-spacing: 0.5px; color: rgba(255,255,255,0.8); text-transform: uppercase; white-space: nowrap; }
-    .ad-kemper-right { width: 148px; flex-shrink: 0; display: flex; flex-direction: column; justify-content: center; padding: 12px 14px; }
-    .ad-kemper-agent { font-family: 'Barlow Condensed', sans-serif; font-size: 12px; font-weight: 800; letter-spacing: 0.3px; color: #f0c040; text-decoration: underline; text-decoration-color: #f0c040; margin-bottom: 1px; }
-    .ad-kemper-role { font-family: 'Barlow', sans-serif; font-size: 8px; color: rgba(255,255,255,0.55); margin-bottom: 6px; }
-    .ad-kemper-callnow { font-family: 'Barlow Condensed', sans-serif; font-size: 7px; font-weight: 700; letter-spacing: 1.5px; color: rgba(255,255,255,0.45); text-transform: uppercase; margin-bottom: 2px; }
-    .ad-kemper-phone { font-family: 'Barlow Condensed', sans-serif; font-size: 18px; font-weight: 900; color: #f0c040; line-height: 1; margin-bottom: 2px; letter-spacing: 0.5px; }
-    .ad-kemper-altphones { font-family: 'Barlow', sans-serif; font-size: 7.5px; color: rgba(255,255,255,0.5); margin-bottom: 7px; }
-    .ad-kemper-divider { height: 1px; background: rgba(255,255,255,0.12); margin-bottom: 6px; }
-    .ad-kemper-email { font-family: 'Barlow', sans-serif; font-size: 7.5px; color: rgba(255,255,255,0.5); margin-bottom: 2px; display: flex; align-items: center; gap: 3px; }
-    .ad-kemper-address { font-family: 'Barlow', sans-serif; font-size: 7px; color: rgba(255,255,255,0.35); margin-bottom: 6px; line-height: 1.3; }
-    .ad-kemper-cta { display: inline-block; background: #e8192c; color: #fff; font-family: 'Barlow Condensed', sans-serif; font-size: 8px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; padding: 3px 8px; border-radius: 2px; align-self: flex-start; }
+      /* LEFT PANEL */
+      .dk-left { background:var(--dk-surface); border-right:1px solid var(--dk-border); display:flex; flex-direction:column; overflow:hidden; }
+      .dk-panel-label { font-family:'Barlow Condensed',sans-serif; font-size:9px; font-weight:700; letter-spacing:3px; color:var(--dk-muted); text-transform:uppercase; padding:14px 20px 10px; border-bottom:1px solid var(--dk-border); flex-shrink:0; }
+      .dk-metric-block { padding:20px 20px 16px; border-bottom:1px solid var(--dk-border); flex-shrink:0; position:relative; overflow:hidden; }
+      .dk-metric-block::before { content:''; position:absolute; top:0; left:0; right:0; height:2px; background:linear-gradient(90deg,transparent,var(--accent),transparent); }
+      .dk-metric-eyebrow { font-family:'Barlow Condensed',sans-serif; font-size:9px; letter-spacing:3px; color:var(--dk-muted); text-transform:uppercase; margin-bottom:6px; }
+      .dk-metric-time { font-family:'Cormorant Garamond',serif; font-size:72px; font-weight:600; line-height:0.9; color:var(--dk-text); letter-spacing:-2px; }
+      .dk-metric-unit { font-family:'Barlow Condensed',sans-serif; font-size:13px; letter-spacing:2px; color:var(--dk-muted); text-transform:uppercase; margin-top:4px; }
+      .dk-status-badge { display:inline-flex; align-items:center; gap:7px; margin-top:14px; padding:7px 14px; border-radius:4px; font-family:'Barlow Condensed',sans-serif; font-size:12px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; }
+      .dk-status-badge.fluido { background:#22c55e12; border:1px solid #22c55e30; color:#22c55e; }
+      .dk-status-badge.moderado { background:#f59e0b12; border:1px solid #f59e0b30; color:#f59e0b; }
+      .dk-status-badge.pesado { background:#ef444412; border:1px solid #ef444430; color:#ef4444; }
+      .dk-status-badge-dot { width:7px; height:7px; border-radius:50%; }
+      .dk-status-badge.fluido .dk-status-badge-dot { background:#22c55e; }
+      .dk-status-badge.moderado .dk-status-badge-dot { background:#f59e0b; }
+      .dk-status-badge.pesado .dk-status-badge-dot { background:#ef4444; }
+      .dk-stats-row { display:grid; grid-template-columns:1fr 1fr; border-bottom:1px solid var(--dk-border); flex-shrink:0; }
+      .dk-stat { padding:14px 20px; border-right:1px solid var(--dk-border); }
+      .dk-stat:last-child { border-right:none; }
+      .dk-stat-label { font-family:'Barlow Condensed',sans-serif; font-size:8px; letter-spacing:2.5px; color:var(--dk-muted); text-transform:uppercase; margin-bottom:4px; }
+      .dk-stat-value { font-family:'Cormorant Garamond',serif; font-size:26px; font-weight:600; color:var(--dk-text); line-height:1; }
+      .dk-stat-sub { font-family:'Barlow',sans-serif; font-size:9px; color:var(--dk-muted); margin-top:2px; }
+      .dk-source-line { padding:10px 20px; border-bottom:1px solid var(--dk-border); font-family:'Barlow Condensed',sans-serif; font-size:9px; letter-spacing:2px; color:var(--dk-faint); text-transform:uppercase; flex-shrink:0; display:flex; align-items:center; gap:8px; }
+      .dk-source-dot { width:4px; height:4px; background:var(--gold); border-radius:50%; flex-shrink:0; }
+      .dk-bridges-list { flex:1; overflow-y:auto; scrollbar-width:thin; scrollbar-color:var(--dk-border) transparent; }
+      .dk-bridges-list::-webkit-scrollbar { width:4px; }
+      .dk-bridges-list::-webkit-scrollbar-thumb { background:var(--dk-border); border-radius:2px; }
+      .dk-bridge-row { display:flex; align-items:center; padding:12px 20px; border-bottom:1px solid var(--dk-border); cursor:pointer; transition:background 0.15s; gap:12px; }
+      .dk-bridge-row:hover { background:var(--dk-surface2); }
+      .dk-bridge-row.active { background:var(--dk-surface2); border-left:2px solid var(--accent); padding-left:18px; }
+      .dk-bridge-row-color { width:3px; height:32px; border-radius:2px; flex-shrink:0; }
+      .dk-bridge-row-info { flex:1; min-width:0; }
+      .dk-bridge-row-name { font-family:'Barlow Condensed',sans-serif; font-size:13px; font-weight:700; letter-spacing:1px; color:var(--dk-text); text-transform:uppercase; }
+      .dk-bridge-row-type { font-family:'Barlow',sans-serif; font-size:10px; color:var(--dk-muted); }
+      .dk-bridge-row-time { text-align:right; flex-shrink:0; }
+      .dk-bridge-row-mins { font-family:'Cormorant Garamond',serif; font-size:22px; font-weight:600; line-height:1; }
+      .dk-bridge-row-unit { font-family:'Barlow',sans-serif; font-size:9px; color:var(--dk-muted); }
 
-    /* Small banner indicators */
-    .ad-indicators { position: absolute; bottom: 10px; left: 50%; transform: translateX(-50%); display: flex; gap: 5px; z-index: 10; }
-    .ad-dot { width: 5px; height: 5px; border-radius: 50%; transition: all 0.35s ease; }
-    .ad-dot.on-dark  { background: rgba(255,255,255,0.25); }
-    .ad-dot.on-light { background: rgba(0,0,0,0.20); }
-    .ad-dot.active.on-dark  { width: 18px; border-radius: 3px; background: rgba(255,255,255,0.75); }
-    .ad-dot.active.on-light { width: 18px; border-radius: 3px; background: rgba(0,0,0,0.45); }
+      /* CENTER — MAP */
+      .dk-center { position:relative; overflow:hidden; background:var(--dk-bg); }
+      #map-desktop { width:100%; height:100%; background:var(--dk-bg) !important; }
+      .dk-map-overlay-top { position:absolute; top:0; left:0; right:0; z-index:10; pointer-events:none; padding:16px 20px; display:flex; justify-content:space-between; align-items:flex-start; }
+      .dk-map-bridge-label { background:rgba(7,7,10,0.88); backdrop-filter:blur(16px); border:1px solid var(--dk-border-gold); border-radius:8px; padding:10px 16px; }
+      .dk-map-bridge-name { font-family:'Cormorant Garamond',serif; font-size:20px; font-weight:600; letter-spacing:2px; color:var(--gold); text-transform:uppercase; line-height:1; }
+      .dk-map-bridge-sub { font-family:'Barlow Condensed',sans-serif; font-size:9px; color:var(--dk-muted); letter-spacing:2px; text-transform:uppercase; margin-top:3px; }
+      .dk-map-queue-pill { background:rgba(239,68,68,0.15); border:1px solid rgba(239,68,68,0.4); backdrop-filter:blur(16px); border-radius:6px; padding:8px 14px; font-family:'Barlow Condensed',sans-serif; font-size:10px; font-weight:700; letter-spacing:1.5px; color:#ef4444; text-transform:uppercase; pointer-events:none; }
+      .dk-map-overlay-bottom { position:absolute; bottom:0; left:0; right:0; height:80px; background:linear-gradient(to top,var(--dk-bg) 0%,transparent 100%); pointer-events:none; z-index:5; }
 
-    /* ═══ PREMIUM AD BANNER ═══ */
-    .ad-banner-premium { border-radius: 14px; margin: 0 18px 16px; overflow: hidden; height: 210px; position: relative; cursor: pointer; transition: transform 0.3s ease, box-shadow 0.3s ease; box-shadow: 0 4px 24px rgba(201,168,76,0.18); }
-    .ad-banner-premium:hover { transform: translateY(-3px); box-shadow: 0 8px 36px rgba(201,168,76,0.28); }
-    .ad-premium-label { position: absolute; top: 10px; right: 10px; z-index: 20; background: linear-gradient(90deg, #b8922a, #E2C46D); color: #fff; font-family: 'Barlow Condensed', sans-serif; font-size: 7px; font-weight: 900; letter-spacing: 2px; text-transform: uppercase; padding: 3px 8px; border-radius: 2px; }
-    .ad-premium-slide { position: absolute; inset: 0; opacity: 0; transition: opacity 0.8s ease; display: flex; align-items: stretch; width: 100%; height: 100%; }
-    .ad-premium-slide.active { opacity: 1; }
+      /* RIGHT PANEL */
+      .dk-right { background:var(--dk-surface); border-left:1px solid var(--dk-border); display:flex; flex-direction:column; overflow:hidden; }
+      .dk-ad-premium-wrap { margin:14px 14px 0; border-radius:10px; overflow:hidden; height:180px; position:relative; cursor:pointer; flex-shrink:0; transition:transform 0.3s ease, box-shadow 0.3s ease; box-shadow:0 4px 20px rgba(201,168,76,0.15); }
+      .dk-ad-premium-wrap:hover { transform:translateY(-2px); box-shadow:0 8px 30px rgba(201,168,76,0.25); }
+      .dk-ad-small-wrap { margin:10px 14px 0; border-radius:10px; overflow:hidden; height:120px; position:relative; cursor:pointer; flex-shrink:0; transition:transform 0.2s; }
+      .dk-ad-small-wrap:hover { transform:translateY(-1px); }
+      .dk-reports-feed { flex:1; overflow-y:auto; scrollbar-width:thin; scrollbar-color:var(--dk-border) transparent; padding:0 0 12px; }
+      .dk-reports-feed::-webkit-scrollbar { width:4px; }
+      .dk-reports-feed::-webkit-scrollbar-thumb { background:var(--dk-border); border-radius:2px; }
+      .dk-reports-label { font-family:'Barlow Condensed',sans-serif; font-size:9px; font-weight:700; letter-spacing:3px; color:var(--dk-muted); text-transform:uppercase; padding:12px 14px 8px; position:sticky; top:0; background:var(--dk-surface); z-index:2; border-bottom:1px solid var(--dk-border); display:flex; align-items:center; gap:8px; }
+      .dk-reports-count { background:var(--dk-surface2); border:1px solid var(--dk-border); border-radius:10px; padding:1px 7px; font-size:9px; color:var(--dk-muted); }
+      .dk-report-item { padding:10px 14px; border-bottom:1px solid var(--dk-border); transition:background 0.15s; }
+      .dk-report-item:hover { background:var(--dk-surface2); }
+      .dk-report-item-top { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:4px; }
+      .dk-report-item-pos { font-family:'Barlow Condensed',sans-serif; font-size:12px; font-weight:700; color:var(--dk-text); letter-spacing:0.5px; }
+      .dk-report-item-badge { background:var(--dk-surface2); border:1px solid var(--dk-border-gold); border-radius:4px; padding:2px 7px; font-family:'Barlow Condensed',sans-serif; font-size:10px; font-weight:700; color:var(--gold); letter-spacing:0.5px; white-space:nowrap; }
+      .dk-report-item-meta { font-family:'Barlow',sans-serif; font-size:10px; color:var(--dk-muted); display:flex; gap:8px; }
+      .dk-report-item-note { font-family:'Barlow',sans-serif; font-size:10px; color:var(--dk-muted); font-style:italic; margin-top:5px; padding:5px 8px; background:var(--dk-surface2); border-left:2px solid var(--dk-border-gold); border-radius:3px; }
+      .dk-empty-state { padding:30px 14px; text-align:center; color:var(--dk-muted); }
+      .dk-empty-state div:first-child { font-size:36px; margin-bottom:8px; }
+      .dk-empty-state div:last-child { font-family:'Barlow Condensed',sans-serif; font-size:11px; letter-spacing:1.5px; text-transform:uppercase; }
 
-    /* Premium Slide 0: Visa */
-    .ad-premium-visa { background: linear-gradient(135deg, #0a1f3d 0%, #0d2a52 45%, #071628 100%); border: 2px solid #1a4a8a; position: relative; overflow: hidden; display: flex; align-items: stretch; width: 100%; }
-    .ad-premium-visa::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, #bf1c2c, #e8192c, #f5a623, #e8192c, #bf1c2c); z-index: 3; }
-    .ad-premium-visa::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, #bf1c2c, #e8192c, #f5a623, #e8192c, #bf1c2c); z-index: 3; }
-    .ad-visa-stripe { position: absolute; top: -30px; right: -30px; width: 140px; height: 140px; background: linear-gradient(135deg, #1a4a8a30, #2563eb15); border-radius: 50%; pointer-events: none; }
-    .ad-visa-stripe2 { position: absolute; bottom: -40px; left: -20px; width: 120px; height: 120px; background: linear-gradient(135deg, #bf1c2c15, #e8192c10); border-radius: 50%; pointer-events: none; }
-    .ad-visa-left { flex: 1; display: flex; flex-direction: column; justify-content: center; padding: 16px 10px 16px 18px; position: relative; z-index: 2; }
-    .ad-visa-flag-row { display: flex; align-items: center; gap: 6px; margin-bottom: 8px; }
-    .ad-visa-flag { font-size: 16px; line-height: 1; }
-    .ad-visa-arrow { font-family: 'Barlow Condensed', sans-serif; font-size: 11px; color: #f5a623; font-weight: 900; }
-    .ad-visa-eyebrow { font-family: 'Barlow Condensed', sans-serif; font-size: 8px; letter-spacing: 3px; color: #f5a62380; text-transform: uppercase; font-weight: 700; margin-bottom: 5px; }
-    .ad-visa-headline { font-family: 'Barlow Condensed', sans-serif; font-weight: 900; text-transform: uppercase; line-height: 0.92; margin-bottom: 8px; }
-    .ad-visa-headline .line1 { font-size: 26px; color: #ffffff; display: block; letter-spacing: 1px; }
-    .ad-visa-headline .line2 { font-size: 30px; color: #f5a623; display: block; letter-spacing: 0px; }
-    .ad-visa-headline .line3 { font-size: 22px; color: #ffffff; display: block; letter-spacing: 2px; opacity: 0.85; }
-    .ad-visa-chips { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 4px; }
-    .ad-visa-chip { border: 1px solid rgba(245,166,35,0.4); border-radius: 2px; padding: 2px 5px; font-family: 'Barlow Condensed', sans-serif; font-size: 7.5px; font-weight: 700; letter-spacing: 0.5px; color: rgba(245,166,35,0.85); text-transform: uppercase; white-space: nowrap; }
-    .ad-visa-divider { width: 1px; margin: 14px 0; background: linear-gradient(to bottom, transparent, #1a4a8a, transparent); flex-shrink: 0; align-self: stretch; z-index: 2; }
-    .ad-visa-right { width: 150px; flex-shrink: 0; display: flex; flex-direction: column; justify-content: center; padding: 14px 16px 14px 14px; position: relative; z-index: 2; }
-    .ad-visa-icon-row { font-size: 28px; line-height: 1; margin-bottom: 8px; letter-spacing: 2px; }
-    .ad-visa-callnow { font-family: 'Barlow Condensed', sans-serif; font-size: 7.5px; font-weight: 700; letter-spacing: 2px; color: rgba(255,255,255,0.45); text-transform: uppercase; margin-bottom: 2px; }
-    .ad-visa-phone { font-family: 'Barlow Condensed', sans-serif; font-size: 21px; font-weight: 900; color: #f5a623; line-height: 1; margin-bottom: 4px; letter-spacing: 0.5px; }
-    .ad-visa-whatsapp-badge { display: flex; align-items: center; gap: 5px; background: #25D36618; border: 1px solid #25D36640; border-radius: 3px; padding: 4px 8px; margin-bottom: 10px; }
-    .ad-visa-wa-icon { font-size: 12px; line-height: 1; }
-    .ad-visa-wa-text { font-family: 'Barlow Condensed', sans-serif; font-size: 9px; font-weight: 700; color: #25D366; letter-spacing: 0.5px; text-transform: uppercase; }
-    .ad-visa-cta { display: flex; align-items: center; justify-content: center; gap: 5px; background: linear-gradient(135deg, #e8192c, #bf1c2c); color: #fff; font-family: 'Barlow Condensed', sans-serif; font-size: 9px; font-weight: 800; letter-spacing: 1.5px; text-transform: uppercase; padding: 7px 10px; border-radius: 3px; box-shadow: 0 2px 10px #e8192c40; animation: visaCtaPulse 2.5s ease-in-out infinite; }
-    @keyframes visaCtaPulse { 0%, 100% { box-shadow: 0 2px 10px #e8192c40; } 50% { box-shadow: 0 2px 20px #e8192c70; } }
+      /* FOOTER */
+      .dk-footer { height:36px; flex-shrink:0; background:var(--dk-surface); border-top:1px solid var(--dk-border); display:flex; align-items:center; padding:0 20px; font-family:'Barlow Condensed',sans-serif; font-size:9px; letter-spacing:1.5px; color:var(--dk-faint); text-transform:uppercase; justify-content:space-between; }
+      .dk-footer-left { display:flex; align-items:center; gap:10px; }
+      .dk-footer-sep { width:1px; height:12px; background:var(--dk-border); }
+      .dk-footer-horus { font-family:'Cormorant Garamond',serif; font-size:12px; font-weight:600; letter-spacing:3px; color:var(--gold-dim); text-transform:uppercase; display:flex; align-items:center; gap:6px; }
 
-    /* Premium Slide 1: Anunciate main */
-    .ad-premium-slide-main { background: #ffffff; border: 2px solid #d4bc82; display: flex; flex-direction: column; overflow: hidden; width: 100%; height: 100%; }
-    .ad-premium-slide-main::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 6px; background: linear-gradient(90deg, #b8922a, #E2C46D, #C9A84C, #b8922a); }
-    .ad-premium-slide-main::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 6px; background: linear-gradient(90deg, #b8922a, #E2C46D, #C9A84C, #b8922a); z-index: 2; }
-    .ad-pm-top { flex: 1; display: flex; align-items: center; padding: 14px 18px 8px 18px; gap: 12px; position: relative; z-index: 2; min-height: 0; }
-    .ad-pm-headline-block { flex: 1; min-width: 0; }
-    .ad-pm-eyebrow { font-family: 'Barlow Condensed', sans-serif; font-size: 8px; letter-spacing: 3px; color: #888; text-transform: uppercase; margin-bottom: 3px; font-weight: 600; }
-    .ad-pm-headline { font-family: 'Barlow Condensed', sans-serif; font-size: 42px; font-weight: 900; line-height: 0.92; text-transform: uppercase; letter-spacing: -0.5px; }
-    .ad-pm-headline .black { color: #0d0d0d; }
-    .ad-pm-headline .gold  { color: #C9A84C; }
-    .ad-pm-tagline { font-family: 'Barlow Condensed', sans-serif; font-size: 9px; letter-spacing: 2px; color: #888; text-transform: uppercase; font-weight: 600; margin-top: 5px; }
-    .ad-pm-eye-deco { opacity: 0.08; flex-shrink: 0; display: flex; align-items: center; }
-    .ad-pm-divider-h { height: 1px; margin: 0 18px; background: linear-gradient(to right, transparent, #C9A84C80, transparent); position: relative; z-index: 2; flex-shrink: 0; }
-    .ad-pm-bottom { display: flex; align-items: center; padding: 10px 18px 16px; gap: 12px; position: relative; z-index: 2; flex-shrink: 0; }
-    .ad-pm-contact-col { display: flex; flex-direction: column; gap: 4px; flex: 1; min-width: 0; }
-    .ad-pm-contact-row { display: flex; align-items: center; gap: 6px; }
-    .ad-pm-icon { font-size: 13px; flex-shrink: 0; line-height: 1; }
-    .ad-pm-contact-text { font-family: 'Barlow Condensed', sans-serif; font-size: 12px; font-weight: 700; color: #0d0d0d; letter-spacing: 0.2px; line-height: 1.2; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .ad-pm-cta { display: inline-flex; align-items: center; justify-content: center; background: #0d0d0d; color: #ffffff; font-family: 'Barlow Condensed', sans-serif; font-size: 9px; font-weight: 800; letter-spacing: 1.5px; text-transform: uppercase; padding: 8px 14px; border-radius: 3px; white-space: nowrap; flex-shrink: 0; }
-
-    /* Premium indicators */
-    .ad-premium-indicators { position: absolute; bottom: 12px; left: 50%; transform: translateX(-50%); display: flex; gap: 5px; z-index: 20; }
-    .ad-premium-dot { width: 5px; height: 5px; border-radius: 50%; transition: all 0.35s ease; }
-    .ad-premium-dot.theme-dark  { background: rgba(255,255,255,0.30); }
-    .ad-premium-dot.theme-light { background: rgba(0,0,0,0.20); }
-    .ad-premium-dot.active.theme-dark  { width: 22px; border-radius: 3px; background: rgba(255,255,255,0.80); }
-    .ad-premium-dot.active.theme-light { width: 22px; border-radius: 3px; background: rgba(0,0,0,0.45); }
-
-    /* Map */
-    .map-container { background: var(--surface2); border: 1px solid var(--border); border-radius: 12px; margin: 0 18px 16px; overflow: hidden; height: 280px; position: relative; z-index: 1; }
-    #map { width: 100%; height: 100%; background-color: var(--surface2) !important; }
-    .leaflet-queue-pulse { animation: mapMarkerPulse 1.5s infinite; transform-origin: center; }
-    @keyframes mapMarkerPulse { 0% { transform: scale(1); stroke-width: 2px; } 50% { transform: scale(1.5); stroke-width: 5px; } 100% { transform: scale(1); stroke-width: 2px; } }
-    .queue-indicator { position: absolute; bottom: 12px; left: 12px; background: rgba(0,0,0,0.85); backdrop-filter: blur(10px); border: 1px solid var(--border-gold); border-radius: 8px; padding: 8px 12px; font-family: 'Barlow Condensed', sans-serif; font-size: 11px; letter-spacing: 1px; color: var(--gold); text-transform: uppercase; font-weight: 700; z-index: 1000; }
-
-    .report-btn { background: linear-gradient(135deg, var(--accent) 0%, var(--gold-dim) 100%); border: 1px solid var(--gold-bright); border-radius: 12px; padding: 16px; margin: 0 18px 16px; font-family: 'Barlow Condensed', sans-serif; font-size: 15px; font-weight: 800; letter-spacing: 2px; color: var(--bg); text-transform: uppercase; cursor: pointer; transition: all 0.2s; box-shadow: 0 4px 16px var(--gold-glow); width: calc(100% - 36px); }
-    .report-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 24px var(--gold-glow-strong); }
-
-    .reports-section { flex: 1; overflow-y: visible; padding: 0 18px 100px; }
-    .section-title { font-family: 'Barlow Condensed', sans-serif; font-size: 12px; font-weight: 700; letter-spacing: 2px; color: var(--muted); text-transform: uppercase; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
-    .section-title::before, .section-title::after { content: ''; flex: 1; height: 1px; }
-    .section-title::before { background: linear-gradient(to right, transparent, var(--border)); }
-    .section-title::after { background: linear-gradient(to left, transparent, var(--border)); }
-    .report-card { background: var(--surface2); border: 1px solid var(--border); border-radius: 12px; padding: 14px; margin-bottom: 12px; transition: all 0.2s; }
-    .report-card:hover { background: var(--surface3); border-color: var(--border-gold); }
-    .report-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; }
-    .report-position { font-family: 'Barlow', sans-serif; font-size: 14px; font-weight: 600; color: var(--text); line-height: 1.3; }
-    .report-time-badge { background: var(--surface3); border: 1px solid var(--border); border-radius: 6px; padding: 4px 8px; font-family: 'Barlow Condensed', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 1px; color: var(--gold); white-space: nowrap; }
-    .report-meta { display: flex; gap: 12px; font-family: 'Barlow', sans-serif; font-size: 12px; color: var(--text-dim); margin-bottom: 8px; }
-    .report-note { font-family: 'Barlow', sans-serif; font-size: 13px; color: var(--muted); font-style: italic; line-height: 1.4; padding: 8px; background: var(--surface); border-left: 2px solid var(--border-gold); border-radius: 4px; }
-    .empty-state { text-align: center; padding: 40px 20px; color: var(--muted); }
-    .empty-emoji { font-size: 48px; margin-bottom: 12px; }
-    .empty-text { font-family: 'Barlow Condensed', sans-serif; font-size: 14px; letter-spacing: 1px; text-transform: uppercase; }
-
-    .bottom-nav { position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); max-width: 480px; width: 100%; background: var(--surface); border-top: 1px solid var(--border); padding: 12px 18px; display: flex; justify-content: center; align-items: center; gap: 8px; font-family: 'Barlow', sans-serif; font-size: 11px; color: var(--muted); z-index: 100; }
-    .powered-by { position: fixed; bottom: 42px; left: 50%; transform: translateX(-50%); max-width: 480px; width: 100%; display: flex; justify-content: center; align-items: center; gap: 6px; padding: 8px; background: transparent; z-index: 99; }
-    .powered-text { font-family: 'Barlow', sans-serif; font-size: 10px; color: var(--faint); letter-spacing: 1px; }
-    .powered-horus { font-family: 'Cormorant Garamond', serif; font-size: 12px; font-weight: 600; letter-spacing: 2px; color: var(--gold-dim); }
-
-    .bridges-summary { display: flex; gap: 8px; margin: 0 18px 16px; overflow-x: auto; scrollbar-width: none; -ms-overflow-style: none; padding-bottom: 4px; }
-    .bridges-summary::-webkit-scrollbar { display: none; }
-    .bridge-pill { background: var(--surface2); border: 1px solid var(--border); border-radius: 10px; padding: 10px 6px 8px; text-align: center; cursor: pointer; transition: all 0.2s; position: relative; overflow: hidden; flex-shrink: 0; min-width: 68px; }
-    .bridge-pill::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: var(--pill-color, var(--border)); }
-    .bridge-pill.active-pill { border-color: var(--pill-color, var(--gold)); background: var(--surface3); box-shadow: 0 0 10px var(--pill-glow, transparent); }
-    .bridge-pill-name { font-family: 'Barlow Condensed', sans-serif; font-size: 9px; font-weight: 700; letter-spacing: 0.5px; color: var(--muted); text-transform: uppercase; margin-bottom: 5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .bridge-pill-time { font-family: 'Cormorant Garamond', serif; font-size: 18px; font-weight: 600; line-height: 1; color: var(--text); }
-    .bridge-pill-unit { font-family: 'Barlow', sans-serif; font-size: 8px; color: var(--muted); margin-top: 2px; }
-    .bridge-pill-dot { width: 5px; height: 5px; border-radius: 50%; margin: 4px auto 0; }
-
-    .install-banner { position: fixed; bottom: 56px; left: 50%; transform: translateX(-50%); max-width: 440px; width: calc(100% - 36px); background: var(--surface2); border: 1px solid var(--border-gold); border-radius: 12px; padding: 14px; display: flex; align-items: center; gap: 12px; z-index: 101; box-shadow: 0 8px 32px rgba(0,0,0,0.8); }
-    .install-banner-text { flex: 1; }
-    .install-banner-title { font-family: 'Barlow Condensed', sans-serif; font-size: 14px; font-weight: 700; color: var(--text); letter-spacing: 1px; }
-    .install-banner-sub { font-family: 'Barlow', sans-serif; font-size: 11px; color: var(--muted); margin-top: 2px; }
-    .install-btn { background: var(--gold); border: none; border-radius: 8px; padding: 8px 16px; font-family: 'Barlow Condensed', sans-serif; font-size: 12px; font-weight: 700; letter-spacing: 1px; color: var(--bg); cursor: pointer; text-transform: uppercase; }
-    .install-close { background: transparent; border: none; color: var(--muted); cursor: pointer; font-size: 18px; padding: 4px 8px; }
-
-    .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(4px); z-index: 1000; display: flex; align-items: flex-end; justify-content: center; animation: fadeIn 0.2s; }
-    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-    .modal-sheet { background: var(--surface); border: 1px solid var(--border-gold); border-radius: 20px 20px 0 0; width: 100%; max-height: 90vh; overflow-y: auto; padding: 24px; animation: slideUp 0.3s ease; position: relative; }
-    @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
-    .modal-handle { width: 40px; height: 4px; background: var(--border); border-radius: 2px; margin: 0 auto 20px; }
-    .modal-title { font-family: 'Barlow Condensed', sans-serif; font-size: 22px; font-weight: 800; letter-spacing: 2px; color: var(--text); text-transform: uppercase; margin-bottom: 4px; }
-    .modal-sub { font-family: 'Barlow', sans-serif; font-size: 13px; color: var(--muted); margin-bottom: 24px; }
-    .form-group { margin-bottom: 24px; }
-    .form-label { font-family: 'Barlow Condensed', sans-serif; font-size: 12px; font-weight: 700; letter-spacing: 1px; color: var(--text-dim); text-transform: uppercase; margin-bottom: 10px; display: block; }
-    .option-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
-    .option-btn { background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; padding: 12px; font-family: 'Barlow', sans-serif; font-size: 13px; color: var(--text); cursor: pointer; transition: all 0.2s; text-align: center; }
-    .option-btn:hover { background: var(--surface3); border-color: var(--border-gold); }
-    .option-btn.selected { background: var(--accent-transparent); border-color: var(--accent); color: var(--accent); box-shadow: 0 0 12px var(--accent-glow); }
-    .form-textarea { width: 100%; background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; padding: 12px; font-family: 'Barlow', sans-serif; font-size: 14px; color: var(--text); resize: none; outline: none; transition: all 0.2s; }
-    .form-textarea:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-glow); }
-    .form-textarea::placeholder { color: var(--muted); }
-    .submit-btn { width: 100%; background: linear-gradient(135deg, var(--accent) 0%, var(--gold-dim) 100%); border: 1px solid var(--gold-bright); border-radius: 12px; padding: 16px; font-family: 'Barlow Condensed', sans-serif; font-size: 15px; font-weight: 800; letter-spacing: 2px; color: var(--bg); text-transform: uppercase; cursor: pointer; transition: all 0.2s; margin-top: 8px; }
-    .submit-btn:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 6px 24px var(--gold-glow-strong); }
-    .submit-btn:disabled { opacity: 0.4; cursor: not-allowed; }
-    .success-screen { text-align: center; padding: 40px 20px; }
-    .big-emoji { font-size: 64px; margin-bottom: 16px; }
-    .success-screen .title { font-family: 'Barlow Condensed', sans-serif; font-size: 24px; font-weight: 800; letter-spacing: 2px; color: var(--text); text-transform: uppercase; margin-bottom: 8px; }
-    .success-screen .sub { font-family: 'Barlow', sans-serif; font-size: 14px; color: var(--muted); }
+      /* Modal centrado en desktop */
+      .modal-overlay { align-items:center; }
+      .modal-sheet { border-radius:16px; max-height:85vh; }
+      .modal-handle { display:none; }
+    }
   </style>
-
 </head>
-
 <body>
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-P2RPXZMN" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
-<!-- GTM noscript -->
-
-<noscript>
-  <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-P2RPXZMN"
-  height="0" width="0" style="display:none;visibility:hidden"></iframe>
-</noscript>
-
-<!-- Splash Screen -->
-
+<!-- SPLASH -->
 <div id="splash">
   <svg class="splash-eye" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
     <path d="M100 60 L160 140 L40 140 Z" fill="none" stroke="#C9A84C" stroke-width="3"/>
@@ -380,650 +328,484 @@
   </div>
 </div>
 
-<div id="app"></div>
+<!-- MOBILE APP -->
+<div id="app-mobile" style="max-width:480px;margin:0 auto;min-height:100vh;display:flex;flex-direction:column;background:#ffffff;"></div>
+
+<!-- DESKTOP APP -->
+<div id="app-desktop"></div>
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
-
 <script>
-const CONFIG = {
+(function(){
+'use strict';
+
+/* ── Configuración ── */
+var CONFIG = {
   APPS_SCRIPT_URL: 'https://script.google.com/macros/s/AKfycbzAjkhZ813kubhqFNBUX8LjNrR_tD_vwRUXrbfufifbhWQvAu10YHZmwugP2MC8PsPC/exec',
-  REFRESH_INTERVAL: 5 * 60 * 1000,
+  REFRESH_INTERVAL: 300000
 };
 
-const BRIDGES = [
-  {
-    id: 'anzalduas', name: 'Anzalduas', type: 'Internacional', lanes: ['General', 'FAST'],
-    points: {
-      P0:{lat:26.096610722637962,lng:-98.36040041694339},P1:{lat:26.107717681717862,lng:-98.35275851243759},
-      P2:{lat:26.1140243781169,lng:-98.32108657295402},P3:{lat:26.132241525955056,lng:-98.31455542056901},
-      P4:{lat:26.13863433191444,lng:-98.31343900324282},P5:{lat:26.14077921993775,lng:-98.31309651615652},
-      P6:{lat:26.1426312588012,lng:-98.31281926470751},P7:{lat:26.145046917478332,lng:-98.31208128658041},
-      P8:{lat:26.14556248144121,lng:-98.31196122740076},P9:{lat:26.146422048057648,lng:-98.31171982858521}
-    }
-  },
-  {
-    id: 'hidalgo', name: 'Hidalgo', type: 'Internacional', lanes: ['General', 'Ready Lane'],
-    points: {
-      P0:{lat:26.06816515980127,lng:-98.25943803654874},P1:{lat:26.07352401153976,lng:-98.25931309683781},
-      P2:{lat:26.083253887692326,lng:-98.2659202780586},P3:{lat:26.090226302061208,lng:-98.2678518075698},
-      P4:{lat:26.0930699512091,lng:-98.27083197851844},P5:{lat:26.09430026899008,lng:-98.27129678242454},
-      P6:{lat:26.095230322058235,lng:-98.27101953097178},P7:{lat:26.095808855306874,lng:-98.27090536861428},
-      P8:{lat:26.096592433710224,lng:-98.27048133698067},P9:{lat:26.097895945054855,lng:-98.26954357471848}
-    }
-  },
-  {
-    id: 'pharr', name: 'Pharr', type: 'Internacional', lanes: ['General', 'FAST'],
-    points: {
-      P0:{lat:26.068507962845153,lng:-98.20489651731435},P1:{lat:26.07450085216445,lng:-98.20388799444298},
-      P2:{lat:26.07951791896548,lng:-98.20303462893644},P3:{lat:26.08132958469284,lng:-98.20272431420678},
-      P4:{lat:26.083350255694075,lng:-98.2023364207947},P5:{lat:26.08491799371516,lng:-98.20206489541974},
-      P6:{lat:26.08695602165513,lng:-98.20150244997225},P7:{lat:26.08763971111181,lng:-98.20100788587186},
-      P8:{lat:26.088170982963497,lng:-98.2008866691806},P9:{lat:26.090100089187125,lng:-98.20142487129579}
-    }
-  },
-  {
-    id: 'donna', name: 'Donna', type: 'Internacional', lanes: ['General', 'FAST'],
-    points: {
-      P0:{lat:26.034,lng:-98.063},P1:{lat:26.040,lng:-98.071},P2:{lat:26.048,lng:-98.074},
-      P3:{lat:26.054,lng:-98.075},P4:{lat:26.058,lng:-98.075},P5:{lat:26.061,lng:-98.076},
-      P6:{lat:26.063,lng:-98.076},P7:{lat:26.064,lng:-98.076},P8:{lat:26.0655,lng:-98.0757},
-      P9:{lat:26.0656,lng:-98.0757}
-    }
-  },
-  {
-    id: 'nuevo_laredo', name: 'Nvo Laredo', type: 'Internacional', lanes: ['General', 'FAST'],
-    points: {
-      P0:{lat:27.468,lng:-99.508},P1:{lat:27.476,lng:-99.507},P2:{lat:27.482,lng:-99.506},
-      P3:{lat:27.487,lng:-99.506},P4:{lat:27.491,lng:-99.506},P5:{lat:27.494,lng:-99.507},
-      P6:{lat:27.496,lng:-99.507},P7:{lat:27.498,lng:-99.507},P8:{lat:27.4985,lng:-99.5074},
-      P9:{lat:27.4985,lng:-99.5074}
-    }
-  },
-  {
-    id: 'nuevo_progreso', name: 'Nvo Progreso', type: 'Internacional', lanes: ['General', 'Ready Lane'],
-    points: {
-      P0:{lat:26.024,lng:-97.941},P1:{lat:26.032,lng:-97.944},P2:{lat:26.040,lng:-97.947},
-      P3:{lat:26.046,lng:-97.949},P4:{lat:26.051,lng:-97.950},P5:{lat:26.054,lng:-97.950},
-      P6:{lat:26.057,lng:-97.951},P7:{lat:26.059,lng:-97.951},P8:{lat:26.0599,lng:-97.9504},
-      P9:{lat:26.0599,lng:-97.9504}
-    }
-  }
+var BRIDGES = [
+  {id:'anzalduas',name:'Anzalduas',type:'Internacional',lanes:['General','FAST'],
+   points:{P0:{lat:26.09661,lng:-98.36040},P1:{lat:26.10771,lng:-98.35275},P2:{lat:26.11402,lng:-98.32108},P3:{lat:26.13224,lng:-98.31455},P4:{lat:26.13863,lng:-98.31343},P5:{lat:26.14077,lng:-98.31309},P6:{lat:26.14263,lng:-98.31281},P7:{lat:26.14504,lng:-98.31208},P8:{lat:26.14556,lng:-98.31196},P9:{lat:26.14642,lng:-98.31171}}},
+  {id:'hidalgo',name:'Hidalgo',type:'Internacional',lanes:['General','Ready Lane'],
+   points:{P0:{lat:26.06816,lng:-98.25943},P1:{lat:26.07352,lng:-98.25931},P2:{lat:26.08325,lng:-98.26592},P3:{lat:26.09022,lng:-98.26785},P4:{lat:26.09306,lng:-98.27083},P5:{lat:26.09430,lng:-98.27129},P6:{lat:26.09523,lng:-98.27101},P7:{lat:26.09580,lng:-98.27090},P8:{lat:26.09659,lng:-98.27048},P9:{lat:26.09789,lng:-98.26954}}},
+  {id:'pharr',name:'Pharr',type:'Internacional',lanes:['General','FAST'],
+   points:{P0:{lat:26.06850,lng:-98.20489},P1:{lat:26.07450,lng:-98.20388},P2:{lat:26.07951,lng:-98.20303},P3:{lat:26.08132,lng:-98.20272},P4:{lat:26.08335,lng:-98.20233},P5:{lat:26.08491,lng:-98.20206},P6:{lat:26.08695,lng:-98.20150},P7:{lat:26.08763,lng:-98.20100},P8:{lat:26.08817,lng:-98.20088},P9:{lat:26.09010,lng:-98.20142}}},
+  {id:'donna',name:'Donna',type:'Internacional',lanes:['General','FAST'],
+   points:{P0:{lat:26.034,lng:-98.063},P1:{lat:26.040,lng:-98.071},P2:{lat:26.048,lng:-98.074},P3:{lat:26.054,lng:-98.075},P4:{lat:26.058,lng:-98.075},P5:{lat:26.061,lng:-98.076},P6:{lat:26.063,lng:-98.076},P7:{lat:26.064,lng:-98.076},P8:{lat:26.0655,lng:-98.0757},P9:{lat:26.0656,lng:-98.0757}}},
+  {id:'nuevo_laredo',name:'Nvo Laredo',type:'Internacional',lanes:['General','FAST'],
+   points:{P0:{lat:27.468,lng:-99.508},P1:{lat:27.476,lng:-99.507},P2:{lat:27.482,lng:-99.506},P3:{lat:27.487,lng:-99.506},P4:{lat:27.491,lng:-99.506},P5:{lat:27.494,lng:-99.507},P6:{lat:27.496,lng:-99.507},P7:{lat:27.498,lng:-99.507},P8:{lat:27.4985,lng:-99.5074},P9:{lat:27.4985,lng:-99.5074}}},
+  {id:'nuevo_progreso',name:'Nvo Progreso',type:'Internacional',lanes:['General','Ready Lane'],
+   points:{P0:{lat:26.024,lng:-97.941},P1:{lat:26.032,lng:-97.944},P2:{lat:26.040,lng:-97.947},P3:{lat:26.046,lng:-97.949},P4:{lat:26.051,lng:-97.950},P5:{lat:26.054,lng:-97.950},P6:{lat:26.057,lng:-97.951},P7:{lat:26.059,lng:-97.951},P8:{lat:26.0599,lng:-97.9504},P9:{lat:26.0599,lng:-97.9504}}}
 ];
 
-const QUEUE_POSITIONS = ['Reten del Ejercito','En los rayos X','En el puente','Fluido (sin fila)'];
-const TIME_OPTIONS = ['5-10 min','15-20 min','30-40 min','1 hora','1.5 horas','2+ horas'];
+var QUEUE_POSITIONS = ['Reten del Ejercito','En los rayos X','En el puente','Fluido (sin fila)'];
+var TIME_OPTIONS    = ['5-10 min','15-20 min','30-40 min','1 hora','1.5 horas','2+ horas'];
+var RE_DIGITS       = new RegExp('\\d+');
 
-const VISA_WHATSAPP = '528991346597';
-
-const state = {
-  activeBridge: 0, reports: [], serverTraffic: {},
-  showForm: false, submitDone: false, submitting: false,
-  formData: { position:'', lane:'', estimatedTime:'', note:'' },
-  showInstallBanner: false, installPrompt: null, map: null, mapLayerGroup: null,
+var BRIDGE_COLORS = {
+  anzalduas:'#C9A84C', hidalgo:'#60a5fa', pharr:'#f87171',
+  donna:'#a78bfa', nuevo_laredo:'#34d399', nuevo_progreso:'#fb923c'
 };
 
-function getCalculatedQueueData(bridge) {
-  const serverData = state.serverTraffic[bridge.id];
-  const bridgeReports = state.reports.filter(r => r.bridge === bridge.id);
-  const sourceLabel = {
-    'google':             'Google Maps',
-    'horario estimado':   'Horario estimado',
-    'horario programado': 'Horario programado',
-  };
-  let finalTime   = serverData ? serverData.estimatedTime : 5;
-  let finalSource = serverData ? (sourceLabel[serverData.source] || serverData.source) : 'Sin datos';
-  let finalStatus = serverData ? serverData.status : 'fluido';
-  const recentReports = bridgeReports.filter(r => (new Date() - new Date(r.timestamp)) / 60000 < 30).slice(0, 20);
-  if (recentReports.length > 0) {
-    let sum = 0;
-    recentReports.forEach(r => {
-      const match = r.estimatedTime.match(/\d+/);
-      let mins = match ? parseInt(match[0]) : 0;
-      if (r.estimatedTime.includes('hora')) mins *= 60;
+var state = {
+  activeBridge:0, reports:[], serverTraffic:{},
+  showForm:false, submitDone:false, submitting:false,
+  formData:{position:'',lane:'',estimatedTime:'',note:''},
+  showInstallBanner:false, installPrompt:null,
+  mapMobile:null, mapMobileLG:null,
+  mapDesktop:null, mapDesktopLG:null
+};
+
+/* ── Utilidades ── */
+function isDesktop() { return window.innerWidth >= 1024; }
+
+function calcQueue(bridge) {
+  var sd    = state.serverTraffic[bridge.id];
+  var reps  = state.reports.filter(function(r){ return r.bridge === bridge.id; });
+  var labels = {'google':'Google Maps','horario estimado':'Horario estimado','horario programado':'Horario programado'};
+  var t      = sd ? sd.estimatedTime : 5;
+  var src    = sd ? (labels[sd.source] || sd.source) : 'Sin datos';
+  var status = sd ? sd.status : 'fluido';
+  var now    = new Date();
+  var recent = reps.filter(function(r){ return (now - new Date(r.timestamp)) / 60000 < 30; }).slice(0, 20);
+  if (recent.length > 0) {
+    var sum = 0;
+    recent.forEach(function(r){
+      var m    = r.estimatedTime.match(RE_DIGITS);
+      var mins = m ? parseInt(m[0], 10) : 0;
+      if (r.estimatedTime.indexOf('hora') !== -1) mins *= 60;
       sum += mins;
     });
-    const userAvg = sum / recentReports.length;
-    finalTime   = Math.round((finalTime * 0.4) + (userAvg * 0.6));
-    finalSource = (serverData && serverData.source === 'google') ? 'Google + Comunidad' : 'Comunidad';
-    finalStatus = finalTime < 15 ? 'fluido' : (finalTime < 45 ? 'moderado' : 'pesado');
+    t      = Math.round(t * 0.4 + (sum / recent.length) * 0.6);
+    src    = (sd && sd.source === 'google') ? 'Google + Comunidad' : 'Comunidad';
+    status = t < 15 ? 'fluido' : t < 45 ? 'moderado' : 'pesado';
   }
-  let startSegment = null;
-  if (finalTime > 15 && finalTime <= 30) startSegment = 'P4-P5';
-  else if (finalTime > 30 && finalTime <= 50) startSegment = 'P3-P4';
-  else if (finalTime > 50) startSegment = 'P2-P3';
-  return {
-    estimatedTime: finalTime, status: finalStatus, source: finalSource,
-    queueLength: (finalTime * 0.04).toFixed(1),
-    queueStartSegment: startSegment, isInQueue: finalTime >= 30, reports: bridgeReports
-  };
+  var seg = null;
+  if (t > 15 && t <= 30) seg = 'P4-P5';
+  else if (t > 30 && t <= 50) seg = 'P3-P4';
+  else if (t > 50) seg = 'P2-P3';
+  return {estimatedTime:t, status:status, source:src, queueLength:(t*0.04).toFixed(1), queueStartSegment:seg, isInQueue:t>=30, reports:reps};
 }
 
-function initMap(bridge) {
-  const mapContainer = document.getElementById('map');
-  if (!mapContainer || typeof L === 'undefined') return;
-  if (state.map) { state.map.remove(); state.map = null; }
-  const center = bridge.points.P2 || bridge.points.P4;
-  state.map = L.map(mapContainer, { zoomControl: false, attributionControl: false }).setView([center.lat, center.lng], 14);
-  L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', { maxZoom: 19 }).addTo(state.map);
-  drawBridgePoints(bridge);
-}
-
-function drawBridgePoints(bridge) {
-  if (state.mapLayerGroup) state.mapLayerGroup.clearLayers();
-  else state.mapLayerGroup = L.layerGroup().addTo(state.map);
-  const points = bridge.points;
-  const path = [];
-  Object.entries(points).forEach(([name, coords]) => {
-    path.push([coords.lat, coords.lng]);
-    L.circleMarker([coords.lat, coords.lng], {
-      radius: 4, fillColor: name === 'P4' ? '#C9A84C' : '#666',
-      color: '#fff', weight: 1, fillOpacity: 1
-    }).addTo(state.mapLayerGroup);
+function drawMapPoints(bridge, map, layerGroup) {
+  if (!map || typeof L === 'undefined') return;
+  layerGroup.clearLayers();
+  var pts  = bridge.points;
+  var path = [];
+  Object.keys(pts).forEach(function(n){
+    var p = pts[n];
+    path.push([p.lat, p.lng]);
+    L.circleMarker([p.lat,p.lng], {radius:4, fillColor:n==='P4'?BRIDGE_COLORS[bridge.id]:'#444', color:'#fff', weight:1, fillOpacity:1}).addTo(layerGroup);
   });
-  L.polyline(path, { color: '#C9A84C', weight: 3, opacity: 0.6 }).addTo(state.mapLayerGroup);
-  const queueData = getCalculatedQueueData(bridge);
-  if (queueData && queueData.queueStartSegment) highlightQueueStart(queueData.queueStartSegment, points);
+  L.polyline(path, {color:BRIDGE_COLORS[bridge.id]||'#C9A84C', weight:3, opacity:0.7}).addTo(layerGroup);
+  var q = calcQueue(bridge);
+  if (q.queueStartSegment) {
+    var s  = q.queueStartSegment.split('-')[0];
+    var sp = pts[s];
+    if (sp) L.circleMarker([sp.lat,sp.lng], {radius:8, fillColor:'#f87171', color:'#fff', weight:2, fillOpacity:1, className:'leaflet-queue-pulse'}).addTo(layerGroup);
+  }
 }
 
-function highlightQueueStart(segment, points) {
-  const [start] = segment.split('-');
-  const startPoint = points[start];
-  if (!startPoint) return;
-  L.circleMarker([startPoint.lat, startPoint.lng], {
-    radius: 8, fillColor: '#f87171', color: '#fff',
-    weight: 2, fillOpacity: 1, className: 'leaflet-queue-pulse'
-  }).addTo(state.mapLayerGroup);
+function initMobileMap(bridge) {
+  var c = document.getElementById('map-mobile');
+  if (!c || typeof L === 'undefined') return;
+  if (state.mapMobile) { state.mapMobile.remove(); state.mapMobile = null; state.mapMobileLG = null; }
+  var ctr = bridge.points.P2 || bridge.points.P4;
+  state.mapMobile   = L.map(c, {zoomControl:false, attributionControl:false}).setView([ctr.lat, ctr.lng], 14);
+  L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {maxZoom:19}).addTo(state.mapMobile);
+  state.mapMobileLG = L.layerGroup().addTo(state.mapMobile);
+  drawMapPoints(bridge, state.mapMobile, state.mapMobileLG);
 }
 
-async function fetchReports() {
-  try {
-    const response = await fetch(CONFIG.APPS_SCRIPT_URL + '?action=getReports&t=' + new Date().getTime());
-    const data = await response.json();
-    state.reports = data.reports || [];
-    state.serverTraffic = data.serverTraffic || {};
-    render();
-    if (state.map) drawBridgePoints(BRIDGES[state.activeBridge]);
-  } catch (error) { console.error('Error fetching data:', error); }
+function initDesktopMap(bridge) {
+  var c = document.getElementById('map-desktop');
+  if (!c || typeof L === 'undefined') return;
+  if (state.mapDesktop) { state.mapDesktop.remove(); state.mapDesktop = null; state.mapDesktopLG = null; }
+  var ctr = bridge.points.P2 || bridge.points.P4;
+  state.mapDesktop   = L.map(c, {zoomControl:false, attributionControl:false}).setView([ctr.lat, ctr.lng], 13);
+  L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {maxZoom:19}).addTo(state.mapDesktop);
+  state.mapDesktopLG = L.layerGroup().addTo(state.mapDesktop);
+  drawMapPoints(bridge, state.mapDesktop, state.mapDesktopLG);
 }
 
-async function submitReport(report) {
-  await fetch(CONFIG.APPS_SCRIPT_URL, {
-    method: 'POST', headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ action: 'addReport', ...report })
+function fetchReports() {
+  fetch(CONFIG.APPS_SCRIPT_URL + '?action=getReports&t=' + Date.now())
+    .then(function(r){ return r.json(); })
+    .then(function(d){ state.reports = d.reports || []; state.serverTraffic = d.serverTraffic || {}; render(); })
+    .catch(function(e){ console.error('Fetch error:', e); });
+}
+
+function submitReport(report) {
+  return fetch(CONFIG.APPS_SCRIPT_URL, {
+    method:'POST', headers:{'Content-Type':'application/json'},
+    body: JSON.stringify(Object.assign({action:'addReport'}, report))
   });
 }
 
-function timeAgo(isoString) {
-  const diffMins = Math.floor((new Date() - new Date(isoString)) / 60000);
-  if (diffMins < 1) return 'Ahora';
-  if (diffMins < 60) return diffMins + 'm';
-  return Math.floor(diffMins / 60) + 'h';
+function timeAgo(iso) {
+  var m = Math.floor((new Date() - new Date(iso)) / 60000);
+  if (m < 1) return 'Ahora'; if (m < 60) return m + 'm'; return Math.floor(m / 60) + 'h';
 }
 
-function horusEyeSVG(size, color) {
-  const c = color || 'currentColor';
-  return '<svg width="' + size + '" height="' + size + '" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" style="display:block">'
-    + '<path d="M100 60 L160 140 L40 140 Z" fill="none" stroke="' + c + '" stroke-width="3"/>'
-    + '<line x1="70" y1="100" x2="70" y2="140" stroke="' + c + '" stroke-width="2"/>'
-    + '<line x1="100" y1="80" x2="100" y2="140" stroke="' + c + '" stroke-width="2"/>'
-    + '<line x1="130" y1="100" x2="130" y2="140" stroke="' + c + '" stroke-width="2"/>'
-    + '<circle cx="100" cy="90" r="8" fill="' + c + '"/>'
-    + '</svg>';
+function eye(size, color) {
+  var c = color || 'currentColor';
+  return '<svg width="'+size+'" height="'+size+'" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" style="display:block">'
+    + '<path d="M100 60 L160 140 L40 140 Z" fill="none" stroke="'+c+'" stroke-width="3"/>'
+    + '<line x1="70" y1="100" x2="70" y2="140" stroke="'+c+'" stroke-width="2"/>'
+    + '<line x1="100" y1="80" x2="100" y2="140" stroke="'+c+'" stroke-width="2"/>'
+    + '<line x1="130" y1="100" x2="130" y2="140" stroke="'+c+'" stroke-width="2"/>'
+    + '<circle cx="100" cy="90" r="8" fill="'+c+'"/></svg>';
 }
 
-function setBridgeVars(bridge) {
-  const colorMap = {
-    anzalduas:'#C9A84C', hidalgo:'#60a5fa', pharr:'#f87171',
-    donna:'#a78bfa', nuevo_laredo:'#34d399', nuevo_progreso:'#fb923c'
-  };
-  const color = colorMap[bridge.id] || '#C9A84C';
-  document.documentElement.style.setProperty('--accent', color);
-  document.documentElement.style.setProperty('--accent-glow', color + '20');
-  document.documentElement.style.setProperty('--accent-transparent', color + '40');
-  document.documentElement.style.setProperty('--tab-color', color);
+function setMobileAccent(bridge) {
+  var c = BRIDGE_COLORS[bridge.id] || '#C9A84C';
+  document.documentElement.style.setProperty('--accent', c);
+  document.documentElement.style.setProperty('--accent-glow', c + '20');
+  document.documentElement.style.setProperty('--accent-transparent', c + '40');
 }
 
-// -- Small banner state --
-const AD_DOT_CLASS = ['on-light', 'on-dark', 'on-dark', 'on-light', 'on-dark', 'on-light'];
-const AD_COUNT = 6;
-let adIndex = 0;
+/* ═══════════════════════════════════════════════════════════════
+   RENDER MOBILE
+═══════════════════════════════════════════════════════════════ */
+function renderMobile() {
+  var b = BRIDGES[state.activeBridge], q = calcQueue(b);
+  setMobileAccent(b);
+  var smap = {fluido:{t:'Fluido',c:'m-status-fluido'}, moderado:{t:'Moderado',c:'m-status-moderado'}, pesado:{t:'Pesado',c:'m-status-pesado'}};
+  var s = smap[q.status] || smap.fluido;
 
-// -- Premium banner state --
-const AD_PREMIUM_COUNT = 2;
-const AD_PREMIUM_DOT_THEME = ['theme-dark', 'theme-light'];
-let adPremiumIndex = 0;
-
-function adBannerHTML() {
-  return [
-    // Slide 0: Anunciate
-    '<div class="ad-slide ad-slide-new active" id="adSlide0">'
-    + '<div class="ad-new-left">'
-    + '<div class="ad-new-eyebrow">Espacio Publicitario</div>'
-    + '<div class="ad-new-headline"><span class="black">\u00a1AN\u00daN</span><span class="gold">CIATE</span><br><span class="black">AQU\u00cd!</span></div>'
-    + '<div class="ad-new-tagline">Miles de cruces diarios te ven</div>'
-    + '</div>'
-    + '<div class="ad-new-divider"></div>'
-    + '<div class="ad-new-right">'
-    + '<div class="ad-new-contact-row"><span class="ad-new-icon">\u2709\ufe0f</span><span class="ad-new-contact-text">info@horussystem.net</span></div>'
-    + '<div class="ad-new-contact-row"><span class="ad-new-icon">\ud83d\udcde</span><span class="ad-new-contact-text">(956) 485-5182</span></div>'
-    + '<div class="ad-new-cta">RESERVA TU ESPACIO</div>'
-    + '</div></div>',
-
-    // Slide 1: Dark gold HORUS
-    '<div class="ad-slide ad-slide-0" id="adSlide1">'
-    + '<div class="ad-s0-left">'
-    + '<div class="ad-s0-eyebrow">Tecnologia de Frontera</div>'
-    + '<div class="ad-s0-brand">HORUS</div>'
-    + '<div class="ad-s0-sub">System Co. &mdash; Automatizacion Empresarial</div>'
-    + '</div>'
-    + '<div class="ad-s0-right">' + horusEyeSVG(90, '#C9A84C') + '</div>'
-    + '</div>',
-
-    // Slide 2: Kemper
-    '<div class="ad-slide ad-slide-4" id="adSlide2">'
-    + '<div class="ad-kemper-left">'
-    + '<div class="ad-kemper-logo">KEMPER <span>Life</span></div>'
-    + '<div class="ad-kemper-headline">\u00bfTu familia est\u00e1<br>protegida?</div>'
-    + '<div class="ad-kemper-tags"><span class="ad-kemper-tag">Vida</span><span class="ad-kemper-tag">Accidentes</span><span class="ad-kemper-tag">C\u00e1ncer</span><span class="ad-kemper-tag">Coraz\u00f3n</span><span class="ad-kemper-tag">Incendio</span></div>'
-    + '</div>'
-    + '<div class="ad-kemper-right">'
-    + '<div class="ad-kemper-agent">Minerva San Miguel</div>'
-    + '<div class="ad-kemper-role">Sales Agent &middot; Kemper Life</div>'
-    + '<div class="ad-kemper-callnow">Ll\u00e1mame ahora</div>'
-    + '<div class="ad-kemper-phone">956-732-3290</div>'
-    + '<div class="ad-kemper-altphones">T 956-686-4891 &middot; F 956-686-4270</div>'
-    + '<div class="ad-kemper-divider"></div>'
-    + '<div class="ad-kemper-email">\ud83d\udce7 msanmiguel@kemper.com</div>'
-    + '<div class="ad-kemper-address">400 W. Nolana, Suite L&amp;M &middot; McAllen, TX 78504</div>'
-    + '<div class="ad-kemper-cta">kemper.com</div>'
-    + '</div></div>',
-
-    // Slide 3: Cream automatizacion
-    '<div class="ad-slide ad-slide-1" id="adSlide3">'
-    + '<div class="ad-s1-inner">'
-    + '<div class="ad-s1-deco">' + horusEyeSVG(110, '#C9A84C') + '</div>'
-    + '<div class="ad-s1-eyebrow">Servicios Horus</div>'
-    + '<div class="ad-s1-headline">Automatiza tu negocio.<br>Vende mas, trabaja menos.</div>'
-    + '<div class="ad-s1-row"><span class="ad-pill-dark">Agenda tu demo</span><span class="ad-s1-contact">info@horussystem.net &nbsp;&middot;&nbsp; 956-556-9674</span></div>'
-    + '</div></div>',
-
-    // Slide 4: Dark blue digital
-    '<div class="ad-slide ad-slide-2" id="adSlide4">'
-    + '<div class="ad-s2-inner">'
-    + '<div class="ad-s2-eyebrow">Desarrollo Digital</div>'
-    + '<div class="ad-s2-headline">Tu idea, convertida<br>en aplicacion real.</div>'
-    + '<div class="ad-s2-row"><span class="ad-pill-blue">Cotiza tu proyecto</span><span class="ad-s2-contact">info@horussystem.net &nbsp;&middot;&nbsp; 956-556-9674</span></div>'
-    + '</div></div>',
-
-    // Slide 5: Gold anunciate
-    '<div class="ad-slide ad-slide-3" id="adSlide5">'
-    + '<div class="ad-s3-inner">'
-    + '<div class="ad-s3-eyebrow">Publicidad Fronteriza</div>'
-    + '<div class="ad-s3-headline">Llega a miles de<br>personas diarias.</div>'
-    + '<div class="ad-s3-row"><span class="ad-pill-black">Anunciate aqui</span><span class="ad-s3-contact">info@horussystem.net &nbsp;&middot;&nbsp; 956-556-9674</span></div>'
-    + '</div></div>',
-
-    // Indicators
-    '<div class="ad-indicators">'
-    + Array.from({length: AD_COUNT}, function(_, i) {
-        return '<div class="ad-dot ' + AD_DOT_CLASS[i] + (i === 0 ? ' active' : '') + '" id="adDot' + i + '"></div>';
-      }).join('')
-    + '</div>'
-  ].join('');
-}
-
-function adBannerPremiumHTML() {
-  return [
-    '<div class="ad-premium-label">\u2605 PREMIUM</div>',
-
-    // Premium slide 0: Visa
-    '<div class="ad-premium-slide ad-premium-visa active" id="adPremiumSlide0">'
-    + '<div class="ad-visa-stripe"></div>'
-    + '<div class="ad-visa-stripe2"></div>'
-    + '<div class="ad-visa-left">'
-    + '<div class="ad-visa-flag-row"><span class="ad-visa-flag">\ud83c\uddf2\ud83c\uddfd</span><span class="ad-visa-arrow">\u21c4</span><span class="ad-visa-flag">\ud83c\uddfa\ud83c\uddf8</span></div>'
-    + '<div class="ad-visa-eyebrow">Servicios Migratorios</div>'
-    + '<div class="ad-visa-headline"><span class="line1">TR\u00c1MITE DE</span><span class="line2">VISAS &amp;</span><span class="line3">PASAPORTES</span></div>'
-    + '<div class="ad-visa-chips"><span class="ad-visa-chip">Visa B1/B2</span><span class="ad-visa-chip">Pasaporte MX</span><span class="ad-visa-chip">Asesor\u00eda</span><span class="ad-visa-chip">Renovaciones</span></div>'
-    + '</div>'
-    + '<div class="ad-visa-divider"></div>'
-    + '<div class="ad-visa-right">'
-    + '<div class="ad-visa-icon-row">\ud83d\udec2\ud83d\udccb</div>'
-    + '<div class="ad-visa-callnow">Cont\u00e1ctanos</div>'
-    + '<div class="ad-visa-phone">899\u00b7134\u00b76597</div>'
-    + '<div class="ad-visa-whatsapp-badge"><span class="ad-visa-wa-icon">\ud83d\udcac</span><span class="ad-visa-wa-text">WhatsApp</span></div>'
-    + '<div class="ad-visa-cta">\ud83d\udcf2 ESC\u00cdBENOS</div>'
-    + '</div></div>',
-
-    // Premium slide 1: Anunciate
-    '<div class="ad-premium-slide ad-premium-slide-main" id="adPremiumSlide1">'
-    + '<div class="ad-pm-top">'
-    + '<div class="ad-pm-headline-block">'
-    + '<div class="ad-pm-eyebrow">Espacio Publicitario Principal</div>'
-    + '<div class="ad-pm-headline"><span class="black">\u00a1AN\u00daN</span><span class="gold">CIATE</span><br><span class="black">AQU\u00cd!</span></div>'
-    + '<div class="ad-pm-tagline">Miles de cruces diarios te ven &middot; El espacio m\u00e1s visible</div>'
-    + '</div>'
-    + '<div class="ad-pm-eye-deco">' + horusEyeSVG(80, '#C9A84C') + '</div>'
-    + '</div>'
-    + '<div class="ad-pm-divider-h"></div>'
-    + '<div class="ad-pm-bottom">'
-    + '<div class="ad-pm-contact-col">'
-    + '<div class="ad-pm-contact-row"><span class="ad-pm-icon">\u2709\ufe0f</span><span class="ad-pm-contact-text">info@horussystem.net</span></div>'
-    + '<div class="ad-pm-contact-row"><span class="ad-pm-icon">\ud83d\udcde</span><span class="ad-pm-contact-text">(956) 485-5182</span></div>'
-    + '</div>'
-    + '<div class="ad-pm-cta">RESERVA TU ESPACIO</div>'
-    + '</div></div>',
-
-    // Premium indicators
-    '<div class="ad-premium-indicators">'
-    + Array.from({length: AD_PREMIUM_COUNT}, function(_, i) {
-        return '<div class="ad-premium-dot ' + AD_PREMIUM_DOT_THEME[i] + (i === 0 ? ' active' : '') + '" id="adPremiumDot' + i + '"></div>';
-      }).join('')
-    + '</div>'
-  ].join('');
-}
-
-function renderBridgesSummary(activeBridgeIndex) {
-  const colorMap = {
-    anzalduas:      { color: '#C9A84C', glow: '#C9A84C20' },
-    hidalgo:        { color: '#60a5fa', glow: '#60a5fa20' },
-    pharr:          { color: '#f87171', glow: '#f8717120' },
-    donna:          { color: '#a78bfa', glow: '#a78bfa20' },
-    nuevo_laredo:   { color: '#34d399', glow: '#34d39920' },
-    nuevo_progreso: { color: '#fb923c', glow: '#fb923c20' },
-  };
-  const dotColors = { fluido: 'var(--green)', moderado: 'var(--yellow)', pesado: 'var(--red)' };
-  const pills = BRIDGES.map(function(b, i) {
-    const qd       = getCalculatedQueueData(b);
-    const c        = colorMap[b.id] || { color: '#C9A84C', glow: '#C9A84C20' };
-    const isActive = i === activeBridgeIndex;
-    const dot      = dotColors[qd.status] || 'var(--green)';
-    return '<div class="bridge-pill ' + (isActive ? 'active-pill' : '') + '" style="--pill-color:' + c.color + ';--pill-glow:' + c.glow + '" onclick="selectBridge(' + i + ')">'
-      + '<div class="bridge-pill-name">' + b.name + '</div>'
-      + '<div class="bridge-pill-time">' + qd.estimatedTime + '</div>'
-      + '<div class="bridge-pill-unit">min</div>'
-      + '<div class="bridge-pill-dot" style="background:' + dot + '"></div>'
-      + '</div>';
-  }).join('');
-  return '<div class="bridges-summary">' + pills + '</div>';
-}
-
-function render() {
-  const bridge = BRIDGES[state.activeBridge];
-  const queueData = getCalculatedQueueData(bridge);
-  setBridgeVars(bridge);
-  const statusMap = {
-    fluido:   { text: 'Fluido',   cls: 'status-fluido' },
-    moderado: { text: 'Moderado', cls: 'status-moderado' },
-    pesado:   { text: 'Pesado',   cls: 'status-pesado' }
-  };
-  const status = statusMap[queueData.status] || statusMap.fluido;
-
-  const tabsHtml = BRIDGES.map(function(b, i) {
-    return '<div class="tab ' + (state.activeBridge === i ? 'active' : '') + '" onclick="selectBridge(' + i + ')">' + b.name + '</div>';
+  var tabs = BRIDGES.map(function(br, i){
+    return '<div class="m-tab' + (state.activeBridge === i ? ' active' : '') + '" onclick="selectBridge(' + i + ')">' + br.name + '</div>';
   }).join('');
 
-  const reportsHtml = queueData.reports.length > 0
-    ? queueData.reports.slice(0, 10).map(function(r) {
-        return '<div class="report-card">'
-          + '<div class="report-header">'
-          + '<div class="report-position">' + r.position + '</div>'
-          + '<div class="report-time-badge">' + r.estimatedTime + '</div>'
-          + '</div>'
-          + '<div class="report-meta"><span>' + r.lane + '</span><span>' + timeAgo(r.timestamp) + '</span></div>'
-          + (r.note ? '<div class="report-note">' + r.note + '</div>' : '')
-          + '</div>';
-      }).join('')
-    : '<div class="empty-state"><div class="empty-emoji">&#x1F937;</div><div class="empty-text">No hay reportes recientes</div></div>';
+  var cmap = {anzalduas:{c:'#C9A84C',g:'#C9A84C20'},hidalgo:{c:'#60a5fa',g:'#60a5fa20'},pharr:{c:'#f87171',g:'#f8717120'},donna:{c:'#a78bfa',g:'#a78bfa20'},nuevo_laredo:{c:'#34d399',g:'#34d39920'},nuevo_progreso:{c:'#fb923c',g:'#fb923c20'}};
+  var dmap = {fluido:'var(--green)', moderado:'var(--yellow)', pesado:'var(--red)'};
+  var pills = BRIDGES.map(function(br, i){
+    var qd = calcQueue(br), cm = cmap[br.id] || {c:'#C9A84C',g:'#C9A84C20'};
+    return '<div class="m-bridge-pill' + (i === state.activeBridge ? ' active-pill' : '') + '" style="--pill-color:' + cm.c + ';--pill-glow:' + cm.g + '" onclick="selectBridge(' + i + ')">'
+      + '<div class="m-bridge-pill-name">' + br.name + '</div>'
+      + '<div class="m-bridge-pill-time">' + qd.estimatedTime + '</div>'
+      + '<div class="m-bridge-pill-unit">min</div>'
+      + '<div class="m-bridge-pill-dot" style="background:' + (dmap[qd.status] || 'var(--green)') + '"></div></div>';
+  }).join('');
 
-  let htmlStr = ''
-    + '<div class="header">'
-    + '<div class="header-top">'
-    + '<div class="logo">'
-    + '<div class="logo-eye" style="color:var(--gold)">' + horusEyeSVG(40, '#C9A84C') + '</div>'
-    + '<div class="logo-text"><div class="logo-title">Horus</div><div class="logo-sub">System Co.</div></div>'
-    + '</div>'
-    + '<div class="live-badge"><div class="live-dot"></div>LIVE</div>'
-    + '</div>'
-    + '<div class="tabs">' + tabsHtml + '</div>'
-    + '</div>'
+  var cards = '';
+  if (q.reports.length > 0) {
+    q.reports.slice(0, 10).forEach(function(r){
+      cards += '<div class="m-report-card">'
+        + '<div class="m-report-header"><div class="m-report-position">' + r.position + '</div><div class="m-report-time-badge">' + r.estimatedTime + '</div></div>'
+        + '<div class="m-report-meta"><span>' + r.lane + '</span><span>' + timeAgo(r.timestamp) + '</span></div>'
+        + (r.note ? '<div class="m-report-note">' + r.note + '</div>' : '')
+        + '</div>';
+    });
+  } else {
+    cards = '<div class="m-empty-state"><div class="m-empty-emoji">&#x1F937;</div><div class="m-empty-text">No hay reportes recientes</div></div>';
+  }
 
-    + '<div class="traffic-card">'
-    + '<div class="traffic-header">'
-    + '<div><div class="traffic-title">Tiempo Estimado</div><div class="traffic-time">' + (queueData.estimatedTime || 0) + ' min</div></div>'
-    + '<div class="traffic-status ' + status.cls + '"><div class="status-dot"></div>' + status.text + '</div>'
-    + '</div>'
-    + '<div class="traffic-meta">'
-    + '<div class="meta-item">' + (queueData.queueLength || 0) + ' km de fila</div>'
-    + '<div class="meta-item">' + bridge.lanes.length + ' carriles</div>'
-    + (queueData.isInQueue ? '<div class="meta-item" style="color:var(--red)">En fila</div>' : '')
-    + '</div>'
-    + (queueData.source ? '<div style="margin-top:10px;font-family:\'Barlow Condensed\',sans-serif;font-size:10px;letter-spacing:1.5px;color:var(--faint);text-transform:uppercase;">Fuente: ' + queueData.source + '</div>' : '')
-    + '</div>'
+  var html = '<div class="m-header">'
+    + '<div class="m-header-top"><div class="m-logo"><div style="width:38px;height:38px;flex-shrink:0">' + eye(38) + '</div>'
+    + '<div><div class="m-logo-title">Horus</div><div class="m-logo-sub">System Co.</div></div></div>'
+    + '<div class="live-badge"><div class="live-dot"></div>LIVE</div></div>'
+    + '<div class="m-tabs">' + tabs + '</div></div>'
 
-    + '<div class="ad-banner-premium" id="adBannerPremium">' + adBannerPremiumHTML() + '</div>'
-
-    + renderBridgesSummary(state.activeBridge)
-
-    + '<div class="ad-banner" id="adBanner">' + adBannerHTML() + '</div>'
-
-    + '<div class="map-container">'
-    + '<div id="map"></div>'
-    + (queueData.queueStartSegment ? '<div class="queue-indicator">Fila inicia aprox en ' + queueData.queueStartSegment + '</div>' : '')
+    + '<div class="m-traffic-card">'
+    + '<div class="m-traffic-header"><div><div class="m-traffic-title">Tiempo Estimado</div><div class="m-traffic-time">' + (q.estimatedTime || 0) + ' min</div></div>'
+    + '<div class="m-traffic-status ' + s.c + '"><div class="m-status-dot"></div>' + s.t + '</div></div>'
+    + '<div class="m-traffic-meta"><span>' + (q.queueLength || 0) + ' km de fila</span><span>&middot;</span><span>' + b.lanes.length + ' carriles</span>'
+    + (q.isInQueue ? '<span style="color:var(--red)">En fila</span>' : '') + '</div>'
+    + (q.source ? '<div style="margin-top:10px;font-family:\'Barlow Condensed\',sans-serif;font-size:10px;letter-spacing:1.5px;color:var(--faint);text-transform:uppercase;">Fuente: ' + q.source + '</div>' : '')
     + '</div>'
 
-    + '<button class="report-btn" onclick="openForm()">Reportar Tiempo de Fila</button>'
+    // ── PUBLICIDAD (viene de ads.js) ─────────────────────────────
+    + '<div class="ad-banner-premium" id="adBannerPM">' + premiumBannerHTML('m') + '</div>'
+    + '<div class="m-bridges-summary">' + pills + '</div>'
+    + '<div class="ad-banner" id="adBannerM">' + smallBannerHTML() + '</div>'
+    // ─────────────────────────────────────────────────────────────
 
-    + '<div class="reports-section">'
-    + '<div class="section-title">Reportes Recientes</div>'
-    + reportsHtml
+    + '<div class="m-map-container"><div id="map-mobile"></div>'
+    + (q.queueStartSegment ? '<div class="m-queue-indicator">Fila inicia aprox en ' + q.queueStartSegment + '</div>' : '')
     + '</div>'
-
-    + '<div class="bottom-nav">'
-    + '<span>Auto-refresh 5min</span>'
-    + '<span style="color:var(--faint)">&middot;</span>'
-    + '<span>' + state.reports.length + ' reportes hoy</span>'
-    + '<span style="color:var(--faint)">&middot;</span>'
-    + '<span>Comunidad</span>'
-    + '</div>'
-
-    + '<div class="powered-by">'
-    + '<span class="powered-text">Powered by</span>'
-    + '<div style="display:flex;align-items:center;gap:5px;color:var(--gold-dim)">' + horusEyeSVG(16, '#8a7035') + '<span class="powered-horus">HORUS</span></div>'
-    + '</div>';
+    + '<button class="m-report-btn" onclick="openForm()">Reportar Tiempo de Fila</button>'
+    + '<div class="m-reports-section"><div class="m-section-title">Reportes Recientes</div>' + cards + '</div>'
+    + '<div class="m-bottom-nav"><span>Auto-refresh 5min</span><span style="color:var(--faint)">&middot;</span><span>' + state.reports.length + ' reportes hoy</span><span style="color:var(--faint)">&middot;</span><span>Comunidad</span></div>'
+    + '<div class="m-powered-by"><span class="m-powered-text">Powered by</span><div style="display:flex;align-items:center;gap:5px;color:var(--gold-dim)">' + eye(14) + '<span class="m-powered-horus" style="font-family:\'Cormorant Garamond\',serif;font-size:12px;font-weight:600;letter-spacing:2px;color:var(--gold-dim)">HORUS</span></div></div>';
 
   if (state.showInstallBanner) {
-    htmlStr += '<div class="install-banner">'
-      + '<div style="font-size:22px">&#x1F4F2;</div>'
-      + '<div class="install-banner-text">'
-      + '<div class="install-banner-title">Instalar en tu telefono</div>'
-      + '<div class="install-banner-sub">Acceso rapido desde tu pantalla de inicio</div>'
-      + '</div>'
+    html += '<div class="install-banner"><div style="font-size:22px">&#x1F4F2;</div>'
+      + '<div class="install-banner-text"><div class="install-banner-title">Instalar en tu telefono</div><div class="install-banner-sub">Acceso rapido desde tu pantalla de inicio</div></div>'
       + '<button class="install-btn" onclick="installApp()">Instalar</button>'
-      + '<button class="install-close" onclick="dismissInstall()">&#x2715;</button>'
-      + '</div>';
+      + '<button class="install-close" onclick="dismissInstall()">&#x2715;</button></div>';
+  }
+  if (state.showForm) html += renderForm(b);
+
+  document.getElementById('app-mobile').innerHTML = html;
+  setTimeout(function(){ initMobileMap(b); }, 100);
+
+  // Sincroniza anuncios (ads.js)
+  syncSmallBanner();
+  syncPremiumBanner('m');
+  attachPremiumClick('adBannerPM');
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   RENDER DESKTOP
+═══════════════════════════════════════════════════════════════ */
+function renderDesktop() {
+  var b = BRIDGES[state.activeBridge], q = calcQueue(b);
+  var smap    = {fluido:'fluido', moderado:'moderado', pesado:'pesado'};
+  var statusT = {fluido:'Fluido', moderado:'Moderado', pesado:'Pesado'};
+
+  var bridgeTabs = BRIDGES.map(function(br, i){
+    var qd = calcQueue(br);
+    var dcolor = qd.status === 'fluido' ? '#22c55e' : qd.status === 'moderado' ? '#f59e0b' : '#ef4444';
+    return '<div class="dk-bridge-tab' + (i === state.activeBridge ? ' active' : '') + '" onclick="selectBridge(' + i + ')">'
+      + '<div class="dk-bridge-tab-dot" style="background:' + dcolor + '"></div>'
+      + br.name
+      + '<div class="dk-bridge-tab-time">' + qd.estimatedTime + '</div></div>';
+  }).join('');
+
+  var bridgeRows = BRIDGES.map(function(br, i){
+    var qd = calcQueue(br), c = BRIDGE_COLORS[br.id] || '#C9A84C';
+    var dcolor = qd.status === 'fluido' ? '#22c55e' : qd.status === 'moderado' ? '#f59e0b' : '#ef4444';
+    return '<div class="dk-bridge-row' + (i === state.activeBridge ? ' active' : '') + '" onclick="selectBridge(' + i + ')">'
+      + '<div class="dk-bridge-row-color" style="background:' + c + '"></div>'
+      + '<div class="dk-bridge-row-info"><div class="dk-bridge-row-name">' + br.name + '</div><div class="dk-bridge-row-type">' + br.type + ' &middot; ' + br.lanes.join(', ') + '</div></div>'
+      + '<div class="dk-bridge-row-time"><div class="dk-bridge-row-mins" style="color:' + dcolor + '">' + qd.estimatedTime + '</div><div class="dk-bridge-row-unit">min</div></div></div>';
+  }).join('');
+
+  var repItems = '';
+  if (q.reports.length > 0) {
+    q.reports.slice(0, 20).forEach(function(r){
+      repItems += '<div class="dk-report-item">'
+        + '<div class="dk-report-item-top"><div class="dk-report-item-pos">' + r.position + '</div><div class="dk-report-item-badge">' + r.estimatedTime + '</div></div>'
+        + '<div class="dk-report-item-meta"><span>' + r.lane + '</span><span>&middot;</span><span>' + timeAgo(r.timestamp) + '</span></div>'
+        + (r.note ? '<div class="dk-report-item-note">' + r.note + '</div>' : '')
+        + '</div>';
+    });
+  } else {
+    repItems = '<div class="dk-empty-state"><div>&#x1F937;</div><div>Sin reportes recientes</div></div>';
   }
 
-  if (state.showForm) htmlStr += renderForm(bridge);
+  var accentColor = BRIDGE_COLORS[b.id] || '#C9A84C';
 
-  document.getElementById('app').innerHTML = htmlStr;
-  setTimeout(function() { initMap(bridge); }, 100);
-  syncAdBanner();
-  syncAdBannerPremium();
-  attachPremiumBannerClick();
+  var html = ''
+    // ── HEADER ──────────────────────────────────────────────────
+    + '<div class="dk-header">'
+    + '<div class="dk-logo-area">'
+    +   '<div style="width:28px;height:28px">' + eye(28, '#C9A84C') + '</div>'
+    +   '<div><div class="dk-logo-title">Cruce RNS</div></div>'
+    +   '<div class="dk-logo-sep"></div>'
+    +   '<div class="dk-logo-sub">Reynosa Border Crossings</div>'
+    + '</div>'
+    + '<div class="dk-header-bridges">' + bridgeTabs + '</div>'
+    + '<div class="dk-header-right">'
+    +   '<div class="dk-live-badge"><div class="dk-live-dot"></div>LIVE</div>'
+    +   '<button class="dk-report-btn-header" onclick="openForm()">+ Reportar</button>'
+    + '</div></div>'
+
+    // ── BODY ─────────────────────────────────────────────────────
+    + '<div class="dk-body">'
+
+    // LEFT PANEL
+    + '<div class="dk-left">'
+    +   '<div class="dk-panel-label">Estado Actual</div>'
+    +   '<div class="dk-metric-block" style="--accent:' + accentColor + '">'
+    +     '<div class="dk-metric-eyebrow">Tiempo de espera &mdash; ' + b.name + '</div>'
+    +     '<div class="dk-metric-time" style="color:' + accentColor + '">' + (q.estimatedTime || 0) + '</div>'
+    +     '<div class="dk-metric-unit">minutos estimados</div>'
+    +     '<div class="dk-status-badge ' + (smap[q.status] || 'fluido') + '"><div class="dk-status-badge-dot"></div>' + (statusT[q.status] || 'Fluido') + '</div>'
+    +   '</div>'
+    +   '<div class="dk-stats-row">'
+    +     '<div class="dk-stat"><div class="dk-stat-label">Km de fila</div><div class="dk-stat-value">' + (q.queueLength || 0) + '</div><div class="dk-stat-sub">kilómetros</div></div>'
+    +     '<div class="dk-stat"><div class="dk-stat-label">Reportes</div><div class="dk-stat-value">' + q.reports.length + '</div><div class="dk-stat-sub">últimos 30 min</div></div>'
+    +   '</div>'
+    +   '<div class="dk-source-line"><div class="dk-source-dot"></div>Fuente: ' + (q.source || 'Sin datos') + '</div>'
+    +   '<div class="dk-panel-label" style="padding-top:12px">Todos los Puentes</div>'
+    +   '<div class="dk-bridges-list">' + bridgeRows + '</div>'
+    + '</div>'
+
+    // CENTER — MAP
+    + '<div class="dk-center">'
+    +   '<div id="map-desktop"></div>'
+    +   '<div class="dk-map-overlay-top">'
+    +     '<div class="dk-map-bridge-label"><div class="dk-map-bridge-name" style="color:' + accentColor + '">' + b.name + '</div><div class="dk-map-bridge-sub">' + b.type + ' &mdash; ' + b.lanes.join(', ') + '</div></div>'
+    +     (q.queueStartSegment ? '<div class="dk-map-queue-pill">&#x26A0; Fila inicia: ' + q.queueStartSegment + '</div>' : '')
+    +   '</div>'
+    +   '<div class="dk-map-overlay-bottom"></div>'
+    + '</div>'
+
+    // RIGHT PANEL — Publicidad + Reportes
+    + '<div class="dk-right">'
+    // ── PUBLICIDAD (viene de ads.js) ─────────────────────────────
+    +   '<div class="dk-ad-premium-wrap" id="adBannerPD">' + premiumBannerHTML('d') + '</div>'
+    +   '<div class="dk-ad-small-wrap" id="adBannerD">' + smallBannerHTML() + '</div>'
+    // ─────────────────────────────────────────────────────────────
+    +   '<div class="dk-reports-feed">'
+    +     '<div class="dk-reports-label">Reportes Recientes <span class="dk-reports-count">' + q.reports.length + '</span></div>'
+    +     repItems
+    +   '</div>'
+    + '</div>'
+
+    + '</div>' // /dk-body
+
+    // ── FOOTER ───────────────────────────────────────────────────
+    + '<div class="dk-footer">'
+    +   '<div class="dk-footer-left">'
+    +     '<span>Auto-refresh 5 min</span>'
+    +     '<div class="dk-footer-sep"></div>'
+    +     '<span>' + state.reports.length + ' reportes totales</span>'
+    +     '<div class="dk-footer-sep"></div>'
+    +     '<span>Comunidad Reynosa</span>'
+    +   '</div>'
+    +   '<div class="dk-footer-horus">' + eye(14, '#8a7035') + '<span>HORUS</span></div>'
+    + '</div>';
+
+  if (state.showForm) html += renderForm(b);
+
+  document.getElementById('app-desktop').innerHTML = html;
+  setTimeout(function(){ initDesktopMap(b); }, 100);
+
+  // Sincroniza anuncios (ads.js)
+  syncSmallBanner();
+  syncPremiumBanner('d');
+  attachPremiumClick('adBannerPD');
 }
 
-function attachPremiumBannerClick() {
-  const banner = document.getElementById('adBannerPremium');
-  if (!banner) return;
-  banner.addEventListener('click', function() {
-    if (adPremiumIndex === 0) {
-      window.open('https://wa.me/' + VISA_WHATSAPP, '_blank');
-    }
-  });
+/* ═══════════════════════════════════════════════════════════════
+   RENDER — Dispatcher mobile / desktop
+═══════════════════════════════════════════════════════════════ */
+function render() {
+  if (isDesktop()) {
+    renderDesktop();
+  } else {
+    renderMobile();
+  }
 }
 
-// FIX 1: renderForm - string concatenation only, no template literals
-function renderForm(bridge) {
-  const f = state.formData;
-  const canSubmit = f.position && f.lane && f.estimatedTime && !state.submitting;
-
+/* ═══════════════════════════════════════════════════════════════
+   FORMULARIO DE REPORTE
+═══════════════════════════════════════════════════════════════ */
+function renderForm(b) {
+  var f = state.formData;
   if (state.submitDone) {
-    return '<div class="modal-overlay">'
-      + '<div class="modal-sheet" style="max-width:480px">'
-      + '<div class="modal-handle"></div>'
-      + '<div class="success-screen">'
-      + '<div class="big-emoji">&#x2705;</div>'
-      + '<div class="title">Reporte enviado</div>'
-      + '<div class="sub">Gracias por ayudar a la comunidad de Reynosa</div>'
+    return '<div class="modal-overlay"><div class="modal-sheet"><div class="modal-handle"></div>'
+      + '<div class="success-screen"><div class="big-emoji">&#x2705;</div>'
+      + '<div class="title">Reporte enviado</div><div class="sub">Gracias por ayudar a la comunidad de Reynosa</div>'
       + '</div></div></div>';
   }
-
-  const posButtons = QUEUE_POSITIONS.map(function(p) {
-    return '<button class="option-btn ' + (f.position === p ? 'selected' : '') + '" onclick="setField(\'position\',\'' + p.replace(/'/g, "\\'") + '\')">' + p + '</button>';
-  }).join('');
-
-  const laneButtons = bridge.lanes.map(function(l) {
-    return '<button class="option-btn ' + (f.lane === l ? 'selected' : '') + '" onclick="setField(\'lane\',\'' + l + '\')">' + l + '</button>';
-  }).join('');
-
-  const timeButtons = TIME_OPTIONS.map(function(t) {
-    return '<button class="option-btn ' + (f.estimatedTime === t ? 'selected' : '') + '" onclick="setField(\'estimatedTime\',\'' + t + '\')">' + t + '</button>';
-  }).join('');
-
-  return '<div class="modal-overlay" onclick="closeFormIfOutside(event)">'
-    + '<div class="modal-sheet" style="max-width:480px" onclick="event.stopPropagation()">'
+  var pBtns = QUEUE_POSITIONS.map(function(p){ return '<button class="option-btn' + (f.position === p ? ' selected' : '') + '" onclick="setField(\'position\',\'' + p + '\')">' + p + '</button>'; }).join('');
+  var lBtns = b.lanes.map(function(l){ return '<button class="option-btn' + (f.lane === l ? ' selected' : '') + '" onclick="setField(\'lane\',\'' + l + '\')">' + l + '</button>'; }).join('');
+  var tBtns = TIME_OPTIONS.map(function(t){ return '<button class="option-btn' + (f.estimatedTime === t ? ' selected' : '') + '" onclick="setField(\'estimatedTime\',\'' + t + '\')">' + t + '</button>'; }).join('');
+  var ok = f.position && f.lane && f.estimatedTime && !state.submitting;
+  return '<div class="modal-overlay" onclick="closeFormOuter(event)">'
+    + '<div class="modal-sheet" onclick="event.stopPropagation()">'
     + '<div class="modal-handle"></div>'
-    + '<div class="modal-title">Reportar Fila</div>'
-    + '<div class="modal-sub">' + bridge.name + ' &middot; ' + bridge.type + '</div>'
-    + '<div class="form-group">'
-    + '<label class="form-label">Hasta donde llega la fila</label>'
-    + '<div class="option-grid">' + posButtons + '</div>'
-    + '</div>'
-    + '<div class="form-group">'
-    + '<label class="form-label">Carril</label>'
-    + '<div class="option-grid">' + laneButtons + '</div>'
-    + '</div>'
-    + '<div class="form-group">'
-    + '<label class="form-label">Tiempo estimado de cruce</label>'
-    + '<div class="option-grid">' + timeButtons + '</div>'
-    + '</div>'
-    + '<div class="form-group">'
-    + '<label class="form-label">Comentario (opcional)</label>'
-    + '<textarea class="form-textarea" rows="2" placeholder="Ej: Estan revisando mucho..." oninput="setNote(this.value)">' + (f.note || '') + '</textarea>'
-
-    + '</div>'
-    + '<button class="submit-btn" ' + (canSubmit ? '' : 'disabled') + ' onclick="handleSubmit()">'
-    + (state.submitting ? 'Enviando...' : 'Publicar Reporte')
-    + '</button>'
+    + '<div class="modal-title">Reportar Fila</div><div class="modal-sub">' + b.name + ' &middot; ' + b.type + '</div>'
+    + '<div class="form-group"><label class="form-label">Hasta donde llega la fila</label><div class="option-grid">' + pBtns + '</div></div>'
+    + '<div class="form-group"><label class="form-label">Carril</label><div class="option-grid">' + lBtns + '</div></div>'
+    + '<div class="form-group"><label class="form-label">Tiempo estimado</label><div class="option-grid">' + tBtns + '</div></div>'
+    + '<div class="form-group"><label class="form-label">Comentario (opcional)</label>'
+    + '<textarea class="form-textarea" rows="2" placeholder="Ej: Estan revisando mucho..." oninput="setNote(this.value)">' + f.note + '</textarea></div>'
+    + '<button class="submit-btn"' + (ok ? '' : ' disabled') + ' onclick="handleSubmit()">' + (state.submitting ? 'Enviando...' : 'Publicar Reporte') + '</button>'
     + '<button onclick="closeForm()" style="width:100%;background:none;border:none;color:var(--muted);font-size:13px;letter-spacing:1px;margin-top:12px;cursor:pointer;padding:8px;font-family:\'Barlow Condensed\',sans-serif;text-transform:uppercase">Cancelar</button>'
     + '</div></div>';
 }
 
-window.selectBridge = function(i) { state.activeBridge = i; state.showForm = false; render(); };
-window.openForm     = function() { state.showForm = true; state.submitDone = false; state.formData = { position: '', lane: '', estimatedTime: '', note: '' }; render(); };
-window.closeForm    = function() { state.showForm = false; render(); };
-window.closeFormIfOutside = function(e) { if (e.target.classList.contains('modal-overlay')) closeForm(); };
-window.setField     = function(key, val) { state.formData[key] = val; render(); };
-window.setNote      = function(val) { state.formData.note = val; };
+/* ═══════════════════════════════════════════════════════════════
+   ACCIONES GLOBALES
+═══════════════════════════════════════════════════════════════ */
+window.selectBridge = function(i){ state.activeBridge = i; state.showForm = false; render(); };
+window.openForm      = function(){ state.showForm = true; state.submitDone = false; state.formData = {position:'',lane:'',estimatedTime:'',note:''}; render(); };
+window.closeForm     = function(){ state.showForm = false; render(); };
+window.closeFormOuter = function(e){ if (e.target.classList.contains('modal-overlay')) window.closeForm(); };
+window.setField      = function(k, v){ state.formData[k] = v; render(); };
+window.setNote       = function(v){ state.formData.note = v; };
 
-// FIX 2: spread operator - real ASCII three dots (...)
-window.handleSubmit = async function() {
+window.handleSubmit = function() {
   if (!state.formData.position || !state.formData.lane || !state.formData.estimatedTime) return;
   state.submitting = true; render();
-  const bridge = BRIDGES[state.activeBridge];
-  const report = Object.assign(
-    { bridge: bridge.id, bridgeName: bridge.name, timestamp: new Date().toISOString() },
-    state.formData
-  );
-  try {
-    await submitReport(report);
-    state.submitDone = true; state.submitting = false; render();
-    setTimeout(async function() { await fetchReports(); closeForm(); }, 1500);
-  } catch (e) {
-    state.submitting = false; state.submitDone = true; render();
-    setTimeout(closeForm, 2000);
-  }
+  var b      = BRIDGES[state.activeBridge];
+  var report = Object.assign({bridge:b.id, bridgeName:b.name}, state.formData, {timestamp: new Date().toISOString()});
+  submitReport(report)
+    .then(function(){ state.submitDone = true; state.submitting = false; render(); setTimeout(function(){ fetchReports(); window.closeForm(); }, 1500); })
+    .catch(function(){ state.submitting = false; state.submitDone = true; render(); setTimeout(window.closeForm, 2000); });
 };
 
-window.installApp = async function() {
-  if (state.installPrompt) {
-    state.installPrompt.prompt();
-    const result = await state.installPrompt.userChoice;
-    if (result.outcome === 'accepted') state.showInstallBanner = false;
+window.installApp = function() {
+  if (!state.installPrompt) return;
+  state.installPrompt.prompt();
+  state.installPrompt.userChoice.then(function(r){
+    if (r.outcome === 'accepted') state.showInstallBanner = false;
     state.installPrompt = null; render();
-  }
+  });
 };
 
 window.dismissInstall = function() {
   state.showInstallBanner = false;
-  localStorage.setItem('install-dismissed', '1');
+  try { localStorage.setItem('install-dismissed', '1'); } catch(e) {}
   render();
 };
 
-if ('serviceWorker' in navigator) {
-  window.addEventListener('load', function() {
-    navigator.serviceWorker.register('/cruce-reynosa/sw.js')
-      .then(function(reg) { reg.update(); }).catch(console.error);
-  });
-}
-
-window.addEventListener('beforeinstallprompt', function(e) {
-  e.preventDefault();
-  state.installPrompt = e;
-  if (!localStorage.getItem('install-dismissed')) { state.showInstallBanner = true; render(); }
+/* ── Resize: cambia de layout al redimensionar ── */
+var _resizeTimer;
+window.addEventListener('resize', function(){
+  clearTimeout(_resizeTimer);
+  _resizeTimer = setTimeout(function(){ render(); }, 200);
 });
 
-// -- Small banner rotation --
-setInterval(function() {
-  adIndex = (adIndex + 1) % AD_COUNT;
-  syncAdBanner();
-}, 6000);
-
-function syncAdBanner() {
-  const dotClass = AD_DOT_CLASS[adIndex];
-  for (let i = 0; i < AD_COUNT; i++) {
-    const slide = document.getElementById('adSlide' + i);
-    const dot   = document.getElementById('adDot' + i);
-    if (slide) slide.classList.toggle('active', i === adIndex);
-    if (dot) {
-      dot.className = 'ad-dot ' + dotClass + (i === adIndex ? ' active' : '');
-    }
-  }
+/* ── PWA ── */
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', function(){
+    navigator.serviceWorker.register('/cruce-reynosa/sw.js')
+      .then(function(r){ r.update(); }).catch(function(){});
+  });
 }
+window.addEventListener('beforeinstallprompt', function(e){
+  e.preventDefault(); state.installPrompt = e;
+  try { if (!localStorage.getItem('install-dismissed')) { state.showInstallBanner = true; render(); } } catch(ex) {}
+});
 
-// -- Premium banner rotation --
-setInterval(function() {
-  adPremiumIndex = (adPremiumIndex + 1) % AD_PREMIUM_COUNT;
-  syncAdBannerPremium();
-}, 7000);
+/* ═══════════════════════════════════════════════════════════════
+   INICIO
+═══════════════════════════════════════════════════════════════ */
+// Inyecta CSS de ads y arranca rotación (ambas de ads.js)
+injectAdStyles();
+startAdRotation();
 
-function syncAdBannerPremium() {
-  const dotTheme = AD_PREMIUM_DOT_THEME[adPremiumIndex];
-  for (let i = 0; i < AD_PREMIUM_COUNT; i++) {
-    const slide = document.getElementById('adPremiumSlide' + i);
-    const dot   = document.getElementById('adPremiumDot' + i);
-    if (slide) slide.classList.toggle('active', i === adPremiumIndex);
-    if (dot) {
-      dot.className = 'ad-premium-dot ' + dotTheme + (i === adPremiumIndex ? ' active' : '');
-    }
-  }
-}
+// Splash safety timeout
+setTimeout(function(){
+  var el = document.getElementById('splash');
+  if (!el || el.classList.contains('hidden')) return;
+  el.classList.add('hidden');
+  setTimeout(function(){ if (el.parentNode) el.parentNode.removeChild(el); }, 650);
+}, 3000);
 
-// Init
-setTimeout(function() {
-  document.getElementById('splash').classList.add('hidden');
-  setTimeout(function() {
-    const s = document.getElementById('splash');
-    if (s) s.remove();
-  }, 600);
-}, 2000);
-
-setBridgeVars(BRIDGES[0]);
 render();
 fetchReports();
 setInterval(fetchReports, CONFIG.REFRESH_INTERVAL);
-</script>
 
+})();
+</script>
 </body>
 </html>
