@@ -1,4 +1,4 @@
-const CACHE_NAME = 'cruce-pharr-v3';
+const CACHE_NAME = 'cruce-pharr-v4';
 const STATIC_ASSETS = [
   '/cruce-pharr/',
   '/cruce-pharr/index.html',
