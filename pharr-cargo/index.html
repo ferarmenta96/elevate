@@ -1,0 +1,785 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="theme-color" content="#060a10" />
+  <meta name="description" content="Tiempo real de espera en el Puente Pharr — Import/Export para Transportistas" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Pharr Cargo" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta property="og:title" content="Pharr Cargo — Cruce RNS" />
+  <meta property="og:description" content="Estado del Puente Pharr para transportistas de import/export. Powered by Horus." />
+  <meta property="og:type" content="website" />
+  <title>Pharr Cargo — Cruce RNS</title>
+
+  <link rel="manifest" href="/cruce-pharr/manifest.json" />
+  <link rel="apple-touch-icon" href="/cruce-pharr/public/icon-192.png" />
+  <link rel="icon" type="image/png" href="/cruce-pharr/public/icon-192.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Barlow+Condensed:wght@400;600;700;800;900&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+
+  <script src="ads.js"></script>
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    /* ═══════════════════════════════════════
+       TOKENS — Paleta Industrial Azul Acero
+    ═══════════════════════════════════════ */
+    :root {
+      /* Mobile (light-industrial) */
+      --bg: #f0f4f8; --surface: #ffffff; --surface2: #e8edf3; --surface3: #dde4ec;
+      --border: #c8d4e0; --border-blue: #2563eb30;
+      --text: #0d1b2a; --text-dim: #3d5166; --muted: #6b8296; --faint: #9aafbf;
+      --blue: #1d4ed8; --blue-bright: #3b82f6; --blue-dim: #1e3a6e;
+      --blue-glow: #2563eb18; --blue-glow-strong: #2563eb35;
+      --steel: #64748b; --steel-light: #94a3b8;
+      --green: #16a34a; --yellow: #d97706; --red: #dc2626;
+      --accent: var(--blue); --accent-glow: var(--blue-glow);
+      --accent-transparent: var(--blue-glow-strong);
+
+      /* Desktop dark tokens */
+      --dk-bg: #060a10;
+      --dk-surface: #0b1220;
+      --dk-surface2: #0f1929;
+      --dk-surface3: #162035;
+      --dk-border: #ffffff0d;
+      --dk-border-blue: #2563eb22;
+      --dk-text: #d8e4f0;
+      --dk-muted: #4d6880;
+      --dk-faint: #243448;
+    }
+
+    html, body { height: 100%; overflow-x: hidden; }
+
+    /* ═══════════════════════════════════════
+       SPLASH
+    ═══════════════════════════════════════ */
+    #splash {
+      position: fixed; inset: 0; background: #060a10;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      z-index: 9999; transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    #splash.hidden { opacity: 0; transform: scale(1.05); pointer-events: none; }
+    .splash-eye { width: 80px; height: 80px; margin-bottom: 20px; animation: splashPulse 2s ease-in-out infinite; }
+    @keyframes splashPulse { 0%,100%{filter:drop-shadow(0 0 8px #2563eb60)} 50%{filter:drop-shadow(0 0 28px #3b82f690)} }
+    .splash-brand { font-family:'Cormorant Garamond',serif; font-size:42px; font-weight:600; letter-spacing:8px; color:#3b82f6; text-transform:uppercase; line-height:1; margin-bottom:4px; }
+    .splash-tagline { font-family:'Barlow Condensed',sans-serif; font-size:11px; letter-spacing:4px; color:#4d6880; text-transform:uppercase; margin-bottom:48px; }
+    .splash-divider { width:1px; height:48px; background:linear-gradient(to bottom,transparent,#2563eb,transparent); margin-bottom:24px; }
+    .splash-app-name { font-family:'Barlow Condensed',sans-serif; font-size:22px; font-weight:800; letter-spacing:3px; color:#d8e4f0; text-transform:uppercase; }
+    .splash-app-sub { font-family:'Barlow',sans-serif; font-size:12px; color:#4d6880; letter-spacing:1px; margin-top:4px; }
+    .splash-badge { margin-top:12px; background:#1d4ed820; border:1px solid #2563eb40; border-radius:4px; padding:4px 12px; font-family:'Barlow Condensed',sans-serif; font-size:10px; letter-spacing:2px; color:#3b82f6; text-transform:uppercase; font-weight:700; }
+    .splash-loading { position:absolute; bottom:48px; display:flex; flex-direction:column; align-items:center; gap:10px; }
+    .splash-bar { width:120px; height:1px; background:#243448; border-radius:1px; overflow:hidden; }
+    .splash-bar-fill { height:100%; background:#2563eb; animation:splashLoad 1.6s ease forwards; }
+    @keyframes splashLoad { 0%{width:0} 60%{width:80%} 100%{width:100%} }
+    .splash-loading-text { font-family:'Barlow',sans-serif; font-size:10px; letter-spacing:2px; color:#4d6880; text-transform:uppercase; }
+
+    /* ═══════════════════════════════════════
+       MOBILE LAYOUT (default, ≤ 1023px)
+    ═══════════════════════════════════════ */
+    body { background:var(--bg); color:var(--text); font-family:'Barlow',sans-serif; overflow-y:auto; }
+    #app-mobile { display:block; }
+    #app-desktop { display:none; }
+
+    /* ── mobile header ── */
+    .m-header { background:var(--surface); border-bottom:1px solid var(--border); padding:14px 18px 0; position:relative; z-index:10; flex-shrink:0; }
+    .m-header::before { content:''; position:absolute; top:0; left:0; right:0; height:2px; background:linear-gradient(90deg,transparent,var(--blue),transparent); }
+    .m-header-top { display:flex; align-items:center; justify-content:space-between; margin-bottom:14px; }
+    .m-logo { display:flex; align-items:center; gap:12px; }
+    .m-logo-title { font-family:'Cormorant Garamond',serif; font-size:20px; font-weight:600; letter-spacing:3px; color:var(--blue); text-transform:uppercase; }
+    .m-logo-sub { font-family:'Barlow Condensed',sans-serif; font-size:9px; color:var(--muted); letter-spacing:2.5px; text-transform:uppercase; font-weight:600; margin-top:2px; }
+    .m-pharr-badge { display:flex; align-items:center; gap:6px; background:#1d4ed812; border:1px solid #2563eb30; border-radius:6px; padding:5px 10px; font-family:'Barlow Condensed',sans-serif; font-size:10px; color:var(--blue); font-weight:800; letter-spacing:1.5px; text-transform:uppercase; }
+    .m-pharr-badge::before { content:'🚛'; font-size:12px; }
+    .live-badge { display:flex; align-items:center; gap:5px; background:#16a34a15; border:1px solid #16a34a30; border-radius:20px; padding:5px 10px; font-family:'Barlow Condensed',sans-serif; font-size:11px; color:var(--green); font-weight:700; letter-spacing:1px; }
+    .live-dot { width:5px; height:5px; background:var(--green); border-radius:50%; animation:pulse 1.5s infinite; }
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+    /* ── bridge info bar (single bridge) ── */
+    .m-bridge-bar { display:flex; align-items:center; justify-content:space-between; padding:10px 0 14px; }
+    .m-bridge-name { font-family:'Barlow Condensed',sans-serif; font-size:22px; font-weight:900; letter-spacing:2px; color:var(--text); text-transform:uppercase; }
+    .m-bridge-type { font-family:'Barlow',sans-serif; font-size:11px; color:var(--muted); margin-top:2px; }
+    .m-bridge-lanes-badge { display:flex; gap:5px; }
+    .m-lane-chip { background:var(--surface2); border:1px solid var(--border); border-radius:4px; padding:3px 8px; font-family:'Barlow Condensed',sans-serif; font-size:10px; font-weight:700; letter-spacing:1px; color:var(--text-dim); text-transform:uppercase; }
+
+    /* ── mobile traffic card ── */
+    .m-traffic-card { background:linear-gradient(135deg,var(--surface2) 0%,var(--surface) 100%); border:1px solid var(--border-blue); border-radius:16px; padding:20px; margin:16px 18px; position:relative; overflow:hidden; }
+    .m-traffic-card::before { content:''; position:absolute; top:0; left:0; right:0; height:2px; background:linear-gradient(90deg,transparent,var(--accent),transparent); }
+    .m-traffic-header { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:16px; }
+    .m-traffic-title { font-family:'Barlow Condensed',sans-serif; font-size:14px; font-weight:700; letter-spacing:2px; color:var(--muted); text-transform:uppercase; margin-bottom:4px; }
+    .m-traffic-time { font-family:'Cormorant Garamond',serif; font-size:48px; font-weight:600; line-height:1; color:var(--text); }
+    .m-traffic-status { display:flex; align-items:center; gap:6px; background:var(--surface3); border:1px solid var(--border); border-radius:20px; padding:6px 12px; font-family:'Barlow Condensed',sans-serif; font-size:11px; font-weight:700; letter-spacing:1px; text-transform:uppercase; }
+    .m-status-dot { width:6px; height:6px; border-radius:50%; }
+    .m-status-fluido { color:var(--green); } .m-status-fluido .m-status-dot { background:var(--green); }
+    .m-status-moderado { color:var(--yellow); } .m-status-moderado .m-status-dot { background:var(--yellow); }
+    .m-status-pesado { color:var(--red); } .m-status-pesado .m-status-dot { background:var(--red); }
+    .m-traffic-meta { display:flex; gap:16px; font-family:'Barlow',sans-serif; font-size:13px; color:var(--text-dim); margin-top:12px; }
+
+    /* ── cargo specific metrics ── */
+    .m-cargo-metrics { display:grid; grid-template-columns:1fr 1fr 1fr; gap:1px; background:var(--border); border:1px solid var(--border); border-radius:12px; overflow:hidden; margin:0 18px 16px; }
+    .m-cargo-metric { background:var(--surface); padding:12px 10px; text-align:center; }
+    .m-cargo-metric-val { font-family:'Cormorant Garamond',serif; font-size:26px; font-weight:600; color:var(--text); line-height:1; }
+    .m-cargo-metric-unit { font-family:'Barlow',sans-serif; font-size:9px; color:var(--muted); margin-top:2px; text-transform:uppercase; letter-spacing:1px; }
+    .m-cargo-metric-label { font-family:'Barlow Condensed',sans-serif; font-size:9px; font-weight:700; color:var(--faint); text-transform:uppercase; letter-spacing:1px; margin-bottom:4px; }
+
+    /* ── alert strip ── */
+    .m-alert-strip { margin:0 18px 14px; border-radius:8px; padding:10px 14px; font-family:'Barlow Condensed',sans-serif; font-size:12px; font-weight:700; letter-spacing:1px; text-transform:uppercase; display:flex; align-items:center; gap:8px; }
+    .m-alert-strip.pesado { background:#dc262612; border:1px solid #dc262630; color:var(--red); }
+    .m-alert-strip.moderado { background:#d9770612; border:1px solid #d9770630; color:var(--yellow); }
+    .m-alert-strip.fluido { background:#16a34a12; border:1px solid #16a34a30; color:var(--green); }
+
+    /* ── mobile map ── */
+    .m-map-container { background:var(--surface2); border:1px solid var(--border); border-radius:12px; margin:0 18px 16px; overflow:hidden; height:280px; position:relative; z-index:1; }
+    .m-report-btn { background:linear-gradient(135deg,var(--blue) 0%,var(--blue-dim) 100%); border:1px solid var(--blue-bright); border-radius:12px; padding:16px; margin:0 18px 16px; font-family:'Barlow Condensed',sans-serif; font-size:15px; font-weight:800; letter-spacing:2px; color:#fff; text-transform:uppercase; cursor:pointer; transition:all 0.2s; box-shadow:0 4px 16px var(--blue-glow); width:calc(100% - 36px); }
+    .m-report-btn:hover { transform:translateY(-2px); box-shadow:0 6px 24px var(--blue-glow-strong); }
+    .m-reports-section { flex:1; padding:0 18px 100px; }
+    .m-section-title { font-family:'Barlow Condensed',sans-serif; font-size:12px; font-weight:700; letter-spacing:2px; color:var(--muted); text-transform:uppercase; margin-bottom:12px; display:flex; align-items:center; gap:8px; }
+    .m-section-title::before,.m-section-title::after { content:''; flex:1; height:1px; }
+    .m-section-title::before { background:linear-gradient(to right,transparent,var(--border)); }
+    .m-section-title::after { background:linear-gradient(to left,transparent,var(--border)); }
+    .m-report-card { background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:14px; margin-bottom:12px; }
+    .m-report-card:hover { background:var(--surface2); border-color:var(--border-blue); }
+    .m-report-header { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:10px; }
+    .m-report-position { font-family:'Barlow',sans-serif; font-size:14px; font-weight:600; color:var(--text); }
+    .m-report-time-badge { background:var(--surface3); border:1px solid var(--border); border-radius:6px; padding:4px 8px; font-family:'Barlow Condensed',sans-serif; font-size:11px; font-weight:700; letter-spacing:1px; color:var(--blue); white-space:nowrap; }
+    .m-report-meta { display:flex; gap:12px; font-family:'Barlow',sans-serif; font-size:12px; color:var(--text-dim); margin-bottom:8px; }
+    .m-report-note { font-family:'Barlow',sans-serif; font-size:13px; color:var(--muted); font-style:italic; line-height:1.4; padding:8px; background:var(--surface2); border-left:2px solid var(--border-blue); border-radius:4px; }
+    .m-empty-state { text-align:center; padding:40px 20px; color:var(--muted); }
+    .m-empty-emoji { font-size:48px; margin-bottom:12px; }
+    .m-empty-text { font-family:'Barlow Condensed',sans-serif; font-size:14px; letter-spacing:1px; text-transform:uppercase; }
+    .m-bottom-nav { position:fixed; bottom:0; left:50%; transform:translateX(-50%); max-width:480px; width:100%; background:var(--surface); border-top:1px solid var(--border); padding:12px 18px; display:flex; justify-content:center; align-items:center; gap:8px; font-family:'Barlow',sans-serif; font-size:11px; color:var(--muted); z-index:100; }
+    .m-powered-by { position:fixed; bottom:42px; left:50%; transform:translateX(-50%); max-width:480px; width:100%; display:flex; justify-content:center; align-items:center; gap:6px; padding:8px; z-index:99; }
+    .m-powered-text { font-family:'Barlow',sans-serif; font-size:10px; color:var(--faint); letter-spacing:1px; }
+    .m-powered-horus { font-family:'Cormorant Garamond',serif; font-size:12px; font-weight:600; letter-spacing:2px; color:var(--blue-dim); }
+    #map-mobile { width:100%; height:100%; background-color:var(--surface2) !important; }
+    .leaflet-queue-pulse { animation:mapMarkerPulse 1.5s infinite; transform-origin:center; }
+    @keyframes mapMarkerPulse { 0%{transform:scale(1)} 50%{transform:scale(1.5)} 100%{transform:scale(1)} }
+    .m-queue-indicator { position:absolute; bottom:12px; left:12px; background:rgba(0,0,0,0.85); backdrop-filter:blur(10px); border:1px solid #2563eb50; border-radius:8px; padding:8px 12px; font-family:'Barlow Condensed',sans-serif; font-size:11px; letter-spacing:1px; color:#3b82f6; text-transform:uppercase; font-weight:700; z-index:1000; }
+
+    /* ── install banner ── */
+    .install-banner { position:fixed; bottom:56px; left:50%; transform:translateX(-50%); max-width:440px; width:calc(100% - 36px); background:var(--surface); border:1px solid var(--border-blue); border-radius:12px; padding:14px; display:flex; align-items:center; gap:12px; z-index:101; box-shadow:0 8px 32px rgba(0,0,0,0.15); }
+    .install-banner-text { flex:1; }
+    .install-banner-title { font-family:'Barlow Condensed',sans-serif; font-size:14px; font-weight:700; color:var(--text); letter-spacing:1px; }
+    .install-banner-sub { font-family:'Barlow',sans-serif; font-size:11px; color:var(--muted); margin-top:2px; }
+    .install-btn { background:var(--blue); border:none; border-radius:8px; padding:8px 16px; font-family:'Barlow Condensed',sans-serif; font-size:12px; font-weight:700; letter-spacing:1px; color:#fff; cursor:pointer; text-transform:uppercase; }
+    .install-close { background:transparent; border:none; color:var(--muted); cursor:pointer; font-size:18px; padding:4px 8px; }
+
+    /* ── modal ── */
+    .modal-overlay { position:fixed; inset:0; background:rgba(0,0,0,0.75); backdrop-filter:blur(4px); z-index:1000; display:flex; align-items:flex-end; justify-content:center; animation:fadeIn 0.2s; }
+    @keyframes fadeIn { from{opacity:0} to{opacity:1} }
+    .modal-sheet { background:var(--surface); border:1px solid var(--border-blue); border-radius:20px 20px 0 0; width:100%; max-width:520px; max-height:90vh; overflow-y:auto; padding:24px; animation:slideUp 0.3s ease; }
+    @keyframes slideUp { from{transform:translateY(100%)} to{transform:translateY(0)} }
+    .modal-handle { width:40px; height:4px; background:var(--border); border-radius:2px; margin:0 auto 20px; }
+    .modal-title { font-family:'Barlow Condensed',sans-serif; font-size:22px; font-weight:800; letter-spacing:2px; color:var(--text); text-transform:uppercase; margin-bottom:4px; }
+    .modal-sub { font-family:'Barlow',sans-serif; font-size:13px; color:var(--muted); margin-bottom:24px; }
+    .form-group { margin-bottom:24px; }
+    .form-label { font-family:'Barlow Condensed',sans-serif; font-size:12px; font-weight:700; letter-spacing:1px; color:var(--text-dim); text-transform:uppercase; margin-bottom:10px; display:block; }
+    .option-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:8px; }
+    .option-btn { background:var(--surface2); border:1px solid var(--border); border-radius:8px; padding:12px; font-family:'Barlow',sans-serif; font-size:13px; color:var(--text); cursor:pointer; transition:all 0.2s; text-align:center; }
+    .option-btn.selected { background:var(--accent-transparent); border-color:var(--accent); color:var(--accent); box-shadow:0 0 12px var(--accent-glow); }
+    .form-textarea { width:100%; background:var(--surface2); border:1px solid var(--border); border-radius:8px; padding:12px; font-family:'Barlow',sans-serif; font-size:14px; color:var(--text); resize:none; outline:none; transition:all 0.2s; }
+    .form-textarea:focus { border-color:var(--accent); box-shadow:0 0 0 3px var(--accent-glow); }
+    .form-textarea::placeholder { color:var(--muted); }
+    .submit-btn { width:100%; background:linear-gradient(135deg,var(--blue) 0%,var(--blue-dim) 100%); border:1px solid var(--blue-bright); border-radius:12px; padding:16px; font-family:'Barlow Condensed',sans-serif; font-size:15px; font-weight:800; letter-spacing:2px; color:#fff; text-transform:uppercase; cursor:pointer; transition:all 0.2s; margin-top:8px; }
+    .submit-btn:hover:not(:disabled) { transform:translateY(-2px); box-shadow:0 6px 24px var(--blue-glow-strong); }
+    .submit-btn:disabled { opacity:0.4; cursor:not-allowed; }
+    .success-screen { text-align:center; padding:40px 20px; }
+    .big-emoji { font-size:64px; margin-bottom:16px; }
+    .success-screen .title { font-family:'Barlow Condensed',sans-serif; font-size:24px; font-weight:800; letter-spacing:2px; color:var(--text); text-transform:uppercase; margin-bottom:8px; }
+    .success-screen .sub { font-family:'Barlow',sans-serif; font-size:14px; color:var(--muted); }
+
+    /* ═══════════════════════════════════════════════════════
+       DESKTOP LAYOUT (≥ 1024px) — INDUSTRIAL DARK
+    ═══════════════════════════════════════════════════════ */
+    @media (min-width: 1024px) {
+      body { background:var(--dk-bg); color:var(--dk-text); overflow:hidden; height:100vh; }
+      #app-mobile { display:none !important; }
+      #app-desktop { display:flex; flex-direction:column; height:100vh; overflow:hidden; }
+
+      .dk-header { height:58px; flex-shrink:0; background:var(--dk-surface); border-bottom:1px solid var(--dk-border); display:flex; align-items:center; padding:0 28px; gap:0; position:relative; z-index:20; }
+      .dk-header::after { content:''; position:absolute; bottom:0; left:0; right:0; height:1px; background:linear-gradient(90deg,transparent 0%,#2563eb50 30%,#2563eb50 70%,transparent 100%); }
+      .dk-logo-area { display:flex; align-items:center; gap:14px; margin-right:32px; flex-shrink:0; }
+      .dk-logo-title { font-family:'Cormorant Garamond',serif; font-size:22px; font-weight:600; letter-spacing:5px; color:#3b82f6; text-transform:uppercase; line-height:1; }
+      .dk-logo-sep { width:1px; height:22px; background:var(--dk-border); margin:0 4px; }
+      .dk-logo-sub { font-family:'Barlow Condensed',sans-serif; font-size:9px; color:var(--dk-muted); letter-spacing:3px; text-transform:uppercase; font-weight:600; }
+      .dk-pharr-tag { display:flex; align-items:center; gap:8px; background:#1d4ed818; border:1px solid #2563eb35; border-radius:6px; padding:5px 14px; font-family:'Barlow Condensed',sans-serif; font-size:11px; font-weight:800; letter-spacing:2px; color:#3b82f6; text-transform:uppercase; flex-shrink:0; margin-right:16px; }
+
+      .dk-header-right { display:flex; align-items:center; gap:16px; margin-left:auto; flex-shrink:0; }
+      .dk-live-badge { display:flex; align-items:center; gap:6px; background:#16a34a10; border:1px solid #16a34a30; border-radius:20px; padding:5px 12px; font-family:'Barlow Condensed',sans-serif; font-size:11px; color:#22c55e; font-weight:700; letter-spacing:1px; }
+      .dk-live-dot { width:5px; height:5px; background:#22c55e; border-radius:50%; animation:pulse 1.5s infinite; }
+      .dk-report-btn-header { background:linear-gradient(135deg,#1d4ed8,#1e3a6e); border:1px solid #3b82f6; border-radius:6px; padding:7px 18px; font-family:'Barlow Condensed',sans-serif; font-size:11px; font-weight:800; letter-spacing:2px; color:#ffffff; text-transform:uppercase; cursor:pointer; transition:all 0.2s; }
+      .dk-report-btn-header:hover { opacity:0.85; transform:translateY(-1px); }
+
+      .dk-body { flex:1; display:grid; grid-template-columns:320px 1fr 300px; overflow:hidden; }
+
+      /* LEFT PANEL */
+      .dk-left { background:var(--dk-surface); border-right:1px solid var(--dk-border); display:flex; flex-direction:column; overflow:hidden; }
+      .dk-panel-label { font-family:'Barlow Condensed',sans-serif; font-size:9px; font-weight:700; letter-spacing:3px; color:var(--dk-muted); text-transform:uppercase; padding:14px 20px 10px; border-bottom:1px solid var(--dk-border); flex-shrink:0; }
+      .dk-metric-block { padding:20px 20px 16px; border-bottom:1px solid var(--dk-border); flex-shrink:0; position:relative; overflow:hidden; }
+      .dk-metric-block::before { content:''; position:absolute; top:0; left:0; right:0; height:2px; background:linear-gradient(90deg,transparent,#2563eb,transparent); }
+      .dk-metric-eyebrow { font-family:'Barlow Condensed',sans-serif; font-size:9px; letter-spacing:3px; color:var(--dk-muted); text-transform:uppercase; margin-bottom:6px; }
+      .dk-metric-time { font-family:'Cormorant Garamond',serif; font-size:72px; font-weight:600; line-height:0.9; color:var(--dk-text); letter-spacing:-2px; }
+      .dk-metric-unit { font-family:'Barlow Condensed',sans-serif; font-size:13px; letter-spacing:2px; color:var(--dk-muted); text-transform:uppercase; margin-top:4px; }
+      .dk-status-badge { display:inline-flex; align-items:center; gap:7px; margin-top:14px; padding:7px 14px; border-radius:4px; font-family:'Barlow Condensed',sans-serif; font-size:12px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; }
+      .dk-status-badge.fluido { background:#16a34a12; border:1px solid #16a34a30; color:#22c55e; }
+      .dk-status-badge.moderado { background:#d9770612; border:1px solid #d9770630; color:#f59e0b; }
+      .dk-status-badge.pesado { background:#dc262612; border:1px solid #dc262630; color:#ef4444; }
+      .dk-status-badge-dot { width:7px; height:7px; border-radius:50%; }
+      .dk-status-badge.fluido .dk-status-badge-dot { background:#22c55e; }
+      .dk-status-badge.moderado .dk-status-badge-dot { background:#f59e0b; }
+      .dk-status-badge.pesado .dk-status-badge-dot { background:#ef4444; }
+
+      /* CARGO METRICS GRID */
+      .dk-cargo-grid { display:grid; grid-template-columns:1fr 1fr; border-bottom:1px solid var(--dk-border); flex-shrink:0; }
+      .dk-cargo-cell { padding:14px 20px; border-right:1px solid var(--dk-border); }
+      .dk-cargo-cell:last-child { border-right:none; }
+      .dk-cargo-cell:nth-child(3), .dk-cargo-cell:nth-child(4) { border-top:1px solid var(--dk-border); }
+      .dk-cargo-label { font-family:'Barlow Condensed',sans-serif; font-size:8px; letter-spacing:2.5px; color:var(--dk-muted); text-transform:uppercase; margin-bottom:4px; }
+      .dk-cargo-val { font-family:'Cormorant Garamond',serif; font-size:26px; font-weight:600; color:var(--dk-text); line-height:1; }
+      .dk-cargo-sub { font-family:'Barlow',sans-serif; font-size:9px; color:var(--dk-muted); margin-top:2px; }
+
+      .dk-source-line { padding:10px 20px; border-bottom:1px solid var(--dk-border); font-family:'Barlow Condensed',sans-serif; font-size:9px; letter-spacing:2px; color:var(--dk-faint); text-transform:uppercase; flex-shrink:0; display:flex; align-items:center; gap:8px; }
+      .dk-source-dot { width:4px; height:4px; background:#3b82f6; border-radius:50%; flex-shrink:0; }
+
+      /* LANE STATUS section */
+      .dk-lanes-section { border-bottom:1px solid var(--dk-border); flex-shrink:0; padding:14px 20px; }
+      .dk-lanes-title { font-family:'Barlow Condensed',sans-serif; font-size:9px; font-weight:700; letter-spacing:3px; color:var(--dk-muted); text-transform:uppercase; margin-bottom:10px; }
+      .dk-lane-row { display:flex; align-items:center; justify-content:space-between; padding:7px 0; border-bottom:1px solid var(--dk-border); }
+      .dk-lane-row:last-child { border-bottom:none; }
+      .dk-lane-name { font-family:'Barlow Condensed',sans-serif; font-size:12px; font-weight:700; letter-spacing:1px; color:var(--dk-text); text-transform:uppercase; }
+      .dk-lane-badge { font-family:'Barlow Condensed',sans-serif; font-size:10px; font-weight:700; padding:3px 10px; border-radius:3px; letter-spacing:1px; text-transform:uppercase; }
+      .dk-lane-badge.fast { background:#1d4ed820; border:1px solid #2563eb35; color:#3b82f6; }
+      .dk-lane-badge.general { background:#24344820; border:1px solid var(--dk-border); color:var(--dk-muted); }
+      .dk-lane-badge.ready { background:#15803d20; border:1px solid #16a34a35; color:#22c55e; }
+
+      /* REPORTS */
+      .dk-reports-feed { flex:1; overflow-y:auto; scrollbar-width:thin; scrollbar-color:var(--dk-border) transparent; padding:0 0 12px; }
+      .dk-reports-feed::-webkit-scrollbar { width:4px; }
+      .dk-reports-feed::-webkit-scrollbar-thumb { background:var(--dk-border); border-radius:2px; }
+      .dk-reports-label { font-family:'Barlow Condensed',sans-serif; font-size:9px; font-weight:700; letter-spacing:3px; color:var(--dk-muted); text-transform:uppercase; padding:12px 14px 8px; position:sticky; top:0; background:var(--dk-surface); z-index:2; border-bottom:1px solid var(--dk-border); display:flex; align-items:center; gap:8px; }
+      .dk-reports-count { background:var(--dk-surface2); border:1px solid var(--dk-border); border-radius:10px; padding:1px 7px; font-size:9px; color:var(--dk-muted); }
+      .dk-report-item { padding:10px 14px; border-bottom:1px solid var(--dk-border); transition:background 0.15s; }
+      .dk-report-item:hover { background:var(--dk-surface2); }
+      .dk-report-item-top { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:4px; }
+      .dk-report-item-pos { font-family:'Barlow Condensed',sans-serif; font-size:12px; font-weight:700; color:var(--dk-text); letter-spacing:0.5px; }
+      .dk-report-item-badge { background:var(--dk-surface2); border:1px solid var(--dk-border-blue); border-radius:4px; padding:2px 7px; font-family:'Barlow Condensed',sans-serif; font-size:10px; font-weight:700; color:#3b82f6; letter-spacing:0.5px; white-space:nowrap; }
+      .dk-report-item-meta { font-family:'Barlow',sans-serif; font-size:10px; color:var(--dk-muted); display:flex; gap:8px; }
+      .dk-report-item-note { font-family:'Barlow',sans-serif; font-size:10px; color:var(--dk-muted); font-style:italic; margin-top:5px; padding:5px 8px; background:var(--dk-surface2); border-left:2px solid var(--dk-border-blue); border-radius:3px; }
+      .dk-empty-state { padding:30px 14px; text-align:center; color:var(--dk-muted); }
+      .dk-empty-state div:first-child { font-size:36px; margin-bottom:8px; }
+      .dk-empty-state div:last-child { font-family:'Barlow Condensed',sans-serif; font-size:11px; letter-spacing:1.5px; text-transform:uppercase; }
+
+      /* CENTER MAP */
+      .dk-center { position:relative; overflow:hidden; background:var(--dk-bg); }
+      #map-desktop { width:100%; height:100%; background:var(--dk-bg) !important; }
+      .dk-map-overlay-top { position:absolute; top:0; left:0; right:0; z-index:10; pointer-events:none; padding:16px 20px; display:flex; justify-content:space-between; align-items:flex-start; }
+      .dk-map-bridge-label { background:rgba(6,10,16,0.92); backdrop-filter:blur(16px); border:1px solid #2563eb30; border-radius:8px; padding:10px 16px; }
+      .dk-map-bridge-name { font-family:'Cormorant Garamond',serif; font-size:20px; font-weight:600; letter-spacing:2px; color:#3b82f6; text-transform:uppercase; line-height:1; }
+      .dk-map-bridge-sub { font-family:'Barlow Condensed',sans-serif; font-size:9px; color:var(--dk-muted); letter-spacing:2px; text-transform:uppercase; margin-top:3px; }
+      .dk-map-queue-pill { background:rgba(220,38,38,0.15); border:1px solid rgba(220,38,38,0.4); backdrop-filter:blur(16px); border-radius:6px; padding:8px 14px; font-family:'Barlow Condensed',sans-serif; font-size:10px; font-weight:700; letter-spacing:1.5px; color:#ef4444; text-transform:uppercase; pointer-events:none; }
+      .dk-map-overlay-bottom { position:absolute; bottom:0; left:0; right:0; height:80px; background:linear-gradient(to top,var(--dk-bg) 0%,transparent 100%); pointer-events:none; z-index:5; }
+
+      /* RIGHT PANEL */
+      .dk-right { background:var(--dk-surface); border-left:1px solid var(--dk-border); display:flex; flex-direction:column; overflow:hidden; }
+      .dk-ad-premium-wrap { margin:14px 14px 0; border-radius:10px; overflow:hidden; height:180px; position:relative; cursor:pointer; flex-shrink:0; transition:transform 0.3s ease, box-shadow 0.3s ease; box-shadow:0 4px 20px rgba(37,99,235,0.12); }
+      .dk-ad-premium-wrap:hover { transform:translateY(-2px); box-shadow:0 8px 30px rgba(37,99,235,0.2); }
+      .dk-ad-small-wrap { margin:10px 14px 0; border-radius:10px; overflow:hidden; height:120px; position:relative; cursor:pointer; flex-shrink:0; transition:transform 0.2s; }
+      .dk-ad-small-wrap:hover { transform:translateY(-1px); }
+
+      /* FOOTER */
+      .dk-footer { height:36px; flex-shrink:0; background:var(--dk-surface); border-top:1px solid var(--dk-border); display:flex; align-items:center; padding:0 20px; font-family:'Barlow Condensed',sans-serif; font-size:9px; letter-spacing:1.5px; color:var(--dk-faint); text-transform:uppercase; justify-content:space-between; }
+      .dk-footer-left { display:flex; align-items:center; gap:10px; }
+      .dk-footer-sep { width:1px; height:12px; background:var(--dk-border); }
+      .dk-footer-horus { font-family:'Cormorant Garamond',serif; font-size:12px; font-weight:600; letter-spacing:3px; color:#1e3a6e; text-transform:uppercase; display:flex; align-items:center; gap:6px; }
+
+      /* Modal centrado en desktop */
+      .modal-overlay { align-items:center; }
+      .modal-sheet { background:var(--dk-surface); border-color:var(--dk-border-blue); color:var(--dk-text); border-radius:16px; max-height:85vh; }
+      .modal-handle { display:none; }
+      .modal-title { color:var(--dk-text); }
+      .modal-sub { color:var(--dk-muted); }
+      .form-label { color:var(--dk-muted); }
+      .option-btn { background:var(--dk-surface2); border-color:var(--dk-border); color:var(--dk-text); }
+      .form-textarea { background:var(--dk-surface2); border-color:var(--dk-border); color:var(--dk-text); }
+    }
+  </style>
+</head>
+<body>
+
+<!-- SPLASH -->
+<div id="splash">
+  <svg class="splash-eye" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+    <path d="M100 60 L160 140 L40 140 Z" fill="none" stroke="#3b82f6" stroke-width="3"/>
+    <line x1="70" y1="100" x2="70" y2="140" stroke="#3b82f6" stroke-width="2"/>
+    <line x1="100" y1="80" x2="100" y2="140" stroke="#3b82f6" stroke-width="2"/>
+    <line x1="130" y1="100" x2="130" y2="140" stroke="#3b82f6" stroke-width="2"/>
+    <circle cx="100" cy="90" r="8" fill="#3b82f6"/>
+  </svg>
+  <div class="splash-brand">HORUS</div>
+  <div class="splash-tagline">System Co.</div>
+  <div class="splash-divider"></div>
+  <div class="splash-app-name">Pharr Cargo</div>
+  <div class="splash-app-sub">Import · Export · Transportistas</div>
+  <div class="splash-badge">🚛 Puente Pharr — Reynosa</div>
+  <div class="splash-loading">
+    <div class="splash-bar"><div class="splash-bar-fill"></div></div>
+    <div class="splash-loading-text">Cargando...</div>
+  </div>
+</div>
+
+<!-- MOBILE APP -->
+<div id="app-mobile" style="max-width:480px;margin:0 auto;min-height:100vh;display:flex;flex-direction:column;background:#f0f4f8;"></div>
+
+<!-- DESKTOP APP -->
+<div id="app-desktop"></div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+<script>
+(function(){
+'use strict';
+
+var CONFIG = {
+  APPS_SCRIPT_URL: 'https://script.google.com/macros/s/AKfycbzAjkhZ813kubhqFNBUX8LjNrR_tD_vwRUXrbfufifbhWQvAu10YHZmwugP2MC8PsPC/exec',
+  REFRESH_INTERVAL: 180000  // 3 min refresh — más frecuente para cargo
+};
+
+/* ── Solo Puente Pharr — carriles cargo ── */
+var BRIDGES = [
+  {id:'pharr', name:'Pharr', fullName:'Pharr-Reynosa International Bridge',
+   type:'Comercial / Cargo', lanes:['General','FAST','Commercial'],
+   points:{
+     P0:{lat:26.06850,lng:-98.20489},P1:{lat:26.07450,lng:-98.20388},
+     P2:{lat:26.07951,lng:-98.20303},P3:{lat:26.08132,lng:-98.20272},
+     P4:{lat:26.08335,lng:-98.20233},P5:{lat:26.08491,lng:-98.20206},
+     P6:{lat:26.08695,lng:-98.20150},P7:{lat:26.08763,lng:-98.20100},
+     P8:{lat:26.08817,lng:-98.20088},P9:{lat:26.09010,lng:-98.20142}
+   }
+  }
+];
+
+var PHARR_COLOR = '#2563eb';
+
+/* ── Queue positions específicas para cargo ── */
+var QUEUE_POSITIONS = ['Reten del Ejercito','En los rayos X','En el puente','Inicio Blvd Reynosa','Libre (sin fila)'];
+var TIME_OPTIONS    = ['5-10 min','15-20 min','30-40 min','1 hora','1.5 horas','2+ horas','3+ horas'];
+var RE_DIGITS       = new RegExp('\\d+');
+
+var state = {
+  reports:[], serverTraffic:{},
+  showForm:false, submitDone:false, submitting:false,
+  formData:{position:'',lane:'',estimatedTime:'',note:''},
+  showInstallBanner:false, installPrompt:null,
+  mapMobile:null, mapMobileLG:null,
+  mapDesktop:null, mapDesktopLG:null
+};
+
+function isDesktop() { return window.innerWidth >= 1024; }
+
+function calcQueue() {
+  var bridge = BRIDGES[0];
+  var sd     = state.serverTraffic[bridge.id];
+  var reps   = state.reports.filter(function(r){ return r.bridge === bridge.id; });
+  var labels = {'google':'Google Maps','horario estimado':'Horario estimado','horario programado':'Horario programado'};
+  var t      = sd ? sd.estimatedTime : 10;
+  var src    = sd ? (labels[sd.source] || sd.source) : 'Sin datos';
+  var status = sd ? sd.status : 'fluido';
+  var now    = new Date();
+  var recent = reps.filter(function(r){ return (now - new Date(r.timestamp)) / 60000 < 30; }).slice(0, 20);
+  if (recent.length > 0) {
+    var sum = 0;
+    recent.forEach(function(r){
+      var m = r.estimatedTime.match(RE_DIGITS);
+      var mins = m ? parseInt(m[0], 10) : 0;
+      if (r.estimatedTime.indexOf('hora') !== -1) mins *= 60;
+      sum += mins;
+    });
+    t      = Math.round(t * 0.4 + (sum / recent.length) * 0.6);
+    src    = (sd && sd.source === 'google') ? 'Google + Comunidad' : 'Comunidad Transportistas';
+    status = t < 20 ? 'fluido' : t < 60 ? 'moderado' : 'pesado';
+  }
+  var seg = null;
+  if (t > 20 && t <= 40) seg = 'P4-P5';
+  else if (t > 40 && t <= 60) seg = 'P3-P4';
+  else if (t > 60) seg = 'P2-P3';
+  return {estimatedTime:t, status:status, source:src, queueLength:(t*0.05).toFixed(1), queueStartSegment:seg, isInQueue:t>=30, reports:reps};
+}
+
+function drawMapPoints(map, layerGroup) {
+  var bridge = BRIDGES[0];
+  if (!map || typeof L === 'undefined') return;
+  layerGroup.clearLayers();
+  var pts  = bridge.points;
+  var path = [];
+  Object.keys(pts).forEach(function(n){
+    var p = pts[n];
+    path.push([p.lat, p.lng]);
+    L.circleMarker([p.lat,p.lng], {radius:4, fillColor:n==='P4'?PHARR_COLOR:'#334155', color:'#fff', weight:1, fillOpacity:1}).addTo(layerGroup);
+  });
+  L.polyline(path, {color:PHARR_COLOR, weight:3, opacity:0.8}).addTo(layerGroup);
+  var q = calcQueue();
+  if (q.queueStartSegment) {
+    var s  = q.queueStartSegment.split('-')[0];
+    var sp = pts[s];
+    if (sp) L.circleMarker([sp.lat,sp.lng], {radius:8, fillColor:'#ef4444', color:'#fff', weight:2, fillOpacity:1, className:'leaflet-queue-pulse'}).addTo(layerGroup);
+  }
+}
+
+function initMobileMap() {
+  var c = document.getElementById('map-mobile');
+  if (!c || typeof L === 'undefined') return;
+  if (state.mapMobile) { state.mapMobile.remove(); state.mapMobile = null; state.mapMobileLG = null; }
+  var ctr = BRIDGES[0].points.P4;
+  state.mapMobile   = L.map(c, {zoomControl:false, attributionControl:false}).setView([ctr.lat, ctr.lng], 14);
+  L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {maxZoom:19}).addTo(state.mapMobile);
+  state.mapMobileLG = L.layerGroup().addTo(state.mapMobile);
+  drawMapPoints(state.mapMobile, state.mapMobileLG);
+}
+
+function initDesktopMap() {
+  var c = document.getElementById('map-desktop');
+  if (!c || typeof L === 'undefined') return;
+  if (state.mapDesktop) { state.mapDesktop.remove(); state.mapDesktop = null; state.mapDesktopLG = null; }
+  var ctr = BRIDGES[0].points.P4;
+  state.mapDesktop   = L.map(c, {zoomControl:false, attributionControl:false}).setView([ctr.lat, ctr.lng], 13);
+  L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {maxZoom:19}).addTo(state.mapDesktop);
+  state.mapDesktopLG = L.layerGroup().addTo(state.mapDesktop);
+  drawMapPoints(state.mapDesktop, state.mapDesktopLG);
+}
+
+function fetchReports() {
+  fetch(CONFIG.APPS_SCRIPT_URL + '?action=getReports&bridge=pharr&t=' + Date.now())
+    .then(function(r){ return r.json(); })
+    .then(function(d){ state.reports = (d.reports || []).filter(function(r){ return r.bridge === 'pharr'; }); state.serverTraffic = d.serverTraffic || {}; render(); })
+    .catch(function(e){ console.error('Fetch error:', e); });
+}
+
+function submitReport(report) {
+  return fetch(CONFIG.APPS_SCRIPT_URL, {
+    method:'POST', headers:{'Content-Type':'application/json'},
+    body: JSON.stringify(Object.assign({action:'addReport'}, report))
+  });
+}
+
+function timeAgo(iso) {
+  var m = Math.floor((new Date() - new Date(iso)) / 60000);
+  if (m < 1) return 'Ahora'; if (m < 60) return m + 'm'; return Math.floor(m / 60) + 'h';
+}
+
+function eye(size, color) {
+  var c = color || '#3b82f6';
+  return '<svg width="'+size+'" height="'+size+'" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" style="display:block">'
+    + '<path d="M100 60 L160 140 L40 140 Z" fill="none" stroke="'+c+'" stroke-width="3"/>'
+    + '<line x1="70" y1="100" x2="70" y2="140" stroke="'+c+'" stroke-width="2"/>'
+    + '<line x1="100" y1="80" x2="100" y2="140" stroke="'+c+'" stroke-width="2"/>'
+    + '<line x1="130" y1="100" x2="130" y2="140" stroke="'+c+'" stroke-width="2"/>'
+    + '<circle cx="100" cy="90" r="8" fill="'+c+'"/></svg>';
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   RENDER MOBILE
+═══════════════════════════════════════════════════════════════ */
+function renderMobile() {
+  var q = calcQueue();
+  var smap = {fluido:{t:'Fluido',c:'m-status-fluido'}, moderado:{t:'Moderado',c:'m-status-moderado'}, pesado:{t:'Pesado',c:'m-status-pesado'}};
+  var s = smap[q.status] || smap.fluido;
+
+  var alertMsg = q.status === 'pesado'
+    ? '⚠️ Espera mayor a 1 hora — Planifica tu ruta'
+    : q.status === 'moderado'
+      ? '⏱ Espera moderada — Monitorea la fila'
+      : '✅ Cruce fluido — Condiciones buenas';
+
+  var cards = '';
+  if (q.reports.length > 0) {
+    q.reports.slice(0, 10).forEach(function(r){
+      cards += '<div class="m-report-card">'
+        + '<div class="m-report-header"><div class="m-report-position">' + r.position + '</div><div class="m-report-time-badge">' + r.estimatedTime + '</div></div>'
+        + '<div class="m-report-meta"><span>' + r.lane + '</span><span>' + timeAgo(r.timestamp) + '</span></div>'
+        + (r.note ? '<div class="m-report-note">' + r.note + '</div>' : '')
+        + '</div>';
+    });
+  } else {
+    cards = '<div class="m-empty-state"><div class="m-empty-emoji">📦</div><div class="m-empty-text">Sin reportes recientes</div></div>';
+  }
+
+  var html = '<div class="m-header">'
+    + '<div class="m-header-top"><div class="m-logo"><div style="width:38px;height:38px;flex-shrink:0">' + eye(38) + '</div>'
+    + '<div><div class="m-logo-title">Horus</div><div class="m-logo-sub">System Co.</div></div></div>'
+    + '<div class="live-badge"><div class="live-dot"></div>LIVE</div></div>'
+    + '<div class="m-bridge-bar">'
+    + '<div><div class="m-bridge-name">Puente Pharr</div><div class="m-bridge-type">Import · Export · Comercial</div></div>'
+    + '<div class="m-bridge-lanes-badge"><span class="m-lane-chip">FAST</span><span class="m-lane-chip">General</span></div>'
+    + '</div></div>'
+
+    + '<div class="m-alert-strip ' + q.status + '">' + alertMsg + '</div>'
+
+    + '<div class="m-traffic-card">'
+    + '<div class="m-traffic-header"><div><div class="m-traffic-title">Tiempo de Espera</div><div class="m-traffic-time">' + (q.estimatedTime || 0) + ' <span style="font-size:20px;font-family:\'Barlow Condensed\',sans-serif;font-weight:700;letter-spacing:2px;color:var(--muted)">MIN</span></div></div>'
+    + '<div class="m-traffic-status ' + s.c + '"><div class="m-status-dot"></div>' + s.t + '</div></div>'
+    + '<div class="m-traffic-meta"><span>~' + (q.queueLength || 0) + ' km de fila</span><span>&middot;</span>'
+    + (q.isInQueue ? '<span style="color:var(--red);font-weight:600">Cola activa</span>' : '<span style="color:var(--green)">Sin cola</span>') + '</div>'
+    + (q.source ? '<div style="margin-top:10px;font-family:\'Barlow Condensed\',sans-serif;font-size:10px;letter-spacing:1.5px;color:var(--faint);text-transform:uppercase;">Fuente: ' + q.source + '</div>' : '')
+    + '</div>'
+
+    + '<div class="m-cargo-metrics">'
+    + '<div class="m-cargo-metric"><div class="m-cargo-metric-label">Carriles</div><div class="m-cargo-metric-val">3</div><div class="m-cargo-metric-unit">activos</div></div>'
+    + '<div class="m-cargo-metric"><div class="m-cargo-metric-label">Reportes</div><div class="m-cargo-metric-val">' + q.reports.length + '</div><div class="m-cargo-metric-unit">30 min</div></div>'
+    + '<div class="m-cargo-metric"><div class="m-cargo-metric-label">Refresh</div><div class="m-cargo-metric-val">3</div><div class="m-cargo-metric-unit">minutos</div></div>'
+    + '</div>'
+
+    // PUBLICIDAD (ads.js)
+    + '<div class="ad-banner-premium" id="adBannerPM">' + premiumBannerHTML('m') + '</div>'
+    + '<div class="ad-banner" id="adBannerM">' + smallBannerHTML() + '</div>'
+
+    + '<div class="m-map-container"><div id="map-mobile"></div>'
+    + (q.queueStartSegment ? '<div class="m-queue-indicator">Fila: ' + q.queueStartSegment + '</div>' : '')
+    + '</div>'
+
+    + '<button class="m-report-btn" onclick="openForm()">🚛 Reportar Estado del Cruce</button>'
+    + '<div class="m-reports-section"><div class="m-section-title">Reportes de Transportistas</div>' + cards + '</div>'
+
+    + '<div class="m-bottom-nav"><span>Auto-refresh 3min</span><span style="color:var(--faint)">&middot;</span><span>' + state.reports.length + ' reportes</span><span style="color:var(--faint)">&middot;</span><span>Pharr Bridge</span></div>'
+    + '<div class="m-powered-by"><span class="m-powered-text">Powered by</span><div style="display:flex;align-items:center;gap:5px">' + eye(14, '#1e3a6e') + '<span class="m-powered-horus">HORUS</span></div></div>';
+
+  if (state.showInstallBanner) {
+    html += '<div class="install-banner"><div style="font-size:22px">📱</div>'
+      + '<div class="install-banner-text"><div class="install-banner-title">Instalar en tu teléfono</div><div class="install-banner-sub">Acceso rápido al estado del puente</div></div>'
+      + '<button class="install-btn" onclick="installApp()">Instalar</button>'
+      + '<button class="install-close" onclick="dismissInstall()">&#x2715;</button></div>';
+  }
+  if (state.showForm) html += renderForm();
+
+  document.getElementById('app-mobile').innerHTML = html;
+  setTimeout(initMobileMap, 100);
+
+  syncSmallBanner();
+  syncPremiumBanner('m');
+  attachPremiumClick('adBannerPM');
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   RENDER DESKTOP
+═══════════════════════════════════════════════════════════════ */
+function renderDesktop() {
+  var q = calcQueue();
+  var statusT = {fluido:'Fluido', moderado:'Moderado', pesado:'Pesado'};
+
+  var repItems = '';
+  if (q.reports.length > 0) {
+    q.reports.slice(0, 20).forEach(function(r){
+      repItems += '<div class="dk-report-item">'
+        + '<div class="dk-report-item-top"><div class="dk-report-item-pos">' + r.position + '</div><div class="dk-report-item-badge">' + r.estimatedTime + '</div></div>'
+        + '<div class="dk-report-item-meta"><span>' + r.lane + '</span><span>&middot;</span><span>' + timeAgo(r.timestamp) + '</span></div>'
+        + (r.note ? '<div class="dk-report-item-note">' + r.note + '</div>' : '')
+        + '</div>';
+    });
+  } else {
+    repItems = '<div class="dk-empty-state"><div>📦</div><div>Sin reportes recientes</div></div>';
+  }
+
+  var html = ''
+    // HEADER
+    + '<div class="dk-header">'
+    + '<div class="dk-logo-area">'
+    +   '<div style="width:28px;height:28px">' + eye(28, '#3b82f6') + '</div>'
+    +   '<div><div class="dk-logo-title">Cruce Pharr</div></div>'
+    +   '<div class="dk-logo-sep"></div>'
+    +   '<div class="dk-logo-sub">Import · Export · Cargo</div>'
+    + '</div>'
+    + '<div class="dk-pharr-tag">🚛 Pharr · Reynosa International Bridge</div>'
+    + '<div class="dk-header-right">'
+    +   '<div class="dk-live-badge"><div class="dk-live-dot"></div>LIVE</div>'
+    +   '<button class="dk-report-btn-header" onclick="openForm()">+ Reportar</button>'
+    + '</div></div>'
+
+    // BODY
+    + '<div class="dk-body">'
+
+    // LEFT PANEL
+    + '<div class="dk-left">'
+    +   '<div class="dk-panel-label">Estado Actual — Puente Pharr</div>'
+    +   '<div class="dk-metric-block">'
+    +     '<div class="dk-metric-eyebrow">Tiempo de espera estimado</div>'
+    +     '<div class="dk-metric-time" style="color:#3b82f6">' + (q.estimatedTime || 0) + '</div>'
+    +     '<div class="dk-metric-unit">minutos estimados</div>'
+    +     '<div class="dk-status-badge ' + (q.status || 'fluido') + '"><div class="dk-status-badge-dot"></div>' + (statusT[q.status] || 'Fluido') + '</div>'
+    +   '</div>'
+    +   '<div class="dk-cargo-grid">'
+    +     '<div class="dk-cargo-cell"><div class="dk-cargo-label">Km de fila</div><div class="dk-cargo-val">' + (q.queueLength || 0) + '</div><div class="dk-cargo-sub">kilómetros</div></div>'
+    +     '<div class="dk-cargo-cell"><div class="dk-cargo-label">Reportes</div><div class="dk-cargo-val">' + q.reports.length + '</div><div class="dk-cargo-sub">últ. 30 min</div></div>'
+    +     '<div class="dk-cargo-cell"><div class="dk-cargo-label">Cola activa</div><div class="dk-cargo-val" style="color:' + (q.isInQueue ? '#ef4444' : '#22c55e') + '">' + (q.isInQueue ? 'Sí' : 'No') + '</div><div class="dk-cargo-sub">&nbsp;</div></div>'
+    +     '<div class="dk-cargo-cell"><div class="dk-cargo-label">Refresh</div><div class="dk-cargo-val">3</div><div class="dk-cargo-sub">minutos</div></div>'
+    +   '</div>'
+    +   '<div class="dk-source-line"><div class="dk-source-dot"></div>Fuente: ' + (q.source || 'Sin datos') + '</div>'
+    +   '<div class="dk-lanes-section">'
+    +     '<div class="dk-lanes-title">Carriles Disponibles</div>'
+    +     '<div class="dk-lane-row"><div class="dk-lane-name">FAST Lane</div><div class="dk-lane-badge fast">FAST / C-TPAT</div></div>'
+    +     '<div class="dk-lane-row"><div class="dk-lane-name">General</div><div class="dk-lane-badge general">General</div></div>'
+    +     '<div class="dk-lane-row"><div class="dk-lane-name">Commercial</div><div class="dk-lane-badge fast">Comercial</div></div>'
+    +   '</div>'
+    +   '<div class="dk-reports-feed">'
+    +     '<div class="dk-reports-label">Reportes Transportistas <span class="dk-reports-count">' + q.reports.length + '</span></div>'
+    +     repItems
+    +   '</div>'
+    + '</div>'
+
+    // CENTER MAP
+    + '<div class="dk-center">'
+    +   '<div id="map-desktop"></div>'
+    +   '<div class="dk-map-overlay-top">'
+    +     '<div class="dk-map-bridge-label"><div class="dk-map-bridge-name">Pharr Bridge</div><div class="dk-map-bridge-sub">Comercial · Import · Export — Reynosa, Tamps.</div></div>'
+    +     (q.queueStartSegment ? '<div class="dk-map-queue-pill">⚠ Fila desde: ' + q.queueStartSegment + '</div>' : '')
+    +   '</div>'
+    +   '<div class="dk-map-overlay-bottom"></div>'
+    + '</div>'
+
+    // RIGHT PANEL — Ads + Reports
+    + '<div class="dk-right">'
+    +   '<div class="dk-ad-premium-wrap" id="adBannerPD">' + premiumBannerHTML('d') + '</div>'
+    +   '<div class="dk-ad-small-wrap" id="adBannerD">' + smallBannerHTML() + '</div>'
+    +   '<div class="dk-reports-feed">'
+    +     '<div class="dk-reports-label">Feed en Vivo <span class="dk-reports-count">' + q.reports.length + '</span></div>'
+    +     repItems
+    +   '</div>'
+    + '</div>'
+
+    + '</div>' // /dk-body
+
+    // FOOTER
+    + '<div class="dk-footer">'
+    +   '<div class="dk-footer-left">'
+    +     '<span>Pharr · Reynosa International Bridge</span>'
+    +     '<div class="dk-footer-sep"></div>'
+    +     '<span>Comercial / Cargo</span>'
+    +     '<div class="dk-footer-sep"></div>'
+    +     '<span>Auto-refresh 3 min</span>'
+    +   '</div>'
+    +   '<div class="dk-footer-horus">' + eye(14, '#1e3a6e') + '<span>HORUS</span></div>'
+    + '</div>';
+
+  if (state.showForm) html += renderForm();
+
+  document.getElementById('app-desktop').innerHTML = html;
+  setTimeout(initDesktopMap, 100);
+
+  syncSmallBanner();
+  syncPremiumBanner('d');
+  attachPremiumClick('adBannerPD');
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   RENDER Dispatcher
+═══════════════════════════════════════════════════════════════ */
+function render() {
+  if (isDesktop()) {
+    renderDesktop();
+  } else {
+    renderMobile();
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   FORMULARIO DE REPORTE
+═══════════════════════════════════════════════════════════════ */
+function renderForm() {
+  var b = BRIDGES[0];
+  var f = state.formData;
+  if (state.submitDone) {
+    return '<div class="modal-overlay"><div class="modal-sheet"><div class="modal-handle"></div>'
+      + '<div class="success-screen"><div class="big-emoji">✅</div>'
+      + '<div class="title">Reporte enviado</div><div class="sub">Gracias — ayudas a otros transportistas</div>'
+      + '</div></div></div>';
+  }
+  var pBtns = QUEUE_POSITIONS.map(function(p){ return '<button class="option-btn' + (f.position === p ? ' selected' : '') + '" onclick="setField(\'position\',\'' + p + '\')">' + p + '</button>'; }).join('');
+  var lBtns = b.lanes.map(function(l){ return '<button class="option-btn' + (f.lane === l ? ' selected' : '') + '" onclick="setField(\'lane\',\'' + l + '\')">' + l + '</button>'; }).join('');
+  var tBtns = TIME_OPTIONS.map(function(t){ return '<button class="option-btn' + (f.estimatedTime === t ? ' selected' : '') + '" onclick="setField(\'estimatedTime\',\'' + t + '\')">' + t + '</button>'; }).join('');
+  var ok = f.position && f.lane && f.estimatedTime && !state.submitting;
+  return '<div class="modal-overlay" onclick="closeFormOuter(event)">'
+    + '<div class="modal-sheet" onclick="event.stopPropagation()">'
+    + '<div class="modal-handle"></div>'
+    + '<div class="modal-title">Reportar Estado del Cruce</div><div class="modal-sub">Puente Pharr &middot; Import / Export</div>'
+    + '<div class="form-group"><label class="form-label">Hasta donde llega la fila</label><div class="option-grid">' + pBtns + '</div></div>'
+    + '<div class="form-group"><label class="form-label">Carril</label><div class="option-grid">' + lBtns + '</div></div>'
+    + '<div class="form-group"><label class="form-label">Tiempo estimado de espera</label><div class="option-grid">' + tBtns + '</div></div>'
+    + '<div class="form-group"><label class="form-label">Comentario (opcional)</label>'
+    + '<textarea class="form-textarea" rows="2" placeholder="Ej: Revisando mucho en comercial, FAST fluido..." oninput="setNote(this.value)">' + f.note + '</textarea></div>'
+    + '<button class="submit-btn"' + (ok ? '' : ' disabled') + ' onclick="handleSubmit()">' + (state.submitting ? 'Enviando...' : '🚛 Publicar Reporte') + '</button>'
+    + '<button onclick="closeForm()" style="width:100%;background:none;border:none;color:var(--muted);font-size:13px;letter-spacing:1px;margin-top:12px;cursor:pointer;padding:8px;font-family:\'Barlow Condensed\',sans-serif;text-transform:uppercase">Cancelar</button>'
+    + '</div></div>';
+}
+
+/* ── Acciones ── */
+window.openForm      = function(){ state.showForm = true; state.submitDone = false; state.formData = {position:'',lane:'',estimatedTime:'',note:''}; render(); };
+window.closeForm     = function(){ state.showForm = false; render(); };
+window.closeFormOuter = function(e){ if (e.target.classList.contains('modal-overlay')) window.closeForm(); };
+window.setField      = function(k, v){ state.formData[k] = v; render(); };
+window.setNote       = function(v){ state.formData.note = v; };
+
+window.handleSubmit = function() {
+  if (!state.formData.position || !state.formData.lane || !state.formData.estimatedTime) return;
+  state.submitting = true; render();
+  var report = Object.assign({bridge:'pharr', bridgeName:'Pharr'}, state.formData, {timestamp: new Date().toISOString()});
+  submitReport(report)
+    .then(function(){ state.submitDone = true; state.submitting = false; render(); setTimeout(function(){ fetchReports(); window.closeForm(); }, 1500); })
+    .catch(function(){ state.submitting = false; state.submitDone = true; render(); setTimeout(window.closeForm, 2000); });
+};
+
+window.installApp = function() {
+  if (!state.installPrompt) return;
+  state.installPrompt.prompt();
+  state.installPrompt.userChoice.then(function(r){
+    if (r.outcome === 'accepted') state.showInstallBanner = false;
+    state.installPrompt = null; render();
+  });
+};
+
+window.dismissInstall = function() {
+  state.showInstallBanner = false;
+  try { localStorage.setItem('pharr-install-dismissed', '1'); } catch(e) {}
+  render();
+};
+
+var _resizeTimer;
+window.addEventListener('resize', function(){
+  clearTimeout(_resizeTimer);
+  _resizeTimer = setTimeout(render, 200);
+});
+
+/* ── PWA ── */
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', function(){
+    navigator.serviceWorker.register('/cruce-pharr/sw.js')
+      .then(function(r){ r.update(); }).catch(function(){});
+  });
+}
+window.addEventListener('beforeinstallprompt', function(e){
+  e.preventDefault(); state.installPrompt = e;
+  try { if (!localStorage.getItem('pharr-install-dismissed')) { state.showInstallBanner = true; render(); } } catch(ex) {}
+});
+
+/* ═══════════════════════════════════════════════════════════════
+   INICIO
+═══════════════════════════════════════════════════════════════ */
+injectAdStyles();
+startAdRotation();
+
+// Splash safety timeout
+setTimeout(function(){
+  var el = document.getElementById('splash');
+  if (!el || el.classList.contains('hidden')) return;
+  el.classList.add('hidden');
+  setTimeout(function(){ if (el.parentNode) el.parentNode.removeChild(el); }, 650);
+}, 3000);
+
+render();
+fetchReports();
+setInterval(fetchReports, CONFIG.REFRESH_INTERVAL);
+
+})();
+</script>
+</body>
+</html>

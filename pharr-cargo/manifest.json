@@ -1,0 +1,36 @@
+{
+  "name": "Pharr Cargo — Cruce RNS",
+  "short_name": "Pharr Cargo",
+  "description": "Estado del Puente Pharr para transportistas de import/export. Reynosa, Tamaulipas. Powered by Horus System Co.",
+  "start_url": "/cruce-pharr/",
+  "scope": "/cruce-pharr/",
+  "display": "standalone",
+  "background_color": "#060a10",
+  "theme_color": "#060a10",
+  "orientation": "portrait-primary",
+  "lang": "es-MX",
+  "categories": ["utilities", "navigation", "travel", "business"],
+  "icons": [
+    {
+      "src": "/cruce-pharr/public/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/cruce-pharr/public/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "screenshots": [],
+  "share_target": {
+    "action": "/cruce-pharr/",
+    "method": "GET",
+    "params": {
+      "title": "title",
+      "text": "text"
+    }
+  }
+}
