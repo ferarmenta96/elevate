@@ -1,10 +1,10 @@
-const CACHE_NAME = 'cruce-pharr-v4';
+const CACHE_NAME = 'pharr-cargo-v4';
 const STATIC_ASSETS = [
-  '/cruce-pharr/',
-  '/cruce-pharr/index.html',
-  '/cruce-pharr/manifest.json',
-  '/cruce-pharr/public/icon-192.png',
-  '/cruce-pharr/public/icon-512.png',
+  '/pharr-cargo/',
+  '/pharr-cargo/index.html',
+  '/pharr-cargo/manifest.json',
+  '/pharr-cargo/public/icon-192.png',
+  '/pharr-cargo/public/icon-512.png',
 ];
 
 self.addEventListener('install', (event) => {
@@ -54,7 +54,7 @@ self.addEventListener('fetch', (event) => {
           cache.put(event.request, response.clone());
           return response;
         });
-      }).catch(() => caches.match('/cruce-pharr/index.html'))
+      }).catch(() => caches.match('/pharr-cargo/index.html'))
     );
     return;
   }
@@ -90,15 +90,15 @@ self.addEventListener('push', (event) => {
   event.waitUntil(
     self.registration.showNotification(data.title || 'Pharr Cargo', {
       body: data.body,
-      icon: '/cruce-pharr/public/icon-192.png',
-      badge: '/cruce-pharr/public/icon-192.png',
+      icon: '/pharr-cargo/public/icon-192.png',
+      badge: '/pharr-cargo/public/icon-192.png',
       vibrate: [200, 100, 200],
-      data: { url: '/cruce-pharr/' },
+      data: { url: '/pharr-cargo/' },
     })
   );
 });
 
 self.addEventListener('notificationclick', (event) => {
   event.notification.close();
-  event.waitUntil(clients.openWindow('/cruce-pharr/'));
+  event.waitUntil(clients.openWindow('/pharr-cargo/'));
 });
