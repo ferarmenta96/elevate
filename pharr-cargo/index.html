@@ -14,9 +14,9 @@
   <meta property="og:type" content="website" />
   <title>Pharr Cargo — Cruce RNS</title>
 
-  <link rel="manifest" href="/cruce-pharr/manifest.json" />
-  <link rel="apple-touch-icon" href="/cruce-pharr/public/icon-192.png" />
-  <link rel="icon" type="image/png" href="/cruce-pharr/public/icon-192.png" />
+  <link rel="manifest" href="/pharr-cargo/manifest.json" />
+  <link rel="apple-touch-icon" href="/pharr-cargo/public/icon-192.png" />
+  <link rel="icon" type="image/png" href="/pharr-cargo/public/icon-192.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Barlow+Condensed:wght@400;600;700;800;900&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet" />
@@ -752,7 +752,7 @@ window.addEventListener('resize', function(){
 /* ── PWA ── */
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', function(){
-    navigator.serviceWorker.register('/cruce-pharr/sw.js')
+    navigator.serviceWorker.register('/pharr-cargo/sw.js')
       .then(function(r){ r.update(); }).catch(function(){});
   });
 }
