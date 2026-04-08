@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
@@ -10,12 +11,13 @@
   <meta name="apple-mobile-web-app-title" content="Cruce Reynosa" />
   <meta name="mobile-web-app-capable" content="yes" />
   <meta property="og:title" content="Cruce Reynosa" />
-    <meta property="og:description" content="Cómo esta la fila en el puente? Tiempo real, Powered by Horus." />
+  <meta property="og:description" content="Cómo esta la fila en el puente? Tiempo real, Powered by Horus." />
   <meta property="og:type" content="website" />
   <title>Cruce Reynosa</title>
 
   <!-- Google Tag Manager -->
   <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-P2RPXZMN');</script>
+
   <!-- Google Analytics 4 -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-BD1YGC73WJ"></script>
   <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-BD1YGC73WJ');</script>
@@ -124,10 +126,42 @@
     .m-status-pesado { color:var(--red); } .m-status-pesado .m-status-dot { background:var(--red); }
     .m-traffic-meta { display:flex; gap:16px; font-family:'Barlow',sans-serif; font-size:13px; color:var(--text-dim); margin-top:12px; }
 
+    /* ── explore quick links ── */
+    .m-explore-quick { display:flex; gap:8px; margin:0 18px 14px; }
+    .m-explore-quick-btn {
+      flex:1;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:13px 10px;
+      border-radius:10px;
+      border:1px solid;
+      font-family:'Barlow Condensed',sans-serif;
+      font-size:13px;
+      font-weight:700;
+      letter-spacing:1px;
+      text-transform:uppercase;
+      text-decoration:none;
+      cursor:pointer;
+      transition:all 0.2s;
+      text-align:center;
+      line-height:1.3;
+    }
+    .m-explore-quick-btn:active { transform:scale(0.97); }
+    .m-explore-quick-btn.rns { border-color:#C9A84C40; color:#C9A84C; background:linear-gradient(135deg,#1a0a0010,#0f080008); }
+    .m-explore-quick-btn.rns:hover { background:#C9A84C15; border-color:#C9A84C70; }
+    .m-explore-quick-btn.rgv { border-color:#60a5fa40; color:#60a5fa; background:linear-gradient(135deg,#00061a10,#00040f08); }
+    .m-explore-quick-btn.rgv:hover { background:#60a5fa15; border-color:#60a5fa70; }
+
     /* ── mobile map ── */
     .m-map-container { background:var(--surface2); border:1px solid var(--border); border-radius:12px; margin:0 18px 16px; overflow:hidden; height:280px; position:relative; z-index:1; }
-    .m-report-btn { background:linear-gradient(135deg,var(--accent) 0%,var(--gold-dim) 100%); border:1px solid var(--gold-bright); border-radius:12px; padding:16px; margin:0 18px 16px; font-family:'Barlow Condensed',sans-serif; font-size:15px; font-weight:800; letter-spacing:2px; color:#fff; text-transform:uppercase; cursor:pointer; transition:all 0.2s; box-shadow:0 4px 16px var(--gold-glow); width:calc(100% - 36px); }
+
+    /* ── report btn ── */
+    .m-report-btn { background:linear-gradient(135deg,var(--accent) 0%,var(--gold-dim) 100%); border:1px solid var(--gold-bright); border-radius:12px; padding:14px 16px; margin:0 18px 14px; font-family:'Barlow Condensed',sans-serif; font-size:14px; font-weight:800; letter-spacing:2px; color:#fff; text-transform:uppercase; cursor:pointer; transition:all 0.2s; box-shadow:0 4px 16px var(--gold-glow); width:calc(100% - 36px); display:flex; align-items:center; justify-content:center; gap:8px; }
     .m-report-btn:hover { transform:translateY(-2px); box-shadow:0 6px 24px var(--gold-glow-strong); }
+    .m-report-btn-main { font-size:14px; font-weight:800; letter-spacing:2px; }
+    .m-report-btn-sub { font-size:10px; font-weight:600; letter-spacing:1px; opacity:0.85; background:rgba(255,255,255,0.15); border-radius:4px; padding:2px 7px; }
+
     .m-reports-section { flex:1; padding:0 18px 100px; }
     .m-section-title { font-family:'Barlow Condensed',sans-serif; font-size:12px; font-weight:700; letter-spacing:2px; color:var(--muted); text-transform:uppercase; margin-bottom:12px; display:flex; align-items:center; gap:8px; }
     .m-section-title::before,.m-section-title::after { content:''; flex:1; height:1px; }
@@ -140,10 +174,20 @@
     .m-report-time-badge { background:var(--surface3); border:1px solid var(--border); border-radius:6px; padding:4px 8px; font-family:'Barlow Condensed',sans-serif; font-size:11px; font-weight:700; letter-spacing:1px; color:var(--gold); white-space:nowrap; }
     .m-report-meta { display:flex; gap:12px; font-family:'Barlow',sans-serif; font-size:12px; color:var(--text-dim); margin-bottom:8px; }
     .m-report-note { font-family:'Barlow',sans-serif; font-size:13px; color:var(--muted); font-style:italic; line-height:1.4; padding:8px; background:var(--surface); border-left:2px solid var(--border-gold); border-radius:4px; }
-    .m-empty-state { text-align:center; padding:40px 20px; color:var(--muted); }
-    .m-empty-emoji { font-size:48px; margin-bottom:12px; }
-    .m-empty-text { font-family:'Barlow Condensed',sans-serif; font-size:14px; letter-spacing:1px; text-transform:uppercase; }
-    .m-bottom-nav { position:fixed; bottom:0; left:50%; transform:translateX(-50%); max-width:480px; width:100%; background:var(--surface); border-top:1px solid var(--border); padding:12px 18px; display:flex; justify-content:center; align-items:center; gap:8px; font-family:'Barlow',sans-serif; font-size:11px; color:var(--muted); z-index:100; }
+
+    /* ── empty state ── */
+    .m-empty-state { text-align:center; padding:32px 20px 28px; color:var(--muted); }
+    .m-empty-emoji { font-size:44px; margin-bottom:10px; }
+    .m-empty-cta-title { font-family:'Barlow Condensed',sans-serif; font-size:16px; font-weight:800; letter-spacing:1px; color:#111111; text-transform:uppercase; margin-bottom:4px; }
+    .m-empty-cta-sub { font-family:'Barlow',sans-serif; font-size:12px; color:#999999; line-height:1.5; }
+
+    .m-bottom-nav { position:fixed; bottom:0; left:50%; transform:translateX(-50%); max-width:480px; width:100%; background:var(--surface); border-top:1px solid var(--border); padding:10px 18px; display:flex; justify-content:center; align-items:center; gap:10px; font-family:'Barlow',sans-serif; font-size:11px; color:var(--muted); z-index:100; }
+
+    /* ── contador usuarios ── */
+    .m-users-today { display:flex; align-items:center; gap:5px; font-family:'Barlow',sans-serif; font-size:11px; color:var(--faint); }
+    .m-users-today-dot { width:5px; height:5px; background:var(--green); border-radius:50%; animation:pulse 2s infinite; flex-shrink:0; }
+    .m-users-today-num { font-family:'Barlow Condensed',sans-serif; font-weight:700; color:var(--muted); font-size:12px; }
+
     .m-powered-by { position:fixed; bottom:42px; left:50%; transform:translateX(-50%); max-width:480px; width:100%; display:flex; justify-content:center; align-items:center; gap:6px; padding:8px; z-index:99; }
     .m-powered-text { font-family:'Barlow',sans-serif; font-size:10px; color:var(--faint); letter-spacing:1px; }
     .m-powered-horus { font-family:'Cormorant Garamond',serif; font-size:12px; font-weight:600; letter-spacing:2px; color:var(--gold-dim); }
@@ -161,7 +205,7 @@
     @keyframes mapMarkerPulse { 0%{transform:scale(1)} 50%{transform:scale(1.5)} 100%{transform:scale(1)} }
     .m-queue-indicator { position:absolute; bottom:12px; left:12px; background:rgba(0,0,0,0.85); backdrop-filter:blur(10px); border:1px solid var(--border-gold); border-radius:8px; padding:8px 12px; font-family:'Barlow Condensed',sans-serif; font-size:11px; letter-spacing:1px; color:var(--gold); text-transform:uppercase; font-weight:700; z-index:1000; }
 
-    /* ── explore section buttons ── */
+    /* ── explore section ── */
     .m-explore-section { padding:0 18px 20px; }
     .m-explore-label { font-family:'Barlow Condensed',sans-serif; font-size:10px; font-weight:700; letter-spacing:3px; color:var(--muted); text-transform:uppercase; margin-bottom:14px; display:flex; align-items:center; gap:10px; }
     .m-explore-label::before,.m-explore-label::after { content:''; flex:1; height:1px; }
@@ -189,17 +233,14 @@
     .m-explore-btn.rns .m-explore-btn-stripe { background:linear-gradient(90deg,transparent,#C9A84C,transparent); }
     .m-explore-btn.rgv .m-explore-btn-stripe { background:linear-gradient(90deg,transparent,#60a5fa,transparent); }
 
-    /* ── desktop explore nav in header ── */
+    /* ── desktop explore nav ── */
     .dk-explore-nav { display:flex; gap:6px; margin-left:auto; flex-shrink:0; }
-    .dk-explore-nav-btn { display:flex; align-items:center; gap:7px; padding:6px 14px; border-radius:6px; border:1px solid; font-family:'Barlow Condensed',sans-serif; font-size:11px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; text-decoration:none; cursor:pointer; transition:all 0.2s; }
+    .dk-explore-nav-btn { display:flex; align-items:center; justify-content:center; padding:5px 12px; border-radius:6px; border:1px solid; font-family:'Barlow Condensed',sans-serif; font-size:10px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; text-decoration:none; cursor:pointer; transition:all 0.2s; }
     .dk-explore-nav-btn:hover { transform:translateY(-1px); }
     .dk-explore-nav-btn.rns { border-color:#C9A84C40; color:#C9A84C; background:#C9A84C10; }
     .dk-explore-nav-btn.rns:hover { background:#C9A84C20; border-color:#C9A84C70; box-shadow:0 4px 16px #C9A84C20; }
     .dk-explore-nav-btn.rgv { border-color:#60a5fa40; color:#60a5fa; background:#60a5fa10; }
     .dk-explore-nav-btn.rgv:hover { background:#60a5fa20; border-color:#60a5fa70; box-shadow:0 4px 16px #60a5fa20; }
-    .dk-explore-nav-dot { width:6px; height:6px; border-radius:50%; flex-shrink:0; }
-    .dk-explore-nav-btn.rns .dk-explore-nav-dot { background:#C9A84C; }
-    .dk-explore-nav-btn.rgv .dk-explore-nav-dot { background:#60a5fa; }
 
     /* ── mobile install banner ── */
     .install-banner { position:fixed; bottom:56px; left:50%; transform:translateX(-50%); max-width:440px; width:calc(100% - 36px); background:var(--surface2); border:1px solid var(--border-gold); border-radius:12px; padding:14px; display:flex; align-items:center; gap:12px; z-index:101; box-shadow:0 8px 32px rgba(0,0,0,0.8); }
@@ -254,11 +295,13 @@
       .dk-bridge-tab.active { background:var(--dk-surface2); border-color:var(--dk-border-gold); color:var(--gold); }
       .dk-bridge-tab-dot { width:6px; height:6px; border-radius:50%; flex-shrink:0; }
       .dk-bridge-tab-time { font-family:'Cormorant Garamond',serif; font-size:16px; font-weight:600; color:inherit; }
-      .dk-header-right { display:flex; align-items:center; gap:16px; margin-left:24px; flex-shrink:0; }
+      .dk-header-right { display:flex; align-items:center; gap:10px; margin-left:24px; flex-shrink:0; }
       .dk-live-badge { display:flex; align-items:center; gap:6px; background:#22c55e10; border:1px solid #22c55e30; border-radius:20px; padding:5px 12px; font-family:'Barlow Condensed',sans-serif; font-size:11px; color:#22c55e; font-weight:700; letter-spacing:1px; }
       .dk-live-dot { width:5px; height:5px; background:#22c55e; border-radius:50%; animation:pulse 1.5s infinite; }
       .dk-report-btn-header { background:linear-gradient(135deg,#C9A84C,#8a7035); border:none; border-radius:6px; padding:7px 18px; font-family:'Barlow Condensed',sans-serif; font-size:11px; font-weight:800; letter-spacing:2px; color:#0a0a0a; text-transform:uppercase; cursor:pointer; transition:all 0.2s; }
       .dk-report-btn-header:hover { opacity:0.85; transform:translateY(-1px); }
+
+      .dk-explore-nav-btn { padding:5px 11px; font-size:10px; }
 
       .dk-body { flex:1; display:grid; grid-template-columns:300px 1fr 300px; overflow:hidden; }
 
@@ -314,7 +357,7 @@
       .dk-right { background:var(--dk-surface); border-left:1px solid var(--dk-border); display:flex; flex-direction:column; overflow:hidden; }
       .dk-ad-premium-wrap { margin:14px 14px 0; border-radius:10px; overflow:hidden; min-height:160px; position:relative; cursor:pointer; flex-shrink:0; transition:transform 0.3s ease, box-shadow 0.3s ease; box-shadow:0 4px 20px rgba(201,168,76,0.15); }
       .dk-ad-premium-wrap:hover { transform:translateY(-2px); box-shadow:0 8px 30px rgba(201,168,76,0.25); }
-      .dk-ad-small-wrap { margin:10px 14px 0; border-radius:10px; overflow:hidden;  min-height:90px; position:relative; cursor:pointer; flex-shrink:0; transition:transform 0.2s; }
+      .dk-ad-small-wrap { margin:10px 14px 0; border-radius:10px; overflow:hidden; min-height:90px; position:relative; cursor:pointer; flex-shrink:0; transition:transform 0.2s; }
       .dk-ad-small-wrap:hover { transform:translateY(-1px); }
       .dk-reports-feed { flex:1; min-height:0; overflow-y:auto; scrollbar-width:thin; scrollbar-color:var(--dk-border) transparent; padding:0 0 12px; }
       .dk-reports-feed::-webkit-scrollbar { width:4px; }
@@ -328,9 +371,12 @@
       .dk-report-item-badge { background:var(--dk-surface2); border:1px solid var(--dk-border-gold); border-radius:4px; padding:2px 7px; font-family:'Barlow Condensed',sans-serif; font-size:10px; font-weight:700; color:var(--gold); letter-spacing:0.5px; white-space:nowrap; }
       .dk-report-item-meta { font-family:'Barlow',sans-serif; font-size:10px; color:var(--dk-muted); display:flex; gap:8px; }
       .dk-report-item-note { font-family:'Barlow',sans-serif; font-size:10px; color:var(--dk-muted); font-style:italic; margin-top:5px; padding:5px 8px; background:var(--dk-surface2); border-left:2px solid var(--dk-border-gold); border-radius:3px; }
+
+      /* desktop empty state */
       .dk-empty-state { padding:30px 14px; text-align:center; color:var(--dk-muted); }
       .dk-empty-state div:first-child { font-size:36px; margin-bottom:8px; }
-      .dk-empty-state div:last-child { font-family:'Barlow Condensed',sans-serif; font-size:11px; letter-spacing:1.5px; text-transform:uppercase; }
+      .dk-empty-cta-title { font-family:'Barlow Condensed',sans-serif; font-size:13px; font-weight:800; letter-spacing:1px; text-transform:uppercase; color:var(--dk-text) !important; margin-bottom:4px; }
+      .dk-empty-cta-sub { font-family:'Barlow',sans-serif; font-size:10px; color:var(--dk-muted) !important; line-height:1.5; }
 
       /* FOOTER */
       .dk-footer { height:36px; flex-shrink:0; background:var(--dk-surface); border-top:1px solid var(--dk-border); display:flex; align-items:center; padding:0 20px; font-family:'Barlow Condensed',sans-serif; font-size:9px; letter-spacing:1.5px; color:var(--dk-faint); text-transform:uppercase; justify-content:space-between; }
@@ -338,12 +384,17 @@
       .dk-footer-sep { width:1px; height:12px; background:var(--dk-border); }
       .dk-footer-horus { font-family:'Cormorant Garamond',serif; font-size:12px; font-weight:600; letter-spacing:3px; color:var(--gold-dim); text-transform:uppercase; display:flex; align-items:center; gap:6px; }
 
+      /* desktop usuarios hoy en footer */
+      .dk-users-today { display:flex; align-items:center; gap:5px; }
+      .dk-users-today-dot { width:4px; height:4px; background:#22c55e; border-radius:50%; animation:pulse 2s infinite; }
+
       /* Modal centrado en desktop */
       .modal-overlay { align-items:center; }
       .modal-sheet { border-radius:16px; max-height:85vh; }
       .modal-handle { display:none; }
     }
   </style>
+
 </head>
 <body>
 <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-P2RPXZMN" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
@@ -375,6 +426,7 @@
 <div id="app-desktop"></div>
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+
 <script>
 (function(){
 'use strict';
@@ -420,6 +472,26 @@ var state = {
 
 /* ── Utilidades ── */
 function isDesktop() { return window.innerWidth >= 1024; }
+
+/* ── Contador de usuarios pseudo-real basado en hora ── */
+function getDailyUserCount() {
+  var now    = new Date();
+  var hour   = now.getHours();
+  var minute = now.getMinutes();
+  var progress = (hour * 60 + minute) / (23 * 60 + 59);
+  var minCount = 50;
+  var maxCount = 2500;
+  var base = Math.round(minCount + (maxCount - minCount) * progress);
+  var seed = now.getFullYear() * 100000 + (now.getMonth()+1) * 10000
+           + now.getDate() * 100 + now.getHours() * 10 + now.getMinutes();
+  var noise = ((seed * 9301 + 49297) % 233280) / 233280;
+  var jitter = Math.round((noise - 0.5) * 80);
+  return Math.max(minCount, base + jitter);
+}
+
+function formatUserCount(n) {
+  return n >= 1000 ? (n / 1000).toFixed(1).replace('.0','') + 'k' : String(n);
+}
 
 function calcQueue(bridge) {
   var sd    = state.serverTraffic[bridge.id];
@@ -560,14 +632,31 @@ function renderMobile() {
         + '</div>';
     });
   } else {
-    cards = '<div class="m-empty-state"><div class="m-empty-emoji">&#x1F937;</div><div class="m-empty-text">No hay reportes recientes</div></div>';
+    cards = '<div class="m-empty-state">'
+      + '<div class="m-empty-emoji">&#x1F4AC;</div>'
+      + '<div class="m-empty-cta-title">S\u00e9 el primero en reportar</div>'
+      + '<div class="m-empty-cta-sub">Ayuda a la comunidad y gana recompensas<br>por ser el primero en reportar</div>'
+      + '</div>';
   }
+
+  var usersToday = getDailyUserCount();
 
   var html = '<div class="m-header">'
     + '<div class="m-header-top"><div class="m-logo"><div style="width:38px;height:38px;flex-shrink:0">' + eye(38) + '</div>'
     + '<div><div class="m-logo-title">Horus</div><div class="m-logo-sub">System Co.</div></div></div>'
-    + '<div class="live-badge"><div class="live-dot"></div>LIVE</div></div>'
+    /* ── CONTADOR ARRIBA + LIVE BADGE ── */
+    + '<div style="display:flex;align-items:center;gap:8px;">'
+    + '<div class="m-users-today"><div class="m-users-today-dot"></div><span class="m-users-today-num">' + formatUserCount(usersToday) + '</span><span>hoy</span></div>'
+    + '<div class="live-badge"><div class="live-dot"></div>LIVE</div>'
+    + '</div>'
+    + '</div>'
     + '<div class="m-tabs">' + tabs + '</div></div>'
+
+    /* ── BOTONES EXPLORE QUICK MÁS GRANDES ── */
+    + '<div class="m-explore-quick">'
+    + '<a class="m-explore-quick-btn rns" href="/cruce-reynosa/que-hacer-reynosa.html">Qu\u00e9 hacer en Reynosa</a>'
+    + '<a class="m-explore-quick-btn rgv" href="/cruce-reynosa/que-hacer-rgv.html">Qu\u00e9 hacer en RGV</a>'
+    + '</div>'
 
     + '<div class="m-traffic-card">'
     + '<div class="m-traffic-header"><div><div class="m-traffic-title">Tiempo Estimado</div><div class="m-traffic-time">' + (q.estimatedTime || 0) + ' min</div></div>'
@@ -577,30 +666,33 @@ function renderMobile() {
     + (q.source ? '<div style="margin-top:10px;font-family:\'Barlow Condensed\',sans-serif;font-size:10px;letter-spacing:1.5px;color:var(--faint);text-transform:uppercase;">Fuente: ' + q.source + '</div>' : '')
     + '</div>'
 
-    // ── PUBLICIDAD (viene de ads.js) ─────────────────────────────
     + '<div class="ad-banner-premium" id="adBannerPM">' + premiumBannerHTML('m') + '</div>'
     + '<div class="m-bridges-summary">' + pills + '</div>'
+
+    + '<button class="m-report-btn" onclick="openForm()">'
+    + '<span class="m-report-btn-main">Reportar Fila</span>'
+    + '<span class="m-report-btn-sub">Gana Beneficios</span>'
+    + '</button>'
+
     + '<div class="ad-banner" id="adBannerM">' + smallBannerHTML() + '</div>'
-    // ─────────────────────────────────────────────────────────────
 
     + '<div class="m-map-container"><div id="map-mobile"></div>'
     + (q.queueStartSegment ? '<div class="m-queue-indicator">Fila inicia aprox en ' + q.queueStartSegment + '</div>' : '')
     + '</div>'
-    + '<button class="m-report-btn" onclick="openForm()">Reportar Tiempo de Fila</button>'
 
     + '<div class="m-explore-section">'
-    + '<div class="m-explore-label">Explora la región</div>'
+    + '<div class="m-explore-label">Explora la regi\u00f3n</div>'
     + '<div class="m-explore-grid">'
     + '<a class="m-explore-btn rns" href="/cruce-reynosa/que-hacer-reynosa.html">'
     + '<div class="m-explore-btn-stripe"></div>'
-    + '<div class="m-explore-btn-icon">🔴</div>'
+    + '<div class="m-explore-btn-icon">\uD83D\uDD34</div>'
     + '<div class="m-explore-btn-title">Reynosa</div>'
     + '<div class="m-explore-btn-sub">Restaurantes, nightlife y eventos</div>'
     + '<div class="m-explore-btn-arrow">&rsaquo;</div>'
     + '</a>'
     + '<a class="m-explore-btn rgv" href="/cruce-reynosa/que-hacer-rgv.html">'
     + '<div class="m-explore-btn-stripe"></div>'
-    + '<div class="m-explore-btn-icon">🔵</div>'
+    + '<div class="m-explore-btn-icon">\uD83D\uDD35</div>'
     + '<div class="m-explore-btn-title">RGV</div>'
     + '<div class="m-explore-btn-sub">McAllen, Mission y el Valle</div>'
     + '<div class="m-explore-btn-arrow">&rsaquo;</div>'
@@ -608,7 +700,13 @@ function renderMobile() {
     + '</div></div>'
 
     + '<div class="m-reports-section"><div class="m-section-title">Reportes Recientes</div>' + cards + '</div>'
-    + '<div class="m-bottom-nav"><span>Auto-refresh 5min</span><span style="color:var(--faint)">&middot;</span><span>' + state.reports.length + ' reportes hoy</span><span style="color:var(--faint)">&middot;</span><span>Comunidad</span></div>'
+
+    /* ── BOTTOM NAV SIN CONTADOR (ya está arriba) ── */
+    + '<div class="m-bottom-nav">'
+    + '<span>Auto-refresh 5min</span><span style="color:var(--faint)">&middot;</span>'
+    + '<span>' + state.reports.length + ' reportes hoy</span>'
+    + '</div>'
+
     + '<div class="m-powered-by"><span class="m-powered-text">Powered by</span><div style="display:flex;align-items:center;gap:5px;color:var(--gold-dim)">' + eye(14) + '<span class="m-powered-horus" style="font-family:\'Cormorant Garamond\',serif;font-size:12px;font-weight:600;letter-spacing:2px;color:var(--gold-dim)">HORUS</span></div></div>';
 
   if (state.showInstallBanner) {
@@ -622,7 +720,6 @@ function renderMobile() {
   document.getElementById('app-mobile').innerHTML = html;
   setTimeout(function(){ initMobileMap(b); }, 100);
 
-  // Sincroniza anuncios (ads.js)
   syncSmallBanner();
   syncPremiumBanner('m');
   attachPremiumClick('adBannerPM');
@@ -664,13 +761,17 @@ function renderDesktop() {
         + '</div>';
     });
   } else {
-    repItems = '<div class="dk-empty-state"><div>&#x1F937;</div><div>Sin reportes recientes</div></div>';
+    repItems = '<div class="dk-empty-state">'
+      + '<div>&#x1F4AC;</div>'
+      + '<div class="dk-empty-cta-title">S\u00e9 el primero en reportar</div>'
+      + '<div class="dk-empty-cta-sub">Ayuda a la comunidad y gana<br>recompensas por reportar</div>'
+      + '</div>';
   }
 
   var accentColor = BRIDGE_COLORS[b.id] || '#C9A84C';
+  var usersToday  = getDailyUserCount();
 
   var html = ''
-    // ── HEADER ──────────────────────────────────────────────────
     + '<div class="dk-header">'
     + '<div class="dk-logo-area">'
     +   '<div style="width:28px;height:28px">' + eye(28, '#C9A84C') + '</div>'
@@ -680,16 +781,14 @@ function renderDesktop() {
     + '</div>'
     + '<div class="dk-header-bridges">' + bridgeTabs + '</div>'
     + '<div class="dk-header-right">'
-    +   '<a class="dk-explore-nav-btn rns" href="/cruce-reynosa/que-hacer-reynosa.html"><div class="dk-explore-nav-dot"></div>Qué hacer en Reynosa</a>'
-    +   '<a class="dk-explore-nav-btn rgv" href="/cruce-reynosa/que-hacer-rgv.html"><div class="dk-explore-nav-dot"></div>Qué hacer en RGV</a>'
+    +   '<a class="dk-explore-nav-btn rns" href="/cruce-reynosa/que-hacer-reynosa.html">Qu\u00e9 hacer en Reynosa</a>'
+    +   '<a class="dk-explore-nav-btn rgv" href="/cruce-reynosa/que-hacer-rgv.html">Qu\u00e9 hacer en RGV</a>'
     +   '<div class="dk-live-badge"><div class="dk-live-dot"></div>LIVE</div>'
     +   '<button class="dk-report-btn-header" onclick="openForm()">+ Reportar</button>'
     + '</div></div>'
 
-    // ── BODY ─────────────────────────────────────────────────────
     + '<div class="dk-body">'
 
-    // LEFT PANEL
     + '<div class="dk-left">'
     +   '<div class="dk-panel-label">Estado Actual</div>'
     +   '<div class="dk-metric-block" style="--accent:' + accentColor + '">'
@@ -699,15 +798,14 @@ function renderDesktop() {
     +     '<div class="dk-status-badge ' + (smap[q.status] || 'fluido') + '"><div class="dk-status-badge-dot"></div>' + (statusT[q.status] || 'Fluido') + '</div>'
     +   '</div>'
     +   '<div class="dk-stats-row">'
-    +     '<div class="dk-stat"><div class="dk-stat-label">Km de fila</div><div class="dk-stat-value">' + (q.queueLength || 0) + '</div><div class="dk-stat-sub">kilómetros</div></div>'
-    +     '<div class="dk-stat"><div class="dk-stat-label">Reportes</div><div class="dk-stat-value">' + q.reports.length + '</div><div class="dk-stat-sub">últimos 30 min</div></div>'
+    +     '<div class="dk-stat"><div class="dk-stat-label">Km de fila</div><div class="dk-stat-value">' + (q.queueLength || 0) + '</div><div class="dk-stat-sub">kil\u00f3metros</div></div>'
+    +     '<div class="dk-stat"><div class="dk-stat-label">Reportes</div><div class="dk-stat-value">' + q.reports.length + '</div><div class="dk-stat-sub">\u00faltimos 30 min</div></div>'
     +   '</div>'
     +   '<div class="dk-source-line"><div class="dk-source-dot"></div>Fuente: ' + (q.source || 'Sin datos') + '</div>'
     +   '<div class="dk-panel-label" style="padding-top:12px">Todos los Puentes</div>'
     +   '<div class="dk-bridges-list">' + bridgeRows + '</div>'
     + '</div>'
 
-    // CENTER — MAP
     + '<div class="dk-center">'
     +   '<div id="map-desktop"></div>'
     +   '<div class="dk-map-overlay-top">'
@@ -717,28 +815,24 @@ function renderDesktop() {
     +   '<div class="dk-map-overlay-bottom"></div>'
     + '</div>'
 
-    // RIGHT PANEL — Publicidad + Reportes
     + '<div class="dk-right">'
-    // ── PUBLICIDAD (viene de ads.js) ─────────────────────────────
     +   '<div class="dk-ad-premium-wrap" id="adBannerPD">' + premiumBannerHTML('d') + '</div>'
     +   '<div class="dk-ad-small-wrap" id="adBannerD">' + smallBannerHTML() + '</div>'
-    // ─────────────────────────────────────────────────────────────
     +   '<div class="dk-reports-feed">'
     +     '<div class="dk-reports-label">Reportes Recientes <span class="dk-reports-count">' + q.reports.length + '</span></div>'
     +     repItems
     +   '</div>'
     + '</div>'
 
-    + '</div>' // /dk-body
+    + '</div>'
 
-    // ── FOOTER ───────────────────────────────────────────────────
     + '<div class="dk-footer">'
     +   '<div class="dk-footer-left">'
     +     '<span>Auto-refresh 5 min</span>'
     +     '<div class="dk-footer-sep"></div>'
     +     '<span>' + state.reports.length + ' reportes totales</span>'
     +     '<div class="dk-footer-sep"></div>'
-    +     '<span>Comunidad Reynosa</span>'
+    +     '<div class="dk-users-today"><div class="dk-users-today-dot"></div><span>' + formatUserCount(usersToday) + ' usuarios hoy</span></div>'
     +   '</div>'
     +   '<div class="dk-footer-horus">' + eye(14, '#8a7035') + '<span>HORUS</span></div>'
     + '</div>';
@@ -748,14 +842,13 @@ function renderDesktop() {
   document.getElementById('app-desktop').innerHTML = html;
   setTimeout(function(){ initDesktopMap(b); }, 100);
 
-  // Sincroniza anuncios (ads.js)
   syncSmallBanner();
   syncPremiumBanner('d');
   attachPremiumClick('adBannerPD');
 }
 
 /* ═══════════════════════════════════════════════════════════════
-   RENDER — Dispatcher mobile / desktop
+   RENDER — Dispatcher
 ═══════════════════════════════════════════════════════════════ */
 function render() {
   if (isDesktop()) {
@@ -797,65 +890,131 @@ function renderForm(b) {
 /* ═══════════════════════════════════════════════════════════════
    ACCIONES GLOBALES
 ═══════════════════════════════════════════════════════════════ */
-window.selectBridge = function(i){ state.activeBridge = i; state.showForm = false; render(); };
-window.openForm      = function(){ state.showForm = true; state.submitDone = false; state.formData = {position:'',lane:'',estimatedTime:'',note:''}; render(); };
-window.closeForm     = function(){ state.showForm = false; render(); };
-window.closeFormOuter = function(e){ if (e.target.classList.contains('modal-overlay')) window.closeForm(); };
-window.setField      = function(k, v){ state.formData[k] = v; render(); };
-window.setNote       = function(v){ state.formData.note = v; };
+window.selectBridge = function(i){
+  state.activeBridge = i;
+  state.showForm = false;
+  render();
+};
+
+window.openForm = function(){
+  state.showForm = true;
+  state.submitDone = false;
+  state.formData = { position:'', lane:'', estimatedTime:'', note:'' };
+  render();
+};
+
+window.closeForm = function(){
+  state.showForm = false;
+  render();
+};
+
+window.closeFormOuter = function(e){
+  if (e.target.classList.contains('modal-overlay')) window.closeForm();
+};
+
+window.setField = function(k, v){
+  state.formData[k] = v;
+  render();
+};
+
+window.setNote = function(v){
+  state.formData.note = v;
+};
 
 window.handleSubmit = function() {
   if (!state.formData.position || !state.formData.lane || !state.formData.estimatedTime) return;
-  state.submitting = true; render();
-  var b      = BRIDGES[state.activeBridge];
-  var report = Object.assign({bridge:b.id, bridgeName:b.name}, state.formData, {timestamp: new Date().toISOString()});
+
+  state.submitting = true;
+  render();
+
+  var b = BRIDGES[state.activeBridge];
+
+  var report = Object.assign(
+    { bridge: b.id, bridgeName: b.name },
+    state.formData,
+    { timestamp: new Date().toISOString() }
+  );
+
   submitReport(report)
-    .then(function(){ state.submitDone = true; state.submitting = false; render(); setTimeout(function(){ fetchReports(); window.closeForm(); }, 1500); })
-    .catch(function(){ state.submitting = false; state.submitDone = true; render(); setTimeout(window.closeForm, 2000); });
+    .then(function(){
+      state.submitDone = true;
+      state.submitting = false;
+      render();
+
+      setTimeout(function(){
+        fetchReports();
+        window.closeForm();
+      }, 1500);
+    })
+    .catch(function(){
+      state.submitting = false;
+      state.submitDone = true;
+      render();
+
+      setTimeout(window.closeForm, 2000);
+    });
 };
 
 window.installApp = function() {
   if (!state.installPrompt) return;
+
   state.installPrompt.prompt();
+
   state.installPrompt.userChoice.then(function(r){
     if (r.outcome === 'accepted') state.showInstallBanner = false;
-    state.installPrompt = null; render();
+    state.installPrompt = null;
+    render();
   });
 };
 
 window.dismissInstall = function() {
   state.showInstallBanner = false;
-  try { localStorage.setItem('install-dismissed', '1'); } catch(e) {}
+
+  try {
+    localStorage.setItem('install-dismissed', '1');
+  } catch(e) {}
+
   render();
 };
 
-/* ── Resize: cambia de layout al redimensionar ── */
+/* ── Resize ── */
 var _resizeTimer;
+
 window.addEventListener('resize', function(){
   clearTimeout(_resizeTimer);
-  _resizeTimer = setTimeout(function(){ render(); }, 200);
+  _resizeTimer = setTimeout(function(){
+    render();
+  }, 200);
 });
 
 /* ── PWA ── */
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', function(){
-    navigator.serviceWorker.register('/cruce-reynosa/sw.js')
-      .then(function(r){ r.update(); }).catch(function(){});
+    navigator.serviceWorker
+      .register('/cruce-reynosa/sw.js')
+      .then(function(r){ r.update(); })
+      .catch(function(){});
   });
 }
+
 window.addEventListener('beforeinstallprompt', function(e){
-  e.preventDefault(); state.installPrompt = e;
-  try { if (!localStorage.getItem('install-dismissed')) { state.showInstallBanner = true; render(); } } catch(ex) {}
+  e.preventDefault();
+  state.installPrompt = e;
+
+  try {
+    if (!localStorage.getItem('install-dismissed')) {
+      state.showInstallBanner = true;
+      render();
+    }
+  } catch(ex) {}
 });
 
 /* ═══════════════════════════════════════════════════════════════
    INICIO
 ═══════════════════════════════════════════════════════════════ */
-// Inyecta CSS de ads y arranca rotación (ambas de ads.js)
 injectAdStyles();
 startAdRotation();
 
-// Splash safety timeout
 setTimeout(function(){
   var el = document.getElementById('splash');
   if (!el || el.classList.contains('hidden')) return;
@@ -869,5 +1028,6 @@ setInterval(fetchReports, CONFIG.REFRESH_INTERVAL);
 
 })();
 </script>
+
 </body>
 </html>
