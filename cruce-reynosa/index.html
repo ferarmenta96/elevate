@@ -161,6 +161,46 @@
     @keyframes mapMarkerPulse { 0%{transform:scale(1)} 50%{transform:scale(1.5)} 100%{transform:scale(1)} }
     .m-queue-indicator { position:absolute; bottom:12px; left:12px; background:rgba(0,0,0,0.85); backdrop-filter:blur(10px); border:1px solid var(--border-gold); border-radius:8px; padding:8px 12px; font-family:'Barlow Condensed',sans-serif; font-size:11px; letter-spacing:1px; color:var(--gold); text-transform:uppercase; font-weight:700; z-index:1000; }
 
+    /* ── explore section buttons ── */
+    .m-explore-section { padding:0 18px 20px; }
+    .m-explore-label { font-family:'Barlow Condensed',sans-serif; font-size:10px; font-weight:700; letter-spacing:3px; color:var(--muted); text-transform:uppercase; margin-bottom:14px; display:flex; align-items:center; gap:10px; }
+    .m-explore-label::before,.m-explore-label::after { content:''; flex:1; height:1px; }
+    .m-explore-label::before { background:linear-gradient(to right,transparent,var(--border)); }
+    .m-explore-label::after { background:linear-gradient(to left,transparent,var(--border)); }
+    .m-explore-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+    .m-explore-btn { position:relative; overflow:hidden; border-radius:14px; padding:18px 16px; cursor:pointer; text-decoration:none; display:flex; flex-direction:column; gap:6px; border:1px solid; transition:all 0.25s; }
+    .m-explore-btn::before { content:''; position:absolute; inset:0; opacity:0; transition:opacity 0.25s; }
+    .m-explore-btn:hover::before { opacity:1; }
+    .m-explore-btn:active { transform:scale(0.97); }
+    .m-explore-btn.rns { background:linear-gradient(135deg,#1a0a00 0%,#0f0800 100%); border-color:#C9A84C30; }
+    .m-explore-btn.rns::before { background:linear-gradient(135deg,#C9A84C15,transparent); }
+    .m-explore-btn.rgv { background:linear-gradient(135deg,#00061a 0%,#00040f 100%); border-color:#60a5fa30; }
+    .m-explore-btn.rgv::before { background:linear-gradient(135deg,#60a5fa15,transparent); }
+    .m-explore-btn-icon { font-size:22px; line-height:1; }
+    .m-explore-btn-title { font-family:'Barlow Condensed',sans-serif; font-size:13px; font-weight:800; letter-spacing:1.5px; text-transform:uppercase; }
+    .m-explore-btn.rns .m-explore-btn-title { color:#C9A84C; }
+    .m-explore-btn.rgv .m-explore-btn-title { color:#60a5fa; }
+    .m-explore-btn-sub { font-family:'Barlow',sans-serif; font-size:10px; color:#777; line-height:1.3; }
+    .m-explore-btn-arrow { position:absolute; right:14px; top:50%; transform:translateY(-50%); font-size:16px; opacity:0.4; transition:all 0.2s; }
+    .m-explore-btn.rns .m-explore-btn-arrow { color:#C9A84C; }
+    .m-explore-btn.rgv .m-explore-btn-arrow { color:#60a5fa; }
+    .m-explore-btn:hover .m-explore-btn-arrow { opacity:0.9; right:10px; }
+    .m-explore-btn-stripe { position:absolute; top:0; left:0; right:0; height:2px; }
+    .m-explore-btn.rns .m-explore-btn-stripe { background:linear-gradient(90deg,transparent,#C9A84C,transparent); }
+    .m-explore-btn.rgv .m-explore-btn-stripe { background:linear-gradient(90deg,transparent,#60a5fa,transparent); }
+
+    /* ── desktop explore nav in header ── */
+    .dk-explore-nav { display:flex; gap:6px; margin-left:auto; flex-shrink:0; }
+    .dk-explore-nav-btn { display:flex; align-items:center; gap:7px; padding:6px 14px; border-radius:6px; border:1px solid; font-family:'Barlow Condensed',sans-serif; font-size:11px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; text-decoration:none; cursor:pointer; transition:all 0.2s; }
+    .dk-explore-nav-btn:hover { transform:translateY(-1px); }
+    .dk-explore-nav-btn.rns { border-color:#C9A84C40; color:#C9A84C; background:#C9A84C10; }
+    .dk-explore-nav-btn.rns:hover { background:#C9A84C20; border-color:#C9A84C70; box-shadow:0 4px 16px #C9A84C20; }
+    .dk-explore-nav-btn.rgv { border-color:#60a5fa40; color:#60a5fa; background:#60a5fa10; }
+    .dk-explore-nav-btn.rgv:hover { background:#60a5fa20; border-color:#60a5fa70; box-shadow:0 4px 16px #60a5fa20; }
+    .dk-explore-nav-dot { width:6px; height:6px; border-radius:50%; flex-shrink:0; }
+    .dk-explore-nav-btn.rns .dk-explore-nav-dot { background:#C9A84C; }
+    .dk-explore-nav-btn.rgv .dk-explore-nav-dot { background:#60a5fa; }
+
     /* ── mobile install banner ── */
     .install-banner { position:fixed; bottom:56px; left:50%; transform:translateX(-50%); max-width:440px; width:calc(100% - 36px); background:var(--surface2); border:1px solid var(--border-gold); border-radius:12px; padding:14px; display:flex; align-items:center; gap:12px; z-index:101; box-shadow:0 8px 32px rgba(0,0,0,0.8); }
     .install-banner-text { flex:1; }
@@ -547,6 +587,26 @@ function renderMobile() {
     + (q.queueStartSegment ? '<div class="m-queue-indicator">Fila inicia aprox en ' + q.queueStartSegment + '</div>' : '')
     + '</div>'
     + '<button class="m-report-btn" onclick="openForm()">Reportar Tiempo de Fila</button>'
+
+    + '<div class="m-explore-section">'\
+    + '<div class="m-explore-label">Explora la región</div>'\
+    + '<div class="m-explore-grid">'\
+    +   '<a class="m-explore-btn rns" href="/cruce-reynosa/que-hacer-reynosa.html">'\
+    +     '<div class="m-explore-btn-stripe"></div>'\
+    +     '<div class="m-explore-btn-icon">🔴</div>'\
+    +     '<div class="m-explore-btn-title">Reynosa</div>'\
+    +     '<div class="m-explore-btn-sub">Restaurantes, nightlife y eventos</div>'\
+    +     '<div class="m-explore-btn-arrow">›</div>'\
+    +   '</a>'\
+    +   '<a class="m-explore-btn rgv" href="/cruce-reynosa/que-hacer-rgv.html">'\
+    +     '<div class="m-explore-btn-stripe"></div>'\
+    +     '<div class="m-explore-btn-icon">🔵</div>'\
+    +     '<div class="m-explore-btn-title">RGV</div>'\
+    +     '<div class="m-explore-btn-sub">McAllen, Mission y el Valle</div>'\
+    +     '<div class="m-explore-btn-arrow">›</div>'\
+    +   '</a>'\
+    + '</div></div>'\
+
     + '<div class="m-reports-section"><div class="m-section-title">Reportes Recientes</div>' + cards + '</div>'
     + '<div class="m-bottom-nav"><span>Auto-refresh 5min</span><span style="color:var(--faint)">&middot;</span><span>' + state.reports.length + ' reportes hoy</span><span style="color:var(--faint)">&middot;</span><span>Comunidad</span></div>'
     + '<div class="m-powered-by"><span class="m-powered-text">Powered by</span><div style="display:flex;align-items:center;gap:5px;color:var(--gold-dim)">' + eye(14) + '<span class="m-powered-horus" style="font-family:\'Cormorant Garamond\',serif;font-size:12px;font-weight:600;letter-spacing:2px;color:var(--gold-dim)">HORUS</span></div></div>';
@@ -620,6 +680,8 @@ function renderDesktop() {
     + '</div>'
     + '<div class="dk-header-bridges">' + bridgeTabs + '</div>'
     + '<div class="dk-header-right">'
+    +   '<a class="dk-explore-nav-btn rns" href="/cruce-reynosa/que-hacer-reynosa.html"><div class="dk-explore-nav-dot"></div>Qué hacer en Reynosa</a>'
+    +   '<a class="dk-explore-nav-btn rgv" href="/cruce-reynosa/que-hacer-rgv.html"><div class="dk-explore-nav-dot"></div>Qué hacer en RGV</a>'
     +   '<div class="dk-live-badge"><div class="dk-live-dot"></div>LIVE</div>'
     +   '<button class="dk-report-btn-header" onclick="openForm()">+ Reportar</button>'
     + '</div></div>'

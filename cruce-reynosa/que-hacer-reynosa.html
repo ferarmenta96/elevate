@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="theme-color" content="#0a0800" />
+  <meta name="description" content="Descubre lo mejor de Reynosa. Restaurantes, vida nocturna, eventos y lugares recomendados. Powered by Horus System Co." />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta property="og:title" content="Qué hacer en Reynosa — Cruce RNS" />
+  <meta property="og:description" content="Descubre lo mejor de Reynosa: restaurantes, vida nocturna, eventos y más." />
+  <title>Qué hacer en Reynosa — Cruce RNS</title>
+
+  <link rel="icon" type="image/png" href="/cruce-reynosa/public/icon-192.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Barlow+Condensed:wght@400;600;700;800;900&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet" />
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --gold: #C9A84C;
+      --gold-bright: #E2C46D;
+      --gold-dim: #8a7035;
+      --gold-glow: #C9A84C20;
+      --red: #ef4444;
+      --amber: #f59e0b;
+      --bg: #07060a;
+      --surface: #0e0c11;
+      --surface2: #141018;
+      --surface3: #1c1822;
+      --border: #ffffff0d;
+      --border-gold: #C9A84C22;
+      --text: #ede8e0;
+      --text-dim: #a89e8c;
+      --muted: #6b6260;
+      --faint: #3a3530;
+      --accent: #C9A84C;
+      --accent-dim: #8a7035;
+      --accent-glow: #C9A84C18;
+
+      /* Category colors */
+      --c-food: #f97316;
+      --c-night: #a78bfa;
+      --c-events: #f43f5e;
+      --c-places: #34d399;
+      --c-promo: #fbbf24;
+    }
+
+    html, body { height: 100%; overflow-x: hidden; }
+    body { background: var(--bg); color: var(--text); font-family: 'Barlow', sans-serif; }
+
+    /* ══ NOISE OVERLAY ══ */
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none; z-index: 0; opacity: 0.4;
+    }
+
+    /* ══ HEADER ══ */
+    .page-header {
+      position: sticky; top: 0; z-index: 50;
+      background: rgba(7,6,10,0.92); backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+      padding: 0 20px; height: 58px;
+      display: flex; align-items: center; gap: 16px;
+    }
+    .page-header::after {
+      content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 1px;
+      background: linear-gradient(90deg, transparent 0%, #C9A84C55 40%, #C9A84C55 60%, transparent 100%);
+    }
+    .header-back {
+      display: flex; align-items: center; gap: 8px;
+      font-family: 'Barlow Condensed', sans-serif; font-size: 11px; font-weight: 700;
+      letter-spacing: 2px; color: var(--muted); text-transform: uppercase; text-decoration: none;
+      transition: color 0.2s;
+    }
+    .header-back:hover { color: var(--gold); }
+    .header-back-arrow { font-size: 16px; }
+    .header-sep { width: 1px; height: 18px; background: var(--border); }
+    .header-logo { display: flex; align-items: center; gap: 10px; }
+    .header-logo-title { font-family: 'Cormorant Garamond', serif; font-size: 18px; font-weight: 600; letter-spacing: 3px; color: var(--gold); text-transform: uppercase; }
+    .header-city-badge {
+      margin-left: auto;
+      display: flex; align-items: center; gap: 6px;
+      background: #C9A84C12; border: 1px solid #C9A84C30; border-radius: 20px;
+      padding: 4px 12px; font-family: 'Barlow Condensed', sans-serif; font-size: 10px; font-weight: 700;
+      letter-spacing: 2px; color: var(--gold); text-transform: uppercase;
+    }
+    .header-dot { width: 5px; height: 5px; background: var(--gold); border-radius: 50%; animation: pulse 2s infinite; }
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+    /* ══ HERO ══ */
+    .hero {
+      position: relative; overflow: hidden;
+      padding: 52px 24px 44px;
+      text-align: center;
+    }
+    .hero::before {
+      content: ''; position: absolute; top: -40px; left: 50%; transform: translateX(-50%);
+      width: 600px; height: 400px;
+      background: radial-gradient(ellipse at center, #C9A84C18 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .hero-eyebrow {
+      font-family: 'Barlow Condensed', sans-serif; font-size: 10px; font-weight: 700;
+      letter-spacing: 4px; color: var(--gold-dim); text-transform: uppercase; margin-bottom: 16px;
+    }
+    .hero-title {
+      font-family: 'Cormorant Garamond', serif; font-size: clamp(42px, 10vw, 68px);
+      font-weight: 700; line-height: 1; color: var(--text); margin-bottom: 8px;
+    }
+    .hero-title span { color: var(--gold); font-style: italic; }
+    .hero-sub {
+      font-family: 'Barlow', sans-serif; font-size: 15px; color: var(--text-dim);
+      line-height: 1.6; max-width: 420px; margin: 16px auto 32px;
+    }
+    .hero-divider {
+      width: 60px; height: 1px; margin: 0 auto 32px;
+      background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    }
+
+    /* ══ CATEGORY FILTER ══ */
+    .filter-bar {
+      display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none;
+      padding: 0 20px 24px; -webkit-overflow-scrolling: touch;
+    }
+    .filter-bar::-webkit-scrollbar { display: none; }
+    .filter-chip {
+      flex-shrink: 0; display: flex; align-items: center; gap: 6px;
+      background: var(--surface2); border: 1px solid var(--border);
+      border-radius: 100px; padding: 8px 16px; cursor: pointer; transition: all 0.2s;
+      font-family: 'Barlow Condensed', sans-serif; font-size: 12px; font-weight: 700;
+      letter-spacing: 1px; color: var(--text-dim); text-transform: uppercase; white-space: nowrap;
+    }
+    .filter-chip:hover { border-color: var(--accent); color: var(--accent); }
+    .filter-chip.active { background: var(--accent-glow); border-color: var(--accent); color: var(--accent); }
+    .filter-chip-dot { width: 6px; height: 6px; border-radius: 50%; }
+
+    /* ══ MAIN GRID ══ */
+    .main-wrap { padding: 0 20px; max-width: 860px; margin: 0 auto; }
+
+    /* ══ SECTION HEADER ══ */
+    .section-head {
+      display: flex; align-items: baseline; gap: 12px; margin-bottom: 16px; margin-top: 36px;
+    }
+    .section-head:first-child { margin-top: 0; }
+    .section-icon { font-size: 20px; }
+    .section-title {
+      font-family: 'Barlow Condensed', sans-serif; font-size: 11px; font-weight: 700;
+      letter-spacing: 3px; color: var(--muted); text-transform: uppercase;
+    }
+    .section-line { flex: 1; height: 1px; background: var(--border); }
+
+    /* ══ BUSINESS CARDS ══ */
+    .cards-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    @media (min-width: 600px) { .cards-grid { grid-template-columns: repeat(3, 1fr); } }
+    @media (min-width: 800px) { .cards-grid { grid-template-columns: repeat(4, 1fr); } }
+
+    .biz-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 14px; padding: 18px 14px 16px; cursor: pointer;
+      transition: all 0.25s; position: relative; overflow: hidden; text-decoration: none;
+      display: block;
+    }
+    .biz-card::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+      background: var(--card-accent, var(--gold));
+      opacity: 0.6; transition: opacity 0.2s;
+    }
+    .biz-card:hover { background: var(--surface2); border-color: var(--card-accent, var(--border-gold)); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.4); }
+    .biz-card:hover::before { opacity: 1; }
+    .biz-card-emoji { font-size: 26px; margin-bottom: 10px; display: block; }
+    .biz-card-name {
+      font-family: 'Barlow Condensed', sans-serif; font-size: 14px; font-weight: 700;
+      letter-spacing: 0.5px; color: var(--text); margin-bottom: 4px; line-height: 1.2;
+    }
+    .biz-card-type {
+      font-family: 'Barlow', sans-serif; font-size: 10px; color: var(--muted);
+      text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px;
+    }
+    .biz-card-badge {
+      display: inline-flex; align-items: center; gap: 4px;
+      background: var(--badge-bg, var(--surface3)); border: 1px solid var(--badge-border, var(--border));
+      border-radius: 6px; padding: 3px 8px;
+      font-family: 'Barlow Condensed', sans-serif; font-size: 10px; font-weight: 700;
+      letter-spacing: 1px; color: var(--badge-color, var(--muted)); text-transform: uppercase;
+    }
+
+    /* ══ FEATURED CARD (full width) ══ */
+    .featured-card {
+      background: linear-gradient(135deg, var(--surface2) 0%, var(--surface) 100%);
+      border: 1px solid var(--border-gold); border-radius: 16px;
+      padding: 24px 22px; margin-bottom: 10px; position: relative; overflow: hidden;
+      cursor: pointer; transition: all 0.25s; text-decoration: none; display: block;
+    }
+    .featured-card::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+      background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    }
+    .featured-card:hover { transform: translateY(-2px); box-shadow: 0 12px 40px rgba(201,168,76,0.12); }
+    .featured-glow {
+      position: absolute; right: -40px; top: -40px; width: 200px; height: 200px;
+      background: radial-gradient(circle, #C9A84C15 0%, transparent 70%); pointer-events: none;
+    }
+    .featured-label {
+      font-family: 'Barlow Condensed', sans-serif; font-size: 9px; font-weight: 700;
+      letter-spacing: 3px; color: var(--gold-dim); text-transform: uppercase; margin-bottom: 10px;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .featured-label::after { content: ''; flex: 1; height: 1px; background: var(--border-gold); }
+    .featured-name {
+      font-family: 'Cormorant Garamond', serif; font-size: 26px; font-weight: 600;
+      color: var(--text); margin-bottom: 4px; line-height: 1.1;
+    }
+    .featured-desc { font-family: 'Barlow', sans-serif; font-size: 13px; color: var(--text-dim); line-height: 1.5; margin-bottom: 16px; }
+    .featured-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+    .featured-tag {
+      background: var(--surface3); border: 1px solid var(--border); border-radius: 6px;
+      padding: 4px 10px; font-family: 'Barlow Condensed', sans-serif; font-size: 10px;
+      font-weight: 700; letter-spacing: 1px; color: var(--text-dim); text-transform: uppercase;
+    }
+
+    /* ══ PROMO BANNER ══ */
+    .promo-banner {
+      background: linear-gradient(135deg, #1a0e00 0%, #0d0900 100%);
+      border: 1px solid #C9A84C30; border-radius: 16px;
+      padding: 22px 20px; margin: 32px 0; position: relative; overflow: hidden;
+    }
+    .promo-banner::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+      background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    }
+    .promo-banner::after {
+      content: '⭐'; position: absolute; right: 20px; top: 50%; transform: translateY(-50%);
+      font-size: 48px; opacity: 0.06;
+    }
+    .promo-label {
+      font-family: 'Barlow Condensed', sans-serif; font-size: 9px; font-weight: 700;
+      letter-spacing: 3px; color: var(--gold-dim); text-transform: uppercase; margin-bottom: 8px;
+    }
+    .promo-title {
+      font-family: 'Cormorant Garamond', serif; font-size: 22px; font-weight: 600;
+      color: var(--gold); margin-bottom: 8px;
+    }
+    .promo-text { font-family: 'Barlow', sans-serif; font-size: 13px; color: var(--text-dim); line-height: 1.5; margin-bottom: 16px; }
+    .promo-btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: linear-gradient(135deg, var(--gold), var(--gold-dim));
+      border: none; border-radius: 8px; padding: 10px 20px;
+      font-family: 'Barlow Condensed', sans-serif; font-size: 12px; font-weight: 800;
+      letter-spacing: 2px; color: #07060a; text-transform: uppercase; cursor: pointer;
+      transition: all 0.2s; text-decoration: none;
+    }
+    .promo-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px #C9A84C30; }
+
+    /* ══ ADVERTISE CTA ══ */
+    .advertise-cta {
+      background: var(--surface2); border: 1px dashed #C9A84C30; border-radius: 16px;
+      padding: 28px 24px; text-align: center; margin: 24px 0 48px;
+    }
+    .advertise-cta-icon { font-size: 36px; margin-bottom: 12px; }
+    .advertise-cta-title {
+      font-family: 'Cormorant Garamond', serif; font-size: 22px; font-weight: 600;
+      color: var(--text); margin-bottom: 8px;
+    }
+    .advertise-cta-sub { font-family: 'Barlow', sans-serif; font-size: 13px; color: var(--text-dim); margin-bottom: 20px; }
+    .advertise-cta-btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      border: 1px solid var(--border-gold); border-radius: 8px; padding: 10px 22px;
+      font-family: 'Barlow Condensed', sans-serif; font-size: 12px; font-weight: 700;
+      letter-spacing: 2px; color: var(--gold); text-transform: uppercase; text-decoration: none;
+      transition: all 0.2s; background: transparent; cursor: pointer;
+    }
+    .advertise-cta-btn:hover { background: var(--accent-glow); transform: translateY(-1px); }
+
+    /* ══ FOOTER ══ */
+    .page-footer {
+      border-top: 1px solid var(--border); padding: 20px 24px;
+      display: flex; align-items: center; justify-content: space-between;
+      font-family: 'Barlow Condensed', sans-serif; font-size: 9px; letter-spacing: 2px;
+      color: var(--muted); text-transform: uppercase;
+    }
+    .footer-horus {
+      font-family: 'Cormorant Garamond', serif; font-size: 13px; font-weight: 600;
+      letter-spacing: 3px; color: var(--gold-dim); display: flex; align-items: center; gap: 6px;
+    }
+
+    /* ══ ANIMATIONS ══ */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(16px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .hero { animation: fadeUp 0.6s ease both; }
+    .filter-bar { animation: fadeUp 0.6s 0.1s ease both; }
+    .main-wrap { animation: fadeUp 0.6s 0.15s ease both; }
+
+    /* Eye SVG utility */
+    .eye-svg { display: block; }
+  </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="page-header">
+  <a href="/cruce-reynosa/" class="header-back">
+    <span class="header-back-arrow">‹</span>
+    <span>Cruce RNS</span>
+  </a>
+  <div class="header-sep"></div>
+  <div class="header-logo">
+    <svg class="eye-svg" width="22" height="22" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+      <path d="M100 60 L160 140 L40 140 Z" fill="none" stroke="#C9A84C" stroke-width="3"/>
+      <line x1="70" y1="100" x2="70" y2="140" stroke="#C9A84C" stroke-width="2"/>
+      <line x1="100" y1="80" x2="100" y2="140" stroke="#C9A84C" stroke-width="2"/>
+      <line x1="130" y1="100" x2="130" y2="140" stroke="#C9A84C" stroke-width="2"/>
+      <circle cx="100" cy="90" r="8" fill="#C9A84C"/>
+    </svg>
+    <span class="header-logo-title">Horus</span>
+  </div>
+  <div class="header-city-badge"><div class="header-dot"></div>Reynosa, Tamps</div>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-eyebrow">Guía Local · Actualizado</div>
+  <h1 class="hero-title">Qué hacer en<br><span>Reynosa</span></h1>
+  <p class="hero-sub">Descubre lo mejor de la ciudad en un solo lugar. Restaurantes, vida nocturna, eventos y experiencias únicas cerca de ti.</p>
+  <div class="hero-divider"></div>
+</section>
+
+<!-- FILTER BAR -->
+<nav class="filter-bar">
+  <button class="filter-chip active" style="--c:#f97316"><div class="filter-chip-dot" style="background:#f97316"></div>Todo</button>
+  <button class="filter-chip" style="--c:#f97316"><div class="filter-chip-dot" style="background:#f97316"></div>Restaurantes</button>
+  <button class="filter-chip" style="--c:#a78bfa"><div class="filter-chip-dot" style="background:#a78bfa"></div>Vida nocturna</button>
+  <button class="filter-chip" style="--c:#f43f5e"><div class="filter-chip-dot" style="background:#f43f5e"></div>Eventos</button>
+  <button class="filter-chip" style="--c:#34d399"><div class="filter-chip-dot" style="background:#34d399"></div>Lugares</button>
+  <button class="filter-chip" style="--c:#fbbf24"><div class="filter-chip-dot" style="background:#fbbf24"></div>Promociones</button>
+</nav>
+
+<!-- MAIN CONTENT -->
+<div class="main-wrap">
+
+  <!-- FEATURED -->
+  <div class="section-head">
+    <span class="section-icon">⭐</span>
+    <span class="section-title">Recomendados del día</span>
+    <div class="section-line"></div>
+  </div>
+
+  <a href="https://wa.me/528681234567" class="featured-card">
+    <div class="featured-glow"></div>
+    <div class="featured-label">Negocio destacado</div>
+    <div class="featured-name">Tu negocio aquí</div>
+    <div class="featured-desc">¿Tienes un restaurante, bar o servicio en Reynosa? Aparece como negocio destacado y llega a miles de personas que cruzan el puente cada día.</div>
+    <div class="featured-tags">
+      <span class="featured-tag">💎 Premium</span>
+      <span class="featured-tag">🎯 Visible</span>
+      <span class="featured-tag">📍 Reynosa</span>
+    </div>
+  </a>
+
+  <!-- RESTAURANTES -->
+  <div class="section-head" style="margin-top:32px">
+    <span class="section-icon">🍔</span>
+    <span class="section-title">Restaurantes populares</span>
+    <div class="section-line"></div>
+  </div>
+
+  <div class="cards-grid">
+    <a href="#" class="biz-card" style="--card-accent:#f97316;--badge-bg:#f9731610;--badge-border:#f9731630;--badge-color:#f97316">
+      <span class="biz-card-emoji">🥩</span>
+      <div class="biz-card-name">Publicidad disponible</div>
+      <div class="biz-card-type">Restaurante · Reynosa</div>
+      <div class="biz-card-badge">Anunciate aquí</div>
+    </a>
+    <a href="#" class="biz-card" style="--card-accent:#f97316;--badge-bg:#f9731610;--badge-border:#f9731630;--badge-color:#f97316">
+      <span class="biz-card-emoji">🌮</span>
+      <div class="biz-card-name">Tu restaurante</div>
+      <div class="biz-card-type">Comida · Reynosa</div>
+      <div class="biz-card-badge">Nuevo</div>
+    </a>
+    <a href="#" class="biz-card" style="--card-accent:#f97316;--badge-bg:#f9731610;--badge-border:#f9731630;--badge-color:#f97316">
+      <span class="biz-card-emoji">🍣</span>
+      <div class="biz-card-name">Pronto aquí</div>
+      <div class="biz-card-type">Mariscos · Reynosa</div>
+      <div class="biz-card-badge">Popular</div>
+    </a>
+    <a href="#" class="biz-card" style="--card-accent:#f97316;--badge-bg:#f9731610;--badge-border:#f9731630;--badge-color:#f97316">
+      <span class="biz-card-emoji">☕</span>
+      <div class="biz-card-name">Cafetería local</div>
+      <div class="biz-card-type">Café · Reynosa</div>
+      <div class="biz-card-badge">Recomendado</div>
+    </a>
+  </div>
+
+  <!-- PROMO BANNER -->
+  <div class="promo-banner" style="margin-top:32px">
+    <div class="promo-label">Promoción exclusiva</div>
+    <div class="promo-title">Beneficios para visitantes</div>
+    <div class="promo-text">Menciona que vienes de <strong style="color:var(--gold)">Cruce Reynosa</strong> en negocios participantes y obtén descuentos y beneficios especiales. Actualizado semanalmente.</div>
+    <a href="#" class="promo-btn">Ver promociones activas →</a>
+  </div>
+
+  <!-- VIDA NOCTURNA -->
+  <div class="section-head">
+    <span class="section-icon">🌙</span>
+    <span class="section-title">Vida nocturna</span>
+    <div class="section-line"></div>
+  </div>
+
+  <div class="cards-grid">
+    <a href="#" class="biz-card" style="--card-accent:#a78bfa;--badge-bg:#a78bfa10;--badge-border:#a78bfa30;--badge-color:#a78bfa">
+      <span class="biz-card-emoji">🎵</span>
+      <div class="biz-card-name">Bar & Live Music</div>
+      <div class="biz-card-type">Bar · Centro</div>
+      <div class="biz-card-badge">Hoy abierto</div>
+    </a>
+    <a href="#" class="biz-card" style="--card-accent:#a78bfa;--badge-bg:#a78bfa10;--badge-border:#a78bfa30;--badge-color:#a78bfa">
+      <span class="biz-card-emoji">🍸</span>
+      <div class="biz-card-name">Cocktail Lounge</div>
+      <div class="biz-card-type">Cantina · Reynosa</div>
+      <div class="biz-card-badge">Premium</div>
+    </a>
+    <a href="#" class="biz-card" style="--card-accent:#a78bfa;--badge-bg:#a78bfa10;--badge-border:#a78bfa30;--badge-color:#a78bfa">
+      <span class="biz-card-emoji">🎤</span>
+      <div class="biz-card-name">Show en vivo</div>
+      <div class="biz-card-type">Venue · Reynosa</div>
+      <div class="biz-card-badge">Esta semana</div>
+    </a>
+    <a href="#" class="biz-card" style="--card-accent:#a78bfa;--badge-bg:#a78bfa10;--badge-border:#a78bfa30;--badge-color:#a78bfa">
+      <span class="biz-card-emoji">🥂</span>
+      <div class="biz-card-name">Anunciate aquí</div>
+      <div class="biz-card-type">Espacio disponible</div>
+      <div class="biz-card-badge">Disponible</div>
+    </a>
+  </div>
+
+  <!-- EVENTOS -->
+  <div class="section-head">
+    <span class="section-icon">🎉</span>
+    <span class="section-title">Eventos locales</span>
+    <div class="section-line"></div>
+  </div>
+
+  <div class="cards-grid">
+    <a href="#" class="biz-card" style="--card-accent:#f43f5e;--badge-bg:#f43f5e10;--badge-border:#f43f5e30;--badge-color:#f43f5e">
+      <span class="biz-card-emoji">🎊</span>
+      <div class="biz-card-name">Evento especial</div>
+      <div class="biz-card-type">Evento · Próximo</div>
+      <div class="biz-card-badge">Pronto</div>
+    </a>
+    <a href="#" class="biz-card" style="--card-accent:#f43f5e;--badge-bg:#f43f5e10;--badge-border:#f43f5e30;--badge-color:#f43f5e">
+      <span class="biz-card-emoji">🎶</span>
+      <div class="biz-card-name">Concierto</div>
+      <div class="biz-card-type">Música · Reynosa</div>
+      <div class="biz-card-badge">Este fin</div>
+    </a>
+    <a href="#" class="biz-card" style="--card-accent:#f43f5e;--badge-bg:#f43f5e10;--badge-border:#f43f5e30;--badge-color:#f43f5e">
+      <span class="biz-card-emoji">🍻</span>
+      <div class="biz-card-name">Promo en bar</div>
+      <div class="biz-card-type">Oferta · Hoy</div>
+      <div class="biz-card-badge">Hoy</div>
+    </a>
+    <a href="#" class="biz-card" style="--card-accent:#f43f5e;--badge-bg:#f43f5e10;--badge-border:#f43f5e30;--badge-color:#f43f5e">
+      <span class="biz-card-emoji">🛍️</span>
+      <div class="biz-card-name">Expo-venta</div>
+      <div class="biz-card-type">Mercado · Reynosa</div>
+      <div class="biz-card-badge">Fin de semana</div>
+    </a>
+  </div>
+
+  <!-- LUGARES -->
+  <div class="section-head">
+    <span class="section-icon">📍</span>
+    <span class="section-title">Lugares para visitar</span>
+    <div class="section-line"></div>
+  </div>
+
+  <div class="cards-grid">
+    <a href="#" class="biz-card" style="--card-accent:#34d399;--badge-bg:#34d39910;--badge-border:#34d39930;--badge-color:#34d399">
+      <span class="biz-card-emoji">🏛️</span>
+      <div class="biz-card-name">Centro histórico</div>
+      <div class="biz-card-type">Cultura · Reynosa</div>
+      <div class="biz-card-badge">Clásico</div>
+    </a>
+    <a href="#" class="biz-card" style="--card-accent:#34d399;--badge-bg:#34d39910;--badge-border:#34d39930;--badge-color:#34d399">
+      <span class="biz-card-emoji">🛒</span>
+      <div class="biz-card-name">Mercado Zaragoza</div>
+      <div class="biz-card-type">Mercado · Centro</div>
+      <div class="biz-card-badge">Local</div>
+    </a>
+    <a href="#" class="biz-card" style="--card-accent:#34d399;--badge-bg:#34d39910;--badge-border:#34d39930;--badge-color:#34d399">
+      <span class="biz-card-emoji">🌿</span>
+      <div class="biz-card-name">Parque Reynosa</div>
+      <div class="biz-card-type">Parque · Reynosa</div>
+      <div class="biz-card-badge">Gratis</div>
+    </a>
+    <a href="#" class="biz-card" style="--card-accent:#34d399;--badge-bg:#34d39910;--badge-border:#34d39930;--badge-color:#34d399">
+      <span class="biz-card-emoji">📸</span>
+      <div class="biz-card-name">Tu lugar aquí</div>
+      <div class="biz-card-type">Espacio · Reynosa</div>
+      <div class="biz-card-badge">Disponible</div>
+    </a>
+  </div>
+
+  <!-- ADVERTISE CTA -->
+  <div class="advertise-cta">
+    <div class="advertise-cta-icon">💎</div>
+    <div class="advertise-cta-title">¿Tienes un negocio en Reynosa?</div>
+    <div class="advertise-cta-sub">Aparece ante miles de personas que cruzan el puente cada día. Planes de publicidad desde $500 MXN al mes.</div>
+    <a href="https://horussystemco.com" target="_blank" class="advertise-cta-btn">Promociónate con Horus →</a>
+  </div>
+
+</div><!-- /main-wrap -->
+
+<!-- FOOTER -->
+<footer class="page-footer">
+  <span>Cruce RNS · Reynosa, Tamps</span>
+  <div class="footer-horus">
+    <svg width="14" height="14" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+      <path d="M100 60 L160 140 L40 140 Z" fill="none" stroke="#8a7035" stroke-width="3"/>
+      <line x1="70" y1="100" x2="70" y2="140" stroke="#8a7035" stroke-width="2"/>
+      <line x1="100" y1="80" x2="100" y2="140" stroke="#8a7035" stroke-width="2"/>
+      <line x1="130" y1="100" x2="130" y2="140" stroke="#8a7035" stroke-width="2"/>
+      <circle cx="100" cy="90" r="8" fill="#8a7035"/>
+    </svg>
+    HORUS
+  </div>
+</footer>
+
+<script>
+  // Filter chip interaction
+  document.querySelectorAll('.filter-chip').forEach(function(chip) {
+    chip.addEventListener('click', function() {
+      document.querySelectorAll('.filter-chip').forEach(function(c){ c.classList.remove('active'); });
+      chip.classList.add('active');
+    });
+  });
+</script>
+
+</body>
+</html>

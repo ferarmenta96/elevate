@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="theme-color" content="#060810" />
+  <meta name="description" content="Explora lo mejor del Rio Grande Valley. McAllen, Mission, Edinburg, shopping, restaurantes y conciertos. Powered by Horus System Co." />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta property="og:title" content="Qué hacer en RGV — Cruce RNS" />
+  <meta property="og:description" content="Descubre lo mejor del Rio Grande Valley: McAllen, Mission, Edinburg y más." />
+  <title>Qué hacer en RGV — Cruce RNS</title>
+
+  <link rel="icon" type="image/png" href="/cruce-reynosa/public/icon-192.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Barlow+Condensed:wght@400;600;700;800;900&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet" />
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --blue: #60a5fa;
+      --blue-bright: #93c5fd;
+      --blue-dim: #2563eb;
+      --blue-glow: #60a5fa18;
+      --bg: #060810;
+      --surface: #0c0f18;
+      --surface2: #111520;
+      --surface3: #181d2c;
+      --border: #ffffff0d;
+      --border-blue: #60a5fa20;
+      --text: #e4e8f0;
+      --text-dim: #8a9ab5;
+      --muted: #515d75;
+      --faint: #2a3048;
+      --accent: #60a5fa;
+      --accent-dim: #2563eb;
+      --accent-glow: #60a5fa15;
+
+      /* Category colors */
+      --c-shop: #f59e0b;
+      --c-food: #34d399;
+      --c-events: #f43f5e;
+      --c-outdoors: #10b981;
+      --c-promo: #a78bfa;
+    }
+
+    html, body { height: 100%; overflow-x: hidden; }
+    body { background: var(--bg); color: var(--text); font-family: 'Barlow', sans-serif; }
+
+    /* ══ NOISE + STARS OVERLAY ══ */
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none; z-index: 0; opacity: 0.35;
+    }
+
+    /* ══ HEADER ══ */
+    .page-header {
+      position: sticky; top: 0; z-index: 50;
+      background: rgba(6,8,16,0.92); backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+      padding: 0 20px; height: 58px;
+      display: flex; align-items: center; gap: 16px;
+    }
+    .page-header::after {
+      content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 1px;
+      background: linear-gradient(90deg, transparent 0%, #60a5fa50 40%, #60a5fa50 60%, transparent 100%);
+    }
+    .header-back {
+      display: flex; align-items: center; gap: 8px;
+      font-family: 'Barlow Condensed', sans-serif; font-size: 11px; font-weight: 700;
+      letter-spacing: 2px; color: var(--muted); text-transform: uppercase; text-decoration: none;
+      transition: color 0.2s;
+    }
+    .header-back:hover { color: var(--blue); }
+    .header-back-arrow { font-size: 16px; }
+    .header-sep { width: 1px; height: 18px; background: var(--border); }
+    .header-logo { display: flex; align-items: center; gap: 10px; }
+    .header-logo-title {
+      font-family: 'Cormorant Garamond', serif; font-size: 18px; font-weight: 600;
+      letter-spacing: 3px; color: var(--blue); text-transform: uppercase;
+    }
+    .header-city-badge {
+      margin-left: auto;
+      display: flex; align-items: center; gap: 6px;
+      background: #60a5fa12; border: 1px solid #60a5fa30; border-radius: 20px;
+      padding: 4px 12px; font-family: 'Barlow Condensed', sans-serif; font-size: 10px; font-weight: 700;
+      letter-spacing: 2px; color: var(--blue); text-transform: uppercase;
+    }
+    .header-dot { width: 5px; height: 5px; background: var(--blue); border-radius: 50%; animation: pulse 2s infinite; }
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+    /* ══ HERO ══ */
+    .hero {
+      position: relative; overflow: hidden;
+      padding: 52px 24px 44px; text-align: center;
+    }
+    .hero::before {
+      content: ''; position: absolute; top: -40px; left: 50%; transform: translateX(-50%);
+      width: 600px; height: 400px;
+      background: radial-gradient(ellipse at center, #60a5fa18 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .hero-eyebrow {
+      font-family: 'Barlow Condensed', sans-serif; font-size: 10px; font-weight: 700;
+      letter-spacing: 4px; color: var(--blue-dim); text-transform: uppercase; margin-bottom: 16px;
+    }
+    .hero-title {
+      font-family: 'Cormorant Garamond', serif; font-size: clamp(42px, 10vw, 68px);
+      font-weight: 700; line-height: 1; color: var(--text); margin-bottom: 8px;
+    }
+    .hero-title span { color: var(--blue); font-style: italic; }
+    .hero-sub {
+      font-family: 'Barlow', sans-serif; font-size: 15px; color: var(--text-dim);
+      line-height: 1.6; max-width: 420px; margin: 16px auto 32px;
+    }
+    .hero-divider {
+      width: 60px; height: 1px; margin: 0 auto 32px;
+      background: linear-gradient(90deg, transparent, var(--blue), transparent);
+    }
+    .hero-cities { display: flex; justify-content: center; flex-wrap: wrap; gap: 8px; }
+    .hero-city-tag {
+      background: var(--surface2); border: 1px solid var(--border-blue); border-radius: 100px;
+      padding: 6px 14px; font-family: 'Barlow Condensed', sans-serif; font-size: 11px;
+      font-weight: 700; letter-spacing: 1.5px; color: var(--text-dim); text-transform: uppercase;
+    }
+
+    /* ══ FILTER BAR ══ */
+    .filter-bar {
+      display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none;
+      padding: 24px 20px 24px; -webkit-overflow-scrolling: touch;
+    }
+    .filter-bar::-webkit-scrollbar { display: none; }
+    .filter-chip {
+      flex-shrink: 0; display: flex; align-items: center; gap: 6px;
+      background: var(--surface2); border: 1px solid var(--border);
+      border-radius: 100px; padding: 8px 16px; cursor: pointer; transition: all 0.2s;
+      font-family: 'Barlow Condensed', sans-serif; font-size: 12px; font-weight: 700;
+      letter-spacing: 1px; color: var(--text-dim); text-transform: uppercase; white-space: nowrap;
+    }
+    .filter-chip:hover { border-color: var(--accent); color: var(--accent); }
+    .filter-chip.active { background: var(--accent-glow); border-color: var(--accent); color: var(--accent); }
+    .filter-chip-dot { width: 6px; height: 6px; border-radius: 50%; }
+
+    /* ══ MAIN GRID ══ */
+    .main-wrap { padding: 0 20px; max-width: 860px; margin: 0 auto; }
+
+    /* ══ SECTION HEADER ══ */
+    .section-head {
+      display: flex; align-items: baseline; gap: 12px; margin-bottom: 16px; margin-top: 36px;
+    }
+    .section-head:first-child { margin-top: 0; }
+    .section-icon { font-size: 20px; }
+    .section-title {
+      font-family: 'Barlow Condensed', sans-serif; font-size: 11px; font-weight: 700;
+      letter-spacing: 3px; color: var(--muted); text-transform: uppercase;
+    }
+    .section-line { flex: 1; height: 1px; background: var(--border); }
+
+    /* ══ BUSINESS CARDS ══ */
+    .cards-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    @media (min-width: 600px) { .cards-grid { grid-template-columns: repeat(3, 1fr); } }
+    @media (min-width: 800px) { .cards-grid { grid-template-columns: repeat(4, 1fr); } }
+
+    .biz-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 14px; padding: 18px 14px 16px; cursor: pointer;
+      transition: all 0.25s; position: relative; overflow: hidden; text-decoration: none;
+      display: block;
+    }
+    .biz-card::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+      background: var(--card-accent, var(--blue)); opacity: 0.5; transition: opacity 0.2s;
+    }
+    .biz-card:hover { background: var(--surface2); border-color: var(--card-accent, var(--border-blue)); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.5); }
+    .biz-card:hover::before { opacity: 1; }
+    .biz-card-emoji { font-size: 26px; margin-bottom: 10px; display: block; }
+    .biz-card-name {
+      font-family: 'Barlow Condensed', sans-serif; font-size: 14px; font-weight: 700;
+      letter-spacing: 0.5px; color: var(--text); margin-bottom: 4px; line-height: 1.2;
+    }
+    .biz-card-type {
+      font-family: 'Barlow', sans-serif; font-size: 10px; color: var(--muted);
+      text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px;
+    }
+    .biz-card-badge {
+      display: inline-flex; align-items: center; gap: 4px;
+      background: var(--badge-bg, var(--surface3)); border: 1px solid var(--badge-border, var(--border));
+      border-radius: 6px; padding: 3px 8px;
+      font-family: 'Barlow Condensed', sans-serif; font-size: 10px; font-weight: 700;
+      letter-spacing: 1px; color: var(--badge-color, var(--muted)); text-transform: uppercase;
+    }
+
+    /* ══ FEATURED CARD ══ */
+    .featured-card {
+      background: linear-gradient(135deg, var(--surface2) 0%, var(--surface) 100%);
+      border: 1px solid var(--border-blue); border-radius: 16px;
+      padding: 24px 22px; margin-bottom: 10px; position: relative; overflow: hidden;
+      cursor: pointer; transition: all 0.25s; text-decoration: none; display: block;
+    }
+    .featured-card::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+      background: linear-gradient(90deg, transparent, var(--blue), transparent);
+    }
+    .featured-card:hover { transform: translateY(-2px); box-shadow: 0 12px 40px rgba(96,165,250,0.10); }
+    .featured-glow {
+      position: absolute; right: -40px; top: -40px; width: 200px; height: 200px;
+      background: radial-gradient(circle, #60a5fa12 0%, transparent 70%); pointer-events: none;
+    }
+    .featured-label {
+      font-family: 'Barlow Condensed', sans-serif; font-size: 9px; font-weight: 700;
+      letter-spacing: 3px; color: #2563eb; text-transform: uppercase; margin-bottom: 10px;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .featured-label::after { content: ''; flex: 1; height: 1px; background: var(--border-blue); }
+    .featured-name {
+      font-family: 'Cormorant Garamond', serif; font-size: 26px; font-weight: 600;
+      color: var(--text); margin-bottom: 4px; line-height: 1.1;
+    }
+    .featured-desc { font-family: 'Barlow', sans-serif; font-size: 13px; color: var(--text-dim); line-height: 1.5; margin-bottom: 16px; }
+    .featured-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+    .featured-tag {
+      background: var(--surface3); border: 1px solid var(--border); border-radius: 6px;
+      padding: 4px 10px; font-family: 'Barlow Condensed', sans-serif; font-size: 10px;
+      font-weight: 700; letter-spacing: 1px; color: var(--text-dim); text-transform: uppercase;
+    }
+
+    /* ══ PROMO BANNER ══ */
+    .promo-banner {
+      background: linear-gradient(135deg, #03060f 0%, #050a18 100%);
+      border: 1px solid #60a5fa28; border-radius: 16px;
+      padding: 22px 20px; margin: 32px 0; position: relative; overflow: hidden;
+    }
+    .promo-banner::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+      background: linear-gradient(90deg, transparent, var(--blue), transparent);
+    }
+    .promo-banner::after {
+      content: '🌴'; position: absolute; right: 20px; top: 50%; transform: translateY(-50%);
+      font-size: 48px; opacity: 0.08;
+    }
+    .promo-label {
+      font-family: 'Barlow Condensed', sans-serif; font-size: 9px; font-weight: 700;
+      letter-spacing: 3px; color: #2563eb; text-transform: uppercase; margin-bottom: 8px;
+    }
+    .promo-title {
+      font-family: 'Cormorant Garamond', serif; font-size: 22px; font-weight: 600;
+      color: var(--blue); margin-bottom: 8px;
+    }
+    .promo-text { font-family: 'Barlow', sans-serif; font-size: 13px; color: var(--text-dim); line-height: 1.5; margin-bottom: 16px; }
+    .promo-btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: linear-gradient(135deg, var(--blue), #1d4ed8);
+      border: none; border-radius: 8px; padding: 10px 20px;
+      font-family: 'Barlow Condensed', sans-serif; font-size: 12px; font-weight: 800;
+      letter-spacing: 2px; color: #06080f; text-transform: uppercase; cursor: pointer;
+      transition: all 0.2s; text-decoration: none;
+    }
+    .promo-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px #60a5fa28; }
+
+    /* ══ CITIES ROW ══ */
+    .cities-row {
+      display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin-bottom: 10px;
+    }
+    @media (min-width: 600px) { .cities-row { grid-template-columns: repeat(4, 1fr); } }
+    .city-pill {
+      background: var(--surface); border: 1px solid var(--border-blue); border-radius: 10px;
+      padding: 14px 12px; text-align: center; text-decoration: none; transition: all 0.2s;
+      position: relative; overflow: hidden;
+    }
+    .city-pill::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+      background: var(--blue); opacity: 0.4; transition: opacity 0.2s;
+    }
+    .city-pill:hover { background: var(--surface2); border-color: var(--blue); transform: translateY(-2px); }
+    .city-pill:hover::before { opacity: 1; }
+    .city-pill-emoji { font-size: 22px; display: block; margin-bottom: 6px; }
+    .city-pill-name {
+      font-family: 'Barlow Condensed', sans-serif; font-size: 13px; font-weight: 700;
+      letter-spacing: 1px; color: var(--blue); text-transform: uppercase;
+    }
+    .city-pill-state { font-family: 'Barlow', sans-serif; font-size: 10px; color: var(--muted); margin-top: 2px; }
+
+    /* ══ ADVERTISE CTA ══ */
+    .advertise-cta {
+      background: var(--surface2); border: 1px dashed #60a5fa28; border-radius: 16px;
+      padding: 28px 24px; text-align: center; margin: 24px 0 48px;
+    }
+    .advertise-cta-icon { font-size: 36px; margin-bottom: 12px; }
+    .advertise-cta-title {
+      font-family: 'Cormorant Garamond', serif; font-size: 22px; font-weight: 600;
+      color: var(--text); margin-bottom: 8px;
+    }
+    .advertise-cta-sub { font-family: 'Barlow', sans-serif; font-size: 13px; color: var(--text-dim); margin-bottom: 20px; }
+    .advertise-cta-btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      border: 1px solid var(--border-blue); border-radius: 8px; padding: 10px 22px;
+      font-family: 'Barlow Condensed', sans-serif; font-size: 12px; font-weight: 700;
+      letter-spacing: 2px; color: var(--blue); text-transform: uppercase; text-decoration: none;
+      transition: all 0.2s; background: transparent; cursor: pointer;
+    }
+    .advertise-cta-btn:hover { background: var(--accent-glow); transform: translateY(-1px); }
+
+    /* ══ FOOTER ══ */
+    .page-footer {
+      border-top: 1px solid var(--border); padding: 20px 24px;
+      display: flex; align-items: center; justify-content: space-between;
+      font-family: 'Barlow Condensed', sans-serif; font-size: 9px; letter-spacing: 2px;
+      color: var(--muted); text-transform: uppercase;
+    }
+    .footer-horus {
+      font-family: 'Cormorant Garamond', serif; font-size: 13px; font-weight: 600;
+      letter-spacing: 3px; color: #2563eb; display: flex; align-items: center; gap: 6px;
+    }
+
+    /* ══ ANIMATIONS ══ */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(16px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .hero { animation: fadeUp 0.6s ease both; }
+    .filter-bar { animation: fadeUp 0.6s 0.1s ease both; }
+    .main-wrap { animation: fadeUp 0.6s 0.15s ease both; }
+  </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="page-header">
+  <a href="/cruce-reynosa/" class="header-back">
+    <span class="header-back-arrow">‹</span>
+    <span>Cruce RNS</span>
+  </a>
+  <div class="header-sep"></div>
+  <div class="header-logo">
+    <svg width="22" height="22" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" style="display:block">
+      <path d="M100 60 L160 140 L40 140 Z" fill="none" stroke="#60a5fa" stroke-width="3"/>
+      <line x1="70" y1="100" x2="70" y2="140" stroke="#60a5fa" stroke-width="2"/>
+      <line x1="100" y1="80" x2="100" y2="140" stroke="#60a5fa" stroke-width="2"/>
+      <line x1="130" y1="100" x2="130" y2="140" stroke="#60a5fa" stroke-width="2"/>
+      <circle cx="100" cy="90" r="8" fill="#60a5fa"/>
+    </svg>
+    <span class="header-logo-title">Horus</span>
+  </div>
+  <div class="header-city-badge"><div class="header-dot"></div>Rio Grande Valley</div>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-eyebrow">The Valley · Texas · USA</div>
+  <h1 class="hero-title">Qué hacer en<br><span>el RGV</span></h1>
+  <p class="hero-sub">Explora las mejores experiencias del Valle de Texas. Shopping, restaurantes, conciertos y aventuras al cruzar el puente.</p>
+  <div class="hero-divider"></div>
+  <div class="hero-cities">
+    <span class="hero-city-tag">📍 McAllen</span>
+    <span class="hero-city-tag">📍 Mission</span>
+    <span class="hero-city-tag">📍 Edinburg</span>
+    <span class="hero-city-tag">📍 Pharr</span>
+    <span class="hero-city-tag">📍 Hidalgo</span>
+  </div>
+</section>
+
+<!-- FILTER BAR -->
+<nav class="filter-bar">
+  <button class="filter-chip active"><div class="filter-chip-dot" style="background:#60a5fa"></div>Todo</button>
+  <button class="filter-chip"><div class="filter-chip-dot" style="background:#f59e0b"></div>Shopping</button>
+  <button class="filter-chip"><div class="filter-chip-dot" style="background:#34d399"></div>Restaurantes</button>
+  <button class="filter-chip"><div class="filter-chip-dot" style="background:#f43f5e"></div>Eventos</button>
+  <button class="filter-chip"><div class="filter-chip-dot" style="background:#10b981"></div>Outdoors</button>
+  <button class="filter-chip"><div class="filter-chip-dot" style="background:#a78bfa"></div>Promos</button>
+</nav>
+
+<!-- MAIN CONTENT -->
+<div class="main-wrap">
+
+  <!-- CITIES -->
+  <div class="section-head">
+    <span class="section-icon">🗺️</span>
+    <span class="section-title">Ciudades del Valle</span>
+    <div class="section-line"></div>
+  </div>
+
+  <div class="cities-row">
+    <a href="#" class="city-pill">
+      <span class="city-pill-emoji">🏙️</span>
+      <div class="city-pill-name">McAllen</div>
+      <div class="city-pill-state">Hidalgo County</div>
+    </a>
+    <a href="#" class="city-pill">
+      <span class="city-pill-emoji">🌿</span>
+      <div class="city-pill-name">Mission</div>
+      <div class="city-pill-state">Hidalgo County</div>
+    </a>
+    <a href="#" class="city-pill">
+      <span class="city-pill-emoji">🎓</span>
+      <div class="city-pill-name">Edinburg</div>
+      <div class="city-pill-state">Hidalgo County</div>
+    </a>
+    <a href="#" class="city-pill">
+      <span class="city-pill-emoji">🏪</span>
+      <div class="city-pill-name">Pharr</div>
+      <div class="city-pill-state">Hidalgo County</div>
+    </a>
+  </div>
+
+  <!-- FEATURED -->
+  <a href="https://horussystemco.com" target="_blank" class="featured-card" style="margin-top:32px">
+    <div class="featured-glow"></div>
+    <div class="featured-label">Negocio destacado</div>
+    <div class="featured-name">Tu negocio aquí</div>
+    <div class="featured-desc">¿Tienes un negocio en el Valley? Aparece como lugar recomendado para los miles de visitantes que cruzan desde Reynosa cada semana.</div>
+    <div class="featured-tags">
+      <span class="featured-tag">💎 Premium</span>
+      <span class="featured-tag">🎯 Visible</span>
+      <span class="featured-tag">📍 RGV</span>
+    </div>
+  </a>
+
+  <!-- SHOPPING -->
+  <div class="section-head" style="margin-top:32px">
+    <span class="section-icon">🛍️</span>
+    <span class="section-title">Shopping &amp; Outlets</span>
+    <div class="section-line"></div>
+  </div>
+
+  <div class="cards-grid">
+    <a href="#" class="biz-card" style="--card-accent:#f59e0b;--badge-bg:#f59e0b10;--badge-border:#f59e0b30;--badge-color:#f59e0b">
+      <span class="biz-card-emoji">🏬</span>
+      <div class="biz-card-name">La Plaza Mall</div>
+      <div class="biz-card-type">Mall · McAllen</div>
+      <div class="biz-card-badge">Clásico</div>
+    </a>
+    <a href="#" class="biz-card" style="--card-accent:#f59e0b;--badge-bg:#f59e0b10;--badge-border:#f59e0b30;--badge-color:#f59e0b">
+      <span class="biz-card-emoji">👟</span>
+      <div class="biz-card-name">Las Tiendas</div>
+      <div class="biz-card-type">Outlet · McAllen</div>
+      <div class="biz-card-badge">Popular</div>
+    </a>
+    <a href="#" class="biz-card" style="--card-accent:#f59e0b;--badge-bg:#f59e0b10;--badge-border:#f59e0b30;--badge-color:#f59e0b">
+      <span class="biz-card-emoji">💄</span>
+      <div class="biz-card-name">Publicidad aquí</div>
+      <div class="biz-card-type">Tu tienda · RGV</div>
+      <div class="biz-card-badge">Disponible</div>
+    </a>
+    <a href="#" class="biz-card" style="--card-accent:#f59e0b;--badge-bg:#f59e0b10;--badge-border:#f59e0b30;--badge-color:#f59e0b">
+      <span class="biz-card-emoji">🎁</span>
+      <div class="biz-card-name">Tu tienda aquí</div>
+      <div class="biz-card-type">Retail · RGV</div>
+      <div class="biz-card-badge">Disponible</div>
+    </a>
+  </div>
+
+  <!-- PROMO BANNER -->
+  <div class="promo-banner">
+    <div class="promo-label">Beneficio exclusivo</div>
+    <div class="promo-title">Menciona Cruce Reynosa</div>
+    <div class="promo-text">En negocios participantes del Valle, menciona que vienes de <strong style="color:var(--blue)">Cruce Reynosa</strong> y obtén descuentos especiales. Solo para visitantes de México.</div>
+    <a href="#" class="promo-btn">Ver ofertas activas →</a>
+  </div>
+
+  <!-- RESTAURANTES -->
+  <div class="section-head">
+    <span class="section-icon">🍽️</span>
+    <span class="section-title">Restaurantes &amp; Cafés</span>
+    <div class="section-line"></div>
+  </div>
+
+  <div class="cards-grid">
+    <a href="#" class="biz-card" style="--card-accent:#34d399;--badge-bg:#34d39910;--badge-border:#34d39930;--badge-color:#34d399">
+      <span class="biz-card-emoji">🥦</span>
+      <div class="biz-card-name">Anunciate aquí</div>
+      <div class="biz-card-type">Restaurante · RGV</div>
+      <div class="biz-card-badge">Disponible</div>
+    </a>
+    <a href="#" class="biz-card" style="--card-accent:#34d399;--badge-bg:#34d39910;--badge-border:#34d39930;--badge-color:#34d399">
+      <span class="biz-card-emoji">☕</span>
+      <div class="biz-card-name">Coffee Shop</div>
+      <div class="biz-card-type">Café · McAllen</div>
+      <div class="biz-card-badge">Recomendado</div>
+    </a>
+    <a href="#" class="biz-card" style="--card-accent:#34d399;--badge-bg:#34d39910;--badge-border:#34d39930;--badge-color:#34d399">
+      <span class="biz-card-emoji">🍔</span>
+      <div class="biz-card-name">American Grill</div>
+      <div class="biz-card-type">Comida · RGV</div>
+      <div class="biz-card-badge">Trend</div>
+    </a>
+    <a href="#" class="biz-card" style="--card-accent:#34d399;--badge-bg:#34d39910;--badge-border:#34d39930;--badge-color:#34d399">
+      <span class="biz-card-emoji">🍕</span>
+      <div class="biz-card-name">Tu lugar aquí</div>
+      <div class="biz-card-type">Espacio · RGV</div>
+      <div class="biz-card-badge">Disponible</div>
+    </a>
+  </div>
+
+  <!-- EVENTOS -->
+  <div class="section-head">
+    <span class="section-icon">🎶</span>
+    <span class="section-title">Eventos &amp; Conciertos</span>
+    <div class="section-line"></div>
+  </div>
+
+  <div class="cards-grid">
+    <a href="#" class="biz-card" style="--card-accent:#f43f5e;--badge-bg:#f43f5e10;--badge-border:#f43f5e30;--badge-color:#f43f5e">
+      <span class="biz-card-emoji">🎤</span>
+      <div class="biz-card-name">Concierto</div>
+      <div class="biz-card-type">Música · McAllen</div>
+      <div class="biz-card-badge">Este fin</div>
+    </a>
+    <a href="#" class="biz-card" style="--card-accent:#f43f5e;--badge-bg:#f43f5e10;--badge-border:#f43f5e30;--badge-color:#f43f5e">
+      <span class="biz-card-emoji">🎊</span>
+      <div class="biz-card-name">Evento especial</div>
+      <div class="biz-card-type">Evento · RGV</div>
+      <div class="biz-card-badge">Pronto</div>
+    </a>
+    <a href="#" class="biz-card" style="--card-accent:#f43f5e;--badge-bg:#f43f5e10;--badge-border:#f43f5e30;--badge-color:#f43f5e">
+      <span class="biz-card-emoji">🏟️</span>
+      <div class="biz-card-name">Sports Event</div>
+      <div class="biz-card-type">Deportes · RGV</div>
+      <div class="biz-card-badge">En vivo</div>
+    </a>
+    <a href="#" class="biz-card" style="--card-accent:#f43f5e;--badge-bg:#f43f5e10;--badge-border:#f43f5e30;--badge-color:#f43f5e">
+      <span class="biz-card-emoji">🎡</span>
+      <div class="biz-card-name">Tu evento aquí</div>
+      <div class="biz-card-type">Espacio · RGV</div>
+      <div class="biz-card-badge">Disponible</div>
+    </a>
+  </div>
+
+  <!-- OUTDOORS -->
+  <div class="section-head">
+    <span class="section-icon">🌴</span>
+    <span class="section-title">Actividades &amp; Outdoors</span>
+    <div class="section-line"></div>
+  </div>
+
+  <div class="cards-grid">
+    <a href="#" class="biz-card" style="--card-accent:#10b981;--badge-bg:#10b98110;--badge-border:#10b98130;--badge-color:#10b981">
+      <span class="biz-card-emoji">🏖️</span>
+      <div class="biz-card-name">South Padre</div>
+      <div class="biz-card-type">Playa · 1.5h</div>
+      <div class="biz-card-badge">Top destino</div>
+    </a>
+    <a href="#" class="biz-card" style="--card-accent:#10b981;--badge-bg:#10b98110;--badge-border:#10b98130;--badge-color:#10b981">
+      <span class="biz-card-emoji">🚵</span>
+      <div class="biz-card-name">Ciclismo urbano</div>
+      <div class="biz-card-type">Outdoor · McAllen</div>
+      <div class="biz-card-badge">Trending</div>
+    </a>
+    <a href="#" class="biz-card" style="--card-accent:#10b981;--badge-bg:#10b98110;--badge-border:#10b98130;--badge-color:#10b981">
+      <span class="biz-card-emoji">🌿</span>
+      <div class="biz-card-name">Parques del Valle</div>
+      <div class="biz-card-type">Naturaleza · RGV</div>
+      <div class="biz-card-badge">Gratis</div>
+    </a>
+    <a href="#" class="biz-card" style="--card-accent:#10b981;--badge-bg:#10b98110;--badge-border:#10b98130;--badge-color:#10b981">
+      <span class="biz-card-emoji">⛳</span>
+      <div class="biz-card-name">Golf Courses</div>
+      <div class="biz-card-type">Deporte · RGV</div>
+      <div class="biz-card-badge">Reserva</div>
+    </a>
+  </div>
+
+  <!-- ADVERTISE CTA -->
+  <div class="advertise-cta">
+    <div class="advertise-cta-icon">🎯</div>
+    <div class="advertise-cta-title">¿Tu negocio es del Valley?</div>
+    <div class="advertise-cta-sub">Alcanza a los miles de compradores y visitantes mexicanos que cruzan al RGV cada semana. Publicidad segmentada y efectiva.</div>
+    <a href="https://horussystemco.com" target="_blank" class="advertise-cta-btn">Anunciate con Horus →</a>
+  </div>
+
+</div><!-- /main-wrap -->
+
+<!-- FOOTER -->
+<footer class="page-footer">
+  <span>Cruce RNS · Rio Grande Valley, TX</span>
+  <div class="footer-horus">
+    <svg width="14" height="14" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" style="display:block">
+      <path d="M100 60 L160 140 L40 140 Z" fill="none" stroke="#2563eb" stroke-width="3"/>
+      <line x1="70" y1="100" x2="70" y2="140" stroke="#2563eb" stroke-width="2"/>
+      <line x1="100" y1="80" x2="100" y2="140" stroke="#2563eb" stroke-width="2"/>
+      <line x1="130" y1="100" x2="130" y2="140" stroke="#2563eb" stroke-width="2"/>
+      <circle cx="100" cy="90" r="8" fill="#2563eb"/>
+    </svg>
+    HORUS
+  </div>
+</footer>
+
+<script>
+  document.querySelectorAll('.filter-chip').forEach(function(chip) {
+    chip.addEventListener('click', function() {
+      document.querySelectorAll('.filter-chip').forEach(function(c){ c.classList.remove('active'); });
+      chip.classList.add('active');
+    });
+  });
+</script>
+
+</body>
+</html>
