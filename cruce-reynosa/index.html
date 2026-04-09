@@ -92,6 +92,32 @@
     .splash-loading-text { font-family:'Barlow',sans-serif; font-size:10px; letter-spacing:2px; color:var(--muted); text-transform:uppercase; }
 
     /* ═══════════════════════════════════════
+       LOADING SPINNER  ← NUEVO
+    ═══════════════════════════════════════ */
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .loading-screen-mobile {
+      display: flex; flex-direction: column; align-items: center;
+      justify-content: center; height: 60vh; gap: 16px;
+    }
+    .loading-screen-desktop {
+      display: flex; align-items: center; justify-content: center;
+      height: 100vh; gap: 16px; background: var(--dk-bg);
+    }
+    .loading-spinner {
+      width: 40px; height: 40px;
+      border: 2px solid #C9A84C30;
+      border-top-color: #C9A84C;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+    .loading-text {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 12px; letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    /* ═══════════════════════════════════════
        MOBILE LAYOUT (default, ≤ 1023px)
     ═══════════════════════════════════════ */
     body { background:var(--bg); color:var(--text); font-family:'Barlow',sans-serif; overflow-y:auto; }
@@ -461,8 +487,12 @@ var BRIDGE_COLORS = {
   donna:'#a78bfa', nuevo_laredo:'#34d399', nuevo_progreso:'#fb923c'
 };
 
+/* ─────────────────────────────────────────────────
+   STATE  ←  se agrega loading:true
+───────────────────────────────────────────────── */
 var state = {
   activeBridge:0, reports:[], serverTraffic:{},
+  loading: true,   /* ← NUEVO: bloquea render hasta que llegue la primera respuesta */
   showForm:false, submitDone:false, submitting:false,
   formData:{position:'',lane:'',estimatedTime:'',note:''},
   showInstallBanner:false, installPrompt:null,
@@ -562,11 +592,23 @@ function initDesktopMap(bridge) {
   drawMapPoints(bridge, state.mapDesktop, state.mapDesktopLG);
 }
 
+/* ─────────────────────────────────────────────────
+   FETCH  ←  apaga loading:true al completar
+───────────────────────────────────────────────── */
 function fetchReports() {
   fetch(CONFIG.APPS_SCRIPT_URL + '?action=getReports&t=' + Date.now())
     .then(function(r){ return r.json(); })
-    .then(function(d){ state.reports = d.reports || []; state.serverTraffic = d.serverTraffic || {}; render(); })
-    .catch(function(e){ console.error('Fetch error:', e); });
+    .then(function(d){
+      state.reports        = d.reports || [];
+      state.serverTraffic  = d.serverTraffic || {};
+      state.loading        = false;   /* ← NUEVO */
+      render();
+    })
+    .catch(function(e){
+      console.error('Fetch error:', e);
+      state.loading = false;          /* ← NUEVO: igual renderiza aunque falle */
+      render();
+    });
 }
 
 function submitReport(report) {
@@ -599,9 +641,19 @@ function setMobileAccent(bridge) {
 }
 
 /* ═══════════════════════════════════════════════════════════════
-   RENDER MOBILE
+   RENDER MOBILE  ←  guarda con loading check
 ═══════════════════════════════════════════════════════════════ */
 function renderMobile() {
+  /* ── LOADING SCREEN  ← NUEVO ── */
+  if (state.loading) {
+    document.getElementById('app-mobile').innerHTML =
+      '<div class="loading-screen-mobile">'
+      + '<div class="loading-spinner"></div>'
+      + '<div class="loading-text" style="color:#777">Obteniendo datos...</div>'
+      + '</div>';
+    return;
+  }
+
   var b = BRIDGES[state.activeBridge], q = calcQueue(b);
   setMobileAccent(b);
   var smap = {fluido:{t:'Fluido',c:'m-status-fluido'}, moderado:{t:'Moderado',c:'m-status-moderado'}, pesado:{t:'Pesado',c:'m-status-pesado'}};
@@ -644,7 +696,6 @@ function renderMobile() {
   var html = '<div class="m-header">'
     + '<div class="m-header-top"><div class="m-logo"><div style="width:38px;height:38px;flex-shrink:0">' + eye(38) + '</div>'
     + '<div><div class="m-logo-title">Horus</div><div class="m-logo-sub">System Co.</div></div></div>'
-    /* ── CONTADOR ARRIBA + LIVE BADGE ── */
     + '<div style="display:flex;align-items:center;gap:8px;">'
     + '<div class="m-users-today"><div class="m-users-today-dot"></div><span class="m-users-today-num">' + formatUserCount(usersToday) + '</span><span>hoy</span></div>'
     + '<div class="live-badge"><div class="live-dot"></div>LIVE</div>'
@@ -652,7 +703,6 @@ function renderMobile() {
     + '</div>'
     + '<div class="m-tabs">' + tabs + '</div></div>'
 
-    /* ── BOTONES EXPLORE QUICK MÁS GRANDES ── */
     + '<div class="m-explore-quick">'
     + '<a class="m-explore-quick-btn rns" href="/cruce-reynosa/que-hacer-reynosa.html">Qu\u00e9 hacer en Reynosa</a>'
     + '<a class="m-explore-quick-btn rgv" href="/cruce-reynosa/que-hacer-rgv.html">Qu\u00e9 hacer en RGV</a>'
@@ -701,7 +751,6 @@ function renderMobile() {
 
     + '<div class="m-reports-section"><div class="m-section-title">Reportes Recientes</div>' + cards + '</div>'
 
-    /* ── BOTTOM NAV SIN CONTADOR (ya está arriba) ── */
     + '<div class="m-bottom-nav">'
     + '<span>Auto-refresh 5min</span><span style="color:var(--faint)">&middot;</span>'
     + '<span>' + state.reports.length + ' reportes hoy</span>'
@@ -726,9 +775,19 @@ function renderMobile() {
 }
 
 /* ═══════════════════════════════════════════════════════════════
-   RENDER DESKTOP
+   RENDER DESKTOP  ←  guarda con loading check
 ═══════════════════════════════════════════════════════════════ */
 function renderDesktop() {
+  /* ── LOADING SCREEN  ← NUEVO ── */
+  if (state.loading) {
+    document.getElementById('app-desktop').innerHTML =
+      '<div class="loading-screen-desktop">'
+      + '<div class="loading-spinner"></div>'
+      + '<div class="loading-text" style="color:#555">Obteniendo datos...</div>'
+      + '</div>';
+    return;
+  }
+
   var b = BRIDGES[state.activeBridge], q = calcQueue(b);
   var smap    = {fluido:'fluido', moderado:'moderado', pesado:'pesado'};
   var statusT = {fluido:'Fluido', moderado:'Moderado', pesado:'Pesado'};
@@ -1015,14 +1074,24 @@ window.addEventListener('beforeinstallprompt', function(e){
 injectAdStyles();
 startAdRotation();
 
-setTimeout(function(){
+/* ── Splash: se esconde cuando lleguen datos O después de 8s máximo ── */
+var splashHidden = false;
+function hideSplash() {
+  if (splashHidden) return;
+  splashHidden = true;
   var el = document.getElementById('splash');
-  if (!el || el.classList.contains('hidden')) return;
+  if (!el) return;
   el.classList.add('hidden');
   setTimeout(function(){ if (el.parentNode) el.parentNode.removeChild(el); }, 650);
-}, 3000);
+}
 
+/* Máximo 8 segundos de splash (safety net) */
+setTimeout(hideSplash, 8000);
+
+/* render() inicial muestra loading spinner (state.loading = true) */
 render();
+
+/* fetchReports apaga loading y re-renderiza con datos reales */
 fetchReports();
 setInterval(fetchReports, CONFIG.REFRESH_INTERVAL);
 
