@@ -39,6 +39,9 @@
         .nav-cta{background:var(--gold)!important;color:#fff!important;padding:10px 24px;border-radius:1px;font-weight:700!important;letter-spacing:2px!important;}
         .nav-cta::after{display:none!important;}
         .nav-cta:hover{background:var(--gold-light)!important;color:#fff!important;}
+        .nav-programming{border:1px solid rgba(154,111,42,0.35)!important;padding:9px 18px;color:var(--gold)!important;font-weight:600!important;}
+        .nav-programming::after{display:none!important;}
+        .nav-programming:hover{background:rgba(154,111,42,0.07)!important;border-color:var(--gold)!important;}
         .sw{max-width:1360px;margin:0 auto;padding:140px 6%;}
         .label{font-size:9px;font-weight:600;letter-spacing:4px;text-transform:uppercase;color:var(--gold);margin-bottom:20px;display:flex;align-items:center;gap:12px;}
         .label::before{content:'';width:24px;height:1px;background:var(--gold);display:inline-block;flex-shrink:0;}
@@ -214,6 +217,7 @@
         <a href="#services">Services</a>
         <a href="#results">Results</a>
         <a href="#infrastructure">Infrastructure</a>
+        <a href="Programming/index.html" class="nav-programming">Programming</a>
         <a href="#contact" class="nav-cta">Consult</a>
         <div class="lang-switch">
             <a href="#" class="active" title="English">
@@ -507,8 +511,8 @@
                 We accept a limited number of new clients per quarter. Only serious inquiries from high-value businesses seeking transformational growth will receive a response.
             </div>
             <div style="margin-top:36px;">
-                <div class="contact-detail"><div class="contact-detail-icon">◎</div><span>info@horussystem.net</span></div>
-                <div class="contact-detail"><div class="contact-detail-icon">◎</div><span>services@ushorus.com</span></div>
+                <div class="contact-detail"><div class="contact-detail-icon">◎</div><span><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="b7ded9d1d8f7dfd8c5c2c4c4cec4c3d2da99d9d2c3">[email&#160;protected]</a></span></div>
+                <div class="contact-detail"><div class="contact-detail-icon">◎</div><span><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="681b0d1a1e010b0d1b281d1b00071a1d1b460b0705">[email&#160;protected]</a></span></div>
             </div>
         </div>
         <div class="form-card reveal">
@@ -580,7 +584,7 @@
     </div>
 </footer>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 const cur=document.getElementById('cursor');const ring=document.getElementById('cursor-ring');let mx=0,my=0,rx=0,ry=0;
 document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.left=mx+'px';cur.style.top=my+'px';});
 function animRing(){rx+=(mx-rx)*.12;ry+=(my-ry)*.12;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(animRing);}
@@ -659,13 +663,4 @@ function submitForm(){
     })
     .catch(function(){
         btn.disabled=false;btn.querySelector('span').textContent="Submit Application →";
-        alert("Network error. Please try again or email us at info@horussystem.net");
-    });
-}
-
-["fullName","company","website","email","phone","message"].forEach(function(id){
-    var el=document.getElementById(id);
-    if(el)el.addEventListener("input",function(){var e=document.getElementById("err-"+id);if(e)e.textContent="";el.style.borderColor="";});
-});
-</script>
-</body></html>
+        alert("Network error. Ple
