@@ -195,6 +195,13 @@
     .m-game-btn-main { font-family:'Barlow Condensed',sans-serif; font-size:14px; font-weight:800; letter-spacing:1.5px; color:#39ff14; text-transform:uppercase; }
     .m-game-btn-sub { font-family:'Barlow',sans-serif; font-size:10px; color:#4a7a4a; margin-top:2px; letter-spacing:0.5px; }
     .m-game-btn-arrow { font-size:20px; color:#39ff1460; margin-left:auto; flex-shrink:0; }
+    .m-game2-btn { display:flex; align-items:center; gap:12px; margin:0 18px 14px; padding:14px 16px; border-radius:12px; border:1px solid #ff444430; background:linear-gradient(135deg,#1a0505 0%,#200808 100%); text-decoration:none; transition:all 0.2s; }
+    .m-game2-btn:hover { border-color:#ff444460; transform:translateY(-1px); }
+    .m-game2-btn:active { transform:scale(0.98); }
+    .m-game2-btn-icon { font-size:22px; flex-shrink:0; }
+    .m-game2-btn-main { font-family:'Barlow Condensed',sans-serif; font-size:14px; font-weight:800; letter-spacing:1.5px; color:#ff6644; text-transform:uppercase; }
+    .m-game2-btn-sub { font-family:'Barlow',sans-serif; font-size:10px; color:#7a3a2a; margin-top:2px; letter-spacing:0.5px; }
+    .m-game2-btn-arrow { font-size:20px; color:#ff444440; margin-left:auto; flex-shrink:0; }
 
     .m-reports-section { flex:1; padding:0 18px 100px; }
     .m-section-title { font-family:'Barlow Condensed',sans-serif; font-size:12px; font-weight:700; letter-spacing:2px; color:var(--muted); text-transform:uppercase; margin-bottom:12px; display:flex; align-items:center; gap:8px; }
@@ -736,6 +743,12 @@ function renderMobile() {
     + '<span class="m-game-btn-icon">&#x1F3AE;</span>'
     + '<div><div class="m-game-btn-main">Juega mientras esperas</div><div class="m-game-btn-sub">Snake retro &middot; Mata el tiempo</div></div>'
     + '<span class="m-game-btn-arrow">&rsaquo;</span>'
+    + '</a>'
+
+    + '<a href="/cruce-reynosa/cruce.html" class="m-game2-btn">'
+    + '<span class="m-game2-btn-icon">&#x1F3C3;</span>'
+    + '<div><div class="m-game2-btn-main">Border Runner</div><div class="m-game2-btn-sub">Esquiva obstáculos &middot; &iquest;Cu&aacute;ntos metros aguantas?</div></div>'
+    + '<span class="m-game2-btn-arrow">&rsaquo;</span>'
     + '</a>'
 
     + '<div class="ad-banner" id="adBannerM">' + smallBannerHTML() + '</div>'
