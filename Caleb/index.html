@@ -590,11 +590,27 @@ function initVoice() {
   if (!window.speechSynthesis) return;
   const load = () => {
     const voices = speechSynthesis.getVoices();
-    ttsVoice = voices.find(v => v.lang === 'es-MX')
-      || voices.find(v => v.lang === 'es-US')
-      || voices.find(v => v.lang.startsWith('es-'))
-      || voices.find(v => v.lang.startsWith('es'))
-      || null;
+    const esVoices = voices.filter(v => v.lang.startsWith('es'));
+    // Prioridad: voces nativas de iOS/macOS (Siri/compacta), evitar Google TTS robótico
+    const preferred = [
+      'Paulina',        // iOS es-MX — voz femenina dulce
+      'Monica',         // macOS es-ES — suave
+      'Mónica',
+      'Luciana',        // es-AR
+      'Jorge',          // fallback masculino suave iOS
+    ];
+    ttsVoice = null;
+    for (const name of preferred) {
+      const found = esVoices.find(v => v.name.includes(name));
+      if (found) { ttsVoice = found; break; }
+    }
+    // Si no encontró ninguna preferida, tomar la primera nativa (no Google)
+    if (!ttsVoice) {
+      ttsVoice = esVoices.find(v => !v.name.toLowerCase().includes('google') && v.localService)
+        || esVoices.find(v => !v.name.toLowerCase().includes('google'))
+        || esVoices[0]
+        || null;
+    }
     ttsReady = true;
   };
   load();
@@ -608,10 +624,10 @@ function speak(text, onEnd) {
   if (!window.speechSynthesis || !ttsReady) { if (onEnd) setTimeout(onEnd, 500); return; }
   speechSynthesis.cancel();
   const utt = new SpeechSynthesisUtterance(text);
-  utt.lang = 'es-MX';
-  utt.rate = 0.88;
-  utt.pitch = 1.15;
-  utt.volume = 1.0;
+  utt.lang = ttsVoice ? ttsVoice.lang : 'es-MX';
+  utt.rate = 0.78;      // más pausada — fácil de entender
+  utt.pitch = 1.4;      // tono más agudo y dulce, menos robótico
+  utt.volume = 0.95;
   if (ttsVoice) utt.voice = ttsVoice;
   if (onEnd) utt.onend = onEnd;
   utt.onerror = () => { if (onEnd) onEnd(); };
@@ -624,9 +640,9 @@ function speakPraise(text) {
   speechSynthesis.cancel();
   const clean = text.replace(/[\u{1F300}-\u{1FFFF}\u{2600}-\u{27FF}]/gu, '').trim();
   const utt = new SpeechSynthesisUtterance(clean);
-  utt.lang = 'es-MX';
-  utt.rate = 0.92;
-  utt.pitch = 1.3;
+  utt.lang = ttsVoice ? ttsVoice.lang : 'es-MX';
+  utt.rate = 0.82;      // con calma para que Caleb entienda cada palabra
+  utt.pitch = 1.6;      // muy aguda y alegre — como maestra de kinder
   utt.volume = 1.0;
   if (ttsVoice) utt.voice = ttsVoice;
   speechSynthesis.speak(utt);
@@ -779,7 +795,7 @@ function startWorld(worldKey) {
   updateHeader();
   showScreen('game');
   // Anunciar el mundo y luego leer la primera pregunta
-  speak('¡Vamos al mundo de ' + w.name + '!', () => {
+  speak('¡Muy bien! Vamos al mundo de... ' + w.name, () => {
     setTimeout(() => renderQuestion(), 300);
   });
 }
@@ -1101,9 +1117,9 @@ function showLevelComplete(failed = false) {
   if (!failed) {
     showBigCelebration();
     soundLevelComplete();
-    setTimeout(() => speak('¡Lo lograste, Caleb! Ganaste ' + score + ' puntos. ¡Eres increíble!'), 600);
+    setTimeout(() => speak('¡Wooow, Caleb! ¡Lo lograste! ¡Eres muy inteligente!'), 600);
   } else {
-    setTimeout(() => speak('Sigue intentando Caleb, tú puedes'), 400);
+    setTimeout(() => speak('Está bien Caleb... ¡Inténtalo de nuevo, tú puedes!'), 400);
   }
 
   showScreen('levelComplete');
