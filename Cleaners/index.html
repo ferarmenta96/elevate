@@ -558,7 +558,7 @@ function cargarHorarios() {
   document.getElementById('time-slots').innerHTML = '';
 
   // JSONP: pide horarios al backend sin CORS
-  jsonpGet(WEB_APP_URL, { action: 'getHorarios', fecha: fecha }, function(err, data) {
+  jsonpGet(WEB_APP_URL, { action: 'disponibilidad', fecha: fecha }, function(err, data) {
     document.getElementById('slots-loading').style.display = 'none';
     if (err || !data || !data.ok) {
       renderSlots([]); // si falla, muestra todos disponibles
@@ -573,19 +573,21 @@ function renderSlots(ocupadas) {
   cont.innerHTML = '';
 
   for (var h = 8; h <= 17; h++) {
-    var isOccupied = ocupadas.indexOf(h) !== -1;
+    // Las horas ocupadas vienen como strings "8:00", "9:00", etc.
+    var horaStr    = h + ':00';
+    var isOccupied = ocupadas.indexOf(horaStr) !== -1;
     var div = document.createElement('div');
     div.className = 'slot' + (isOccupied ? ' occupied' : '');
-    div.textContent = h + ':00';
+    div.textContent = horaStr;
 
     if (!isOccupied) {
-      (function(hour, el) {
+      (function(horaLabel, el) {
         el.onclick = function() {
           document.querySelectorAll('.slot').forEach(function(s) { s.classList.remove('selected'); });
           el.classList.add('selected');
-          selectedHour = hour + ':00';
+          selectedHour = horaLabel;
         };
-      })(h, div);
+      })(horaStr, div);
     }
     cont.appendChild(div);
   }

@@ -556,34 +556,46 @@ body { font-family: var(--font-body); background: var(--gray-light); color: var(
       .catch(function() {});
   }
 
-  // ── CARGAR CITAS ─────────────────────────────────────────
+  // ── CARGAR CITAS (via JSONP — sin CORS) ─────────────────────────────
   window.cargarCitas = function() {
     var lista = document.getElementById('lista-citas');
     lista.innerHTML = '<div class="empty-state"><div class="ei">⏳</div><p>Cargando citas...</p></div>';
 
-    if (WEB_APP_URL === "TU_URL_APPS_SCRIPT") {
-      // Demo data
-      allCitas = [
-        { ID: 1001, Cliente: 'Maria Gonzalez', Telefono: '(956) 555-0101', Fecha: new Date().toISOString().split('T')[0], HoraInicio: '9:00', Servicio: 'deep',  Tamano: '3 Recamaras', Total: 160, Direccion: '100 N 10th St, McAllen TX', Notas: 'Tiene perro pequeno', Estado: 'confirmado' },
-        { ID: 1002, Cliente: 'Carlos Reyes',   Telefono: '(956) 555-0202', Fecha: new Date().toISOString().split('T')[0], HoraInicio: '11:00', Servicio: 'basic', Tamano: '1-2 Recamaras', Total: 100, Direccion: '456 Palm Dr, Edinburg TX', Notas: '', Estado: 'pendiente' },
-        { ID: 1003, Cliente: 'Ana Torres',     Telefono: '(956) 555-0303', Fecha: new Date(Date.now() + 86400000).toISOString().split('T')[0], HoraInicio: '8:00',  Servicio: 'basic', Tamano: '4 Recamaras', Total: 160, Direccion: '789 Dove Ave, Harlingen TX', Notas: 'Acceso por puerta trasera', Estado: 'pendiente' },
-        { ID: 1004, Cliente: 'Roberto Silva',  Telefono: '(956) 555-0404', Fecha: new Date(Date.now() - 86400000).toISOString().split('T')[0], HoraInicio: '14:00', Servicio: 'deep',  Tamano: '3 Recamaras', Total: 180, Direccion: '321 Griffin Pkwy, Mission TX', Notas: '', Estado: 'completado' }
-      ];
-      renderCitas(allCitas);
-      showToast('Mostrando datos demo', 'info');
-      return;
-    }
-
-    fetch(WEB_APP_URL)
-      .then(function(r) { return r.json(); })
-      .then(function(d) {
-        allCitas = d.citas || d || [];
-        renderCitas(allCitas);
-      })
-      .catch(function() {
+    jsonpGet(WEB_APP_URL, { action: 'getCitas' }, function(err, d) {
+      if (err || !d || !d.ok) {
         lista.innerHTML = '<div class="empty-state"><div class="ei">❌</div><p>Error al cargar. Revisa la URL de Apps Script.</p></div>';
-      });
+        return;
+      }
+      allCitas = d.citas || [];
+      renderCitas(allCitas);
+    });
   };
+
+  // ── JSONP helper (lee datos del backend sin bloqueo CORS) ──────────
+  function jsonpGet(baseUrl, params, callback) {
+    var cbName  = 'adm_cb_' + Math.random().toString(36).slice(2);
+    var script  = document.createElement('script');
+    var done    = false;
+    var timeout = setTimeout(function() {
+      if (done) return; done = true; cleanup(); callback(new Error('Timeout'));
+    }, 10000);
+    window[cbName] = function(data) {
+      if (done) return; done = true; clearTimeout(timeout); cleanup(); callback(null, data);
+    };
+    script.onerror = function() {
+      if (done) return; done = true; clearTimeout(timeout); cleanup(); callback(new Error('Script error'));
+    };
+    function cleanup() { delete window[cbName]; if (script.parentNode) script.parentNode.removeChild(script); }
+    params.callback = cbName;
+    script.src = baseUrl + '?' + buildAdminQuery(params);
+    document.body.appendChild(script);
+  }
+
+  function buildAdminQuery(obj) {
+    return Object.keys(obj).map(function(k) {
+      return encodeURIComponent(k) + '=' + encodeURIComponent(obj[k]);
+    }).join('&');
+  }
 
   // ── FILTROS ───────────────────────────────────────────────
   window.aplicarFiltros = function() {
@@ -706,35 +718,27 @@ body { font-family: var(--font-body); background: var(--gray-light); color: var(
   };
 
   function cambiarEstado(cita, nuevoEstado) {
-    if (WEB_APP_URL === "TU_URL_APPS_SCRIPT") {
-      // Demo: actualizar en local
-      allCitas.forEach(function(c) {
-        if (String(c.ID) === String(cita.ID)) { c.Estado = nuevoEstado; }
-      });
-      renderCitas(allCitas);
-      closeModal();
-      showToast('Estado actualizado: ' + nuevoEstado, 'success');
-      return;
-    }
+    // GET no-cors: sin preflight, sin bloqueo CORS
+    var url = WEB_APP_URL + '?' + [
+      'action=actualizar',
+      'adminKey=' + encodeURIComponent(ADMIN_KEY),
+      'id='       + encodeURIComponent(cita.ID),
+      'estado='   + encodeURIComponent(nuevoEstado)
+    ].join('&');
 
-    fetch(WEB_APP_URL, {
-      method: 'POST',
-      body: JSON.stringify({ action: 'actualizar', adminKey: ADMIN_KEY, id: cita.ID, estado: nuevoEstado }),
-      headers: { 'Content-Type': 'application/json' }
-    })
-    .then(function(r) { return r.json(); })
-    .then(function(d) {
-      if (d.ok) {
-        allCitas.forEach(function(c) { if (String(c.ID) === String(cita.ID)) { c.Estado = nuevoEstado; } });
+    fetch(url, { method: 'GET', mode: 'no-cors' })
+      .then(function() {
+        // no-cors no devuelve body, actualizamos local optimistamente
+        allCitas.forEach(function(c) {
+          if (String(c.ID) === String(cita.ID)) { c.Estado = nuevoEstado; }
+        });
         renderCitas(allCitas);
         closeModal();
         showToast('Estado actualizado: ' + nuevoEstado, 'success');
-      } else {
-        showToast('Error: ' + (d.error || 'Intenta de nuevo'), 'error');
-      }
-    })
-    .catch(function() { showToast('Error de conexion', 'error'); });
+      })
+      .catch(function() { showToast('Error de conexion', 'error'); });
   }
+
 
   // ── CALENDARIO ───────────────────────────────────────────
   window.prevMonth = function() { calMonth--; if (calMonth < 0) { calMonth = 11; calYear--; } renderCalendar(); };
