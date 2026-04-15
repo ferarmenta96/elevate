@@ -4,275 +4,751 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>House Cleaners RGV</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 
 <style>
-body { font-family: Arial; margin:0; background:#f4f7fb; }
-.view { display:none; padding:20px; }
-.view.active { display:block; }
-button { padding:10px 20px; cursor:pointer; }
-
-.hero { background:#1a4a7c; color:white; text-align:center; padding:40px; }
-
-.service-option, .extra-toggle, .time-slot {
-  border:1px solid #ccc; padding:10px; margin:5px; cursor:pointer;
+:root {
+  --navy: #0f2d52;
+  --blue: #1a5fa8;
+  --sky: #d6eaff;
+  --accent: #3ec6e0;
+  --white: #ffffff;
+  --gray-light: #f0f4f8;
+  --gray: #8a9bb0;
+  --text: #1c2b3a;
+  --green: #22c55e;
+  --red: #ef4444;
+  --shadow: 0 4px 24px rgba(15,45,82,0.10);
 }
 
-.selected { background:#1a5fa8; color:white; }
-.checked { background:#d0e7f7; }
+* { box-sizing: border-box; margin: 0; padding: 0; }
 
-.time-slot.occupied { opacity:0.3; cursor:not-allowed; }
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--gray-light);
+  color: var(--text);
+  min-height: 100vh;
+}
+
+/* ── NAV ── */
+nav {
+  background: var(--navy);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 24px;
+  height: 60px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+nav .brand {
+  font-family: 'Playfair Display', serif;
+  color: var(--white);
+  font-size: 1.2rem;
+  letter-spacing: .5px;
+}
+
+nav .nav-links { display: flex; gap: 8px; }
+
+nav .nav-btn {
+  background: transparent;
+  border: 1.5px solid rgba(255,255,255,0.25);
+  color: var(--white);
+  padding: 7px 18px;
+  border-radius: 30px;
+  cursor: pointer;
+  font-family: 'DM Sans', sans-serif;
+  font-size: .88rem;
+  font-weight: 500;
+  transition: background .2s, border-color .2s;
+}
+
+nav .nav-btn:hover,
+nav .nav-btn.active {
+  background: var(--blue);
+  border-color: var(--blue);
+}
+
+/* ── VIEWS ── */
+.view { display: none; }
+.view.active { display: block; }
+
+/* ── HERO ── */
+.hero {
+  background: linear-gradient(135deg, var(--navy) 0%, var(--blue) 100%);
+  color: var(--white);
+  text-align: center;
+  padding: 80px 24px 60px;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero::before {
+  content: '';
+  position: absolute;
+  width: 400px; height: 400px;
+  border-radius: 50%;
+  background: rgba(62,198,224,.12);
+  top: -100px; right: -100px;
+  pointer-events: none;
+}
+
+.hero h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: 2.8rem;
+  margin-bottom: 12px;
+}
+
+.hero p {
+  font-size: 1.05rem;
+  opacity: .8;
+  margin-bottom: 32px;
+}
+
+.btn-hero {
+  background: var(--accent);
+  color: var(--navy);
+  border: none;
+  padding: 14px 36px;
+  border-radius: 50px;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: 'DM Sans', sans-serif;
+  transition: transform .15s, box-shadow .15s;
+}
+
+.btn-hero:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(62,198,224,.4); }
+
+.features {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+  max-width: 900px;
+  margin: 48px auto 0;
+  padding: 0 24px;
+}
+
+.feature-card {
+  background: var(--white);
+  border-radius: 16px;
+  padding: 28px 20px;
+  text-align: center;
+  box-shadow: var(--shadow);
+}
+
+.feature-card .icon { font-size: 2rem; margin-bottom: 10px; }
+.feature-card h3 { font-size: .95rem; font-weight: 600; color: var(--navy); }
+.feature-card p { font-size: .85rem; color: var(--gray); margin-top: 6px; }
+
+/* ── BOOKING ── */
+.booking-wrap {
+  max-width: 660px;
+  margin: 0 auto;
+  padding: 32px 20px 60px;
+}
+
+.booking-wrap h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.8rem;
+  color: var(--navy);
+  margin-bottom: 24px;
+}
+
+/* CARD */
+.card {
+  background: var(--white);
+  border-radius: 18px;
+  padding: 24px;
+  box-shadow: var(--shadow);
+  margin-bottom: 20px;
+}
+
+.card-label {
+  font-size: .78rem;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--gray);
+  margin-bottom: 14px;
+}
+
+/* SERVICE PILLS */
+.service-pills { display: flex; gap: 10px; }
+
+.pill {
+  flex: 1;
+  border: 2px solid #e2e8f0;
+  background: var(--white);
+  border-radius: 12px;
+  padding: 16px 12px;
+  cursor: pointer;
+  text-align: center;
+  transition: border-color .2s, background .2s;
+}
+
+.pill .pill-icon { font-size: 1.6rem; margin-bottom: 6px; }
+.pill .pill-name { font-weight: 600; font-size: .9rem; }
+.pill .pill-desc { font-size: .78rem; color: var(--gray); margin-top: 3px; }
+
+.pill.selected {
+  border-color: var(--blue);
+  background: var(--sky);
+}
+
+/* SIZE SELECT */
+select {
+  width: 100%;
+  padding: 12px 16px;
+  border: 2px solid #e2e8f0;
+  border-radius: 10px;
+  font-size: .95rem;
+  font-family: 'DM Sans', sans-serif;
+  color: var(--text);
+  background: var(--white);
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%238a9bb0' stroke-width='2' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  transition: border-color .2s;
+}
+
+select:focus { outline: none; border-color: var(--blue); }
+
+/* EXTRAS */
+.extras-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.extra-item {
+  border: 2px solid #e2e8f0;
+  border-radius: 10px;
+  padding: 12px 14px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  user-select: none;
+  transition: border-color .2s, background .2s;
+}
+
+.extra-item input[type="checkbox"] { display: none; }
+
+.extra-item .ei-icon { font-size: 1.3rem; }
+.extra-item .ei-text { flex: 1; }
+.extra-item .ei-name { font-size: .88rem; font-weight: 600; }
+.extra-item .ei-price { font-size: .78rem; color: var(--blue); }
+.extra-item .ei-check {
+  width: 20px; height: 20px;
+  border: 2px solid #cbd5e1;
+  border-radius: 6px;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  font-size: .75rem;
+  transition: background .2s, border-color .2s;
+}
+
+.extra-item.checked {
+  border-color: var(--blue);
+  background: var(--sky);
+}
+
+.extra-item.checked .ei-check {
+  background: var(--blue);
+  border-color: var(--blue);
+  color: var(--white);
+}
+
+/* DATE INPUT */
+input[type="date"], input[type="text"], input[type="tel"] {
+  width: 100%;
+  padding: 12px 16px;
+  border: 2px solid #e2e8f0;
+  border-radius: 10px;
+  font-size: .95rem;
+  font-family: 'DM Sans', sans-serif;
+  color: var(--text);
+  background: var(--white);
+  transition: border-color .2s;
+}
+
+input:focus { outline: none; border-color: var(--blue); }
+
+/* TIME SLOTS */
+.slots-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+}
+
+.slot {
+  border: 2px solid #e2e8f0;
+  border-radius: 10px;
+  padding: 10px 6px;
+  text-align: center;
+  font-size: .85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: border-color .2s, background .2s;
+}
+
+.slot:hover:not(.occupied) { border-color: var(--blue); }
+.slot.selected { background: var(--blue); color: var(--white); border-color: var(--blue); }
+.slot.occupied { opacity: .35; cursor: not-allowed; background: #f1f5f9; }
+.slot.occupied::after { content: '✗'; display: block; font-size: .7rem; color: var(--red); }
+
+/* FORM FIELDS */
+.fields-grid { display: grid; gap: 12px; }
+
+/* TOTAL BAR */
+.total-bar {
+  background: var(--navy);
+  color: var(--white);
+  border-radius: 14px;
+  padding: 20px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.total-bar .total-label { font-size: .85rem; opacity: .7; }
+.total-bar .total-amount {
+  font-family: 'Playfair Display', serif;
+  font-size: 2rem;
+}
+
+/* SUBMIT BUTTON */
+.btn-submit {
+  width: 100%;
+  background: linear-gradient(135deg, var(--blue), var(--accent));
+  color: var(--white);
+  border: none;
+  border-radius: 14px;
+  padding: 16px;
+  font-size: 1.05rem;
+  font-weight: 700;
+  font-family: 'DM Sans', sans-serif;
+  cursor: pointer;
+  transition: transform .15s, box-shadow .15s;
+}
+
+.btn-submit:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(26,95,168,.35); }
+.btn-submit:disabled { opacity: .6; cursor: not-allowed; transform: none; }
+
+/* TOAST */
+#toast {
+  position: fixed;
+  bottom: 28px;
+  left: 50%;
+  transform: translateX(-50%) translateY(80px);
+  background: var(--navy);
+  color: var(--white);
+  padding: 14px 24px;
+  border-radius: 50px;
+  font-weight: 500;
+  font-size: .92rem;
+  box-shadow: 0 8px 32px rgba(0,0,0,.2);
+  transition: transform .3s ease;
+  z-index: 9999;
+  pointer-events: none;
+  white-space: nowrap;
+}
+
+#toast.show { transform: translateX(-50%) translateY(0); }
+#toast.success { background: var(--green); }
+#toast.error   { background: var(--red); }
+
+/* Loader spinner */
+.spinner {
+  display: inline-block;
+  width: 18px; height: 18px;
+  border: 3px solid rgba(255,255,255,.4);
+  border-top-color: white;
+  border-radius: 50%;
+  animation: spin .7s linear infinite;
+  vertical-align: middle;
+  margin-right: 8px;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
 </style>
 </head>
 <body>
 
-<!-- NAV -->
-<button onclick="showView('home')">Inicio</button>
-<button onclick="showView('booking')">Agendar</button>
+<!-- ── NAV ── -->
+<nav>
+  <span class="brand">✨ House Cleaners RGV</span>
+  <div class="nav-links">
+    <button class="nav-btn active" onclick="showView('home', this)">Inicio</button>
+    <button class="nav-btn" onclick="showView('booking', this)">Agendar</button>
+  </div>
+</nav>
 
-<!-- HOME -->
+<!-- ── HOME ── -->
 <div id="view-home" class="view active">
   <div class="hero">
-    <h1>House Cleaners RGV</h1>
-    <button onclick="showView('booking')">Agendar</button>
+    <h1>Tired and overwhelmed?</h1>
+    <p>Let us handle the cleaning — House Cleaners RGV</p>
+    <button class="btn-hero" onclick="showView('booking', document.querySelectorAll('.nav-btn')[1])">
+      📅 Agendar ahora
+    </button>
+  </div>
+
+  <div class="features">
+    <div class="feature-card">
+      <div class="icon">🧹</div>
+      <h3>Basic Clean</h3>
+      <p>desde $100 · mantenimiento general del hogar</p>
+    </div>
+    <div class="feature-card">
+      <div class="icon">✨</div>
+      <h3>Deep Clean</h3>
+      <p>desde $120 · limpieza profunda, rincón por rincón</p>
+    </div>
+    <div class="feature-card">
+      <div class="icon">➕</div>
+      <h3>Extras $20 c/u</h3>
+      <p>Bathroom · Fridge · Windows · Microwave</p>
+    </div>
   </div>
 </div>
 
-<!-- BOOKING -->
+<!-- ── BOOKING ── -->
 <div id="view-booking" class="view">
+  <div class="booking-wrap">
+    <h2>Agendar limpieza</h2>
 
-  <h2>Agendar</h2>
+    <!-- Servicio -->
+    <div class="card">
+      <div class="card-label">Tipo de servicio</div>
+      <div class="service-pills">
+        <div class="pill selected" id="pill-basic" onclick="selectService('basic')">
+          <div class="pill-icon">🧹</div>
+          <div class="pill-name">Basic</div>
+          <div class="pill-desc">Mantenimiento</div>
+        </div>
+        <div class="pill" id="pill-deep" onclick="selectService('deep')">
+          <div class="pill-icon">✨</div>
+          <div class="pill-name">Deep</div>
+          <div class="pill-desc">Limpieza profunda</div>
+        </div>
+      </div>
+    </div>
 
-  <!-- SERVICIO -->
-  <div>
-    <div id="opt-basic" class="service-option selected" onclick="selectService('basic')">Basic</div>
-    <div id="opt-deep" class="service-option" onclick="selectService('deep')">Deep</div>
+    <!-- Tamaño -->
+    <div class="card">
+      <div class="card-label">Tamaño del hogar</div>
+      <select id="tamano" onchange="calcTotal()"></select>
+    </div>
+
+    <!-- Extras -->
+    <div class="card">
+      <div class="card-label">Extras (opcional)</div>
+      <div class="extras-grid">
+        <label class="extra-item" onclick="toggleExtra(this)">
+          <input type="checkbox" value="20" data-label="Bathroom">
+          <span class="ei-icon">🚽</span>
+          <div class="ei-text">
+            <div class="ei-name">Bathroom</div>
+            <div class="ei-price">+$20</div>
+          </div>
+          <div class="ei-check">✓</div>
+        </label>
+
+        <label class="extra-item" onclick="toggleExtra(this)">
+          <input type="checkbox" value="20" data-label="Fridge">
+          <span class="ei-icon">🧊</span>
+          <div class="ei-text">
+            <div class="ei-name">Fridge</div>
+            <div class="ei-price">+$20</div>
+          </div>
+          <div class="ei-check">✓</div>
+        </label>
+
+        <label class="extra-item" onclick="toggleExtra(this)">
+          <input type="checkbox" value="20" data-label="Windows">
+          <span class="ei-icon">🪟</span>
+          <div class="ei-text">
+            <div class="ei-name">Windows</div>
+            <div class="ei-price">+$20</div>
+          </div>
+          <div class="ei-check">✓</div>
+        </label>
+
+        <label class="extra-item" onclick="toggleExtra(this)">
+          <input type="checkbox" value="20" data-label="Microwave">
+          <span class="ei-icon">📡</span>
+          <div class="ei-text">
+            <div class="ei-name">Microwave</div>
+            <div class="ei-price">+$20</div>
+          </div>
+          <div class="ei-check">✓</div>
+        </label>
+      </div>
+    </div>
+
+    <!-- Fecha -->
+    <div class="card">
+      <div class="card-label">Fecha</div>
+      <input type="date" id="fecha" onchange="cargarHorarios()">
+    </div>
+
+    <!-- Horarios -->
+    <div class="card" id="horarios-card" style="display:none;">
+      <div class="card-label">Hora disponible</div>
+      <div class="slots-grid" id="time-slots"></div>
+    </div>
+
+    <!-- Datos del cliente -->
+    <div class="card">
+      <div class="card-label">Tus datos</div>
+      <div class="fields-grid">
+        <input type="text" id="nombre" placeholder="Nombre completo">
+        <input type="tel"  id="telefono" placeholder="Teléfono">
+        <input type="text" id="direccion" placeholder="Dirección del hogar">
+      </div>
+    </div>
+
+    <!-- Total + Enviar -->
+    <div class="total-bar">
+      <div>
+        <div class="total-label">Total estimado</div>
+      </div>
+      <div class="total-amount" id="total-display">$100</div>
+    </div>
+
+    <button class="btn-submit" id="btn-enviar" onclick="enviarCita()">
+      Confirmar cita
+    </button>
   </div>
-
-  <!-- TAMAÑO -->
-  <select id="tamano" onchange="calcTotal()"></select>
-
-  <!-- EXTRAS -->
-  <div class="extras-check">
-    <label class="extra-toggle" onclick="toggleExtra(event.target)">
-      <input type="checkbox" value="20" data-label="Baño Extra"> 🚽 Baño Extra +$20
-    </label>
-
-    <label class="extra-toggle" onclick="toggleExtra(event.target)">
-      <input type="checkbox" value="20" data-label="Refrigerador"> 🧊 Refrigerador +$20
-    </label>
-
-    <label class="extra-toggle" onclick="toggleExtra(event.target)">
-      <input type="checkbox" value="20" data-label="Ventanas"> 🪟 Ventanas +$20
-    </label>
-
-    <label class="extra-toggle" onclick="toggleExtra(event.target)">
-      <input type="checkbox" value="20" data-label="Microwave"> 📡 Microwave +$20
-    </label>
-  </div>
-
-  <!-- FECHA -->
-  <input type="date" id="fecha" onchange="cargarHorarios()">
-
-  <!-- HORAS -->
-  <div id="horarios-wrap" style="display:none;">
-    <div id="time-slots"></div>
-  </div>
-
-  <!-- DATOS -->
-  <input id="nombre" placeholder="Nombre"><br>
-  <input id="telefono" placeholder="Telefono"><br>
-  <input id="direccion" placeholder="Direccion"><br>
-
-  <h3 id="total-display">$100</h3>
-
-  <button onclick="enviarCita()">Confirmar</button>
-
 </div>
+
+<!-- TOAST -->
+<div id="toast"></div>
 
 <script>
-(function() {
-  'use strict';
+'use strict';
 
-  var WEB_APP_URL = "https://script.google.com/macros/s/AKfycbzo8nApLan4FL2juOxsG3tP8y0WgGpid4UWQv7dRji-mHpCFb8Aq-yicOZR_JvVuN62/exec";
+// ════════════════════════════════════════
+// 🔥 PON TU URL DE GOOGLE APPS SCRIPT AQUÍ
+var WEB_APP_URL = "https://script.google.com/macros/s/AKfycbzo8nApLan4FL2juOxsG3tP8y0WgGpid4UWQv7dRji-mHpCFb8Aq-yicOZR_JvVuN62/exec";
+// ════════════════════════════════════════
 
-  var selectedService = 'basic';
-  var selectedHour = null;
-  var total = 100;
+// Horarios ocupados demo. 
+// Cuando conectes tu backend, reemplaza renderSlots([9,14])
+// por una llamada fetch para obtener las horas ocupadas del día.
+var DEMO_OCCUPIED = [9, 14];
 
-  var PRICES = {
-    basic: [100, 130, 160],
-    deep:  [120, 160, 180]
-  };
+var selectedService = 'basic';
+var selectedHour    = null;
+var total           = 100;
 
-  var SIZES = ['1-2 Recamaras / 1 Bano', '3 Recamaras / 2 Banos', '4 Recamaras / 2 Banos'];
+var PRICES = {
+  basic: [100, 130, 160],
+  deep:  [120, 160, 180]
+};
 
+// Matches flyer exactly:
+// Basic:  1-2 beds/1 bath=$100 | 3 beds/2 baths=$130 | 4 beds/2 baths=$160
+// Deep:   1-2 beds/1 bath=$120 | 3 beds/2 baths=$160 | 4 beds/2 baths=$180
+var SIZES = [
+  { label: '1-2 Bedrooms · 1 Bathroom', prices: [100, 120] },
+  { label: '3 Bedrooms · 2 Bathrooms',  prices: [130, 160] },
+  { label: '4 Bedrooms · 2 Bathrooms',  prices: [160, 180] }
+];
+
+// ── INIT ──────────────────────────────
+document.addEventListener('DOMContentLoaded', function () {
   var today = new Date().toISOString().split('T')[0];
   document.getElementById('fecha').min = today;
-
   updateTamanoOptions();
+});
 
-  // NAV
-  window.showView = function(name) {
-    document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
-    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+// ── NAV ───────────────────────────────
+function showView(name, btn) {
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  document.getElementById('view-' + name).classList.add('active');
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+}
 
-    document.getElementById('view-' + name).classList.add('active');
+// ── SERVICE ───────────────────────────
+function selectService(type) {
+  selectedService = type;
+  document.getElementById('pill-basic').classList.toggle('selected', type === 'basic');
+  document.getElementById('pill-deep').classList.toggle('selected',  type === 'deep');
+  updateTamanoOptions();
+}
 
-    var idx = ['home', 'booking'].indexOf(name);
-    if (idx >= 0) document.querySelectorAll('.tab-btn')[idx].classList.add('active');
-  };
+function updateTamanoOptions() {
+  var idx  = selectedService === 'basic' ? 0 : 1;
+  var sel  = document.getElementById('tamano');
+  sel.innerHTML = SIZES.map((s, i) =>
+    `<option value="${s.prices[idx]}">${s.label} — $${s.prices[idx]}</option>`
+  ).join('');
+  calcTotal();
+}
 
-  // SERVICE
-  window.selectService = function(type) {
-    selectedService = type;
-    document.getElementById('opt-basic').classList.toggle('selected', type === 'basic');
-    document.getElementById('opt-deep').classList.toggle('selected', type === 'deep');
-    updateTamanoOptions();
-  };
+// ── EXTRAS ────────────────────────────
+// FIXED: el onclick llama con la etiqueta directamente, sin event.target
+function toggleExtra(label) {
+  var cb = label.querySelector('input[type="checkbox"]');
+  if (!cb) return;
 
-  function updateTamanoOptions() {
-    var prices = PRICES[selectedService];
-    var sel = document.getElementById('tamano');
+  cb.checked = !cb.checked;
+  label.classList.toggle('checked', cb.checked);
+  calcTotal();
+}
 
-    sel.innerHTML = SIZES.map((s, i) =>
-      `<option value="${prices[i]}">${s} -- $${prices[i]}</option>`
-    ).join('');
+// ── TOTAL ─────────────────────────────
+function calcTotal() {
+  var base   = parseInt(document.getElementById('tamano').value) || 100;
+  var extras = 0;
 
-    calcTotal();
-  }
+  document.querySelectorAll('.extra-item input[type="checkbox"]').forEach(function (cb) {
+    if (cb.checked) extras += parseInt(cb.value);
+  });
 
-  // 🔥 FIX REAL
-  window.toggleExtra = function(event) {
-    let label = event.currentTarget;
-    let cb = label.querySelector('input');
+  total = base + extras;
+  document.getElementById('total-display').innerText = '$' + total;
+}
 
-    if (!cb) return;
+// ── HORARIOS ──────────────────────────
+function cargarHorarios() {
+  var fecha = document.getElementById('fecha').value;
+  if (!fecha) return;
 
-    cb.checked = !cb.checked;
-    label.classList.toggle('checked', cb.checked);
+  selectedHour = null;
+  document.getElementById('horarios-card').style.display = 'block';
 
-    calcTotal();
-  };
+  // ─ PRODUCCIÓN: descomenta esto y borra la línea renderSlots(DEMO_OCCUPIED)
+  // fetch(WEB_APP_URL + '?action=getHorarios&fecha=' + fecha)
+  //   .then(r => r.json())
+  //   .then(data => renderSlots(data.ocupadas || []))
+  //   .catch(() => renderSlots(DEMO_OCCUPIED));
 
-  // TOTAL
-  window.calcTotal = function() {
-    var base = parseInt(document.getElementById('tamano').value) || 100;
-    var extras = 0;
+  renderSlots(DEMO_OCCUPIED); // demo: 9am y 2pm ocupadas
+}
 
-    document.querySelectorAll('.extras-check input').forEach(cb => {
-      if (cb.checked) extras += parseInt(cb.value);
-    });
+function renderSlots(ocupadas) {
+  var cont = document.getElementById('time-slots');
+  cont.innerHTML = '';
 
-    total = base + extras;
-    document.getElementById('total-display').textContent = '$' + total;
-  };
+  for (var h = 8; h <= 17; h++) {
+    var isOccupied = ocupadas.includes(h);
+    var div = document.createElement('div');
+    div.className = 'slot' + (isOccupied ? ' occupied' : '');
+    div.textContent = h + ':00';
 
-  // HORARIOS
-  window.cargarHorarios = function() {
-    var fecha = document.getElementById('fecha').value;
-    if (!fecha) return;
-
-    selectedHour = null;
-
-    var wrap = document.getElementById('horarios-wrap');
-    var container = document.getElementById('time-slots');
-
-    wrap.style.display = 'block';
-    container.innerHTML = '<div class="loading-slots">Verificando disponibilidad...</div>';
-
-    setTimeout(() => renderSlots([9,14]), 400);
-  };
-
-  function renderSlots(ocupadasList) {
-    var container = document.getElementById('time-slots');
-    container.innerHTML = '';
-
-    var ocupadas = new Set(ocupadasList.map(h => String(h)));
-
-    for (let h = 8; h <= 18; h++) {
-      let slot = document.createElement('div');
-      let key = String(h);
-
-      slot.className = 'time-slot' + (ocupadas.has(key) ? ' occupied' : '');
-      slot.textContent = h + ':00';
-
-      if (!ocupadas.has(key)) {
-        slot.onclick = function() {
-          document.querySelectorAll('.time-slot').forEach(s => s.classList.remove('selected'));
-          slot.classList.add('selected');
-          selectedHour = h + ':00';
+    if (!isOccupied) {
+      (function (hour, el) {
+        el.onclick = function () {
+          document.querySelectorAll('.slot').forEach(s => s.classList.remove('selected'));
+          el.classList.add('selected');
+          selectedHour = hour + ':00';
         };
-      }
-
-      container.appendChild(slot);
+      })(h, div);
     }
+
+    cont.appendChild(div);
   }
+}
 
-  // 🚀 ENVIAR A GOOGLE SHEETS
-  window.enviarCita = function() {
+// ── ENVIAR CITA ───────────────────────
+function enviarCita() {
+  var nombre    = document.getElementById('nombre').value.trim();
+  var telefono  = document.getElementById('telefono').value.trim();
+  var fecha     = document.getElementById('fecha').value;
+  var direccion = document.getElementById('direccion').value.trim();
 
-    var nombre    = document.getElementById('nombre').value.trim();
-    var telefono  = document.getElementById('telefono').value.trim();
-    var fecha     = document.getElementById('fecha').value;
-    var direccion = document.getElementById('direccion').value.trim();
-    var notas     = document.getElementById('notas').value.trim();
+  if (!nombre)    { toast('Ingresa tu nombre', 'error'); return; }
+  if (!telefono)  { toast('Ingresa tu teléfono', 'error'); return; }
+  if (!fecha)     { toast('Selecciona una fecha', 'error'); return; }
+  if (!selectedHour) { toast('Selecciona un horario', 'error'); return; }
+  if (!direccion) { toast('Ingresa tu dirección', 'error'); return; }
 
-    if (!nombre || !telefono || !fecha || !direccion || !selectedHour) {
-      showToast('Completa todos los campos', 'error');
-      return;
-    }
+  var extrasArr = [];
+  document.querySelectorAll('.extra-item input[type="checkbox"]').forEach(function (cb) {
+    if (cb.checked) extrasArr.push(cb.dataset.label);
+  });
 
-    var extrasArr = [];
-    document.querySelectorAll('.extras-check input').forEach(cb => {
-      if (cb.checked) extrasArr.push(cb.getAttribute('data-label'));
-    });
-
-    var datos = {
-      nombre,
-      telefono,
-      fecha,
-      hora: selectedHour,
-      servicio: selectedService,
-      tamano: document.getElementById('tamano').selectedOptions[0].text,
-      extras: extrasArr.join(', '),
-      total,
-      notas,
-      direccion
-    };
-
-    console.log("ENVIANDO:", datos);
-
-    fetch(WEB_APP_URL, {
-      method: 'POST',
-      body: JSON.stringify(datos),
-      headers: { 'Content-Type': 'application/json' }
-    })
-    .then(r => r.json())
-    .then(d => {
-      console.log("RESPUESTA:", d);
-
-      if (d.ok) {
-        showToast('Cita enviada ✔', 'success');
-
-        document.getElementById('booking-form-wrap').style.display = 'none';
-        document.getElementById('success-screen').classList.add('show');
-      } else {
-        showToast('Error del servidor', 'error');
-      }
-    })
-    .catch(() => showToast('Error de conexión', 'error'));
+  var datos = {
+    nombre:   nombre,
+    telefono: telefono,
+    fecha:    fecha,
+    hora:     selectedHour,
+    servicio: selectedService,
+    tamano:   document.getElementById('tamano').value,
+    extras:   extrasArr.join(', '),
+    total:    total,
+    direccion: direccion
   };
 
-  // TOAST
-  function showToast(msg, type) {
-    var t = document.getElementById('toast');
-    t.textContent = msg;
-    t.className = 'toast show ' + (type || '');
-    setTimeout(() => t.classList.remove('show'), 3000);
-  }
+  console.log('ENVIANDO:', datos);
 
-})();
+  var btn = document.getElementById('btn-enviar');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner"></span>Enviando...';
+
+  fetch(WEB_APP_URL, {
+    method: 'POST',
+    body: JSON.stringify(datos),
+    headers: { 'Content-Type': 'application/json' }
+  })
+  .then(function (r) {
+    if (!r.ok) throw new Error('HTTP ' + r.status);
+    return r.json();
+  })
+  .then(function (r) {
+    console.log('RESPUESTA:', r);
+    toast('¡Cita confirmada! ✅ Te contactaremos pronto', 'success');
+    resetForm();
+  })
+  .catch(function (err) {
+    console.error(err);
+    toast('Error al enviar. Intenta de nuevo.', 'error');
+  })
+  .finally(function () {
+    btn.disabled = false;
+    btn.innerHTML = 'Confirmar cita';
+  });
+}
+
+// ── RESET ─────────────────────────────
+function resetForm() {
+  document.getElementById('nombre').value    = '';
+  document.getElementById('telefono').value  = '';
+  document.getElementById('direccion').value = '';
+  document.getElementById('fecha').value     = '';
+  document.getElementById('horarios-card').style.display = 'none';
+  selectedHour = null;
+
+  document.querySelectorAll('.extra-item').forEach(function (el) {
+    el.classList.remove('checked');
+    el.querySelector('input').checked = false;
+  });
+
+  selectService('basic');
+}
+
+// ── TOAST ─────────────────────────────
+function toast(msg, type) {
+  var el = document.getElementById('toast');
+  el.textContent = msg;
+  el.className   = 'show ' + (type || '');
+  clearTimeout(el._t);
+  el._t = setTimeout(function () { el.className = ''; }, 3200);
+}
+
+// ── SERVICE WORKER ────────────────────
+if ('serviceWorker' in navigator && location.protocol === 'https:') {
+  navigator.serviceWorker.register('./sw.js').catch(function () {});
+}
 </script>
-
 </body>
 </html>
