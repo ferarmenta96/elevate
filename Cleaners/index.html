@@ -432,258 +432,182 @@ body { font-family: var(--font-body); background: var(--gray-light); color: var(
 <div class="toast" id="toast"></div>
 
 <script>
-(function() {
-  'use strict';
+'use strict';
 
-  // ════════════════════════════════
-  //  CONFIGURACIÓN ← EDITA AQUÍ
-  // ════════════════════════════════
-  var WEB_APP_URL = "https://script.google.com/macros/s/AKfycbzo8nApLan4FL2juOxsG3tP8y0WgGpid4UWQv7dRji-mHpCFb8Aq-yicOZR_JvVuN62/exec";
-  // Ejemplo: "https://script.google.com/macros/s/AKfycb.../exec"
-  // ════════════════════════════════
+// CONFIG
+var WEB_APP_URL = "https://script.google.com/macros/s/AKfycbzo8nApLan4FL2juOxsG3tP8y0WgGpid4UWQv7dRji-mHpCFb8Aq-yicOZR_JvVuN62/exec";
 
-  // PWA Manifest
-  var manifest = {
-    name: "House Cleaners RGV",
-    short_name: "Cleaners RGV",
-    description: "Agenda tu limpieza profesional en el RGV",
-    start_url: "./",
-    display: "standalone",
-    background_color: "#1a4a7c",
-    theme_color: "#1a5fa8",
-    orientation: "portrait",
-    icons: [
-      { src: "data:image/svg+xml," + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 192 192"><rect width="192" height="192" rx="40" fill="#1a4a7c"/><text y="130" x="96" text-anchor="middle" font-size="120">🧹</text></svg>'), sizes: "192x192", type: "image/svg+xml" },
-      { src: "data:image/svg+xml," + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><rect width="512" height="512" rx="80" fill="#1a4a7c"/><text y="360" x="256" text-anchor="middle" font-size="320">🧹</text></svg>'), sizes: "512x512", type: "image/svg+xml" }
-    ]
-  };
-  var blob = new Blob([JSON.stringify(manifest)], { type: 'application/json' });
-  document.getElementById('manifest-link').href = URL.createObjectURL(blob);
+// STATE
+var selectedService = 'basic';
+var selectedHour = null;
+var total = 100;
 
-  // Service Worker
-  var swCode = [
-    "var CACHE='hcrgv-client-v1';",
-    "var ASSETS=['./'];",
-    "self.addEventListener('install',function(e){e.waitUntil(caches.open(CACHE).then(function(c){return c.addAll(ASSETS);}));});",
-    "self.addEventListener('fetch',function(e){e.respondWith(caches.match(e.request).then(function(r){return r||fetch(e.request);}));});"
-  ].join('\n');
-  if ('serviceWorker' in navigator) {
-    var swBlob = new Blob([swCode], { type: 'application/javascript' });
-    navigator.serviceWorker.register(URL.createObjectURL(swBlob)).catch(function() {});
-  }
+var PRICES = {
+  basic: [100, 130, 160],
+  deep:  [120, 160, 180]
+};
 
-  // Estado global
-  var selectedService = 'basic';
-  var selectedHour    = null;
-  var total           = 100;
+var SIZES = ['1-2 Recamaras / 1 Bano', '3 Recamaras / 2 Banos', '4 Recamaras / 2 Banos'];
 
-  var PRICES = {
-    basic: [100, 130, 160],
-    deep:  [120, 160, 180]
-  };
+// INIT
+document.addEventListener("DOMContentLoaded", function(){
 
-  var SIZES = ['1-2 Recamaras / 1 Bano', '3 Recamaras / 2 Banos', '4 Recamaras / 2 Banos'];
-
-  // Fijar fecha mínima = hoy
+  // Fecha mínima
   var today = new Date().toISOString().split('T')[0];
   document.getElementById('fecha').min = today;
 
-  // Inicializar selector tamaño
   updateTamanoOptions();
 
-  // ── Navegación ──────────────────────────────────────────
-  window.showView = function(name) {
-    document.querySelectorAll('.view').forEach(function(v) { v.classList.remove('active'); });
-    document.getElementById('view-' + name).classList.add('active');
-    // Actualizar tabs
-    document.getElementById('tab-home').classList.toggle('active', name === 'home');
-    document.getElementById('tab-booking').classList.toggle('active', name === 'booking');
-  };
+});
 
-  // ── Servicio ────────────────────────────────────────────
-  window.selectService = function(type) {
-    selectedService = type;
-    document.getElementById('opt-basic').classList.toggle('selected', type === 'basic');
-    document.getElementById('opt-deep').classList.toggle('selected', type === 'deep');
-    updateTamanoOptions();
-  };
+// NAV
+function showView(name){
+  document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
 
-  function updateTamanoOptions() {
-    var prices = PRICES[selectedService];
-    var sel    = document.getElementById('tamano');
-    sel.innerHTML = SIZES.map(function(s, i) {
-      return '<option value="' + prices[i] + '">' + s + ' -- $' + prices[i] + '</option>';
-    }).join('');
-    calcTotal();
+  document.getElementById('view-'+name).classList.add('active');
+
+  var idx = ['home','booking'].indexOf(name);
+  if(idx >= 0){
+    document.querySelectorAll('.tab-btn')[idx].classList.add('active');
+  }
+}
+
+// SERVICE
+function selectService(type){
+  selectedService = type;
+
+  document.getElementById('opt-basic').classList.toggle('selected', type==='basic');
+  document.getElementById('opt-deep').classList.toggle('selected', type==='deep');
+
+  updateTamanoOptions();
+}
+
+function updateTamanoOptions(){
+  var sel = document.getElementById('tamano');
+  var prices = PRICES[selectedService];
+
+  sel.innerHTML = SIZES.map((s,i)=>
+    `<option value="${prices[i]}">${s} — $${prices[i]}</option>`
+  ).join('');
+
+  calcTotal();
+}
+
+// 🔥 FIX IMPORTANTE
+function toggleExtra(label){
+  var cb = label.querySelector('input');
+
+  // FORZAR CAMBIO
+  cb.checked = !cb.checked;
+
+  label.classList.toggle('checked', cb.checked);
+
+  calcTotal();
+}
+
+// TOTAL
+function calcTotal(){
+  var base = parseInt(document.getElementById('tamano').value) || 100;
+  var extras = 0;
+
+  document.querySelectorAll('.extras-check input').forEach(cb=>{
+    if(cb.checked) extras += parseInt(cb.value);
+  });
+
+  total = base + extras;
+  document.getElementById('total-display').textContent = '$'+total;
+}
+
+// HORARIOS
+function cargarHorarios(){
+  var fecha = document.getElementById('fecha').value;
+  if(!fecha) return;
+
+  selectedHour = null;
+
+  var wrap = document.getElementById('horarios-wrap');
+  var container = document.getElementById('time-slots');
+
+  wrap.style.display = 'block';
+  container.innerHTML = '<div class="loading-slots">Cargando...</div>';
+
+  // DEMO
+  setTimeout(()=>{
+    renderSlots([9,14]);
+  },400);
+}
+
+function renderSlots(ocupadasList){
+  var container = document.getElementById('time-slots');
+  container.innerHTML = '';
+
+  var ocupadas = new Set(ocupadasList.map(h=>String(h)));
+
+  for(let h=8; h<=18; h++){
+    let slot = document.createElement('div');
+    slot.className = 'time-slot' + (ocupadas.has(String(h)) ? ' occupied':'');
+    slot.textContent = h + ':00';
+
+    if(!ocupadas.has(String(h))){
+      slot.onclick = function(){
+        document.querySelectorAll('.time-slot').forEach(s=>s.classList.remove('selected'));
+        slot.classList.add('selected');
+        selectedHour = h + ':00';
+      };
+    }
+
+    container.appendChild(slot);
+  }
+}
+
+// ENVIAR
+function enviarCita(){
+
+  var nombre    = document.getElementById('nombre').value.trim();
+  var telefono  = document.getElementById('telefono').value.trim();
+  var fecha     = document.getElementById('fecha').value;
+  var direccion = document.getElementById('direccion').value.trim();
+
+  if(!nombre || !telefono || !fecha || !direccion || !selectedHour){
+    showToast("Completa todos los campos", "error");
+    return;
   }
 
-  // ── Extras: toggle manual con data-attributes ─────────────
-  window.toggleExtra = function(el) {
-    var isChecked = el.classList.contains('checked');
-    el.classList.toggle('checked', !isChecked);
-    // Actualizar visual del check-box interno
-    var box = el.querySelector('.check-box');
-    if (box) { box.textContent = !isChecked ? '✓' : ''; }
-    calcTotal();
-  };
+  document.getElementById('booking-form-wrap').style.display='none';
+  document.getElementById('success-screen').classList.add('show');
+}
 
-  // ── Cálculo total ────────────────────────────────────────
-  window.calcTotal = function() {
-    var base   = parseInt(document.getElementById('tamano').value) || 100;
-    var extras = 0;
-    document.querySelectorAll('.extra-toggle.checked').forEach(function(el) {
-      extras += parseInt(el.getAttribute('data-value')) || 0;
-    });
-    total = base + extras;
-    document.getElementById('total-display').textContent = '$' + total;
-  };
+// RESET
+function resetForm(){
+  document.getElementById('booking-form-wrap').style.display='block';
+  document.getElementById('success-screen').classList.remove('show');
 
-  // ── Cargar horarios ───────────────────────────────────────
-  window.cargarHorarios = function() {
-    var fecha = document.getElementById('fecha').value;
-    if (!fecha) { return; }
-    selectedHour = null;
+  document.querySelectorAll('input, textarea').forEach(i=>i.value='');
 
-    var wrap      = document.getElementById('horarios-wrap');
-    var container = document.getElementById('time-slots');
-    wrap.style.display = 'block';
-    container.innerHTML = '<div class="loading-slots">Verificando disponibilidad...</div>';
+  document.querySelectorAll('.extra-toggle').forEach(et=>{
+    et.classList.remove('checked');
+    et.querySelector('input').checked=false;
+  });
 
-    if (WEB_APP_URL !== "TU_URL_APPS_SCRIPT") {
-      fetch(WEB_APP_URL + '?action=disponibilidad&fecha=' + fecha)
-        .then(function(r) { return r.json(); })
-        .then(function(d) { renderSlots(d.ocupadas || []); })
-        .catch(function() { renderSlots([]); });
-    } else {
-      // Demo: simula 9am y 2pm ocupados
-      setTimeout(function() { renderSlots([9, 14]); }, 400);
-    }
-  };
+  selectedHour = null;
+  selectService('basic');
+}
 
-  function renderSlots(ocupadasList) {
-    var container = document.getElementById('time-slots');
-    container.innerHTML = '';
-    var ocupadas = new Set(ocupadasList.map(function(h) { return String(h); }));
+// TOAST
+function showToast(msg,type){
+  var t=document.getElementById('toast');
+  t.textContent=msg;
+  t.className='toast show '+(type||'');
 
-    for (var h = 8; h <= 18; h++) {
-      var slot = document.createElement('div');
-      var key  = String(h);
-      var isOcupado = ocupadas.has(key);
-      slot.className = 'time-slot' + (isOcupado ? ' occupied' : '');
-      slot.textContent = h + ':00';
-      if (!isOcupado) {
-        (function(hour, el) {
-          el.addEventListener('click', function() {
-            document.querySelectorAll('.time-slot').forEach(function(s) { s.classList.remove('selected'); });
-            el.classList.add('selected');
-            selectedHour = hour + ':00';
-          });
-        })(h, slot);
-      }
-      container.appendChild(slot);
-    }
-  }
+  setTimeout(()=>t.classList.remove('show'),3000);
+}
 
-  // ── Enviar cita ──────────────────────────────────────────
-  window.enviarCita = function() {
-    var nombre    = document.getElementById('nombre').value.trim();
-    var telefono  = document.getElementById('telefono').value.trim();
-    var fecha     = document.getElementById('fecha').value;
-    var direccion = document.getElementById('direccion').value.trim();
-    var notas     = document.getElementById('notas').value.trim();
+// 🔒 SERVICE WORKER FIX
+if ('serviceWorker' in navigator && location.protocol === 'https:') {
+  navigator.serviceWorker.register('./sw.js').catch(()=>{});
+}
 
-    if (!nombre)    { showToast('Ingresa tu nombre', 'error'); return; }
-    if (!telefono)  { showToast('Ingresa tu teléfono', 'error'); return; }
-    if (!fecha)     { showToast('Selecciona una fecha', 'error'); return; }
-    if (!selectedHour) { showToast('Selecciona un horario', 'error'); return; }
-    if (!direccion) { showToast('Ingresa tu dirección', 'error'); return; }
-
-    var btn = document.getElementById('submit-btn');
-    btn.disabled    = true;
-    btn.textContent = 'Enviando...';
-
-    var tamanoSel = document.getElementById('tamano');
-    var extrasArr = [];
-    document.querySelectorAll('.extra-toggle.checked').forEach(function(el) {
-      extrasArr.push(el.getAttribute('data-label'));
-    });
-
-    var datos = {
-      nombre:    nombre,
-      telefono:  telefono,
-      fecha:     fecha,
-      hora:      selectedHour,
-      servicio:  selectedService,
-      tamano:    tamanoSel.options[tamanoSel.selectedIndex].text,
-      extras:    extrasArr.join(', '),
-      total:     total,
-      notas:     notas,
-      direccion: direccion
-    };
-
-    function onSuccess() {
-      var det = document.getElementById('success-detail');
-      det.innerHTML =
-        '<h4>Resumen de tu cita</h4>' +
-        '<div class="success-row"><span>Cliente</span><span>' + nombre + '</span></div>' +
-        '<div class="success-row"><span>Fecha</span><span>' + fecha + ' a las ' + selectedHour + '</span></div>' +
-        '<div class="success-row"><span>Servicio</span><span>' + (selectedService === 'deep' ? 'Deep Cleaning' : 'Basic Cleaning') + '</span></div>' +
-        '<div class="success-row"><span>Extras</span><span>' + (extrasArr.length > 0 ? extrasArr.join(', ') : 'Ninguno') + '</span></div>' +
-        '<div class="success-row"><span>Total</span><span>$' + total + '</span></div>';
-      document.getElementById('booking-form-wrap').style.display = 'none';
-      document.getElementById('success-screen').classList.add('show');
-      btn.disabled = false;
-      btn.textContent = '✓ Confirmar Cita';
-    }
-
-    if (WEB_APP_URL === "TU_URL_APPS_SCRIPT") {
-      setTimeout(onSuccess, 800);
-      return;
-    }
-
-    fetch(WEB_APP_URL, {
-      method: 'POST',
-      body:   JSON.stringify(datos),
-      headers: { 'Content-Type': 'application/json' }
-    })
-    .then(function(r) { return r.json(); })
-    .then(function(d) {
-      if (d.ok) { onSuccess(); }
-      else      { showToast('Error: ' + (d.error || 'Intenta de nuevo'), 'error'); }
-    })
-    .catch(function() { showToast('Error de conexión. Intenta de nuevo.', 'error'); })
-    .finally(function() { btn.disabled = false; btn.textContent = '✓ Confirmar Cita'; });
-  };
-
-  // ── Reset formulario ─────────────────────────────────────
-  window.resetForm = function() {
-    document.getElementById('booking-form-wrap').style.display = 'block';
-    document.getElementById('success-screen').classList.remove('show');
-    document.getElementById('nombre').value    = '';
-    document.getElementById('telefono').value  = '';
-    document.getElementById('fecha').value     = '';
-    document.getElementById('direccion').value = '';
-    document.getElementById('notas').value     = '';
-    document.getElementById('horarios-wrap').style.display = 'none';
-    // Limpiar extras
-    document.querySelectorAll('.extra-toggle').forEach(function(el) {
-      el.classList.remove('checked');
-      var box = el.querySelector('.check-box');
-      if (box) { box.textContent = ''; }
-    });
-    selectedHour = null;
-    selectService('basic');
-  };
-
-  // ── Toast ────────────────────────────────────────────────
-  function showToast(msg, type) {
-    var t = document.getElementById('toast');
-    t.textContent = msg;
-    t.className = 'toast' + (type ? ' ' + type : '') + ' show';
-    setTimeout(function() { t.classList.remove('show'); }, 3000);
-  }
-
-})();
 </script>
 </body>
 </html>
