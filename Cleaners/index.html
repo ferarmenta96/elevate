@@ -42,16 +42,13 @@ nav {
   top: 0;
   z-index: 100;
 }
-
 nav .brand {
   font-family: 'Playfair Display', serif;
   color: var(--white);
   font-size: 1.2rem;
   letter-spacing: .5px;
 }
-
 nav .nav-links { display: flex; gap: 8px; }
-
 nav .nav-btn {
   background: transparent;
   border: 1.5px solid rgba(255,255,255,0.25);
@@ -64,7 +61,6 @@ nav .nav-btn {
   font-weight: 500;
   transition: background .2s, border-color .2s;
 }
-
 nav .nav-btn:hover,
 nav .nav-btn.active {
   background: var(--blue);
@@ -84,7 +80,6 @@ nav .nav-btn.active {
   position: relative;
   overflow: hidden;
 }
-
 .hero::before {
   content: '';
   position: absolute;
@@ -94,19 +89,16 @@ nav .nav-btn.active {
   top: -100px; right: -100px;
   pointer-events: none;
 }
-
 .hero h1 {
   font-family: 'Playfair Display', serif;
   font-size: 2.8rem;
   margin-bottom: 12px;
 }
-
 .hero p {
   font-size: 1.05rem;
   opacity: .8;
   margin-bottom: 32px;
 }
-
 .btn-hero {
   background: var(--accent);
   color: var(--navy);
@@ -119,7 +111,6 @@ nav .nav-btn.active {
   font-family: 'DM Sans', sans-serif;
   transition: transform .15s, box-shadow .15s;
 }
-
 .btn-hero:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(62,198,224,.4); }
 
 .features {
@@ -128,9 +119,8 @@ nav .nav-btn.active {
   gap: 20px;
   max-width: 900px;
   margin: 48px auto 0;
-  padding: 0 24px;
+  padding: 0 24px 60px;
 }
-
 .feature-card {
   background: var(--white);
   border-radius: 16px;
@@ -138,7 +128,6 @@ nav .nav-btn.active {
   text-align: center;
   box-shadow: var(--shadow);
 }
-
 .feature-card .icon { font-size: 2rem; margin-bottom: 10px; }
 .feature-card h3 { font-size: .95rem; font-weight: 600; color: var(--navy); }
 .feature-card p { font-size: .85rem; color: var(--gray); margin-top: 6px; }
@@ -149,7 +138,6 @@ nav .nav-btn.active {
   margin: 0 auto;
   padding: 32px 20px 60px;
 }
-
 .booking-wrap h2 {
   font-family: 'Playfair Display', serif;
   font-size: 1.8rem;
@@ -165,7 +153,6 @@ nav .nav-btn.active {
   box-shadow: var(--shadow);
   margin-bottom: 20px;
 }
-
 .card-label {
   font-size: .78rem;
   font-weight: 600;
@@ -177,7 +164,6 @@ nav .nav-btn.active {
 
 /* SERVICE PILLS */
 .service-pills { display: flex; gap: 10px; }
-
 .pill {
   flex: 1;
   border: 2px solid #e2e8f0;
@@ -188,15 +174,10 @@ nav .nav-btn.active {
   text-align: center;
   transition: border-color .2s, background .2s;
 }
-
 .pill .pill-icon { font-size: 1.6rem; margin-bottom: 6px; }
 .pill .pill-name { font-weight: 600; font-size: .9rem; }
 .pill .pill-desc { font-size: .78rem; color: var(--gray); margin-top: 3px; }
-
-.pill.selected {
-  border-color: var(--blue);
-  background: var(--sky);
-}
+.pill.selected { border-color: var(--blue); background: var(--sky); }
 
 /* SIZE SELECT */
 select {
@@ -215,16 +196,10 @@ select {
   background-position: right 14px center;
   transition: border-color .2s;
 }
-
 select:focus { outline: none; border-color: var(--blue); }
 
 /* EXTRAS */
-.extras-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 10px;
-}
-
+.extras-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
 .extra-item {
   border: 2px solid #e2e8f0;
   border-radius: 10px;
@@ -236,9 +211,7 @@ select:focus { outline: none; border-color: var(--blue); }
   user-select: none;
   transition: border-color .2s, background .2s;
 }
-
 .extra-item input[type="checkbox"] { display: none; }
-
 .extra-item .ei-icon { font-size: 1.3rem; }
 .extra-item .ei-text { flex: 1; }
 .extra-item .ei-name { font-size: .88rem; font-weight: 600; }
@@ -252,19 +225,14 @@ select:focus { outline: none; border-color: var(--blue); }
   font-size: .75rem;
   transition: background .2s, border-color .2s;
 }
-
-.extra-item.checked {
-  border-color: var(--blue);
-  background: var(--sky);
-}
-
+.extra-item.checked { border-color: var(--blue); background: var(--sky); }
 .extra-item.checked .ei-check {
   background: var(--blue);
   border-color: var(--blue);
   color: var(--white);
 }
 
-/* DATE INPUT */
+/* INPUTS */
 input[type="date"], input[type="text"], input[type="tel"] {
   width: 100%;
   padding: 12px 16px;
@@ -276,16 +244,10 @@ input[type="date"], input[type="text"], input[type="tel"] {
   background: var(--white);
   transition: border-color .2s;
 }
-
 input:focus { outline: none; border-color: var(--blue); }
 
 /* TIME SLOTS */
-.slots-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 8px;
-}
-
+.slots-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
 .slot {
   border: 2px solid #e2e8f0;
   border-radius: 10px;
@@ -296,7 +258,6 @@ input:focus { outline: none; border-color: var(--blue); }
   cursor: pointer;
   transition: border-color .2s, background .2s;
 }
-
 .slot:hover:not(.occupied) { border-color: var(--blue); }
 .slot.selected { background: var(--blue); color: var(--white); border-color: var(--blue); }
 .slot.occupied { opacity: .35; cursor: not-allowed; background: #f1f5f9; }
@@ -316,14 +277,10 @@ input:focus { outline: none; border-color: var(--blue); }
   justify-content: space-between;
   margin-bottom: 16px;
 }
-
 .total-bar .total-label { font-size: .85rem; opacity: .7; }
-.total-bar .total-amount {
-  font-family: 'Playfair Display', serif;
-  font-size: 2rem;
-}
+.total-bar .total-amount { font-family: 'Playfair Display', serif; font-size: 2rem; }
 
-/* SUBMIT BUTTON */
+/* SUBMIT */
 .btn-submit {
   width: 100%;
   background: linear-gradient(135deg, var(--blue), var(--accent));
@@ -337,7 +294,6 @@ input:focus { outline: none; border-color: var(--blue); }
   cursor: pointer;
   transition: transform .15s, box-shadow .15s;
 }
-
 .btn-submit:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(26,95,168,.35); }
 .btn-submit:disabled { opacity: .6; cursor: not-allowed; transform: none; }
 
@@ -359,12 +315,11 @@ input:focus { outline: none; border-color: var(--blue); }
   pointer-events: none;
   white-space: nowrap;
 }
-
 #toast.show { transform: translateX(-50%) translateY(0); }
 #toast.success { background: var(--green); }
 #toast.error   { background: var(--red); }
 
-/* Loader spinner */
+/* SPINNER */
 .spinner {
   display: inline-block;
   width: 18px; height: 18px;
@@ -376,6 +331,14 @@ input:focus { outline: none; border-color: var(--blue); }
   margin-right: 8px;
 }
 @keyframes spin { to { transform: rotate(360deg); } }
+
+/* SLOTS LOADING */
+.slots-loading {
+  text-align: center;
+  color: var(--gray);
+  font-size: .88rem;
+  padding: 12px 0;
+}
 </style>
 </head>
 <body>
@@ -398,7 +361,6 @@ input:focus { outline: none; border-color: var(--blue); }
       📅 Agendar ahora
     </button>
   </div>
-
   <div class="features">
     <div class="feature-card">
       <div class="icon">🧹</div>
@@ -453,40 +415,25 @@ input:focus { outline: none; border-color: var(--blue); }
         <label class="extra-item" onclick="toggleExtra(this)">
           <input type="checkbox" value="20" data-label="Bathroom">
           <span class="ei-icon">🚽</span>
-          <div class="ei-text">
-            <div class="ei-name">Bathroom</div>
-            <div class="ei-price">+$20</div>
-          </div>
+          <div class="ei-text"><div class="ei-name">Bathroom</div><div class="ei-price">+$20</div></div>
           <div class="ei-check">✓</div>
         </label>
-
         <label class="extra-item" onclick="toggleExtra(this)">
           <input type="checkbox" value="20" data-label="Fridge">
           <span class="ei-icon">🧊</span>
-          <div class="ei-text">
-            <div class="ei-name">Fridge</div>
-            <div class="ei-price">+$20</div>
-          </div>
+          <div class="ei-text"><div class="ei-name">Fridge</div><div class="ei-price">+$20</div></div>
           <div class="ei-check">✓</div>
         </label>
-
         <label class="extra-item" onclick="toggleExtra(this)">
           <input type="checkbox" value="20" data-label="Windows">
           <span class="ei-icon">🪟</span>
-          <div class="ei-text">
-            <div class="ei-name">Windows</div>
-            <div class="ei-price">+$20</div>
-          </div>
+          <div class="ei-text"><div class="ei-name">Windows</div><div class="ei-price">+$20</div></div>
           <div class="ei-check">✓</div>
         </label>
-
         <label class="extra-item" onclick="toggleExtra(this)">
           <input type="checkbox" value="20" data-label="Microwave">
           <span class="ei-icon">📡</span>
-          <div class="ei-text">
-            <div class="ei-name">Microwave</div>
-            <div class="ei-price">+$20</div>
-          </div>
+          <div class="ei-text"><div class="ei-name">Microwave</div><div class="ei-price">+$20</div></div>
           <div class="ei-check">✓</div>
         </label>
       </div>
@@ -501,6 +448,7 @@ input:focus { outline: none; border-color: var(--blue); }
     <!-- Horarios -->
     <div class="card" id="horarios-card" style="display:none;">
       <div class="card-label">Hora disponible</div>
+      <div id="slots-loading" class="slots-loading" style="display:none;">Cargando horarios...</div>
       <div class="slots-grid" id="time-slots"></div>
     </div>
 
@@ -508,17 +456,15 @@ input:focus { outline: none; border-color: var(--blue); }
     <div class="card">
       <div class="card-label">Tus datos</div>
       <div class="fields-grid">
-        <input type="text" id="nombre" placeholder="Nombre completo">
-        <input type="tel"  id="telefono" placeholder="Teléfono">
+        <input type="text" id="nombre"    placeholder="Nombre completo">
+        <input type="tel"  id="telefono"  placeholder="Teléfono">
         <input type="text" id="direccion" placeholder="Dirección del hogar">
       </div>
     </div>
 
     <!-- Total + Enviar -->
     <div class="total-bar">
-      <div>
-        <div class="total-label">Total estimado</div>
-      </div>
+      <div><div class="total-label">Total estimado</div></div>
       <div class="total-amount" id="total-display">$100</div>
     </div>
 
@@ -534,50 +480,37 @@ input:focus { outline: none; border-color: var(--blue); }
 <script>
 'use strict';
 
-// ════════════════════════════════════════
-// 🔥 PON TU URL DE GOOGLE APPS SCRIPT AQUÍ
-var WEB_APP_URL = "https://script.google.com/macros/s/AKfycbzo8nApLan4FL2juOxsG3tP8y0WgGpid4UWQv7dRji-mHpCFb8Aq-yicOZR_JvVuN62/exec";
-// ════════════════════════════════════════
-
-// Horarios ocupados demo. 
-// Cuando conectes tu backend, reemplaza renderSlots([9,14])
-// por una llamada fetch para obtener las horas ocupadas del día.
-var DEMO_OCCUPIED = [9, 14];
+// ════════════════════════════════════════════════════════
+// 🔥 PEGA AQUÍ TU URL DE GOOGLE APPS SCRIPT
+var WEB_APP_URL = "https://script.google.com/macros/s/AKfycbzTiRjK-Mnx5Bhc1Coq4MoC15VE5QBOu2is3Y6i4y8r6NRKrdFbdbInUAz-vpaSHQaDCg/exec";
+// ════════════════════════════════════════════════════════
 
 var selectedService = 'basic';
 var selectedHour    = null;
 var total           = 100;
 
-var PRICES = {
-  basic: [100, 130, 160],
-  deep:  [120, 160, 180]
-};
-
-// Matches flyer exactly:
-// Basic:  1-2 beds/1 bath=$100 | 3 beds/2 baths=$130 | 4 beds/2 baths=$160
-// Deep:   1-2 beds/1 bath=$120 | 3 beds/2 baths=$160 | 4 beds/2 baths=$180
 var SIZES = [
   { label: '1-2 Bedrooms · 1 Bathroom', prices: [100, 120] },
   { label: '3 Bedrooms · 2 Bathrooms',  prices: [130, 160] },
   { label: '4 Bedrooms · 2 Bathrooms',  prices: [160, 180] }
 ];
 
-// ── INIT ──────────────────────────────
+// ── INIT ──────────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', function () {
   var today = new Date().toISOString().split('T')[0];
   document.getElementById('fecha').min = today;
   updateTamanoOptions();
 });
 
-// ── NAV ───────────────────────────────
+// ── NAV ───────────────────────────────────────────────
 function showView(name, btn) {
-  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  document.querySelectorAll('.view').forEach(function(v) { v.classList.remove('active'); });
   document.getElementById('view-' + name).classList.add('active');
-  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(function(b) { b.classList.remove('active'); });
   if (btn) btn.classList.add('active');
 }
 
-// ── SERVICE ───────────────────────────
+// ── SERVICE ───────────────────────────────────────────
 function selectService(type) {
   selectedService = type;
   document.getElementById('pill-basic').classList.toggle('selected', type === 'basic');
@@ -586,53 +519,53 @@ function selectService(type) {
 }
 
 function updateTamanoOptions() {
-  var idx  = selectedService === 'basic' ? 0 : 1;
-  var sel  = document.getElementById('tamano');
-  sel.innerHTML = SIZES.map((s, i) =>
-    `<option value="${s.prices[idx]}">${s.label} — $${s.prices[idx]}</option>`
-  ).join('');
+  var idx = selectedService === 'basic' ? 0 : 1;
+  var sel = document.getElementById('tamano');
+  sel.innerHTML = SIZES.map(function(s) {
+    return '<option value="' + s.prices[idx] + '">' + s.label + ' — $' + s.prices[idx] + '</option>';
+  }).join('');
   calcTotal();
 }
 
-// ── EXTRAS ────────────────────────────
-// FIXED: el onclick llama con la etiqueta directamente, sin event.target
+// ── EXTRAS ────────────────────────────────────────────
 function toggleExtra(label) {
   var cb = label.querySelector('input[type="checkbox"]');
   if (!cb) return;
-
   cb.checked = !cb.checked;
   label.classList.toggle('checked', cb.checked);
   calcTotal();
 }
 
-// ── TOTAL ─────────────────────────────
+// ── TOTAL ─────────────────────────────────────────────
 function calcTotal() {
   var base   = parseInt(document.getElementById('tamano').value) || 100;
   var extras = 0;
-
-  document.querySelectorAll('.extra-item input[type="checkbox"]').forEach(function (cb) {
+  document.querySelectorAll('.extra-item input[type="checkbox"]').forEach(function(cb) {
     if (cb.checked) extras += parseInt(cb.value);
   });
-
   total = base + extras;
   document.getElementById('total-display').innerText = '$' + total;
 }
 
-// ── HORARIOS ──────────────────────────
+// ── HORARIOS ──────────────────────────────────────────
 function cargarHorarios() {
   var fecha = document.getElementById('fecha').value;
   if (!fecha) return;
 
   selectedHour = null;
   document.getElementById('horarios-card').style.display = 'block';
+  document.getElementById('slots-loading').style.display = 'block';
+  document.getElementById('time-slots').innerHTML = '';
 
-  // ─ PRODUCCIÓN: descomenta esto y borra la línea renderSlots(DEMO_OCCUPIED)
-  // fetch(WEB_APP_URL + '?action=getHorarios&fecha=' + fecha)
-  //   .then(r => r.json())
-  //   .then(data => renderSlots(data.ocupadas || []))
-  //   .catch(() => renderSlots(DEMO_OCCUPIED));
-
-  renderSlots(DEMO_OCCUPIED); // demo: 9am y 2pm ocupadas
+  // JSONP: pide horarios al backend sin CORS
+  jsonpGet(WEB_APP_URL, { action: 'getHorarios', fecha: fecha }, function(err, data) {
+    document.getElementById('slots-loading').style.display = 'none';
+    if (err || !data || !data.ok) {
+      renderSlots([]); // si falla, muestra todos disponibles
+    } else {
+      renderSlots(data.ocupadas || []);
+    }
+  });
 }
 
 function renderSlots(ocupadas) {
@@ -640,86 +573,124 @@ function renderSlots(ocupadas) {
   cont.innerHTML = '';
 
   for (var h = 8; h <= 17; h++) {
-    var isOccupied = ocupadas.includes(h);
+    var isOccupied = ocupadas.indexOf(h) !== -1;
     var div = document.createElement('div');
     div.className = 'slot' + (isOccupied ? ' occupied' : '');
     div.textContent = h + ':00';
 
     if (!isOccupied) {
-      (function (hour, el) {
-        el.onclick = function () {
-          document.querySelectorAll('.slot').forEach(s => s.classList.remove('selected'));
+      (function(hour, el) {
+        el.onclick = function() {
+          document.querySelectorAll('.slot').forEach(function(s) { s.classList.remove('selected'); });
           el.classList.add('selected');
           selectedHour = hour + ':00';
         };
       })(h, div);
     }
-
     cont.appendChild(div);
   }
 }
 
-// ── ENVIAR CITA ───────────────────────
+// ── ENVIAR CITA ───────────────────────────────────────
 function enviarCita() {
   var nombre    = document.getElementById('nombre').value.trim();
   var telefono  = document.getElementById('telefono').value.trim();
   var fecha     = document.getElementById('fecha').value;
   var direccion = document.getElementById('direccion').value.trim();
 
-  if (!nombre)    { toast('Ingresa tu nombre', 'error'); return; }
-  if (!telefono)  { toast('Ingresa tu teléfono', 'error'); return; }
-  if (!fecha)     { toast('Selecciona una fecha', 'error'); return; }
-  if (!selectedHour) { toast('Selecciona un horario', 'error'); return; }
-  if (!direccion) { toast('Ingresa tu dirección', 'error'); return; }
+  if (!nombre)       { toast('Ingresa tu nombre',      'error'); return; }
+  if (!telefono)     { toast('Ingresa tu teléfono',    'error'); return; }
+  if (!fecha)        { toast('Selecciona una fecha',   'error'); return; }
+  if (!selectedHour) { toast('Selecciona un horario',  'error'); return; }
+  if (!direccion)    { toast('Ingresa tu dirección',   'error'); return; }
 
   var extrasArr = [];
-  document.querySelectorAll('.extra-item input[type="checkbox"]').forEach(function (cb) {
+  document.querySelectorAll('.extra-item input[type="checkbox"]').forEach(function(cb) {
     if (cb.checked) extrasArr.push(cb.dataset.label);
   });
 
   var datos = {
-    nombre:   nombre,
-    telefono: telefono,
-    fecha:    fecha,
-    hora:     selectedHour,
-    servicio: selectedService,
-    tamano:   document.getElementById('tamano').value,
-    extras:   extrasArr.join(', '),
-    total:    total,
+    nombre:    nombre,
+    telefono:  telefono,
+    fecha:     fecha,
+    hora:      selectedHour,
+    servicio:  selectedService,
+    tamano:    document.getElementById('tamano').value,
+    extras:    extrasArr.join(', '),
+    total:     total,
     direccion: direccion
   };
-
-  console.log('ENVIANDO:', datos);
 
   var btn = document.getElementById('btn-enviar');
   btn.disabled = true;
   btn.innerHTML = '<span class="spinner"></span>Enviando...';
 
-  fetch(WEB_APP_URL, {
-    method: 'POST',
-    body: JSON.stringify(datos),
-    headers: { 'Content-Type': 'application/json' }
-  })
-  .then(function (r) {
-    if (!r.ok) throw new Error('HTTP ' + r.status);
-    return r.json();
-  })
-  .then(function (r) {
-    console.log('RESPUESTA:', r);
-    toast('¡Cita confirmada! ✅ Te contactaremos pronto', 'success');
-    resetForm();
-  })
-  .catch(function (err) {
-    console.error(err);
-    toast('Error al enviar. Intenta de nuevo.', 'error');
-  })
-  .finally(function () {
-    btn.disabled = false;
-    btn.innerHTML = 'Confirmar cita';
-  });
+  // ── ENVÍO VÍA GET + no-cors (sin preflight, sin CORS error) ──
+  var params = Object.assign({ action: 'guardar' }, datos);
+  var url    = WEB_APP_URL + '?' + buildQuery(params);
+
+  fetch(url, { method: 'GET', mode: 'no-cors' })
+    .then(function() {
+      // no-cors no devuelve body, pero si llegó aquí, el request salió bien
+      toast('¡Cita confirmada! ✅ Te contactaremos pronto', 'success');
+      resetForm();
+    })
+    .catch(function(err) {
+      console.error('Error al enviar:', err);
+      toast('Error de red. Intenta de nuevo.', 'error');
+    })
+    .finally(function() {
+      btn.disabled = false;
+      btn.innerHTML = 'Confirmar cita';
+    });
 }
 
-// ── RESET ─────────────────────────────
+// ── JSONP (para leer horarios con respuesta) ──────────
+function jsonpGet(baseUrl, params, callback) {
+  var cbName = 'hcb_' + Math.random().toString(36).slice(2);
+  var script = document.createElement('script');
+  var done   = false;
+
+  var timeout = setTimeout(function() {
+    if (done) return;
+    done = true;
+    cleanup();
+    callback(new Error('Timeout'));
+  }, 8000);
+
+  window[cbName] = function(data) {
+    if (done) return;
+    done = true;
+    clearTimeout(timeout);
+    cleanup();
+    callback(null, data);
+  };
+
+  script.onerror = function() {
+    if (done) return;
+    done = true;
+    clearTimeout(timeout);
+    cleanup();
+    callback(new Error('Script error'));
+  };
+
+  function cleanup() {
+    delete window[cbName];
+    if (script.parentNode) script.parentNode.removeChild(script);
+  }
+
+  params.callback = cbName;
+  script.src = baseUrl + '?' + buildQuery(params);
+  document.body.appendChild(script);
+}
+
+// ── HELPERS ───────────────────────────────────────────
+function buildQuery(obj) {
+  return Object.keys(obj).map(function(k) {
+    return encodeURIComponent(k) + '=' + encodeURIComponent(obj[k]);
+  }).join('&');
+}
+
 function resetForm() {
   document.getElementById('nombre').value    = '';
   document.getElementById('telefono').value  = '';
@@ -727,27 +698,24 @@ function resetForm() {
   document.getElementById('fecha').value     = '';
   document.getElementById('horarios-card').style.display = 'none';
   selectedHour = null;
-
-  document.querySelectorAll('.extra-item').forEach(function (el) {
+  document.querySelectorAll('.extra-item').forEach(function(el) {
     el.classList.remove('checked');
     el.querySelector('input').checked = false;
   });
-
   selectService('basic');
 }
 
-// ── TOAST ─────────────────────────────
 function toast(msg, type) {
   var el = document.getElementById('toast');
   el.textContent = msg;
   el.className   = 'show ' + (type || '');
   clearTimeout(el._t);
-  el._t = setTimeout(function () { el.className = ''; }, 3200);
+  el._t = setTimeout(function() { el.className = ''; }, 3200);
 }
 
-// ── SERVICE WORKER ────────────────────
+// ── SERVICE WORKER ────────────────────────────────────
 if ('serviceWorker' in navigator && location.protocol === 'https:') {
-  navigator.serviceWorker.register('./sw.js').catch(function () {});
+  navigator.serviceWorker.register('./sw.js').catch(function() {});
 }
 </script>
 </body>
