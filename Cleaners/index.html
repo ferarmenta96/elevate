@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>House Cleaners RGV</title>
+
+<link id="manifest-link" rel="manifest">
+<meta name="theme-color" content="#1a4a7c">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Cleaners RGV">
+<meta name="description" content="Agenda tu limpieza profesional en el RGV">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --blue-deep:  #1a4a7c;
+  --blue-mid:   #1a5fa8;
+  --blue-light: #4a90d9;
+  --blue-pale:  #e8f2fb;
+  --blue-soft:  #d0e7f7;
+  --gold:       #c9a84c;
+  --gold-light: #f0d887;
+  --white:      #ffffff;
+  --gray-light: #f4f7fb;
+  --gray-mid:   #8a9bb5;
+  --gray-dark:  #2c3e5a;
+  --text-main:  #1a2b45;
+  --text-muted: #5a6f8a;
+  --danger:     #d63031;
+  --success:    #00b894;
+  --shadow-card: 0 4px 24px rgba(26,74,124,0.12);
+  --shadow-btn:  0 4px 16px rgba(26,95,168,0.35);
+  --radius:    14px;
+  --radius-sm: 8px;
+  --font-display: 'Playfair Display', serif;
+  --font-body:    'DM Sans', sans-serif;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html, body { height: 100%; }
+body { font-family: var(--font-body); background: var(--gray-light); color: var(--text-main); min-height: 100vh; }
+
+/* ── TOPBAR ── */
+.topbar {
+  background: var(--blue-deep);
+  position: sticky; top: 0; z-index: 100;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.2);
+}
+.topbar-inner {
+  display: flex; align-items: center; justify-content: space-between;
+  max-width: 700px; margin: 0 auto; padding: 12px 20px;
+}
+.logo-wrap { display: flex; align-items: center; gap: 10px; }
+.logo-icon {
+  width: 38px; height: 38px; background: var(--gold); border-radius: 50%;
+  display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0;
+}
+.logo-text { display: flex; flex-direction: column; line-height: 1.1; }
+.logo-text span:first-child { font-family: var(--font-display); font-size: 15px; font-weight: 700; color: var(--white); }
+.logo-text span:last-child  { font-size: 11px; font-weight: 600; color: var(--gold); letter-spacing: 2px; text-transform: uppercase; }
+.nav-tabs { display: flex; gap: 4px; }
+.tab-btn {
+  padding: 7px 14px; border-radius: 20px; border: none; background: transparent;
+  color: rgba(255,255,255,0.6); font-family: var(--font-body); font-size: 13px; font-weight: 500; cursor: pointer; transition: all 0.2s;
+}
+.tab-btn.active  { background: var(--gold); color: var(--blue-deep); font-weight: 600; }
+.tab-btn:hover:not(.active) { background: rgba(255,255,255,0.1); color: var(--white); }
+
+/* ── VIEWS ── */
+.view { display: none; }
+.view.active { display: block; }
+
+/* ── HERO ── */
+.hero {
+  background: linear-gradient(160deg, var(--blue-deep) 0%, var(--blue-mid) 60%, var(--blue-light) 100%);
+  padding: 48px 20px 56px; text-align: center; position: relative; overflow: hidden;
+}
+.hero::before {
+  content: ''; position: absolute; top: -40px; right: -40px;
+  width: 220px; height: 220px; background: rgba(201,168,76,0.12); border-radius: 50%;
+}
+.hero::after {
+  content: ''; position: absolute; bottom: -60px; left: -30px;
+  width: 180px; height: 180px; background: rgba(255,255,255,0.06); border-radius: 50%;
+}
+.hero-badge {
+  display: inline-block; background: rgba(201,168,76,0.2); border: 1px solid rgba(201,168,76,0.5);
+  color: var(--gold-light); font-size: 11px; font-weight: 600; letter-spacing: 2px;
+  text-transform: uppercase; padding: 4px 14px; border-radius: 20px; margin-bottom: 16px;
+}
+.hero h1 { font-family: var(--font-display); font-size: 32px; font-weight: 700; color: var(--white); line-height: 1.2; margin-bottom: 10px; }
+.hero p  { font-size: 15px; color: rgba(255,255,255,0.75); font-style: italic; margin-bottom: 28px; }
+.price-pills { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-bottom: 28px; }
+.price-pill {
+  background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.25);
+  color: var(--white); padding: 8px 18px; border-radius: 24px; font-size: 13px; font-weight: 500; backdrop-filter: blur(4px);
+}
+.price-pill strong { color: var(--gold-light); font-weight: 700; }
+.hero-cta {
+  background: var(--gold); color: var(--blue-deep); border: none;
+  padding: 14px 36px; border-radius: 30px; font-family: var(--font-body); font-size: 16px; font-weight: 700;
+  cursor: pointer; box-shadow: var(--shadow-btn); transition: all 0.2s;
+}
+.hero-cta:hover { background: var(--gold-light); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(201,168,76,0.45); }
+
+/* ── SECTION / SERVICES ── */
+.section { max-width: 700px; margin: 0 auto; padding: 32px 20px; }
+.section-title {
+  font-family: var(--font-display); font-size: 22px; color: var(--blue-deep);
+  margin-bottom: 20px; display: flex; align-items: center; gap: 10px;
+}
+.section-title::after { content: ''; flex: 1; height: 1px; background: var(--blue-soft); }
+.services-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px,1fr)); gap: 14px; margin-bottom: 24px; }
+.service-card {
+  background: var(--white); border-radius: var(--radius); padding: 20px;
+  box-shadow: var(--shadow-card); border-top: 4px solid var(--blue-mid); transition: transform 0.2s;
+}
+.service-card:hover { transform: translateY(-3px); }
+.service-card.deep  { border-top-color: var(--gold); }
+.service-icon { font-size: 28px; margin-bottom: 10px; }
+.service-name { font-family: var(--font-display); font-size: 16px; font-weight: 700; color: var(--blue-deep); margin-bottom: 10px; }
+.price-row { display: flex; justify-content: space-between; align-items: center; padding: 5px 0; border-bottom: 1px solid var(--blue-pale); font-size: 13px; }
+.price-row:last-child { border-bottom: none; }
+.price-row .rooms  { color: var(--text-muted); }
+.price-row .amount { font-weight: 700; color: var(--blue-deep); font-size: 15px; }
+.service-card.deep .price-row .amount { color: #a07830; }
+.extras-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 10px; }
+.extra-card {
+  background: var(--white); border-radius: var(--radius-sm); padding: 14px 10px; text-align: center;
+  box-shadow: 0 2px 10px rgba(26,74,124,0.08); border: 1px solid var(--blue-soft);
+}
+.extra-card .eicon  { font-size: 24px; margin-bottom: 6px; }
+.extra-card .ename  { font-size: 11px; color: var(--text-muted); font-weight: 500; text-transform: uppercase; letter-spacing: 0.5px; }
+.extra-card .eprice { font-size: 18px; font-weight: 700; color: var(--blue-deep); }
+
+/* ── FORM ── */
+.booking-wrap { max-width: 620px; margin: 0 auto; padding: 24px 20px; }
+.form-card { background: var(--white); border-radius: var(--radius); padding: 28px; box-shadow: var(--shadow-card); }
+.form-card h2 { font-family: var(--font-display); font-size: 22px; color: var(--blue-deep); margin-bottom: 6px; }
+.form-card > p { font-size: 14px; color: var(--text-muted); margin-bottom: 24px; }
+.form-group { margin-bottom: 16px; }
+.form-group label { display: block; font-size: 12px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 6px; }
+.form-group input,
+.form-group select,
+.form-group textarea {
+  width: 100%; padding: 12px 14px; border: 1.5px solid var(--blue-soft);
+  border-radius: var(--radius-sm); font-family: var(--font-body); font-size: 14px;
+  color: var(--text-main); background: var(--white); transition: border-color 0.2s; outline: none;
+}
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus { border-color: var(--blue-mid); box-shadow: 0 0 0 3px rgba(26,95,168,0.1); }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.service-selector { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 16px; }
+.service-option {
+  padding: 14px; border: 2px solid var(--blue-soft); border-radius: var(--radius-sm);
+  cursor: pointer; transition: all 0.2s; text-align: center;
+}
+.service-option:hover  { border-color: var(--blue-light); }
+.service-option.selected { border-color: var(--blue-mid); background: var(--blue-pale); }
+.service-option .so-icon  { font-size: 22px; margin-bottom: 4px; }
+.service-option .so-name  { font-size: 13px; font-weight: 600; color: var(--blue-deep); }
+.service-option .so-price { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+.extras-check { display: grid; grid-template-columns: repeat(2,1fr); gap: 8px; margin-bottom: 20px; }
+.extra-toggle {
+  display: flex; align-items: center; gap: 8px; padding: 10px 12px;
+  border: 1.5px solid var(--blue-soft); border-radius: var(--radius-sm);
+  cursor: pointer; transition: all 0.2s; font-size: 13px; color: var(--text-main);
+}
+.extra-toggle input { width: auto; cursor: pointer; accent-color: var(--blue-mid); }
+.extra-toggle.checked { border-color: var(--blue-mid); background: var(--blue-pale); }
+.time-slots { display: grid; grid-template-columns: repeat(4,1fr); gap: 8px; margin-bottom: 16px; }
+.time-slot {
+  padding: 9px 4px; text-align: center; border: 1.5px solid var(--blue-soft);
+  border-radius: var(--radius-sm); font-size: 13px; font-weight: 500;
+  cursor: pointer; transition: all 0.2s; color: var(--text-main);
+}
+.time-slot:hover:not(.occupied) { border-color: var(--blue-light); }
+.time-slot.selected  { background: var(--blue-mid); border-color: var(--blue-mid); color: var(--white); }
+.time-slot.occupied  { background: var(--gray-light); border-color: transparent; color: var(--gray-mid); text-decoration: line-through; cursor: not-allowed; }
+.price-summary {
+  background: var(--blue-pale); border-radius: var(--radius-sm); padding: 14px 18px;
+  margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center;
+}
+.price-summary span   { font-size: 14px; color: var(--text-muted); }
+.price-summary strong { font-size: 24px; font-weight: 700; color: var(--blue-deep); }
+.submit-btn {
+  width: 100%; background: var(--blue-mid); color: var(--white); border: none;
+  padding: 16px; border-radius: var(--radius-sm); font-family: var(--font-body);
+  font-size: 16px; font-weight: 600; cursor: pointer; box-shadow: var(--shadow-btn); transition: all 0.2s;
+}
+.submit-btn:hover    { background: var(--blue-deep); transform: translateY(-1px); box-shadow: 0 8px 24px rgba(26,74,124,0.4); }
+.submit-btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+
+/* ── SUCCESS ── */
+.success-screen { display: none; text-align: center; padding: 48px 20px; }
+.success-screen.show { display: block; }
+.success-icon {
+  width: 72px; height: 72px; background: var(--success); border-radius: 50%;
+  display: flex; align-items: center; justify-content: center; font-size: 32px; margin: 0 auto 20px; color: white;
+}
+.success-screen h2  { font-family: var(--font-display); font-size: 26px; color: var(--blue-deep); margin-bottom: 10px; }
+.success-screen p   { color: var(--text-muted); font-size: 15px; margin-bottom: 24px; }
+.success-detail {
+  background: var(--white); border-radius: var(--radius); padding: 20px; box-shadow: var(--shadow-card);
+  max-width: 360px; margin: 0 auto 24px; text-align: left;
+}
+.success-detail h4 { font-family: var(--font-display); font-size: 16px; color: var(--blue-deep); margin-bottom: 12px; }
+.success-row { display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid var(--blue-pale); font-size: 13px; }
+.success-row:last-child { border-bottom: none; font-weight: 700; font-size: 15px; }
+.back-btn {
+  background: var(--blue-pale); color: var(--blue-mid); border: none;
+  padding: 12px 28px; border-radius: 24px; font-family: var(--font-body); font-size: 14px; font-weight: 600; cursor: pointer;
+}
+
+/* ── TOAST ── */
+.toast {
+  position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(80px);
+  background: var(--blue-deep); color: var(--white); padding: 12px 24px; border-radius: 24px;
+  font-size: 14px; font-weight: 500; box-shadow: 0 8px 24px rgba(0,0,0,0.2); transition: transform 0.3s ease; z-index: 1000; white-space: nowrap;
+}
+.toast.show { transform: translateX(-50%) translateY(0); }
+.toast.success { background: var(--success); }
+.toast.error   { background: var(--danger); }
+
+.loading-slots { text-align: center; padding: 20px; color: var(--text-muted); font-size: 13px; }
+
+@media (max-width: 480px) {
+  .hero h1       { font-size: 26px; }
+  .form-row      { grid-template-columns: 1fr; }
+  .service-selector { grid-template-columns: 1fr 1fr; }
+  .time-slots    { grid-template-columns: repeat(3,1fr); }
+  .extras-grid   { grid-template-columns: repeat(2,1fr); }
+  .form-card     { padding: 20px; }
+}
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<nav class="topbar">
+  <div class="topbar-inner">
+    <div class="logo-wrap">
+      <div class="logo-icon">🧹</div>
+      <div class="logo-text">
+        <span>House Cleaners</span>
+        <span>RGV</span>
+      </div>
+    </div>
+    <div class="nav-tabs">
+      <button class="tab-btn active" onclick="showView('home')">Inicio</button>
+      <button class="tab-btn" onclick="showView('booking')">Agendar</button>
+    </div>
+  </div>
+</nav>
+
+<!-- ══ VIEW: HOME ══ -->
+<div id="view-home" class="view active">
+  <div class="hero">
+    <div class="hero-badge">✦ RGV's Trusted Cleaning Service</div>
+    <h1>Tired and<br>overwhelmed?</h1>
+    <p>Let us handle the cleaning.</p>
+    <div class="price-pills">
+      <div class="price-pill">Basic desde <strong>$100</strong></div>
+      <div class="price-pill">Deep desde <strong>$120</strong></div>
+      <div class="price-pill">Extras desde <strong>$20</strong></div>
+    </div>
+    <button class="hero-cta" onclick="showView('booking')">Agenda tu Limpieza →</button>
+  </div>
+
+  <div class="section">
+    <h2 class="section-title">Servicios</h2>
+    <div class="services-grid">
+      <div class="service-card">
+        <div class="service-icon">🧺</div>
+        <div class="service-name">Basic Cleaning</div>
+        <div class="price-row"><span class="rooms">1-2 Beds · 1 Bath</span><span class="amount">$100</span></div>
+        <div class="price-row"><span class="rooms">3 Beds · 2 Baths</span><span class="amount">$130</span></div>
+        <div class="price-row"><span class="rooms">4 Beds · 2 Baths</span><span class="amount">$160</span></div>
+      </div>
+      <div class="service-card deep">
+        <div class="service-icon">✨</div>
+        <div class="service-name">Deep Cleaning</div>
+        <div class="price-row"><span class="rooms">1-2 Beds · 1 Bath</span><span class="amount">$120</span></div>
+        <div class="price-row"><span class="rooms">3 Beds · 2 Baths</span><span class="amount">$160</span></div>
+        <div class="price-row"><span class="rooms">4 Beds · 2 Baths</span><span class="amount">$180</span></div>
+      </div>
+    </div>
+
+    <h2 class="section-title">Extras</h2>
+    <div class="extras-grid">
+      <div class="extra-card"><div class="eicon">🚽</div><div class="ename">Bathroom</div><div class="eprice">$20</div></div>
+      <div class="extra-card"><div class="eicon">🧊</div><div class="ename">Fridge</div><div class="eprice">$20</div></div>
+      <div class="extra-card"><div class="eicon">🪟</div><div class="ename">Windows</div><div class="eprice">$20</div></div>
+      <div class="extra-card"><div class="eicon">📡</div><div class="ename">Microwave</div><div class="eprice">$20</div></div>
+    </div>
+
+    <div style="text-align:center;margin-top:32px;padding:24px;background:var(--white);border-radius:var(--radius);box-shadow:var(--shadow-card);">
+      <p style="font-family:var(--font-display);font-size:18px;font-style:italic;color:var(--blue-deep);margin-bottom:16px;">
+        "Contact us and schedule your<br>cleaning today!"
+      </p>
+      <button class="hero-cta" onclick="showView('booking')" style="font-size:14px;padding:12px 28px;">
+        Reservar Ahora →
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ VIEW: BOOKING ══ -->
+<div id="view-booking" class="view">
+  <div class="booking-wrap">
+
+    <div id="booking-form-wrap">
+      <div class="form-card">
+        <h2>Agenda tu Limpieza</h2>
+        <p>Selecciona fecha, hora y tipo de servicio.</p>
+
+        <!-- Tipo -->
+        <div class="form-group">
+          <label>Tipo de Servicio</label>
+          <div class="service-selector">
+            <div class="service-option selected" id="opt-basic" onclick="selectService('basic')">
+              <div class="so-icon">🧺</div>
+              <div class="so-name">Basic</div>
+              <div class="so-price">desde $100</div>
+            </div>
+            <div class="service-option" id="opt-deep" onclick="selectService('deep')">
+              <div class="so-icon">✨</div>
+              <div class="so-name">Deep</div>
+              <div class="so-price">desde $120</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tamaño -->
+        <div class="form-group">
+          <label>Tamaño del Hogar</label>
+          <select id="tamano" onchange="calcTotal()"></select>
+        </div>
+
+        <!-- Extras -->
+        <div class="form-group">
+          <label>Extras (opcional)</label>
+          <div class="extras-check">
+            <label class="extra-toggle" id="et-bath" onclick="toggleExtra(this)">
+              <input type="checkbox" value="20" data-label="Baño Extra"> 🚽 Baño Extra +$20
+            </label>
+            <label class="extra-toggle" id="et-fridge" onclick="toggleExtra(this)">
+              <input type="checkbox" value="20" data-label="Refrigerador"> 🧊 Refrigerador +$20
+            </label>
+            <label class="extra-toggle" id="et-windows" onclick="toggleExtra(this)">
+              <input type="checkbox" value="20" data-label="Ventanas"> 🪟 Ventanas +$20
+            </label>
+            <label class="extra-toggle" id="et-micro" onclick="toggleExtra(this)">
+              <input type="checkbox" value="20" data-label="Microwave"> 📡 Microwave +$20
+            </label>
+          </div>
+        </div>
+
+        <!-- Fecha -->
+        <div class="form-row">
+          <div class="form-group" style="margin-bottom:0;">
+            <label>Fecha</label>
+            <input type="date" id="fecha" onchange="cargarHorarios()">
+          </div>
+        </div>
+
+        <!-- Horarios -->
+        <div id="horarios-wrap" style="display:none;margin-top:16px;">
+          <div class="form-group" style="margin-bottom:0;">
+            <label>Hora Disponible</label>
+            <div class="time-slots" id="time-slots"></div>
+          </div>
+        </div>
+
+        <!-- Datos personales -->
+        <div class="form-row" style="margin-top:16px;">
+          <div class="form-group" style="margin-bottom:0;">
+            <label>Tu Nombre *</label>
+            <input type="text" id="nombre" placeholder="Nombre completo">
+          </div>
+          <div class="form-group" style="margin-bottom:0;">
+            <label>Teléfono *</label>
+            <input type="tel" id="telefono" placeholder="(956) 555-0000">
+          </div>
+        </div>
+
+        <div class="form-group" style="margin-top:16px;">
+          <label>Dirección Completa *</label>
+          <input type="text" id="direccion" placeholder="123 Main St, McAllen TX 78501">
+        </div>
+
+        <div class="form-group">
+          <label>Notas / Instrucciones especiales</label>
+          <textarea id="notas" rows="3" placeholder="Mascotas en casa, código de acceso, área de interés..."></textarea>
+        </div>
+
+        <!-- Total -->
+        <div class="price-summary">
+          <span>Total estimado:</span>
+          <strong id="total-display">$100</strong>
+        </div>
+
+        <button class="submit-btn" id="submit-btn" onclick="enviarCita()">✓ Confirmar Cita</button>
+      </div>
+    </div>
+
+    <!-- SUCCESS -->
+    <div class="success-screen" id="success-screen">
+      <div class="success-icon">✓</div>
+      <h2>¡Cita Recibida!</h2>
+      <p>Te contactaremos para confirmar los detalles.</p>
+      <div class="success-detail" id="success-detail"></div>
+      <button class="back-btn" onclick="resetForm()">← Agendar Otra Cita</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+(function() {
+  'use strict';
+
+  // ════════════════════════════════
+  //  CONFIGURACIÓN ← EDITA AQUÍ
+  // ════════════════════════════════
+  var WEB_APP_URL = "TU_URL_APPS_SCRIPT";
+  // Ejemplo: "https://script.google.com/macros/s/AKfycb.../exec"
+  // ════════════════════════════════
+
+  // PWA Manifest
+  var manifest = {
+    name: "House Cleaners RGV",
+    short_name: "Cleaners RGV",
+    description: "Agenda tu limpieza profesional en el RGV",
+    start_url: "./",
+    display: "standalone",
+    background_color: "#1a4a7c",
+    theme_color: "#1a5fa8",
+    orientation: "portrait",
+    icons: [
+      { src: "data:image/svg+xml," + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 192 192"><rect width="192" height="192" rx="40" fill="#1a4a7c"/><text y="130" x="96" text-anchor="middle" font-size="120">🧹</text></svg>'), sizes: "192x192", type: "image/svg+xml" },
+      { src: "data:image/svg+xml," + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><rect width="512" height="512" rx="80" fill="#1a4a7c"/><text y="360" x="256" text-anchor="middle" font-size="320">🧹</text></svg>'), sizes: "512x512", type: "image/svg+xml" }
+    ]
+  };
+  var blob = new Blob([JSON.stringify(manifest)], { type: 'application/json' });
+  document.getElementById('manifest-link').href = URL.createObjectURL(blob);
+
+  // Service Worker
+  var swCode = [
+    "var CACHE='hcrgv-client-v1';",
+    "var ASSETS=['./'];",
+    "self.addEventListener('install',function(e){e.waitUntil(caches.open(CACHE).then(function(c){return c.addAll(ASSETS);}));});",
+    "self.addEventListener('fetch',function(e){e.respondWith(caches.match(e.request).then(function(r){return r||fetch(e.request);}));});"
+  ].join('\n');
+  if ('serviceWorker' in navigator) {
+    var swBlob = new Blob([swCode], { type: 'application/javascript' });
+    navigator.serviceWorker.register(URL.createObjectURL(swBlob)).catch(function() {});
+  }
+
+  // Estado global
+  var selectedService = 'basic';
+  var selectedHour    = null;
+  var total           = 100;
+
+  var PRICES = {
+    basic: [100, 130, 160],
+    deep:  [120, 160, 180]
+  };
+
+  var SIZES = ['1-2 Recamaras / 1 Bano', '3 Recamaras / 2 Banos', '4 Recamaras / 2 Banos'];
+
+  // Fijar fecha mínima = hoy
+  var today = new Date().toISOString().split('T')[0];
+  document.getElementById('fecha').min = today;
+
+  // Inicializar selector tamaño
+  updateTamanoOptions();
+
+  // ── Navegación ──────────────────────────────────────────
+  window.showView = function(name) {
+    document.querySelectorAll('.view').forEach(function(v) { v.classList.remove('active'); });
+    document.querySelectorAll('.tab-btn').forEach(function(b) { b.classList.remove('active'); });
+    document.getElementById('view-' + name).classList.add('active');
+    var btns = document.querySelectorAll('.tab-btn');
+    var idx  = ['home', 'booking'].indexOf(name);
+    if (idx >= 0) { btns[idx].classList.add('active'); }
+  };
+
+  // ── Servicio ────────────────────────────────────────────
+  window.selectService = function(type) {
+    selectedService = type;
+    document.getElementById('opt-basic').classList.toggle('selected', type === 'basic');
+    document.getElementById('opt-deep').classList.toggle('selected', type === 'deep');
+    updateTamanoOptions();
+  };
+
+  function updateTamanoOptions() {
+    var prices = PRICES[selectedService];
+    var sel    = document.getElementById('tamano');
+    sel.innerHTML = SIZES.map(function(s, i) {
+      return '<option value="' + prices[i] + '">' + s + ' -- $' + prices[i] + '</option>';
+    }).join('');
+    calcTotal();
+  }
+
+  // ── Extras ──────────────────────────────────────────────
+  window.toggleExtra = function(label) {
+    var cb = label.querySelector('input[type=checkbox]');
+    // El click ya togglea el checkbox antes de llegar aquí sólo si se hace en el input
+    // Para el label completo necesitamos manejarlo manualmente si se clickea fuera del input
+    label.classList.toggle('checked', cb.checked);
+    calcTotal();
+  };
+
+  // ── Cálculo total ────────────────────────────────────────
+  window.calcTotal = function() {
+    var base   = parseInt(document.getElementById('tamano').value) || 100;
+    var extras = 0;
+    document.querySelectorAll('.extras-check input[type=checkbox]').forEach(function(cb) {
+      if (cb.checked) { extras += parseInt(cb.value); }
+    });
+    total = base + extras;
+    document.getElementById('total-display').textContent = '$' + total;
+  };
+
+  // ── Cargar horarios (desde backend o simulado) ───────────
+  window.cargarHorarios = function() {
+    var fecha = document.getElementById('fecha').value;
+    if (!fecha) { return; }
+    selectedHour = null;
+
+    var wrap      = document.getElementById('horarios-wrap');
+    var container = document.getElementById('time-slots');
+    wrap.style.display = 'block';
+    container.innerHTML = '<div class="loading-slots">Verificando disponibilidad...</div>';
+
+    if (WEB_APP_URL !== "TU_URL_APPS_SCRIPT") {
+      fetch(WEB_APP_URL + '?action=disponibilidad&fecha=' + fecha)
+        .then(function(r) { return r.json(); })
+        .then(function(d) { renderSlots(d.ocupadas || []); })
+        .catch(function() { renderSlots([]); });
+    } else {
+      // Simulación demo
+      setTimeout(function() { renderSlots([9, 14]); }, 400);
+    }
+  };
+
+  function renderSlots(ocupadasList) {
+    var container = document.getElementById('time-slots');
+    container.innerHTML = '';
+    var ocupadas = new Set(ocupadasList.map(function(h) { return String(h).replace(':00',''); }));
+
+    for (var h = 8; h <= 18; h++) {
+      var slot = document.createElement('div');
+      var key  = String(h);
+      slot.className = 'time-slot' + (ocupadas.has(key) ? ' occupied' : '');
+      slot.textContent = h + ':00';
+      if (!ocupadas.has(key)) {
+        (function(hour) {
+          slot.onclick = function() {
+            document.querySelectorAll('.time-slot').forEach(function(s) { s.classList.remove('selected'); });
+            slot.classList.add('selected');
+            selectedHour = hour + ':00';
+          };
+        })(h);
+      }
+      container.appendChild(slot);
+    }
+  }
+
+  // ── Enviar cita ──────────────────────────────────────────
+  window.enviarCita = function() {
+    var nombre    = document.getElementById('nombre').value.trim();
+    var telefono  = document.getElementById('telefono').value.trim();
+    var fecha     = document.getElementById('fecha').value;
+    var direccion = document.getElementById('direccion').value.trim();
+    var notas     = document.getElementById('notas').value.trim();
+
+    if (!nombre || !fecha || !selectedHour || !direccion || !telefono) {
+      showToast('Por favor completa todos los campos requeridos', 'error');
+      return;
+    }
+
+    var btn = document.getElementById('submit-btn');
+    btn.disabled    = true;
+    btn.textContent = 'Enviando...';
+
+    var tamanoSel = document.getElementById('tamano');
+    var extrasArr = [];
+    document.querySelectorAll('.extras-check input[type=checkbox]').forEach(function(cb) {
+      if (cb.checked) { extrasArr.push(cb.getAttribute('data-label')); }
+    });
+
+    var datos = {
+      nombre:   nombre,
+      telefono: telefono,
+      fecha:    fecha,
+      hora:     selectedHour,
+      servicio: selectedService,
+      tamano:   tamanoSel.options[tamanoSel.selectedIndex].text,
+      extras:   extrasArr.join(', '),
+      total:    total,
+      notas:    notas,
+      direccion: direccion
+    };
+
+    function onSuccess() {
+      var det = document.getElementById('success-detail');
+      det.innerHTML = '<h4>Resumen de tu cita</h4>' +
+        '<div class="success-row"><span>Cliente</span><span>' + nombre + '</span></div>' +
+        '<div class="success-row"><span>Fecha</span><span>' + fecha + ' a las ' + selectedHour + '</span></div>' +
+        '<div class="success-row"><span>Servicio</span><span>' + (selectedService === 'deep' ? 'Deep Cleaning' : 'Basic Cleaning') + '</span></div>' +
+        '<div class="success-row"><span>Extras</span><span>' + (extrasArr.length > 0 ? extrasArr.join(', ') : 'Ninguno') + '</span></div>' +
+        '<div class="success-row"><span>Total</span><span>$' + total + '</span></div>';
+      document.getElementById('booking-form-wrap').style.display = 'none';
+      document.getElementById('success-screen').classList.add('show');
+    }
+
+    if (WEB_APP_URL === "TU_URL_APPS_SCRIPT") {
+      setTimeout(function() { onSuccess(); btn.disabled = false; btn.textContent = 'Confirmar Cita'; }, 800);
+      return;
+    }
+
+    fetch(WEB_APP_URL, {
+      method: 'POST',
+      body:   JSON.stringify(datos),
+      headers: { 'Content-Type': 'application/json' }
+    })
+    .then(function(r) { return r.json(); })
+    .then(function(d) {
+      if (d.ok) { onSuccess(); }
+      else      { showToast('Error: ' + (d.error || 'Intenta de nuevo'), 'error'); }
+    })
+    .catch(function() { showToast('Error de conexion. Intenta de nuevo.', 'error'); })
+    .finally(function() { btn.disabled = false; btn.textContent = 'Confirmar Cita'; });
+  };
+
+  // ── Reset formulario ─────────────────────────────────────
+  window.resetForm = function() {
+    document.getElementById('booking-form-wrap').style.display = 'block';
+    document.getElementById('success-screen').classList.remove('show');
+    document.getElementById('nombre').value    = '';
+    document.getElementById('telefono').value  = '';
+    document.getElementById('fecha').value     = '';
+    document.getElementById('direccion').value = '';
+    document.getElementById('notas').value     = '';
+    document.getElementById('horarios-wrap').style.display = 'none';
+    document.querySelectorAll('.extra-toggle').forEach(function(et) { et.classList.remove('checked'); et.querySelector('input').checked = false; });
+    selectedHour = null;
+    selectService('basic');
+  };
+
+  // ── Toast ────────────────────────────────────────────────
+  function showToast(msg, type) {
+    var t = document.getElementById('toast');
+    t.textContent = msg;
+    t.className = 'toast' + (type ? ' ' + type : '') + ' show';
+    setTimeout(function() { t.classList.remove('show'); }, 3000);
+  }
+
+})();
+</script>
+</body>
+</html>
