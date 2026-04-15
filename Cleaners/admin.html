@@ -166,7 +166,7 @@ body { font-family: var(--font-body); background: var(--gray-light); color: var(
 }
 .filter-input:focus { border-color: var(--blue-mid); }
 
-/* ── TABLA CITAS1 ── */
+/* ── TABLA CITAS ── */
 .citas-table { background: var(--white); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow-card); }
 .table-header-row {
   display: grid; grid-template-columns: 2fr 1.2fr 1fr 1.6fr 0.8fr 1fr;
@@ -470,10 +470,8 @@ body { font-family: var(--font-body); background: var(--gray-light); color: var(
   }
 
   // ── LOGIN ─────────────────────────────────────────────────
-  // Revisar si ya está logueado
-  if (sessionStorage.getItem('hcrgv_admin') === '1') {
-    activarApp();
-  }
+  // El check de sesión se hace al final del IIFE, después de que
+  // todas las funciones estén definidas.
 
   window.doLogin = function() {
     var pass = document.getElementById('login-pass').value;
@@ -821,6 +819,11 @@ body { font-family: var(--font-body); background: var(--gray-light); color: var(
     t.textContent = msg;
     t.className = 'toast show' + (type === 'success' ? ' success' : type === 'error' ? ' error' : '');
     setTimeout(function() { t.classList.remove('show'); }, 3000);
+  }
+
+  // ── INIT DIFERIDO — después de definir todas las funciones ──
+  if (sessionStorage.getItem('hcrgv_admin') === '1') {
+    activarApp();
   }
 
 })();
