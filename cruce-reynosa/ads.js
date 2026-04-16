@@ -37,7 +37,7 @@ var LUXOR_WA = '19566801536';
 var LUXOR_IMG_URL = 'img/luxor-banner.jpeg';
 
 /** URL de la imagen Petalorosa */
-var PETALOROSA_IMG_URL = 'img/petalorosa.jpeg';
+var PETALOROSA_IMG_URL = 'img/petalorosa.png';
 
 /* — Estado interno ————————————————— */
 var adIdx  = 0;
