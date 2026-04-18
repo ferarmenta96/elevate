@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/x-icon" href="../img/favicon.ico" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Book a Cleaning — Elite Ease Cleaning</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --sage: #7a9e7e;
+      --sage-light: #a8c5a0;
+      --sage-pale: #d4e6d0;
+      --mint: #b8d8ba;
+      --cream: #f7f3ec;
+      --cream-dark: #ede8df;
+      --warm-white: #fdfaf5;
+      --tan: #c9b99a;
+      --tan-dark: #a08060;
+      --green-deep: #3d6b47;
+      --green-text: #2e5235;
+      --gold: #c9a84c;
+      --gold-light: #e8cc7a;
+      --text-dark: #2a2a2a;
+      --text-mid: #5a5a5a;
+      --text-light: #8a8a8a;
+      --error: #c0392b;
+      --success: #27ae60;
+    }
+
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      background-color: var(--warm-white);
+      color: var(--text-dark);
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 300;
+      min-height: 100vh;
+    }
+
+    /* NAV */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 48px;
+      height: 72px;
+      background: rgba(253, 250, 245, 0.94);
+      backdrop-filter: blur(18px);
+      border-bottom: 1px solid rgba(168, 197, 160, 0.25);
+    }
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      text-decoration: none;
+    }
+
+    .nav-logo-img {
+      width: 40px; height: 40px;
+      border-radius: 50%;
+      border: 2px solid var(--sage-light);
+      background: var(--sage-pale);
+      display: flex; align-items: center; justify-content: center;
+      overflow: hidden;
+    }
+
+    .nav-logo-img img { width: 100%; height: 100%; object-fit: cover; }
+    .logo-placeholder { font-family: 'Cormorant Garamond', serif; font-size: 15px; color: var(--green-deep); font-weight: 600; }
+
+    .nav-brand-name { font-family: 'Cormorant Garamond', serif; font-size: 16px; font-weight: 600; color: var(--green-text); }
+
+    .nav-back {
+      display: flex; align-items: center; gap: 8px;
+      color: var(--text-mid); text-decoration: none; font-size: 13px;
+      transition: color 0.2s;
+    }
+    .nav-back:hover { color: var(--green-deep); }
+
+    /* HERO STRIP */
+    .page-hero {
+      background: linear-gradient(135deg, var(--green-deep) 0%, var(--sage) 100%);
+      padding: 72px 80px 60px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .page-hero::before {
+      content: '';
+      position: absolute;
+      width: 500px; height: 500px;
+      border-radius: 50%;
+      border: 1px solid rgba(255,255,255,0.1);
+      top: -100px; right: -100px;
+    }
+
+    .page-hero-tag {
+      font-size: 11px; font-weight: 500; letter-spacing: 0.22em;
+      text-transform: uppercase; color: var(--gold-light); margin-bottom: 14px;
+    }
+
+    .page-hero-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(38px, 4vw, 58px);
+      font-weight: 300; color: #fff; line-height: 1.1;
+    }
+
+    .page-hero-title em { font-style: italic; font-weight: 400; }
+
+    .page-hero-sub {
+      font-size: 15px; color: rgba(255,255,255,0.75);
+      margin-top: 14px; max-width: 500px; line-height: 1.7;
+    }
+
+    /* FORM LAYOUT */
+    .booking-body {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 72px 40px 100px;
+      display: grid;
+      grid-template-columns: 1fr 380px;
+      gap: 56px;
+      align-items: start;
+    }
+
+    /* FORM */
+    .form-card {
+      background: #fff;
+      border: 1px solid var(--sage-pale);
+      border-radius: 24px;
+      padding: 52px;
+      box-shadow: 0 4px 40px rgba(0,0,0,0.05);
+    }
+
+    .form-section-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 22px; font-weight: 600; color: var(--green-text);
+      margin-bottom: 28px; padding-bottom: 16px;
+      border-bottom: 1px solid var(--cream-dark);
+      display: flex; align-items: center; gap: 12px;
+    }
+
+    .form-section-title span { font-size: 20px; }
+
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px; }
+    .form-row.full { grid-template-columns: 1fr; }
+
+    .field { display: flex; flex-direction: column; gap: 8px; margin-bottom: 0; }
+
+    .field label {
+      font-size: 11px; font-weight: 500; letter-spacing: 0.14em;
+      text-transform: uppercase; color: var(--text-mid);
+    }
+
+    .field input,
+    .field select,
+    .field textarea {
+      padding: 14px 18px;
+      border: 1.5px solid var(--cream-dark);
+      border-radius: 12px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px;
+      color: var(--text-dark);
+      background: var(--warm-white);
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      appearance: none;
+    }
+
+    .field input:focus,
+    .field select:focus,
+    .field textarea:focus {
+      border-color: var(--sage);
+      box-shadow: 0 0 0 3px rgba(122, 158, 126, 0.12);
+    }
+
+    .field textarea { resize: vertical; min-height: 100px; }
+
+    .service-options {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .service-opt {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 14px 18px;
+      border: 1.5px solid var(--cream-dark);
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.2s;
+      background: var(--warm-white);
+    }
+
+    .service-opt:hover { border-color: var(--sage-light); background: var(--sage-pale); }
+    .service-opt.selected { border-color: var(--sage); background: var(--sage-pale); }
+
+    .service-opt input { display: none; }
+
+    .service-opt-icon { font-size: 22px; }
+
+    .service-opt-label {
+      font-size: 13px; font-weight: 400; color: var(--text-dark);
+      line-height: 1.3;
+    }
+
+    .form-divider { height: 1px; background: var(--cream-dark); margin: 32px 0; }
+
+    .btn-submit {
+      width: 100%;
+      padding: 18px;
+      background: var(--green-deep);
+      color: #fff;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 15px; font-weight: 500;
+      letter-spacing: 0.06em; text-transform: uppercase;
+      border: none; border-radius: 14px;
+      cursor: pointer;
+      transition: all 0.3s;
+      box-shadow: 0 6px 24px rgba(61, 107, 71, 0.28);
+      margin-top: 8px;
+    }
+
+    .btn-submit:hover {
+      background: var(--sage);
+      transform: translateY(-2px);
+      box-shadow: 0 12px 36px rgba(61, 107, 71, 0.32);
+    }
+
+    /* SUCCESS STATE */
+    .success-overlay {
+      display: none;
+      text-align: center;
+      padding: 60px 20px;
+    }
+
+    .success-overlay.show { display: block; }
+    .form-content.hide { display: none; }
+
+    .success-icon { font-size: 64px; margin-bottom: 24px; }
+
+    .success-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 36px; font-weight: 600; color: var(--green-text);
+      margin-bottom: 14px;
+    }
+
+    .success-msg { font-size: 15px; color: var(--text-mid); line-height: 1.7; }
+
+    /* SIDEBAR */
+    .sidebar { display: flex; flex-direction: column; gap: 24px; }
+
+    .sidebar-card {
+      background: #fff;
+      border: 1px solid var(--sage-pale);
+      border-radius: 20px;
+      padding: 32px;
+      box-shadow: 0 4px 30px rgba(0,0,0,0.04);
+    }
+
+    .sidebar-card-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 20px; font-weight: 600; color: var(--green-text);
+      margin-bottom: 20px;
+    }
+
+    .sidebar-item {
+      display: flex; align-items: flex-start; gap: 14px;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--cream-dark);
+    }
+
+    .sidebar-item:last-child { border-bottom: none; }
+
+    .sidebar-item-icon { font-size: 20px; flex-shrink: 0; }
+
+    .sidebar-item-text { font-size: 13.5px; color: var(--text-mid); line-height: 1.55; }
+    .sidebar-item-title { font-weight: 500; color: var(--text-dark); margin-bottom: 2px; font-size: 14px; }
+
+    .sidebar-contact-link {
+      display: flex; align-items: center; gap: 12px;
+      padding: 14px 18px;
+      background: var(--sage-pale);
+      border-radius: 12px;
+      text-decoration: none;
+      margin-bottom: 12px;
+      transition: background 0.2s;
+    }
+
+    .sidebar-contact-link:hover { background: var(--mint); }
+    .sidebar-contact-link-icon { font-size: 20px; }
+    .sidebar-contact-label { font-size: 11px; color: var(--sage); letter-spacing: 0.12em; text-transform: uppercase; }
+    .sidebar-contact-value { font-size: 15px; font-weight: 500; color: var(--green-text); }
+
+    .offer-badge {
+      background: linear-gradient(135deg, var(--gold), var(--gold-light));
+      border-radius: 16px;
+      padding: 24px;
+      text-align: center;
+    }
+
+    .offer-badge-value {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 42px; font-weight: 700; color: #fff; line-height: 1;
+    }
+
+    .offer-badge-label { font-size: 13px; color: rgba(255,255,255,0.85); margin-top: 6px; }
+    .offer-badge-fine { font-size: 10px; color: rgba(255,255,255,0.6); margin-top: 8px; }
+
+    @media (max-width: 900px) {
+      nav { padding: 0 20px; }
+      .page-hero { padding: 60px 24px; }
+      .booking-body { grid-template-columns: 1fr; padding: 40px 20px 80px; }
+      .form-card { padding: 32px 24px; }
+      .form-row { grid-template-columns: 1fr; }
+      .service-options { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="../index.html" class="nav-logo">
+      <div class="nav-logo-img">
+        <img src="../img/logo_nav.png" alt="Logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+        <span class="logo-placeholder" style="display:none;">EE</span>
+      </div>
+      <span class="nav-brand-name">Elite Ease Cleaning</span>
+    </a>
+    <a href="../index.html" class="nav-back">
+      ← Back to Home
+    </a>
+  </nav>
+
+  <div class="page-hero">
+    <div class="page-hero-tag">Schedule Your Service</div>
+    <h1 class="page-hero-title">Book a <em>Cleaning</em></h1>
+    <p class="page-hero-sub">Fill out the form below and we'll confirm your appointment within 24 hours. Free quotes always available.</p>
+  </div>
+
+  <div class="booking-body">
+
+    <!-- FORM -->
+    <div class="form-card">
+
+      <div class="success-overlay" id="successOverlay">
+        <div class="success-icon">🌿</div>
+        <div class="success-title">Booking Received!</div>
+        <div class="success-msg">Thank you! We'll review your request and confirm your appointment within 24 hours. Check your email for details.</div>
+      </div>
+
+      <div class="form-content" id="formContent">
+
+        <div class="form-section-title">
+          <span>👤</span> Your Information
+        </div>
+
+        <div class="form-row">
+          <div class="field">
+            <label>First Name</label>
+            <input type="text" id="firstName" placeholder="Jane" />
+          </div>
+          <div class="field">
+            <label>Last Name</label>
+            <input type="text" id="lastName" placeholder="Smith" />
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="field">
+            <label>Phone Number</label>
+            <input type="tel" id="phone" placeholder="(512) 000-0000" />
+          </div>
+          <div class="field">
+            <label>Email Address</label>
+            <input type="email" id="email" placeholder="you@email.com" />
+          </div>
+        </div>
+
+        <div class="form-row full">
+          <div class="field">
+            <label>Service Address</label>
+            <input type="text" id="address" placeholder="123 Main St, Austin, TX 78701" />
+          </div>
+        </div>
+
+        <div class="form-divider"></div>
+
+        <div class="form-section-title">
+          <span>🧹</span> Service Details
+        </div>
+
+        <div class="service-options" id="serviceOptions">
+          <label class="service-opt" onclick="selectService(this)">
+            <input type="radio" name="service" value="full" />
+            <span class="service-opt-icon">🏠</span>
+            <span class="service-opt-label">Full Home Cleaning</span>
+          </label>
+          <label class="service-opt" onclick="selectService(this)">
+            <input type="radio" name="service" value="deep" />
+            <span class="service-opt-icon">🫧</span>
+            <span class="service-opt-label">Deep Cleaning</span>
+          </label>
+          <label class="service-opt" onclick="selectService(this)">
+            <input type="radio" name="service" value="moveinout" />
+            <span class="service-opt-icon">📦</span>
+            <span class="service-opt-label">Move-In / Move-Out</span>
+          </label>
+          <label class="service-opt" onclick="selectService(this)">
+            <input type="radio" name="service" value="recurring" />
+            <span class="service-opt-icon">📅</span>
+            <span class="service-opt-label">Recurring Service</span>
+          </label>
+          <label class="service-opt" onclick="selectService(this)">
+            <input type="radio" name="service" value="airbnb" />
+            <span class="service-opt-icon">🏨</span>
+            <span class="service-opt-label">Airbnb / Vacation Rental</span>
+          </label>
+          <label class="service-opt" onclick="selectService(this)">
+            <input type="radio" name="service" value="commercial" />
+            <span class="service-opt-icon">🏢</span>
+            <span class="service-opt-label">Commercial Office</span>
+          </label>
+        </div>
+
+        <div class="form-row">
+          <div class="field">
+            <label>Preferred Date</label>
+            <input type="date" id="date" />
+          </div>
+          <div class="field">
+            <label>Preferred Time</label>
+            <select id="time">
+              <option value="">Select a time</option>
+              <option>8:00 AM – 10:00 AM</option>
+              <option>10:00 AM – 12:00 PM</option>
+              <option>12:00 PM – 2:00 PM</option>
+              <option>2:00 PM – 4:00 PM</option>
+              <option>4:00 PM – 6:00 PM</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="field">
+            <label>Home Size (sq ft)</label>
+            <select id="size">
+              <option value="">Select size</option>
+              <option>Under 800 sq ft</option>
+              <option>800 – 1,200 sq ft</option>
+              <option>1,200 – 1,800 sq ft</option>
+              <option>1,800 – 2,500 sq ft</option>
+              <option>2,500 – 3,500 sq ft</option>
+              <option>Over 3,500 sq ft</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Bedrooms / Bathrooms</label>
+            <select id="rooms">
+              <option value="">Select</option>
+              <option>1 Bed / 1 Bath</option>
+              <option>2 Bed / 1 Bath</option>
+              <option>2 Bed / 2 Bath</option>
+              <option>3 Bed / 2 Bath</option>
+              <option>4 Bed / 2-3 Bath</option>
+              <option>5+ Bed / 3+ Bath</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-row full">
+          <div class="field">
+            <label>Additional Notes</label>
+            <textarea id="notes" placeholder="Any special requests, pets, access instructions, or areas to focus on…"></textarea>
+          </div>
+        </div>
+
+        <button class="btn-submit" onclick="submitBooking()">
+          Request Booking →
+        </button>
+
+      </div>
+    </div>
+
+    <!-- SIDEBAR -->
+    <div class="sidebar">
+
+      <div class="sidebar-card">
+        <div class="sidebar-card-title">Contact Us Directly</div>
+        <a href="tel:7374779406" class="sidebar-contact-link">
+          <span class="sidebar-contact-link-icon">📞</span>
+          <div>
+            <div class="sidebar-contact-label">Call or Text</div>
+            <div class="sidebar-contact-value">(737) 477-9406</div>
+          </div>
+        </a>
+        <a href="mailto:jasmine.jm67@gmail.com" class="sidebar-contact-link">
+          <span class="sidebar-contact-link-icon">✉️</span>
+          <div>
+            <div class="sidebar-contact-label">Email</div>
+            <div class="sidebar-contact-value">jasmine.jm67@gmail.com</div>
+          </div>
+        </a>
+      </div>
+
+      <div class="sidebar-card">
+        <div class="offer-badge">
+          <div class="offer-badge-value">15% OFF</div>
+          <div class="offer-badge-label">New Commercial Contracts</div>
+          <div class="offer-badge-fine">First-year contracts only. Ask when booking.</div>
+        </div>
+      </div>
+
+      <div class="sidebar-card">
+        <div class="sidebar-card-title">What to Expect</div>
+        <div class="sidebar-item">
+          <div class="sidebar-item-icon">✅</div>
+          <div>
+            <div class="sidebar-item-title">Confirmation within 24 hrs</div>
+            <div class="sidebar-item-text">We'll reach out to confirm your appointment and answer any questions.</div>
+          </div>
+        </div>
+        <div class="sidebar-item">
+          <div class="sidebar-item-icon">💰</div>
+          <div>
+            <div class="sidebar-item-title">Free Quote Included</div>
+            <div class="sidebar-item-text">No surprise charges. Pricing is discussed before any service begins.</div>
+          </div>
+        </div>
+        <div class="sidebar-item">
+          <div class="sidebar-item-icon">🛡️</div>
+          <div>
+            <div class="sidebar-item-title">Fully Insured & Bonded</div>
+            <div class="sidebar-item-text">Your home is in safe hands from start to finish.</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+  <script>
+    function selectService(el) {
+      document.querySelectorAll('.service-opt').forEach(o => o.classList.remove('selected'));
+      el.classList.add('selected');
+      el.querySelector('input').checked = true;
+    }
+
+    // Set min date to today
+    const dateInput = document.getElementById('date');
+    const today = new Date().toISOString().split('T')[0];
+    dateInput.min = today;
+
+    function submitBooking() {
+      const firstName = document.getElementById('firstName').value.trim();
+      const phone = document.getElementById('phone').value.trim();
+      const address = document.getElementById('address').value.trim();
+      const selected = document.querySelector('.service-opt.selected');
+
+      if (!firstName || !phone || !address || !selected) {
+        alert('Please fill in your name, phone, address, and select a service type.');
+        return;
+      }
+
+      document.getElementById('formContent').classList.add('hide');
+      document.getElementById('successOverlay').classList.add('show');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,1118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/x-icon" href="img/favicon.ico" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Elite Ease Cleaning — Professional Home Cleaning</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&family=Playfair+Display:ital,wght@0,700;1,400&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --sage: #7a9e7e;
+      --sage-light: #a8c5a0;
+      --sage-pale: #d4e6d0;
+      --mint: #b8d8ba;
+      --cream: #f7f3ec;
+      --cream-dark: #ede8df;
+      --warm-white: #fdfaf5;
+      --tan: #c9b99a;
+      --tan-dark: #a08060;
+      --green-deep: #3d6b47;
+      --green-text: #2e5235;
+      --gold: #c9a84c;
+      --gold-light: #e8cc7a;
+      --text-dark: #2a2a2a;
+      --text-mid: #5a5a5a;
+      --text-light: #8a8a8a;
+    }
+
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background-color: var(--warm-white);
+      color: var(--text-dark);
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 300;
+      overflow-x: hidden;
+    }
+
+    /* ─── NOISE TEXTURE OVERLAY ─── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 1000;
+      opacity: 0.4;
+    }
+
+    /* ─── NAV ─── */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 48px;
+      height: 72px;
+      background: rgba(253, 250, 245, 0.88);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border-bottom: 1px solid rgba(168, 197, 160, 0.25);
+    }
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      text-decoration: none;
+    }
+
+    .nav-logo-img {
+      width: 46px;
+      height: 46px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid var(--sage-light);
+      background: var(--sage-pale);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .nav-logo-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .nav-logo-img .logo-placeholder {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 18px;
+      color: var(--green-deep);
+      font-weight: 600;
+      line-height: 1;
+    }
+
+    .nav-brand {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .nav-brand-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 17px;
+      font-weight: 600;
+      color: var(--green-text);
+      letter-spacing: 0.04em;
+      line-height: 1.1;
+    }
+
+    .nav-brand-sub {
+      font-size: 10px;
+      color: var(--tan-dark);
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      font-weight: 400;
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .btn-booking {
+      padding: 10px 28px;
+      background: var(--green-deep);
+      color: #fff;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      border: none;
+      border-radius: 40px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.3s, transform 0.2s, box-shadow 0.3s;
+      box-shadow: 0 4px 20px rgba(61, 107, 71, 0.25);
+    }
+
+    .btn-booking:hover {
+      background: var(--sage);
+      transform: translateY(-1px);
+      box-shadow: 0 8px 28px rgba(61, 107, 71, 0.3);
+    }
+
+    .btn-admin {
+      padding: 10px 24px;
+      background: transparent;
+      color: var(--tan-dark);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 13px;
+      font-weight: 400;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      border: 1px solid var(--tan);
+      border-radius: 40px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.3s;
+    }
+
+    .btn-admin:hover {
+      background: var(--cream-dark);
+      border-color: var(--tan-dark);
+      color: var(--text-dark);
+    }
+
+    /* ─── HERO ─── */
+    .hero {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      padding-top: 72px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-bg-pattern {
+      position: absolute;
+      inset: 0;
+      background: 
+        radial-gradient(ellipse 60% 60% at 80% 20%, rgba(168,197,160,0.18) 0%, transparent 60%),
+        radial-gradient(ellipse 40% 50% at 10% 80%, rgba(212,230,208,0.22) 0%, transparent 55%),
+        radial-gradient(ellipse 30% 30% at 50% 50%, rgba(201,168,76,0.04) 0%, transparent 60%);
+      pointer-events: none;
+    }
+
+    .hero-left {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 80px 60px 80px 80px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .hero-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 24px;
+      animation: fadeUp 0.8s ease both;
+    }
+
+    .hero-eyebrow-line {
+      width: 40px;
+      height: 1px;
+      background: var(--sage);
+    }
+
+    .hero-eyebrow-text {
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--sage);
+    }
+
+    .hero-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(48px, 5.5vw, 72px);
+      font-weight: 300;
+      line-height: 1.08;
+      color: var(--green-text);
+      margin-bottom: 8px;
+      animation: fadeUp 0.8s ease 0.1s both;
+    }
+
+    .hero-title em {
+      font-style: italic;
+      color: var(--sage);
+    }
+
+    .hero-title-bold {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(48px, 5.5vw, 72px);
+      font-weight: 600;
+      line-height: 1.08;
+      color: var(--green-text);
+      margin-bottom: 28px;
+      animation: fadeUp 0.8s ease 0.15s both;
+    }
+
+    .hero-description {
+      font-size: 16px;
+      line-height: 1.75;
+      color: var(--text-mid);
+      max-width: 420px;
+      margin-bottom: 44px;
+      animation: fadeUp 0.8s ease 0.2s both;
+    }
+
+    .hero-cta-group {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      animation: fadeUp 0.8s ease 0.3s both;
+    }
+
+    .btn-primary {
+      padding: 16px 40px;
+      background: var(--green-deep);
+      color: #fff;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.3s;
+      box-shadow: 0 8px 32px rgba(61, 107, 71, 0.3);
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .btn-primary:hover {
+      background: var(--sage);
+      transform: translateY(-2px);
+      box-shadow: 0 14px 40px rgba(61, 107, 71, 0.35);
+    }
+
+    .btn-primary svg { transition: transform 0.3s; }
+    .btn-primary:hover svg { transform: translateX(4px); }
+
+    .hero-contact-inline {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .hero-contact-label {
+      font-size: 10px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--text-light);
+    }
+
+    .hero-contact-phone {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 20px;
+      font-weight: 600;
+      color: var(--green-text);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .hero-contact-phone:hover { color: var(--sage); }
+
+    .hero-right {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .hero-visual-bg {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, var(--sage-pale) 0%, var(--mint) 50%, var(--cream-dark) 100%);
+    }
+
+    .hero-decorative-circle {
+      position: absolute;
+      width: 420px;
+      height: 420px;
+      border-radius: 50%;
+      border: 1px solid rgba(168, 197, 160, 0.4);
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    .hero-decorative-circle-2 {
+      position: absolute;
+      width: 300px;
+      height: 300px;
+      border-radius: 50%;
+      border: 1px solid rgba(168, 197, 160, 0.3);
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    .hero-badge {
+      position: absolute;
+      bottom: 60px;
+      right: 50px;
+      background: rgba(253,250,245,0.95);
+      border: 1px solid var(--sage-pale);
+      border-radius: 16px;
+      padding: 18px 24px;
+      backdrop-filter: blur(12px);
+      box-shadow: 0 8px 40px rgba(0,0,0,0.08);
+      animation: fadeUp 1s ease 0.5s both;
+    }
+
+    .hero-badge-value {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 36px;
+      font-weight: 700;
+      color: var(--green-deep);
+      line-height: 1;
+    }
+
+    .hero-badge-label {
+      font-size: 11px;
+      color: var(--text-mid);
+      letter-spacing: 0.05em;
+      margin-top: 4px;
+    }
+
+    .hero-badge-stars {
+      color: var(--gold);
+      font-size: 14px;
+      margin-top: 6px;
+      letter-spacing: 2px;
+    }
+
+    .hero-offer-tag {
+      position: absolute;
+      top: 50px;
+      left: 40px;
+      background: var(--gold);
+      color: #fff;
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 10px 18px;
+      border-radius: 30px;
+      box-shadow: 0 4px 20px rgba(201, 168, 76, 0.4);
+      animation: fadeUp 0.8s ease 0.4s both;
+    }
+
+    .hero-illustration {
+      position: relative;
+      z-index: 2;
+      font-size: 120px;
+      text-align: center;
+      line-height: 1;
+      animation: float 6s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-16px); }
+    }
+
+    /* ─── SERVICES SECTION ─── */
+    .services {
+      padding: 120px 80px;
+      background: var(--cream);
+      position: relative;
+    }
+
+    .services::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--sage-light), transparent);
+    }
+
+    .section-header {
+      text-align: center;
+      margin-bottom: 72px;
+    }
+
+    .section-tag {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--sage);
+      margin-bottom: 16px;
+    }
+
+    .section-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(38px, 4vw, 54px);
+      font-weight: 300;
+      color: var(--green-text);
+      line-height: 1.15;
+    }
+
+    .section-title strong {
+      font-weight: 600;
+      font-style: italic;
+    }
+
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 24px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .service-card {
+      background: var(--warm-white);
+      border: 1px solid rgba(168, 197, 160, 0.3);
+      border-radius: 20px;
+      padding: 36px 28px;
+      transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .service-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, var(--sage-pale), transparent);
+      opacity: 0;
+      transition: opacity 0.4s;
+    }
+
+    .service-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 24px 60px rgba(122, 158, 126, 0.18);
+      border-color: var(--sage-light);
+    }
+
+    .service-card:hover::before { opacity: 1; }
+
+    .service-icon {
+      font-size: 36px;
+      margin-bottom: 20px;
+      display: block;
+      position: relative;
+      z-index: 1;
+    }
+
+    .service-card-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 22px;
+      font-weight: 600;
+      color: var(--green-text);
+      margin-bottom: 10px;
+      line-height: 1.2;
+      position: relative;
+      z-index: 1;
+    }
+
+    .service-card-desc {
+      font-size: 13.5px;
+      color: var(--text-mid);
+      line-height: 1.65;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ─── WHY US ─── */
+    .why-us {
+      padding: 120px 80px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: center;
+      max-width: 1300px;
+      margin: 0 auto;
+    }
+
+    .why-left { position: relative; }
+
+    .why-visual {
+      background: linear-gradient(145deg, var(--sage-pale), var(--mint));
+      border-radius: 28px;
+      height: 500px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .why-visual-emoji { font-size: 100px; }
+
+    .why-stat-card {
+      position: absolute;
+      background: var(--warm-white);
+      border: 1px solid var(--sage-pale);
+      border-radius: 16px;
+      padding: 20px 24px;
+      box-shadow: 0 12px 40px rgba(0,0,0,0.08);
+    }
+
+    .why-stat-card.one { top: 30px; right: -30px; }
+    .why-stat-card.two { bottom: 40px; left: -30px; }
+
+    .why-stat-num {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 32px;
+      font-weight: 700;
+      color: var(--green-deep);
+      line-height: 1;
+    }
+
+    .why-stat-label { font-size: 12px; color: var(--text-mid); margin-top: 4px; }
+
+    .why-right {}
+
+    .why-list { list-style: none; margin-top: 40px; }
+
+    .why-item {
+      display: flex;
+      gap: 20px;
+      padding: 24px 0;
+      border-bottom: 1px solid var(--cream-dark);
+    }
+
+    .why-item:last-child { border-bottom: none; }
+
+    .why-item-icon {
+      width: 44px;
+      height: 44px;
+      background: var(--sage-pale);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      flex-shrink: 0;
+    }
+
+    .why-item-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 19px;
+      font-weight: 600;
+      color: var(--green-text);
+      margin-bottom: 4px;
+    }
+
+    .why-item-desc { font-size: 13.5px; color: var(--text-mid); line-height: 1.6; }
+
+    /* ─── SERVICE AREAS ─── */
+    .areas {
+      padding: 100px 80px;
+      background: var(--green-deep);
+      position: relative;
+      overflow: hidden;
+      text-align: center;
+    }
+
+    .areas::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: 
+        radial-gradient(ellipse 50% 80% at 0% 50%, rgba(168,197,160,0.12) 0%, transparent 55%),
+        radial-gradient(ellipse 40% 60% at 100% 50%, rgba(201,168,76,0.08) 0%, transparent 55%);
+      pointer-events: none;
+    }
+
+    .areas .section-tag { color: var(--gold-light); }
+
+    .areas .section-title { color: #fff; }
+
+    .areas-grid {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 16px;
+      margin-top: 56px;
+      max-width: 800px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .area-pill {
+      padding: 12px 28px;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.18);
+      border-radius: 40px;
+      color: rgba(255,255,255,0.9);
+      font-size: 14px;
+      letter-spacing: 0.04em;
+      backdrop-filter: blur(8px);
+      transition: all 0.3s;
+    }
+
+    .area-pill:hover {
+      background: rgba(168,197,160,0.2);
+      border-color: var(--sage-light);
+      transform: translateY(-2px);
+    }
+
+    /* ─── OFFER BANNER ─── */
+    .offer {
+      margin: 80px;
+      background: linear-gradient(135deg, var(--gold) 0%, var(--gold-light) 50%, var(--gold) 100%);
+      border-radius: 28px;
+      padding: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .offer::before {
+      content: '';
+      position: absolute;
+      width: 300px;
+      height: 300px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.08);
+      top: -80px;
+      right: 100px;
+    }
+
+    .offer-text {}
+
+    .offer-eyebrow {
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.75);
+      margin-bottom: 12px;
+    }
+
+    .offer-headline {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 48px;
+      font-weight: 700;
+      color: #fff;
+      line-height: 1.1;
+    }
+
+    .offer-sub {
+      font-size: 15px;
+      color: rgba(255,255,255,0.85);
+      margin-top: 12px;
+      max-width: 400px;
+    }
+
+    .btn-offer {
+      padding: 18px 44px;
+      background: #fff;
+      color: var(--tan-dark);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.3s;
+      white-space: nowrap;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+      flex-shrink: 0;
+    }
+
+    .btn-offer:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 14px 40px rgba(0,0,0,0.2);
+    }
+
+    /* ─── CONTACT ─── */
+    .contact {
+      padding: 120px 80px;
+      background: var(--cream);
+      text-align: center;
+    }
+
+    .contact-cards {
+      display: flex;
+      justify-content: center;
+      gap: 24px;
+      margin-top: 56px;
+    }
+
+    .contact-card {
+      background: var(--warm-white);
+      border: 1px solid var(--sage-pale);
+      border-radius: 20px;
+      padding: 44px 52px;
+      flex: 1;
+      max-width: 360px;
+      transition: all 0.3s;
+    }
+
+    .contact-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 20px 50px rgba(122, 158, 126, 0.14);
+      border-color: var(--sage-light);
+    }
+
+    .contact-card-icon { font-size: 36px; margin-bottom: 20px; }
+
+    .contact-card-label {
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--sage);
+      margin-bottom: 12px;
+    }
+
+    .contact-card-value {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 24px;
+      font-weight: 600;
+      color: var(--green-text);
+      text-decoration: none;
+      display: block;
+      transition: color 0.2s;
+    }
+
+    .contact-card-value:hover { color: var(--sage); }
+
+    /* ─── FOOTER ─── */
+    footer {
+      background: var(--green-text);
+      color: rgba(255,255,255,0.6);
+      padding: 50px 80px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .footer-brand {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 20px;
+      font-weight: 600;
+      color: rgba(255,255,255,0.9);
+    }
+
+    .footer-tagline { font-size: 12px; color: rgba(255,255,255,0.45); margin-top: 4px; }
+
+    .footer-links { display: flex; gap: 28px; }
+
+    .footer-links a {
+      color: rgba(255,255,255,0.55);
+      text-decoration: none;
+      font-size: 13px;
+      letter-spacing: 0.04em;
+      transition: color 0.2s;
+    }
+
+    .footer-links a:hover { color: var(--sage-light); }
+
+    /* ─── ANIMATIONS ─── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 1024px) {
+      nav { padding: 0 24px; }
+      .hero { grid-template-columns: 1fr; }
+      .hero-right { height: 340px; }
+      .hero-left { padding: 60px 32px; }
+      .services { padding: 80px 32px; }
+      .services-grid { grid-template-columns: repeat(2, 1fr); }
+      .why-us { grid-template-columns: 1fr; padding: 80px 32px; }
+      .areas { padding: 80px 32px; }
+      .offer { margin: 40px 32px; flex-direction: column; gap: 32px; text-align: center; }
+      .contact { padding: 80px 32px; }
+      .contact-cards { flex-direction: column; align-items: center; }
+      footer { flex-direction: column; gap: 24px; text-align: center; padding: 40px 32px; }
+    }
+
+    @media (max-width: 600px) {
+      .services-grid { grid-template-columns: 1fr; }
+      .hero-title, .hero-title-bold { font-size: 38px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <a href="index.html" class="nav-logo">
+      <div class="nav-logo-img">
+        <img src="img/logo.png" alt="Elite Ease Cleaning Logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+        <span class="logo-placeholder" style="display:none;">EE</span>
+      </div>
+      <div class="nav-brand">
+        <span class="nav-brand-name">Elite Ease Cleaning</span>
+        <span class="nav-brand-sub">Professional Home Cleaning</span>
+      </div>
+    </a>
+    <div class="nav-actions">
+      <a href="admin/index.html" class="btn-admin">Admin</a>
+      <a href="booking/index.html" class="btn-booking">
+        Book Now &nbsp;→
+      </a>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-bg-pattern"></div>
+
+    <div class="hero-left">
+      <div class="hero-eyebrow">
+        <span class="hero-eyebrow-line"></span>
+        <span class="hero-eyebrow-text">Austin & Surrounding Areas</span>
+      </div>
+      <h1 class="hero-title">Professional</h1>
+      <h1 class="hero-title-bold"><em>Home Cleaning</em></h1>
+      <p class="hero-description">
+        Reliable, thorough, and done with care — Elite Ease Cleaning brings your sister's touch to every room. Serving Austin, San Marcos, Kyle, Buda, Round Rock & beyond.
+      </p>
+      <div class="hero-cta-group">
+        <a href="booking/index.html" class="btn-primary">
+          Book a Cleaning
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8H13M8 3L13 8L8 13" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+        <div class="hero-contact-inline">
+          <span class="hero-contact-label">Free Quote</span>
+          <a href="tel:7374779406" class="hero-contact-phone">(737) 477-9406</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="hero-right">
+      <div class="hero-visual-bg"></div>
+      <div class="hero-decorative-circle"></div>
+      <div class="hero-decorative-circle-2"></div>
+      <div class="hero-illustration" style="font-size:0;">
+        <img src="img/logo_hero.png" alt="Elite Ease Cleaning Team" style="width:340px;height:340px;object-fit:contain;filter:drop-shadow(0 20px 40px rgba(61,107,71,0.25));" />
+      </div>
+      <div class="hero-badge">
+        <div class="hero-badge-value">100%</div>
+        <div class="hero-badge-label">Satisfaction Guaranteed</div>
+        <div class="hero-badge-stars">★★★★★</div>
+      </div>
+      <div class="hero-offer-tag">15% OFF Commercial Contracts</div>
+    </div>
+  </section>
+
+  <!-- SERVICES -->
+  <section class="services">
+    <div class="section-header reveal">
+      <div class="section-tag">What We Offer</div>
+      <h2 class="section-title">Our <strong>Cleaning Services</strong></h2>
+    </div>
+    <div class="services-grid">
+      <div class="service-card reveal">
+        <span class="service-icon">🏠</span>
+        <h3 class="service-card-title">Full Home Cleaning</h3>
+        <p class="service-card-desc">General tidying, dusting, and vacuuming throughout every room of your home.</p>
+      </div>
+      <div class="service-card reveal">
+        <span class="service-icon">🫧</span>
+        <h3 class="service-card-title">Deep Cleaning</h3>
+        <p class="service-card-desc">Kitchens, bathrooms, baseboards — every corner spotless from top to bottom.</p>
+      </div>
+      <div class="service-card reveal">
+        <span class="service-icon">📦</span>
+        <h3 class="service-card-title">Move-In / Move-Out</h3>
+        <p class="service-card-desc">Transition-ready cleaning for new tenants, homeowners, and landlords.</p>
+      </div>
+      <div class="service-card reveal">
+        <span class="service-icon">📅</span>
+        <h3 class="service-card-title">Weekly / Bi-Weekly</h3>
+        <p class="service-card-desc">Flexible recurring schedules tailored to your lifestyle and routine.</p>
+      </div>
+      <div class="service-card reveal">
+        <span class="service-icon">🌱</span>
+        <h3 class="service-card-title">Eco-Friendly Products</h3>
+        <p class="service-card-desc">Safe for your family, pets, and the planet. Green cleaning available on request.</p>
+      </div>
+      <div class="service-card reveal">
+        <span class="service-icon">✏️</span>
+        <h3 class="service-card-title">Customized Plans</h3>
+        <p class="service-card-desc">Every home is different. We create plans that match your specific needs.</p>
+      </div>
+      <div class="service-card reveal">
+        <span class="service-icon">🏨</span>
+        <h3 class="service-card-title">Airbnb / Vacation Rental</h3>
+        <p class="service-card-desc">Change-over service, restocking, and guest-ready prep between bookings.</p>
+      </div>
+      <div class="service-card reveal">
+        <span class="service-icon">🏢</span>
+        <h3 class="service-card-title">Commercial Office</h3>
+        <p class="service-card-desc">Customized janitorial plans for professional workspaces and offices.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHY US -->
+  <section style="padding: 0 0 40px; background: var(--warm-white);">
+    <div class="why-us">
+      <div class="why-left reveal">
+        <div class="why-visual">
+          <span class="why-visual-emoji">🤝</span>
+          <div class="why-stat-card one">
+            <div class="why-stat-num">5★</div>
+            <div class="why-stat-label">Rated Service</div>
+          </div>
+          <div class="why-stat-card two">
+            <div class="why-stat-num">Insured</div>
+            <div class="why-stat-label">& Fully Bonded</div>
+          </div>
+        </div>
+      </div>
+      <div class="why-right reveal">
+        <div class="section-tag">Why Choose Us</div>
+        <h2 class="section-title" style="margin-top:12px;">The <strong>Elite Difference</strong></h2>
+        <ul class="why-list">
+          <li class="why-item">
+            <div class="why-item-icon">⏰</div>
+            <div>
+              <div class="why-item-title">Reliable & Punctual</div>
+              <div class="why-item-desc">We show up on time, every time. Your schedule matters to us.</div>
+            </div>
+          </li>
+          <li class="why-item">
+            <div class="why-item-icon">✨</div>
+            <div>
+              <div class="why-item-title">Experienced & Detailed</div>
+              <div class="why-item-desc">Trained to notice what others miss. Meticulous attention to every surface.</div>
+            </div>
+          </li>
+          <li class="why-item">
+            <div class="why-item-icon">💚</div>
+            <div>
+              <div class="why-item-title">Friendly & Trustworthy</div>
+              <div class="why-item-desc">Your sister's touch — warm, personal, and truly invested in your home.</div>
+            </div>
+          </li>
+          <li class="why-item">
+            <div class="why-item-icon">🛡️</div>
+            <div>
+              <div class="why-item-title">Fully Insured & Bonded</div>
+              <div class="why-item-desc">Complete peace of mind. Your home and belongings are always protected.</div>
+            </div>
+          </li>
+          <li class="why-item">
+            <div class="why-item-icon">🏆</div>
+            <div>
+              <div class="why-item-title">100% Satisfaction Guaranteed</div>
+              <div class="why-item-desc">Not happy? We'll make it right — no questions asked.</div>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- AREAS -->
+  <section class="areas">
+    <div class="section-tag">Where We Work</div>
+    <h2 class="section-title reveal">Service <strong>Areas</strong></h2>
+    <div class="areas-grid reveal">
+      <span class="area-pill">Austin (Central)</span>
+      <span class="area-pill">Austin (Greater)</span>
+      <span class="area-pill">San Marcos</span>
+      <span class="area-pill">Kyle</span>
+      <span class="area-pill">Buda</span>
+      <span class="area-pill">Round Rock</span>
+      <span class="area-pill">& Surrounding Areas</span>
+    </div>
+  </section>
+
+  <!-- OFFER BANNER -->
+  <div class="offer reveal">
+    <div class="offer-text">
+      <div class="offer-eyebrow">Limited Time Offer</div>
+      <div class="offer-headline">15% OFF<br/>Commercial Contracts</div>
+      <div class="offer-sub">Valid for first-year commercial cleaning contracts only. Contact us today to lock in this exclusive rate.</div>
+    </div>
+    <a href="booking/index.html" class="btn-offer">Claim Your Discount →</a>
+  </div>
+
+  <!-- CONTACT -->
+  <section class="contact">
+    <div class="section-tag">Get In Touch</div>
+    <h2 class="section-title reveal">Contact Us for a <strong>Free Quote</strong></h2>
+    <div class="contact-cards">
+      <div class="contact-card reveal">
+        <div class="contact-card-icon">📞</div>
+        <div class="contact-card-label">Call or Text</div>
+        <a href="tel:7374779406" class="contact-card-value">(737) 477-9406</a>
+      </div>
+      <div class="contact-card reveal">
+        <div class="contact-card-icon">✉️</div>
+        <div class="contact-card-label">Email Us</div>
+        <a href="mailto:jasmine.jm67@gmail.com" class="contact-card-value">jasmine.jm67@gmail.com</a>
+      </div>
+      <div class="contact-card reveal">
+        <div class="contact-card-icon">📅</div>
+        <div class="contact-card-label">Schedule Online</div>
+        <a href="booking/index.html" class="contact-card-value">Book Appointment</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div>
+      <div class="footer-brand">Elite Ease Cleaning</div>
+      <div class="footer-tagline">Professional Home Cleaning · Austin, TX & Surrounding Areas</div>
+    </div>
+    <div class="footer-links">
+      <a href="index.html">Home</a>
+      <a href="booking/index.html">Booking</a>
+      <a href="admin/index.html">Admin</a>
+      <a href="mailto:jasmine.jm67@gmail.com">Contact</a>
+    </div>
+  </footer>
+
+  <script>
+    // Scroll reveal
+    const reveals = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry, i) => {
+        if (entry.isIntersecting) {
+          setTimeout(() => entry.target.classList.add('visible'), i * 80);
+        }
+      });
+    }, { threshold: 0.12 });
+    reveals.forEach(el => observer.observe(el));
+
+    // Nav scroll effect
+    const nav = document.querySelector('nav');
+    window.addEventListener('scroll', () => {
+      nav.style.boxShadow = window.scrollY > 20
+        ? '0 4px 30px rgba(0,0,0,0.08)'
+        : 'none';
+    });
+  </script>
+</body>
+</html>
