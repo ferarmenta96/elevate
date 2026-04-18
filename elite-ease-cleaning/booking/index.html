@@ -550,6 +550,11 @@
   </div>
 
   <script>
+    // ─────────────────────────────────────────────────────────────
+    //  CONFIGURE: paste your Apps Script Web App URL here
+    // ─────────────────────────────────────────────────────────────
+    const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzRabgnMuWrE6j7xt2F727dNMF9umLxGjkQF1Ksq0y5PsQ5tpWYYIJrtXRFxG7vPVtT/exec";
+
     function selectService(el) {
       document.querySelectorAll('.service-opt').forEach(o => o.classList.remove('selected'));
       el.classList.add('selected');
@@ -561,20 +566,86 @@
     const today = new Date().toISOString().split('T')[0];
     dateInput.min = today;
 
-    function submitBooking() {
-      const firstName = document.getElementById('firstName').value.trim();
-      const phone = document.getElementById('phone').value.trim();
-      const address = document.getElementById('address').value.trim();
-      const selected = document.querySelector('.service-opt.selected');
+    async function submitBooking() {
+      const firstName  = document.getElementById('firstName').value.trim();
+      const lastName   = (document.getElementById('lastName')  || {value:''}).value.trim();
+      const phone      = document.getElementById('phone').value.trim();
+      const email      = (document.getElementById('email')     || {value:''}).value.trim();
+      const address    = document.getElementById('address').value.trim();
+      const city       = (document.getElementById('city')      || {value:''}).value.trim();
+      const state      = (document.getElementById('state')     || {value:''}).value.trim();
+      const date       = document.getElementById('date').value;
+      const time       = (document.getElementById('time')      || {value:''}).value;
+      const bedrooms   = (document.getElementById('bedrooms')  || {value:''}).value;
+      const bathrooms  = (document.getElementById('bathrooms') || {value:''}).value;
+      const notes      = (document.getElementById('notes')     || {value:''}).value.trim();
+      const selected   = document.querySelector('.service-opt.selected');
 
+      // Validation
       if (!firstName || !phone || !address || !selected) {
-        alert('Please fill in your name, phone, address, and select a service type.');
+        showFieldError('Please fill in your name, phone, address, and select a service type.');
         return;
       }
 
-      document.getElementById('formContent').classList.add('hide');
-      document.getElementById('successOverlay').classList.add('show');
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      const serviceType = selected.querySelector('input').value || selected.dataset.service || selected.querySelector('.service-opt-name')?.textContent || '';
+
+      // Disable button / show loading
+      const btn = document.querySelector('.btn-submit');
+      const originalText = btn.innerHTML;
+      btn.disabled = true;
+      btn.innerHTML = '<span style="opacity:0.7">Sending… ✦</span>';
+
+      const payload = {
+        action: "saveBooking",
+        data: {
+          firstName, lastName, phone, email,
+          address, city, state,
+          serviceType, date, time,
+          bedrooms, bathrooms, notes
+        }
+      };
+
+      try {
+        const res  = await fetch(APPS_SCRIPT_URL, {
+          method: "POST",
+          body: JSON.stringify(payload),
+          headers: { "Content-Type": "text/plain" } // Apps Script needs text/plain for no-cors
+        });
+        const json = await res.json().catch(() => ({ success: true }));
+
+        if (json.error) throw new Error(json.error);
+
+        // Success
+        document.getElementById('formContent').classList.add('hide');
+        document.getElementById('successOverlay').classList.add('show');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+
+      } catch (err) {
+        btn.disabled = false;
+        btn.innerHTML = originalText;
+        // If APPS_SCRIPT_URL not yet configured, still show success for demo
+        if (APPS_SCRIPT_URL === "YOUR_APPS_SCRIPT_WEB_APP_URL_HERE") {
+          document.getElementById('formContent').classList.add('hide');
+          document.getElementById('successOverlay').classList.add('show');
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        } else {
+          showFieldError('There was an error submitting your booking. Please try again or call us directly.');
+        }
+      }
+    }
+
+    function showFieldError(msg) {
+      let el = document.getElementById('bookingError');
+      if (!el) {
+        el = document.createElement('div');
+        el.id = 'bookingError';
+        el.style.cssText = 'background:#fdf0f0;border:1px solid #f5c6cb;color:#c0392b;padding:14px 18px;border-radius:12px;font-size:13px;margin-bottom:20px;';
+        const form = document.querySelector('.form-card');
+        form.insertBefore(el, form.firstChild);
+      }
+      el.textContent = msg;
+      el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      setTimeout(() => { if (el) el.remove(); }, 6000);
     }
   </script>
 </body>

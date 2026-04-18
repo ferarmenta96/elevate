@@ -521,9 +521,9 @@
           <div class="stat-card">
             <div class="stat-card-top">
               <div class="stat-card-icon green">📅</div>
-              <span class="stat-card-trend">+2 new</span>
+              <span class="stat-card-trend">from Sheets</span>
             </div>
-            <div class="stat-card-value">8</div>
+            <div class="stat-card-value" id="stat-upcoming">—</div>
             <div class="stat-card-label">Upcoming Bookings</div>
           </div>
           <div class="stat-card">
@@ -531,24 +531,24 @@
               <div class="stat-card-icon gold">💰</div>
               <span class="stat-card-trend">This month</span>
             </div>
-            <div class="stat-card-value">$2,340</div>
+            <div class="stat-card-value">$—</div>
             <div class="stat-card-label">Revenue</div>
           </div>
           <div class="stat-card">
             <div class="stat-card-top">
               <div class="stat-card-icon blue">👥</div>
-              <span class="stat-card-trend">+1 new</span>
+              <span class="stat-card-trend">unique phones</span>
             </div>
-            <div class="stat-card-value">24</div>
+            <div class="stat-card-value" id="stat-clients">—</div>
             <div class="stat-card-label">Active Clients</div>
           </div>
           <div class="stat-card">
             <div class="stat-card-top">
-              <div class="stat-card-icon rose">⭐</div>
-              <span class="stat-card-trend">5 reviews</span>
+              <div class="stat-card-icon rose">✅</div>
+              <span class="stat-card-trend">all time</span>
             </div>
-            <div class="stat-card-value">5.0</div>
-            <div class="stat-card-label">Avg. Rating</div>
+            <div class="stat-card-value" id="stat-completed">—</div>
+            <div class="stat-card-label">Completed Jobs</div>
           </div>
         </div>
 
@@ -568,35 +568,8 @@
                 <th>Actions</th>
               </tr>
             </thead>
-            <tbody>
-              <tr>
-                <td><div class="td-name">Sarah M.</div><div class="td-sub">Austin, TX</div></td>
-                <td>Deep Cleaning</td>
-                <td>Apr 20, 2026</td>
-                <td><span class="badge badge-confirmed">Confirmed</span></td>
-                <td><button class="action-btn">View</button></td>
-              </tr>
-              <tr>
-                <td><div class="td-name">Carlos R.</div><div class="td-sub">San Marcos, TX</div></td>
-                <td>Full Home Cleaning</td>
-                <td>Apr 22, 2026</td>
-                <td><span class="badge badge-pending">Pending</span></td>
-                <td><button class="action-btn">View</button></td>
-              </tr>
-              <tr>
-                <td><div class="td-name">The Oakwood Lofts</div><div class="td-sub">Commercial</div></td>
-                <td>Commercial Office</td>
-                <td>Apr 23, 2026</td>
-                <td><span class="badge badge-pending">Pending</span></td>
-                <td><button class="action-btn">View</button></td>
-              </tr>
-              <tr>
-                <td><div class="td-name">Maya T.</div><div class="td-sub">Kyle, TX</div></td>
-                <td>Move-Out Cleaning</td>
-                <td>Apr 18, 2026</td>
-                <td><span class="badge badge-completed">Completed</span></td>
-                <td><button class="action-btn">View</button></td>
-              </tr>
+            <tbody id="recent-bookings-tbody">
+              <tr><td colspan="5" style="text-align:center;padding:32px;color:var(--text-light);">Loading from Google Sheets…</td></tr>
             </tbody>
           </table>
         </div>
@@ -675,6 +648,7 @@
         <div class="panel">
           <div class="panel-header">
             <div class="panel-title">📅 All Bookings</div>
+            <button class="action-btn" onclick="fetchBookings().then(renderBookingsTab)" style="padding:8px 16px;">↻ Refresh</button>
           </div>
           <table>
             <thead>
@@ -682,42 +656,8 @@
                 <th>#</th><th>Client</th><th>Service</th><th>Date</th><th>Location</th><th>Status</th><th>Actions</th>
               </tr>
             </thead>
-            <tbody>
-              <tr>
-                <td>#0043</td>
-                <td><div class="td-name">Sarah M.</div><div class="td-sub">sarah.m@email.com</div></td>
-                <td>Deep Cleaning</td><td>Apr 20, 2026</td><td>Austin</td>
-                <td><span class="badge badge-confirmed">Confirmed</span></td>
-                <td><button class="action-btn">Edit</button></td>
-              </tr>
-              <tr>
-                <td>#0044</td>
-                <td><div class="td-name">Carlos R.</div><div class="td-sub">carlos@email.com</div></td>
-                <td>Full Home</td><td>Apr 22, 2026</td><td>San Marcos</td>
-                <td><span class="badge badge-pending">Pending</span></td>
-                <td><button class="action-btn">Edit</button></td>
-              </tr>
-              <tr>
-                <td>#0045</td>
-                <td><div class="td-name">Oakwood Lofts</div><div class="td-sub">mgr@oakwood.com</div></td>
-                <td>Commercial</td><td>Apr 23, 2026</td><td>Austin</td>
-                <td><span class="badge badge-pending">Pending</span></td>
-                <td><button class="action-btn">Edit</button></td>
-              </tr>
-              <tr>
-                <td>#0042</td>
-                <td><div class="td-name">Maya T.</div><div class="td-sub">maya@email.com</div></td>
-                <td>Move-Out</td><td>Apr 18, 2026</td><td>Kyle</td>
-                <td><span class="badge badge-completed">Completed</span></td>
-                <td><button class="action-btn">View</button></td>
-              </tr>
-              <tr>
-                <td>#0041</td>
-                <td><div class="td-name">Priya K.</div><div class="td-sub">priya@email.com</div></td>
-                <td>Recurring</td><td>Apr 15, 2026</td><td>Round Rock</td>
-                <td><span class="badge badge-completed">Completed</span></td>
-                <td><button class="action-btn">View</button></td>
-              </tr>
+            <tbody id="all-bookings-tbody">
+              <tr><td colspan="7" style="text-align:center;padding:32px;color:var(--text-light);">Loading from Google Sheets…</td></tr>
             </tbody>
           </table>
         </div>
@@ -770,49 +710,9 @@
           <div class="panel-header">
             <div class="panel-title">🧹 Services & Pricing</div>
           </div>
-          <table>
-            <thead>
-              <tr><th>Service</th><th>Description</th><th>Starting Price</th><th>Status</th></tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td><div class="td-name">🏠 Full Home Cleaning</div></td>
-                <td>General tidying, dusting, vacuuming</td>
-                <td>From $120</td>
-                <td><span class="badge badge-confirmed">Active</span></td>
-              </tr>
-              <tr>
-                <td><div class="td-name">🫧 Deep Cleaning</div></td>
-                <td>Kitchens, bathrooms, baseboards</td>
-                <td>From $180</td>
-                <td><span class="badge badge-confirmed">Active</span></td>
-              </tr>
-              <tr>
-                <td><div class="td-name">📦 Move-In / Move-Out</div></td>
-                <td>Transition-ready cleaning</td>
-                <td>From $200</td>
-                <td><span class="badge badge-confirmed">Active</span></td>
-              </tr>
-              <tr>
-                <td><div class="td-name">📅 Weekly / Bi-Weekly</div></td>
-                <td>Flexible recurring schedules</td>
-                <td>From $90/visit</td>
-                <td><span class="badge badge-confirmed">Active</span></td>
-              </tr>
-              <tr>
-                <td><div class="td-name">🏨 Airbnb / Vacation Rental</div></td>
-                <td>Change-over service, restocking</td>
-                <td>From $100</td>
-                <td><span class="badge badge-confirmed">Active</span></td>
-              </tr>
-              <tr>
-                <td><div class="td-name">🏢 Commercial Office</div></td>
-                <td>Janitorial plans (15% off new contracts)</td>
-                <td>Custom Quote</td>
-                <td><span class="badge badge-gold" style="background:rgba(201,168,76,0.12);color:#a08030;">Promo</span></td>
-              </tr>
-            </tbody>
-          </table>
+          <div id="pricing-editor">
+            <div style="padding:40px;text-align:center;color:var(--text-light);">Loading prices from Google Sheets…</div>
+          </div>
         </div>
       </div>
 
@@ -831,20 +731,41 @@
       </div>
 
     </div>
+  <!-- BOOKING DETAIL MODAL -->
+  <div id="bookingModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:300;align-items:center;justify-content:center;padding:20px;">
+    <div style="background:var(--warm-white);border-radius:20px;padding:40px;max-width:600px;width:100%;max-height:90vh;overflow-y:auto;box-shadow:0 24px 80px rgba(0,0,0,.25);">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:28px;">
+        <div style="font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:600;color:var(--green-text);">📋 Booking Detail</div>
+        <button onclick="closeModal()" style="background:none;border:none;font-size:20px;cursor:pointer;color:var(--text-light);">✕</button>
+      </div>
+      <div id="modalContent"></div>
+    </div>
+  </div>
+
   </main>
 
   <script>
-    // Set date
+    // ─────────────────────────────────────────────────────────────
+    //  CONFIGURE: same URL as booking-index.html
+    // ─────────────────────────────────────────────────────────────
+    const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzRabgnMuWrE6j7xt2F727dNMF9umLxGjkQF1Ksq0y5PsQ5tpWYYIJrtXRFxG7vPVtT/exec";
+
+    // ── State ────────────────────────────────────────────────────
+    let allBookings = [];
+    let allPricing  = [];
+
+    // ── Date header ──────────────────────────────────────────────
     const d = new Date();
     document.getElementById('topbarDate').textContent =
       d.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' });
 
-    // Login
+    // ── Login ────────────────────────────────────────────────────
     function doLogin() {
       const u = document.getElementById('loginUser').value;
       const p = document.getElementById('loginPass').value;
       if (u === 'admin' && p === 'elite2024') {
         document.getElementById('loginWall').classList.add('hidden');
+        initDashboard();
       } else {
         document.getElementById('loginError').classList.add('show');
       }
@@ -856,7 +777,7 @@
       document.getElementById('loginPass').value = '';
     }
 
-    // Tab switching
+    // ── Tab switching ────────────────────────────────────────────
     const tabs = ['dashboard', 'bookings', 'clients', 'services', 'calendar'];
     const tabTitles = {
       dashboard: 'Dashboard',
@@ -872,13 +793,311 @@
         if (el) el.style.display = 'none';
       });
       document.querySelectorAll('.sidebar-link').forEach(l => l.classList.remove('active'));
-
       const target = document.getElementById('tab-' + name);
       if (target) target.style.display = 'block';
       document.getElementById('topbarTitle').textContent = tabTitles[name] || name;
-
       if (linkEl) linkEl.classList.add('active');
+
+      if (name === 'bookings') renderBookingsTab();
+      if (name === 'services') renderPricingTab();
     }
+
+    // ── Init ─────────────────────────────────────────────────────
+    async function initDashboard() {
+      showLoadingState();
+      await Promise.all([fetchBookings(), fetchPricing()]);
+      renderDashboard();
+    }
+
+    function showLoadingState() {
+      document.querySelectorAll('.stat-card-value').forEach(el => {
+        el.innerHTML = '<span style="opacity:0.3;font-size:18px">Loading…</span>';
+      });
+    }
+
+    // ── Fetch bookings ───────────────────────────────────────────
+    async function fetchBookings() {
+      try {
+        const res  = await fetch(`${APPS_SCRIPT_URL}?action=getBookings`);
+        const data = await res.json();
+        allBookings = Array.isArray(data) ? data : [];
+      } catch (e) {
+        allBookings = DEMO_BOOKINGS; // fallback to demo if URL not set
+      }
+    }
+
+    // ── Fetch pricing ────────────────────────────────────────────
+    async function fetchPricing() {
+      try {
+        const res  = await fetch(`${APPS_SCRIPT_URL}?action=getPricing`);
+        const data = await res.json();
+        allPricing = Array.isArray(data) && data.length ? data : DEFAULT_PRICING_FALLBACK;
+      } catch (e) {
+        allPricing = DEFAULT_PRICING_FALLBACK;
+      }
+    }
+
+    // ── Render dashboard stats ───────────────────────────────────
+    function renderDashboard() {
+      const upcoming  = allBookings.filter(b => b["Status"] === "Pending" || b["Status"] === "Confirmed").length;
+      const completed = allBookings.filter(b => b["Status"] === "Completed").length;
+      const clients   = [...new Set(allBookings.map(b => b["Phone"]).filter(Boolean))].length;
+
+      document.getElementById('stat-upcoming').textContent  = upcoming;
+      document.getElementById('stat-completed').textContent = completed;
+      document.getElementById('stat-clients').textContent   = clients;
+
+      // Recent bookings table
+      const recent = [...allBookings].reverse().slice(0, 5);
+      const tbody  = document.getElementById('recent-bookings-tbody');
+      if (tbody) tbody.innerHTML = recent.length ? recent.map(b => bookingRow(b, true)).join('') : emptyRow(5, 'No bookings yet');
+    }
+
+    // ── Render bookings tab ──────────────────────────────────────
+    function renderBookingsTab() {
+      const tbody = document.getElementById('all-bookings-tbody');
+      if (!tbody) return;
+      const sorted = [...allBookings].reverse();
+      tbody.innerHTML = sorted.length ? sorted.map(b => bookingRow(b, false)).join('') : emptyRow(7, 'No bookings found');
+      // Update badge
+      const badge = document.querySelector('.sidebar-link-badge');
+      if (badge) badge.textContent = allBookings.filter(b => b["Status"] === "Pending").length;
+    }
+
+    function bookingRow(b, mini) {
+      const name    = `${b["First Name"] || ''} ${b["Last Name"] || ''}`.trim() || '—';
+      const svc     = b["Service Type"] || '—';
+      const dt      = b["Preferred Date"] ? formatDate(b["Preferred Date"]) : '—';
+      const status  = b["Status"] || "Pending";
+      const id      = b["ID"] || '';
+      const badgeCls = status === 'Confirmed' ? 'badge-confirmed' : status === 'Completed' ? 'badge-completed' : 'badge-pending';
+
+      if (mini) return `
+        <tr>
+          <td><div class="td-name">${escHtml(name)}</div><div class="td-sub">${escHtml(b["City"] || '')}</div></td>
+          <td>${escHtml(svc)}</td>
+          <td>${dt}</td>
+          <td><span class="badge ${badgeCls}">${escHtml(status)}</span></td>
+          <td><button class="action-btn" onclick="openBookingDetail('${id}')">View</button></td>
+        </tr>`;
+
+      return `
+        <tr>
+          <td style="font-size:11px;color:var(--text-light);">${escHtml(id)}</td>
+          <td><div class="td-name">${escHtml(name)}</div><div class="td-sub">${escHtml(b["Email"] || b["Phone"] || '')}</div></td>
+          <td>${escHtml(svc)}</td>
+          <td>${dt}</td>
+          <td>${escHtml(b["Address"] ? b["Address"].split(',')[0] : '—')}</td>
+          <td><span class="badge ${badgeCls}">${escHtml(status)}</span></td>
+          <td>
+            <button class="action-btn" onclick="changeStatus('${id}','Confirmed')">✓ Confirm</button>
+            <button class="action-btn" onclick="changeStatus('${id}','Completed')" style="margin-left:4px">✔ Done</button>
+          </td>
+        </tr>`;
+    }
+
+    function emptyRow(cols, msg) {
+      return `<tr><td colspan="${cols}" style="text-align:center;padding:40px;color:var(--text-light);">${msg}</td></tr>`;
+    }
+
+    // ── Change booking status ────────────────────────────────────
+    async function changeStatus(id, status) {
+      if (!id) return;
+      try {
+        await fetch(APPS_SCRIPT_URL, {
+          method: "POST",
+          body: JSON.stringify({ action: "updateStatus", id, status }),
+          headers: { "Content-Type": "text/plain" }
+        });
+        // Update local state
+        const bk = allBookings.find(b => b["ID"] === id);
+        if (bk) bk["Status"] = status;
+        renderBookingsTab();
+        renderDashboard();
+        showToast(`Booking ${id} marked as ${status}`);
+      } catch (e) {
+        showToast('Error updating status', true);
+      }
+    }
+
+    // ── Booking detail modal ─────────────────────────────────────
+    function openBookingDetail(id) {
+      const b = allBookings.find(bk => bk["ID"] === id);
+      if (!b) return;
+      const modal = document.getElementById('bookingModal');
+      document.getElementById('modalContent').innerHTML = `
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px 24px;">
+          ${modalField('Booking ID', b["ID"])}
+          ${modalField('Status', b["Status"])}
+          ${modalField('Name', `${b["First Name"]} ${b["Last Name"]}`)}
+          ${modalField('Phone', b["Phone"])}
+          ${modalField('Email', b["Email"])}
+          ${modalField('Service', b["Service Type"])}
+          ${modalField('Date', b["Preferred Date"])}
+          ${modalField('Time', b["Preferred Time"] || '—')}
+          ${modalField('Address', b["Address"], true)}
+          ${modalField('Notes', b["Notes"] || '—', true)}
+        </div>
+        <div style="margin-top:24px;display:flex;gap:10px;">
+          <button class="action-btn" style="padding:10px 20px;background:var(--green-deep);color:#fff;" onclick="changeStatus('${b["ID"]}','Confirmed');closeModal()">✓ Confirm</button>
+          <button class="action-btn" style="padding:10px 20px;background:var(--sage);color:#fff;" onclick="changeStatus('${b["ID"]}','Completed');closeModal()">✔ Mark Done</button>
+          <button class="action-btn" style="padding:10px 20px;" onclick="closeModal()">Close</button>
+        </div>`;
+      modal.style.display = 'flex';
+    }
+
+    function modalField(label, val, full) {
+      return `<div style="${full ? 'grid-column:1/-1;' : ''}">
+        <div style="font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--text-light);margin-bottom:4px;">${label}</div>
+        <div style="font-size:14px;font-weight:500;">${escHtml(String(val || '—'))}</div>
+      </div>`;
+    }
+
+    function closeModal() {
+      document.getElementById('bookingModal').style.display = 'none';
+    }
+
+    // ── Render pricing tab ───────────────────────────────────────
+    function renderPricingTab() {
+      const container = document.getElementById('pricing-editor');
+      if (!container) return;
+
+      container.innerHTML = `
+        <div style="margin-bottom:20px;font-size:13px;color:var(--text-mid);">
+          Edit prices and descriptions below, then click <strong>Save All Prices</strong>.
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th>Service</th>
+              <th>Description</th>
+              <th style="width:140px;">Base Price ($)</th>
+              <th style="width:80px;">Unit</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${allPricing.map(p => pricingRow(p)).join('')}
+          </tbody>
+        </table>
+        <div style="margin-top:24px;display:flex;gap:12px;align-items:center;">
+          <button class="btn-login" style="width:auto;padding:14px 32px;" onclick="savePricing()">💾 Save All Prices</button>
+          <span id="pricingSaveMsg" style="font-size:13px;color:var(--green-deep);display:none;">✓ Saved to Google Sheets!</span>
+        </div>`;
+    }
+
+    function pricingRow(p) {
+      const key   = escHtml(p["Service Key"]);
+      const name  = `${p["Icon"] || ''} ${p["Service Name"] || ''}`.trim();
+      const price = p["Base Price"];
+      const unit  = p["Unit"] || 'flat';
+      const desc  = p["Description"] || '';
+
+      return `<tr>
+        <td><div class="td-name">${escHtml(name)}</div></td>
+        <td><input type="text" data-key="${key}" data-field="desc"
+              value="${escAttr(desc)}"
+              style="width:100%;padding:8px 10px;border:1px solid var(--cream-dark);border-radius:8px;font-family:inherit;font-size:13px;background:var(--warm-white);" /></td>
+        <td><input type="number" data-key="${key}" data-field="price" min="0" step="5"
+              value="${unit === 'quote' ? '' : price}"
+              placeholder="${unit === 'quote' ? 'Quote' : '0'}"
+              ${unit === 'quote' ? 'disabled' : ''}
+              style="width:100%;padding:8px 10px;border:1px solid var(--cream-dark);border-radius:8px;font-family:inherit;font-size:13px;background:var(--warm-white);" /></td>
+        <td style="font-size:12px;color:var(--text-light);text-align:center;">${escHtml(unit)}</td>
+      </tr>`;
+    }
+
+    async function savePricing() {
+      const rows = document.querySelectorAll('#pricing-editor table tbody tr');
+      const updates = [];
+
+      rows.forEach((row, i) => {
+        const priceInput = row.querySelector('[data-field="price"]');
+        const descInput  = row.querySelector('[data-field="desc"]');
+        if (!priceInput) return;
+        const key = priceInput.dataset.key;
+        const original = allPricing.find(p => p["Service Key"] === key);
+        if (!original) return;
+
+        updates.push({
+          "Service Key":  key,
+          "Base Price":   priceInput.value !== '' ? Number(priceInput.value) : original["Base Price"],
+          "Description":  descInput ? descInput.value : original["Description"]
+        });
+
+        // Update local state
+        if (original) {
+          if (priceInput.value !== '') original["Base Price"] = Number(priceInput.value);
+          if (descInput) original["Description"] = descInput.value;
+        }
+      });
+
+      const btn = document.querySelector('#pricing-editor .btn-login');
+      btn.disabled = true;
+      btn.textContent = 'Saving…';
+
+      try {
+        await fetch(APPS_SCRIPT_URL, {
+          method: "POST",
+          body: JSON.stringify({ action: "updatePricing", data: updates }),
+          headers: { "Content-Type": "text/plain" }
+        });
+        const msg = document.getElementById('pricingSaveMsg');
+        msg.style.display = 'inline';
+        setTimeout(() => { msg.style.display = 'none'; }, 3000);
+        showToast('Prices saved to Google Sheets ✓');
+      } catch (e) {
+        showToast('Error saving prices', true);
+      } finally {
+        btn.disabled = false;
+        btn.textContent = '💾 Save All Prices';
+      }
+    }
+
+    // ── Toast ────────────────────────────────────────────────────
+    function showToast(msg, isError) {
+      let toast = document.getElementById('adminToast');
+      if (!toast) {
+        toast = document.createElement('div');
+        toast.id = 'adminToast';
+        toast.style.cssText = 'position:fixed;bottom:28px;right:28px;padding:14px 22px;border-radius:12px;font-size:13px;font-weight:500;z-index:999;transition:opacity .3s;box-shadow:0 8px 32px rgba(0,0,0,.15);';
+        document.body.appendChild(toast);
+      }
+      toast.style.background = isError ? '#c0392b' : '#2e5235';
+      toast.style.color = '#fff';
+      toast.textContent = msg;
+      toast.style.opacity = '1';
+      clearTimeout(toast._t);
+      toast._t = setTimeout(() => { toast.style.opacity = '0'; }, 3000);
+    }
+
+    // ── Utilities ────────────────────────────────────────────────
+    function escHtml(str) {
+      return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+    }
+    function escAttr(str) {
+      return String(str).replace(/"/g,'&quot;');
+    }
+    function formatDate(str) {
+      if (!str) return '—';
+      const dt = new Date(str);
+      if (isNaN(dt)) return str;
+      return dt.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+    }
+
+    // ── Demo fallbacks (used when Apps Script URL not configured) ─
+    const DEMO_BOOKINGS = [
+      {"ID":"BK001","First Name":"Sarah","Last Name":"M.","Phone":"(512) 000-1111","Email":"sarah@email.com","Address":"123 Main St","City":"Austin","State":"TX","Service Type":"Deep Cleaning","Preferred Date":"2026-04-20","Status":"Confirmed"},
+      {"ID":"BK002","First Name":"Carlos","Last Name":"R.","Phone":"(512) 000-2222","Email":"carlos@email.com","Address":"456 Oak Ave","City":"San Marcos","State":"TX","Service Type":"Full Home Cleaning","Preferred Date":"2026-04-22","Status":"Pending"},
+      {"ID":"BK003","First Name":"Maya","Last Name":"T.","Phone":"(512) 000-4444","Email":"maya@email.com","Address":"789 Pine Rd","City":"Kyle","State":"TX","Service Type":"Move-Out Cleaning","Preferred Date":"2026-04-18","Status":"Completed"},
+    ];
+    const DEFAULT_PRICING_FALLBACK = [
+      {"Service Key":"full_home","Service Name":"Full Home Cleaning","Icon":"🏠","Description":"General tidying, dusting, vacuuming, mopping","Base Price":120,"Unit":"flat"},
+      {"Service Key":"deep","Service Name":"Deep Cleaning","Icon":"🫧","Description":"Kitchens, bathrooms, baseboards, inside appliances","Base Price":180,"Unit":"flat"},
+      {"Service Key":"move","Service Name":"Move-In / Move-Out","Icon":"📦","Description":"Transition-ready cleaning, cabinets, closets","Base Price":200,"Unit":"flat"},
+      {"Service Key":"recurring","Service Name":"Weekly / Bi-Weekly","Icon":"📅","Description":"Flexible recurring schedules, discounted rates","Base Price":90,"Unit":"visit"},
+      {"Service Key":"airbnb","Service Name":"Airbnb / Vacation Rental","Icon":"🏨","Description":"Change-over service, linen reset, restocking","Base Price":100,"Unit":"flat"},
+      {"Service Key":"commercial","Service Name":"Commercial Office","Icon":"🏢","Description":"Janitorial plans, 15% off new contracts","Base Price":0,"Unit":"quote"},
+    ];
   </script>
 </body>
 </html>
