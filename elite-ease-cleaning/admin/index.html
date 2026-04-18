@@ -509,6 +509,11 @@
       <div class="topbar-title" id="topbarTitle">Dashboard</div>
       <div class="topbar-right">
         <span class="topbar-date" id="topbarDate"></span>
+        <div id="autoRefreshCountdown" style="font-size:11px;color:var(--text-light);min-width:52px;text-align:right;"></div>
+        <button id="refreshBtn" onclick="manualRefresh()" title="Refresh data" style="display:flex;align-items:center;gap:7px;background:var(--sage-pale);border:1px solid var(--sage-light);color:var(--green-text);border-radius:10px;padding:7px 14px;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:500;cursor:pointer;transition:all .2s;white-space:nowrap;">
+          <span id="refreshIcon" style="display:inline-block;transition:transform .6s;">↻</span>
+          <span id="refreshLabel">Refresh</span>
+        </button>
         <div class="topbar-avatar">👤</div>
       </div>
     </div>
@@ -529,10 +534,10 @@
           <div class="stat-card">
             <div class="stat-card-top">
               <div class="stat-card-icon gold">💰</div>
-              <span class="stat-card-trend">This month</span>
+              <span class="stat-card-trend" id="stat-revenue-period">This month</span>
             </div>
-            <div class="stat-card-value">$—</div>
-            <div class="stat-card-label">Revenue</div>
+            <div class="stat-card-value" id="stat-revenue">—</div>
+            <div class="stat-card-label">Revenue (Completed)</div>
           </div>
           <div class="stat-card">
             <div class="stat-card-top">
@@ -716,17 +721,40 @@
         </div>
       </div>
 
-      <!-- CALENDAR PLACEHOLDER -->
+      <!-- CALENDAR TAB -->
       <div id="tab-calendar" style="display:none;">
-        <div class="panel">
-          <div class="panel-header">
+        <div class="panel" style="padding:0;overflow:hidden;">
+          <div class="panel-header" style="padding:20px 28px;">
             <div class="panel-title">🗓️ Schedule</div>
+            <div style="display:flex;align-items:center;gap:10px;">
+              <button onclick="calPrev()" style="background:var(--sage-pale);border:1px solid var(--sage-light);border-radius:8px;width:32px;height:32px;cursor:pointer;font-size:15px;color:var(--green-deep);">‹</button>
+              <span id="calMonthLabel" style="font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:600;color:var(--green-text);min-width:160px;text-align:center;"></span>
+              <button onclick="calNext()" style="background:var(--sage-pale);border:1px solid var(--sage-light);border-radius:8px;width:32px;height:32px;cursor:pointer;font-size:15px;color:var(--green-deep);">›</button>
+              <button onclick="calGoToday()" style="background:var(--green-deep);color:#fff;border:none;border-radius:8px;padding:6px 14px;font-size:12px;font-family:'DM Sans',sans-serif;cursor:pointer;">Today</button>
+            </div>
           </div>
-          <div style="padding:60px; text-align:center; color: var(--text-light);">
-            <div style="font-size:52px;margin-bottom:20px;">🗓️</div>
-            <div style="font-family:'Cormorant Garamond',serif;font-size:26px;color:var(--green-text);margin-bottom:12px;">Full Calendar Coming Soon</div>
-            <div style="font-size:14px;">Interactive schedule view will be available in the next update.</div>
+          <div style="padding:0 20px 20px;">
+            <!-- Day headers -->
+            <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:2px;margin-bottom:4px;">
+              <div style="text-align:center;font-size:11px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--text-light);padding:8px 0;">Sun</div>
+              <div style="text-align:center;font-size:11px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--text-light);padding:8px 0;">Mon</div>
+              <div style="text-align:center;font-size:11px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--text-light);padding:8px 0;">Tue</div>
+              <div style="text-align:center;font-size:11px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--text-light);padding:8px 0;">Wed</div>
+              <div style="text-align:center;font-size:11px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--text-light);padding:8px 0;">Thu</div>
+              <div style="text-align:center;font-size:11px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--text-light);padding:8px 0;">Fri</div>
+              <div style="text-align:center;font-size:11px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--text-light);padding:8px 0;">Sat</div>
+            </div>
+            <!-- Calendar grid -->
+            <div id="calGrid" style="display:grid;grid-template-columns:repeat(7,1fr);gap:3px;"></div>
           </div>
+        </div>
+        <!-- Day detail panel -->
+        <div id="calDayDetail" style="display:none;margin-top:16px;" class="panel">
+          <div class="panel-header">
+            <div class="panel-title" id="calDayDetailTitle">Bookings for —</div>
+            <button onclick="document.getElementById('calDayDetail').style.display='none'" style="background:none;border:none;cursor:pointer;color:var(--text-light);font-size:18px;">✕</button>
+          </div>
+          <div id="calDayDetailBody"></div>
         </div>
       </div>
 
@@ -748,11 +776,15 @@
     // ─────────────────────────────────────────────────────────────
     //  CONFIGURE: same URL as booking-index.html
     // ─────────────────────────────────────────────────────────────
-    const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzRabgnMuWrE6j7xt2F727dNMF9umLxGjkQF1Ksq0y5PsQ5tpWYYIJrtXRFxG7vPVtT/exec";
+    const APPS_SCRIPT_URL = "YOUR_APPS_SCRIPT_WEB_APP_URL_HERE";
 
     // ── State ────────────────────────────────────────────────────
     let allBookings = [];
     let allPricing  = [];
+    let autoRefreshInterval = null;
+    let countdownInterval   = null;
+    let secondsUntilRefresh = 60;
+    const AUTO_REFRESH_SECS = 60;
 
     // ── Date header ──────────────────────────────────────────────
     const d = new Date();
@@ -766,15 +798,66 @@
       if (u === 'admin' && p === 'elite2024') {
         document.getElementById('loginWall').classList.add('hidden');
         initDashboard();
+        startAutoRefresh();
       } else {
         document.getElementById('loginError').classList.add('show');
       }
     }
 
     function logout() {
+      stopAutoRefresh();
       document.getElementById('loginWall').classList.remove('hidden');
       document.getElementById('loginUser').value = '';
       document.getElementById('loginPass').value = '';
+    }
+
+    // ── Auto-refresh ─────────────────────────────────────────────
+    function startAutoRefresh() {
+      secondsUntilRefresh = AUTO_REFRESH_SECS;
+      updateCountdownDisplay();
+
+      countdownInterval = setInterval(() => {
+        secondsUntilRefresh--;
+        updateCountdownDisplay();
+        if (secondsUntilRefresh <= 0) {
+          doRefreshData();
+          secondsUntilRefresh = AUTO_REFRESH_SECS;
+        }
+      }, 1000);
+    }
+
+    function stopAutoRefresh() {
+      clearInterval(autoRefreshInterval);
+      clearInterval(countdownInterval);
+    }
+
+    function updateCountdownDisplay() {
+      const el = document.getElementById('autoRefreshCountdown');
+      if (el) el.textContent = `↻ ${secondsUntilRefresh}s`;
+    }
+
+    async function manualRefresh() {
+      secondsUntilRefresh = AUTO_REFRESH_SECS;
+      updateCountdownDisplay();
+      await doRefreshData();
+    }
+
+    async function doRefreshData() {
+      const icon = document.getElementById('refreshIcon');
+      const lbl  = document.getElementById('refreshLabel');
+      if (icon) { icon.style.transform = 'rotate(360deg)'; setTimeout(() => icon.style.transform = '', 700); }
+      if (lbl)  lbl.textContent = 'Refreshing…';
+      await Promise.all([fetchBookings(), fetchPricing()]);
+      renderDashboard();
+      const currentTab = document.querySelector('.sidebar-link.active');
+      if (currentTab) {
+        const tabName = currentTab.getAttribute('onclick')?.match(/showTab\('(\w+)'/)?.[1];
+        if (tabName === 'bookings') renderBookingsTab();
+        if (tabName === 'services') renderPricingTab();
+        if (tabName === 'calendar') renderCalendar();
+      }
+      if (lbl) lbl.textContent = 'Refresh';
+      showToast('Data refreshed ✓');
     }
 
     // ── Tab switching ────────────────────────────────────────────
@@ -800,6 +883,7 @@
 
       if (name === 'bookings') renderBookingsTab();
       if (name === 'services') renderPricingTab();
+      if (name === 'calendar') renderCalendar();
     }
 
     // ── Init ─────────────────────────────────────────────────────
@@ -810,8 +894,9 @@
     }
 
     function showLoadingState() {
-      document.querySelectorAll('.stat-card-value').forEach(el => {
-        el.innerHTML = '<span style="opacity:0.3;font-size:18px">Loading…</span>';
+      ['stat-upcoming','stat-revenue','stat-clients','stat-completed'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.innerHTML = '<span style="opacity:0.3;font-size:18px">…</span>';
       });
     }
 
@@ -822,7 +907,7 @@
         const data = await res.json();
         allBookings = Array.isArray(data) ? data : [];
       } catch (e) {
-        allBookings = DEMO_BOOKINGS; // fallback to demo if URL not set
+        allBookings = DEMO_BOOKINGS;
       }
     }
 
@@ -837,15 +922,71 @@
       }
     }
 
+    // ── Revenue calculation ──────────────────────────────────────
+    function calcRevenue() {
+      const now   = new Date();
+      const month = now.getMonth();
+      const year  = now.getFullYear();
+
+      // Build a price map from pricing data: serviceKey → basePrice
+      const priceMap = {};
+      allPricing.forEach(p => {
+        priceMap[p["Service Key"]] = Number(p["Base Price"]) || 0;
+      });
+
+      // Also build name → price lookup (fuzzy match on service type string)
+      const nameToKey = {
+        "full home": "full_home", "full home cleaning": "full_home",
+        "deep cleaning": "deep", "deep": "deep",
+        "move-out": "move", "move-in": "move", "move": "move", "move-out cleaning": "move",
+        "weekly": "recurring", "bi-weekly": "recurring", "recurring": "recurring",
+        "airbnb": "airbnb", "vacation": "airbnb",
+        "commercial": "commercial", "office": "commercial",
+      };
+
+      let monthRevenue = 0;
+      let totalRevenue = 0;
+
+      allBookings.forEach(b => {
+        if (b["Status"] !== "Completed") return;
+        const svcRaw = (b["Service Type"] || "").toLowerCase();
+        let price = 0;
+
+        // Try direct key match first
+        const key = Object.keys(nameToKey).find(k => svcRaw.includes(k));
+        if (key) price = priceMap[nameToKey[key]] || 0;
+
+        // Fallback: extract any number from the booking (if manually entered)
+        if (!price && b["Base Price"]) price = Number(b["Base Price"]) || 0;
+
+        totalRevenue += price;
+
+        // Check if this month
+        const dt = new Date(b["Preferred Date"] || b["Timestamp"]);
+        if (!isNaN(dt) && dt.getMonth() === month && dt.getFullYear() === year) {
+          monthRevenue += price;
+        }
+      });
+
+      return { monthRevenue, totalRevenue };
+    }
+
     // ── Render dashboard stats ───────────────────────────────────
     function renderDashboard() {
       const upcoming  = allBookings.filter(b => b["Status"] === "Pending" || b["Status"] === "Confirmed").length;
       const completed = allBookings.filter(b => b["Status"] === "Completed").length;
       const clients   = [...new Set(allBookings.map(b => b["Phone"]).filter(Boolean))].length;
+      const { monthRevenue } = calcRevenue();
 
       document.getElementById('stat-upcoming').textContent  = upcoming;
       document.getElementById('stat-completed').textContent = completed;
       document.getElementById('stat-clients').textContent   = clients;
+      document.getElementById('stat-revenue').textContent   = '$' + monthRevenue.toLocaleString();
+
+      const now = new Date();
+      const monthName = now.toLocaleString('en-US', { month: 'long' });
+      const periodEl = document.getElementById('stat-revenue-period');
+      if (periodEl) periodEl.textContent = monthName;
 
       // Recent bookings table
       const recent = [...allBookings].reverse().slice(0, 5);
@@ -859,7 +1000,6 @@
       if (!tbody) return;
       const sorted = [...allBookings].reverse();
       tbody.innerHTML = sorted.length ? sorted.map(b => bookingRow(b, false)).join('') : emptyRow(7, 'No bookings found');
-      // Update badge
       const badge = document.querySelector('.sidebar-link-badge');
       if (badge) badge.textContent = allBookings.filter(b => b["Status"] === "Pending").length;
     }
@@ -909,12 +1049,12 @@
           body: JSON.stringify({ action: "updateStatus", id, status }),
           headers: { "Content-Type": "text/plain" }
         });
-        // Update local state
         const bk = allBookings.find(b => b["ID"] === id);
         if (bk) bk["Status"] = status;
         renderBookingsTab();
         renderDashboard();
-        showToast(`Booking ${id} marked as ${status}`);
+        renderCalendar();
+        showToast(`Booking ${id} → ${status}`);
       } catch (e) {
         showToast('Error updating status', true);
       }
@@ -929,7 +1069,7 @@
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px 24px;">
           ${modalField('Booking ID', b["ID"])}
           ${modalField('Status', b["Status"])}
-          ${modalField('Name', `${b["First Name"]} ${b["Last Name"]}`)}
+          ${modalField('Name', (b["First Name"]||'') + ' ' + (b["Last Name"]||''))}
           ${modalField('Phone', b["Phone"])}
           ${modalField('Email', b["Email"])}
           ${modalField('Service', b["Service Type"])}
@@ -1010,7 +1150,7 @@
       const rows = document.querySelectorAll('#pricing-editor table tbody tr');
       const updates = [];
 
-      rows.forEach((row, i) => {
+      rows.forEach(row => {
         const priceInput = row.querySelector('[data-field="price"]');
         const descInput  = row.querySelector('[data-field="desc"]');
         if (!priceInput) return;
@@ -1024,7 +1164,6 @@
           "Description":  descInput ? descInput.value : original["Description"]
         });
 
-        // Update local state
         if (original) {
           if (priceInput.value !== '') original["Base Price"] = Number(priceInput.value);
           if (descInput) original["Description"] = descInput.value;
@@ -1044,13 +1183,137 @@
         const msg = document.getElementById('pricingSaveMsg');
         msg.style.display = 'inline';
         setTimeout(() => { msg.style.display = 'none'; }, 3000);
-        showToast('Prices saved to Google Sheets ✓');
+        showToast('Prices saved ✓');
       } catch (e) {
         showToast('Error saving prices', true);
       } finally {
         btn.disabled = false;
         btn.textContent = '💾 Save All Prices';
       }
+    }
+
+    // ═══════════════════════════════════════════════════════════════
+    //  CALENDAR
+    // ═══════════════════════════════════════════════════════════════
+    let calYear  = new Date().getFullYear();
+    let calMonth = new Date().getMonth(); // 0-indexed
+
+    function calGoToday() {
+      calYear  = new Date().getFullYear();
+      calMonth = new Date().getMonth();
+      renderCalendar();
+    }
+    function calPrev() { calMonth--; if (calMonth < 0) { calMonth = 11; calYear--; } renderCalendar(); }
+    function calNext() { calMonth++; if (calMonth > 11) { calMonth = 0; calYear++; } renderCalendar(); }
+
+    function renderCalendar() {
+      const label = document.getElementById('calMonthLabel');
+      const grid  = document.getElementById('calGrid');
+      if (!label || !grid) return;
+
+      label.textContent = new Date(calYear, calMonth, 1).toLocaleString('en-US', { month: 'long', year: 'numeric' });
+
+      // Build bookings-by-date map for this month
+      const bookingMap = {};
+      allBookings.forEach(b => {
+        const raw = b["Preferred Date"];
+        if (!raw) return;
+        const dt = new Date(raw + (raw.includes('T') ? '' : 'T12:00:00')); // noon to avoid TZ issues
+        if (isNaN(dt)) return;
+        if (dt.getFullYear() !== calYear || dt.getMonth() !== calMonth) return;
+        const day = dt.getDate();
+        if (!bookingMap[day]) bookingMap[day] = [];
+        bookingMap[day].push(b);
+      });
+
+      const today      = new Date();
+      const todayDay   = today.getDate();
+      const todayMonth = today.getMonth();
+      const todayYear  = today.getFullYear();
+
+      const firstDow = new Date(calYear, calMonth, 1).getDay(); // 0=Sun
+      const daysInMonth = new Date(calYear, calMonth + 1, 0).getDate();
+
+      let cells = '';
+
+      // Empty cells before first day
+      for (let i = 0; i < firstDow; i++) {
+        cells += `<div style="min-height:80px;background:rgba(0,0,0,.02);border-radius:8px;border:1px solid transparent;"></div>`;
+      }
+
+      for (let day = 1; day <= daysInMonth; day++) {
+        const bks     = bookingMap[day] || [];
+        const isToday = (day === todayDay && calMonth === todayMonth && calYear === todayYear);
+        const isPast  = new Date(calYear, calMonth, day) < new Date(todayYear, todayMonth, todayDay);
+
+        const borderColor = isToday ? 'var(--sage)' : 'var(--cream-dark)';
+        const bgColor     = isToday ? 'rgba(122,158,126,.08)' : isPast ? 'rgba(0,0,0,.01)' : '#fff';
+        const dayColor    = isToday ? 'var(--green-deep)' : isPast ? 'var(--text-light)' : 'var(--text-dark)';
+        const dayWeight   = isToday ? '700' : '400';
+
+        const dots = bks.slice(0, 3).map(bk => {
+          const st = bk["Status"] || "Pending";
+          const col = st === 'Confirmed' ? 'var(--green-deep)' : st === 'Completed' ? 'var(--sage)' : 'var(--gold)';
+          const name = (bk["First Name"] || '').split(' ')[0];
+          return `<div style="font-size:10px;line-height:1.3;padding:2px 5px;border-radius:4px;background:${col};color:#fff;margin-top:2px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;" title="${escHtml(bk['First Name']||'')} ${escHtml(bk['Last Name']||'')} - ${escHtml(bk['Service Type']||'')}">
+            ${escHtml(name)} · ${escHtml((bk["Service Type"]||'').split(' ')[0])}
+          </div>`;
+        }).join('');
+
+        const more = bks.length > 3 ? `<div style="font-size:10px;color:var(--text-light);margin-top:2px;">+${bks.length-3} more</div>` : '';
+
+        cells += `<div onclick="showCalDay(${day})" style="
+          min-height:80px;border-radius:8px;border:1px solid ${borderColor};
+          background:${bgColor};padding:8px;cursor:${bks.length ? 'pointer' : 'default'};
+          transition:all .15s;position:relative;
+        " onmouseover="if(${bks.length}) this.style.boxShadow='0 2px 12px rgba(0,0,0,.08)'"
+           onmouseout="this.style.boxShadow=''">
+          <div style="font-size:13px;font-weight:${dayWeight};color:${dayColor};${isToday ? 'background:var(--green-deep);color:#fff;width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;' : ''}">${day}</div>
+          ${dots}${more}
+        </div>`;
+      }
+
+      grid.innerHTML = cells;
+    }
+
+    function showCalDay(day) {
+      const bks = allBookings.filter(b => {
+        const raw = b["Preferred Date"];
+        if (!raw) return false;
+        const dt = new Date(raw + (raw.includes('T') ? '' : 'T12:00:00'));
+        return !isNaN(dt) && dt.getFullYear() === calYear && dt.getMonth() === calMonth && dt.getDate() === day;
+      });
+
+      if (!bks.length) return;
+
+      const detail = document.getElementById('calDayDetail');
+      const title  = document.getElementById('calDayDetailTitle');
+      const body   = document.getElementById('calDayDetailBody');
+
+      const dateStr = new Date(calYear, calMonth, day).toLocaleDateString('en-US', { weekday:'long', month:'long', day:'numeric', year:'numeric' });
+      title.textContent = `📅 ${dateStr}`;
+
+      body.innerHTML = `<table><thead><tr><th>Client</th><th>Service</th><th>Time</th><th>Status</th><th>Actions</th></tr></thead><tbody>
+        ${bks.map(b => {
+          const name   = `${b["First Name"]||''} ${b["Last Name"]||''}`.trim();
+          const st     = b["Status"] || "Pending";
+          const badgeC = st==='Confirmed'?'badge-confirmed':st==='Completed'?'badge-completed':'badge-pending';
+          return `<tr>
+            <td><div class="td-name">${escHtml(name)}</div><div class="td-sub">${escHtml(b["Phone"]||'')}</div></td>
+            <td>${escHtml(b["Service Type"]||'—')}</td>
+            <td>${escHtml(b["Preferred Time"]||'—')}</td>
+            <td><span class="badge ${badgeC}">${escHtml(st)}</span></td>
+            <td>
+              <button class="action-btn" onclick="openBookingDetail('${b["ID"]}')">Detail</button>
+              <button class="action-btn" onclick="changeStatus('${b["ID"]}','Confirmed')" style="margin-left:4px">✓</button>
+              <button class="action-btn" onclick="changeStatus('${b["ID"]}','Completed')" style="margin-left:4px">✔</button>
+            </td>
+          </tr>`;
+        }).join('')}
+      </tbody></table>`;
+
+      detail.style.display = 'block';
+      detail.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
     }
 
     // ── Toast ────────────────────────────────────────────────────
@@ -1079,12 +1342,12 @@
     }
     function formatDate(str) {
       if (!str) return '—';
-      const dt = new Date(str);
+      const dt = new Date(str + (str.includes('T') ? '' : 'T12:00:00'));
       if (isNaN(dt)) return str;
       return dt.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
     }
 
-    // ── Demo fallbacks (used when Apps Script URL not configured) ─
+    // ── Demo fallbacks ───────────────────────────────────────────
     const DEMO_BOOKINGS = [
       {"ID":"BK001","First Name":"Sarah","Last Name":"M.","Phone":"(512) 000-1111","Email":"sarah@email.com","Address":"123 Main St","City":"Austin","State":"TX","Service Type":"Deep Cleaning","Preferred Date":"2026-04-20","Status":"Confirmed"},
       {"ID":"BK002","First Name":"Carlos","Last Name":"R.","Phone":"(512) 000-2222","Email":"carlos@email.com","Address":"456 Oak Ave","City":"San Marcos","State":"TX","Service Type":"Full Home Cleaning","Preferred Date":"2026-04-22","Status":"Pending"},
