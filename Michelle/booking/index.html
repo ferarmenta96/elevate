@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Book a Cleaning — Michelle's Cleaning & Organization</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@500;700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --lavender:      #d4a8e8;
+      --lavender-light:#eed9f8;
+      --lavender-pale: #f8eeff;
+      --lavender-soft: #fdf5ff;
+      --purple:        #b565d4;
+      --purple-dark:   #8a3aad;
+      --purple-deep:   #6b2090;
+      --pink:          #f06fa8;
+      --pink-light:    #f8a8cc;
+      --pink-pale:     #ffe0ef;
+      --pink-soft:     #fff5f9;
+      --gold:          #f5c842;
+      --gold-light:    #fff0b3;
+      --cream:         #fdf8ff;
+      --warm-white:    #fffcff;
+      --text-dark:     #3a1850;
+      --text-mid:      #7a4a90;
+      --text-light:    #b090c0;
+    }
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+    html { scroll-behavior:smooth; }
+    body { background:var(--cream); color:var(--text-dark); font-family:'Nunito',sans-serif; min-height:100vh; }
+
+    nav {
+      position:sticky; top:0; z-index:100;
+      display:flex; align-items:center; justify-content:space-between;
+      padding:0 48px; height:72px;
+      background:rgba(253,248,255,0.95); backdrop-filter:blur(18px);
+      border-bottom:2px solid rgba(212,168,232,0.22);
+    }
+    .nav-logo { display:flex; align-items:center; gap:12px; text-decoration:none; }
+    .nav-logo-bubble {
+      width:42px; height:42px; border-radius:50%;
+      background:linear-gradient(135deg, var(--lavender-pale), var(--lavender));
+      border:2px solid var(--lavender); display:flex; align-items:center; justify-content:center; font-size:20px;
+    }
+    .nav-brand-name { font-family:'Dancing Script',cursive; font-size:20px; color:var(--purple-dark); }
+    .nav-back { display:flex; align-items:center; gap:8px; color:var(--text-mid); text-decoration:none; font-size:13px; font-weight:700; transition:color 0.2s; }
+    .nav-back:hover { color:var(--purple-dark); }
+
+    .page-hero {
+      background:linear-gradient(135deg, var(--purple-deep) 0%, var(--purple) 55%, var(--pink) 100%);
+      padding:72px 80px 60px; position:relative; overflow:hidden;
+    }
+    .page-hero::before {
+      content:'🦋 ✨ 💜 ✨ 🦋 ✨ 💜 ✨ 🦋';
+      position:absolute; top:16px; left:0; right:0;
+      text-align:center; font-size:18px; letter-spacing:8px; opacity:0.4;
+    }
+    .page-hero::after {
+      content:''; position:absolute; width:500px; height:500px; border-radius:50%;
+      border:2px solid rgba(255,255,255,0.1); top:-100px; right:-100px;
+    }
+    .page-hero-tag { font-size:11px; font-weight:800; letter-spacing:0.22em; text-transform:uppercase; color:var(--gold-light); margin-bottom:14px; }
+    .page-hero-title { font-family:'Dancing Script',cursive; font-size:clamp(40px, 4.5vw, 62px); color:#fff; line-height:1.1; text-shadow:2px 3px 0 rgba(0,0,0,0.1); }
+    .page-hero-sub { font-size:15px; color:rgba(255,255,255,0.82); margin-top:14px; max-width:520px; line-height:1.7; }
+
+    .booking-body {
+      max-width:1100px; margin:0 auto;
+      padding:72px 40px 100px;
+      display:grid; grid-template-columns:1fr 380px; gap:56px; align-items:start;
+    }
+
+    .form-card {
+      background:#fff; border:2px solid var(--lavender-light);
+      border-radius:28px; padding:52px;
+      box-shadow:0 4px 40px rgba(138,58,173,0.06);
+    }
+    .form-section-title {
+      font-family:'Dancing Script',cursive; font-size:26px; color:var(--purple-dark);
+      margin-bottom:28px; padding-bottom:14px; border-bottom:2px solid var(--lavender-pale);
+      display:flex; align-items:center; gap:12px;
+    }
+    .form-row { display:grid; grid-template-columns:1fr 1fr; gap:20px; margin-bottom:20px; }
+    .form-row.full { grid-template-columns:1fr; }
+    .field { display:flex; flex-direction:column; gap:8px; }
+    .field label { font-size:11px; font-weight:800; letter-spacing:0.14em; text-transform:uppercase; color:var(--text-mid); }
+    .field input, .field select, .field textarea {
+      padding:14px 18px; border:2px solid var(--lavender-pale); border-radius:14px;
+      font-family:'Nunito',sans-serif; font-size:14px; color:var(--text-dark);
+      background:var(--warm-white); outline:none; transition:border-color 0.2s, box-shadow 0.2s; appearance:none;
+    }
+    .field input:focus, .field select:focus, .field textarea:focus {
+      border-color:var(--lavender); box-shadow:0 0 0 3px rgba(212,168,232,0.15);
+    }
+    .field textarea { resize:vertical; min-height:100px; }
+
+    .service-options { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:20px; }
+    .service-opt {
+      display:flex; align-items:center; gap:12px; padding:14px 18px;
+      border:2px solid var(--lavender-pale); border-radius:14px;
+      cursor:pointer; transition:all 0.2s; background:var(--warm-white);
+    }
+    .service-opt:hover { border-color:var(--lavender); background:var(--lavender-soft); }
+    .service-opt.selected { border-color:var(--purple); background:var(--lavender-pale); }
+    .service-opt input { display:none; }
+    .service-opt-icon { font-size:24px; }
+    .service-opt-label { font-size:13px; font-weight:700; color:var(--text-dark); line-height:1.3; }
+
+    .form-divider { height:2px; background:var(--lavender-pale); margin:32px 0; }
+
+    .btn-submit {
+      width:100%; padding:18px;
+      background:linear-gradient(135deg, var(--purple-deep), var(--purple), var(--pink));
+      color:#fff; font-family:'Nunito',sans-serif; font-weight:800;
+      font-size:16px; letter-spacing:0.06em; text-transform:uppercase;
+      border:none; border-radius:16px; cursor:pointer; transition:all 0.3s;
+      box-shadow:0 6px 24px rgba(138,58,173,0.35); margin-top:8px;
+    }
+    .btn-submit:hover { filter:brightness(1.08); transform:translateY(-2px); box-shadow:0 12px 36px rgba(138,58,173,0.42); }
+
+    .success-overlay { display:none; text-align:center; padding:60px 20px; }
+    .success-overlay.show { display:block; }
+    .form-content.hide { display:none; }
+    .success-icon { font-size:72px; margin-bottom:24px; animation:bounce 1s ease; }
+    @keyframes bounce { 0%,100%{transform:scale(1)} 50%{transform:scale(1.2)} }
+    .success-title { font-family:'Dancing Script',cursive; font-size:42px; color:var(--purple-dark); margin-bottom:14px; }
+    .success-msg { font-size:15px; color:var(--text-mid); line-height:1.7; }
+
+    .booking-sidebar { display:flex; flex-direction:column; gap:24px; }
+    .sidebar-card {
+      background:#fff; border:2px solid var(--lavender-light); border-radius:22px; padding:32px;
+      box-shadow:0 4px 30px rgba(138,58,173,0.05);
+    }
+    .sidebar-card-title { font-family:'Dancing Script',cursive; font-size:24px; color:var(--purple-dark); margin-bottom:18px; }
+    .sidebar-item { display:flex; align-items:flex-start; gap:14px; padding:12px 0; border-bottom:1px solid var(--lavender-pale); }
+    .sidebar-item:last-child { border-bottom:none; }
+    .sidebar-item-icon { font-size:22px; flex-shrink:0; }
+    .sidebar-item-title { font-weight:800; color:var(--text-dark); margin-bottom:2px; font-size:14px; }
+    .sidebar-item-text { font-size:13px; color:var(--text-mid); line-height:1.55; }
+
+    .sidebar-contact-link {
+      display:flex; align-items:center; gap:12px; padding:14px 18px;
+      background:var(--lavender-soft); border:2px solid var(--lavender-pale);
+      border-radius:14px; text-decoration:none; margin-bottom:12px; transition:all 0.2s;
+    }
+    .sidebar-contact-link:hover { background:var(--lavender-pale); border-color:var(--lavender); }
+    .sidebar-contact-link-icon { font-size:22px; }
+    .sidebar-contact-label { font-size:10px; color:var(--purple); letter-spacing:0.12em; text-transform:uppercase; font-weight:800; }
+    .sidebar-contact-value { font-family:'Dancing Script',cursive; font-size:18px; color:var(--purple-dark); }
+
+    .offer-badge {
+      background:linear-gradient(135deg, var(--purple-dark), var(--purple), var(--pink));
+      border-radius:18px; padding:28px; text-align:center; position:relative; overflow:hidden;
+    }
+    .offer-badge::before { content:'🦋'; position:absolute; top:8px; right:12px; font-size:40px; opacity:0.2; }
+    .offer-badge-mascot { font-size:52px; margin-bottom:8px; display:block; }
+    .offer-badge-value { font-family:'Dancing Script',cursive; font-size:24px; color:#fff; line-height:1.2; }
+    .offer-badge-phone { font-family:'Dancing Script',cursive; font-size:26px; color:var(--gold-light); margin-top:10px; display:block; text-decoration:none; }
+
+    @media(max-width:900px) {
+      nav { padding:0 20px; }
+      .page-hero { padding:60px 24px; }
+      .booking-body { grid-template-columns:1fr; padding:40px 20px 80px; }
+      .form-card { padding:32px 24px; }
+      .form-row { grid-template-columns:1fr; }
+      .service-options { grid-template-columns:1fr; }
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <a href="../index.html" class="nav-logo">
+      <div class="nav-logo-bubble" style="overflow:hidden;padding:0;background:transparent;border:none;">
+        <img src="../michelle_logo.jpeg" alt="Michelle's" style="width:52px;height:52px;object-fit:contain;" onerror="this.style.display='none';this.parentElement.innerHTML='🦋';" />
+      </div>
+      <span class="nav-brand-name">Michelle's Cleaning & Organization</span>
+    </a>
+    <a href="../index.html" class="nav-back">← Back to Home</a>
+  </nav>
+
+  <div class="page-hero">
+    <div class="page-hero-tag">Schedule Your Service</div>
+    <h1 class="page-hero-title">Book a Cleaning! 🦋</h1>
+    <p class="page-hero-sub">Fill out the form and Michelle will confirm your appointment. We provide all supplies — just $25 deposit to lock your spot!</p>
+  </div>
+
+  <div class="booking-body">
+    <div class="form-card">
+      <div class="success-overlay" id="successOverlay">
+        <div class="success-icon">🦋</div>
+        <div class="success-title">Booking Received!</div>
+        <div class="success-msg">Thank you! Michelle will reach out to confirm your appointment within 24 hours. Call or text anytime at <strong>956-368-3793</strong>.</div>
+      </div>
+      <div class="form-content" id="formContent">
+        <div class="form-section-title"><span>👤</span> Your Information</div>
+        <div class="form-row">
+          <div class="field"><label>First Name</label><input type="text" id="firstName" placeholder="Maria" /></div>
+          <div class="field"><label>Last Name</label><input type="text" id="lastName" placeholder="Garcia" /></div>
+        </div>
+        <div class="form-row">
+          <div class="field"><label>Phone Number</label><input type="tel" id="phone" placeholder="(956) 000-0000" /></div>
+          <div class="field"><label>Email Address</label><input type="email" id="email" placeholder="you@email.com" /></div>
+        </div>
+        <div class="form-row full">
+          <div class="field"><label>Service Address</label><input type="text" id="address" placeholder="123 Main St, Harlingen, TX 78550" /></div>
+        </div>
+        <div class="form-divider"></div>
+        <div class="form-section-title"><span>🧹</span> Service Details</div>
+        <div class="service-options" id="serviceOptions">
+          <label class="service-opt" onclick="selectService(this)"><input type="radio" name="service" value="deep_clean" /><span class="service-opt-icon">🫧</span><span class="service-opt-label">Deep Cleaning</span></label>
+          <label class="service-opt" onclick="selectService(this)"><input type="radio" name="service" value="maintain" /><span class="service-opt-icon">🏠</span><span class="service-opt-label">Maintain Cleaning</span></label>
+          <label class="service-opt" onclick="selectService(this)"><input type="radio" name="service" value="4hr" /><span class="service-opt-icon">⏰</span><span class="service-opt-label">4 Hour Special ($125)</span></label>
+          <label class="service-opt" onclick="selectService(this)"><input type="radio" name="service" value="5hr" /><span class="service-opt-icon">⏱️</span><span class="service-opt-label">5 Hour Special ($150)</span></label>
+          <label class="service-opt" onclick="selectService(this)"><input type="radio" name="service" value="organization" /><span class="service-opt-icon">📦</span><span class="service-opt-label">Organization</span></label>
+          <label class="service-opt" onclick="selectService(this)"><input type="radio" name="service" value="full_quote" /><span class="service-opt-icon">🏡</span><span class="service-opt-label">Full House (Quote)</span></label>
+        </div>
+        <div class="form-row">
+          <div class="field"><label>Preferred Date</label><input type="date" id="date" /></div>
+          <div class="field"><label>Preferred Time</label>
+            <select id="time">
+              <option value="">Select a time</option>
+              <option>8:00 AM – 10:00 AM</option>
+              <option>10:00 AM – 12:00 PM</option>
+              <option>12:00 PM – 2:00 PM</option>
+              <option>2:00 PM – 4:00 PM</option>
+              <option>4:00 PM – 6:00 PM</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="field"><label>Bedrooms / Bathrooms</label>
+            <select id="rooms">
+              <option value="">Select</option>
+              <option>2 Bed / 2 Bath</option>
+              <option>3 Bed / 2 Bath</option>
+              <option>4 Bed / 2 Bath</option>
+              <option>Other / Ask for Quote</option>
+            </select>
+          </div>
+          <div class="field"><label>Home Size (sq ft)</label>
+            <select id="size">
+              <option value="">Select size</option>
+              <option>Under 800 sq ft</option>
+              <option>800 – 1,200 sq ft</option>
+              <option>1,200 – 1,800 sq ft</option>
+              <option>1,800 – 2,500 sq ft</option>
+              <option>Over 2,500 sq ft</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-row full">
+          <div class="field"><label>Additional Notes / Add-Ons</label>
+            <textarea id="notes" placeholder="Any add-ons (fridge, pantry, laundry, oven), special requests, pets, access instructions…"></textarea>
+          </div>
+        </div>
+        <button class="btn-submit" onclick="submitBooking()">Request Booking → 🦋</button>
+      </div>
+    </div>
+
+    <div class="booking-sidebar">
+      <div class="sidebar-card">
+        <div class="sidebar-card-title">📞 Contact Michelle</div>
+        <a href="tel:9563683793" class="sidebar-contact-link">
+          <span class="sidebar-contact-link-icon">📞</span>
+          <div><div class="sidebar-contact-label">Call or Text</div><div class="sidebar-contact-value">956-368-3793</div></div>
+        </a>
+        <a href="sms:9563683793" class="sidebar-contact-link">
+          <span class="sidebar-contact-link-icon">💬</span>
+          <div><div class="sidebar-contact-label">Text Message</div><div class="sidebar-contact-value">Michelle's Cleaning</div></div>
+        </a>
+      </div>
+
+      <div class="sidebar-card">
+        <div class="offer-badge">
+          <img src="../michelle_logo.jpeg" alt="Michelle's" style="width:110px;height:110px;object-fit:contain;display:block;margin:0 auto 10px;border-radius:12px;" onerror="this.style.display='none';" />
+          <div class="offer-badge-value">We Provide All Supplies! $25 Deposit to Lock Your Spot</div>
+          <a href="tel:9563683793" class="offer-badge-phone">956-368-3793 →</a>
+        </div>
+      </div>
+
+      <div class="sidebar-card">
+        <div class="sidebar-card-title">✨ What to Expect</div>
+        <div class="sidebar-item"><div class="sidebar-item-icon">✅</div><div><div class="sidebar-item-title">Confirmation within 24 hrs</div><div class="sidebar-item-text">Michelle will reach out to confirm your appointment.</div></div></div>
+        <div class="sidebar-item"><div class="sidebar-item-icon">💰</div><div><div class="sidebar-item-title">$25 Deposit Required</div><div class="sidebar-item-text">Lock your spot with just a $25 deposit. No hidden fees.</div></div></div>
+        <div class="sidebar-item"><div class="sidebar-item-icon">🧹</div><div><div class="sidebar-item-title">We Bring All Supplies</div><div class="sidebar-item-text">No need to provide anything — we come fully equipped.</div></div></div>
+        <div class="sidebar-item"><div class="sidebar-item-icon">🏆</div><div><div class="sidebar-item-title">100% Satisfaction</div><div class="sidebar-item-text">Not happy? We'll make it right — no questions asked.</div></div></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzRabgnMuWrE6j7xt2F727dNMF9umLxGjkQF1Ksq0y5PsQ5tpWYYIJrtXRFxG7vPVtT/exec";
+
+    function selectService(el) {
+      document.querySelectorAll('.service-opt').forEach(o => o.classList.remove('selected'));
+      el.classList.add('selected');
+      el.querySelector('input').checked = true;
+    }
+    const dateInput = document.getElementById('date');
+    dateInput.min = new Date().toISOString().split('T')[0];
+
+    async function submitBooking() {
+      const firstName = document.getElementById('firstName').value.trim();
+      const lastName  = (document.getElementById('lastName')||{value:''}).value.trim();
+      const phone     = document.getElementById('phone').value.trim();
+      const email     = (document.getElementById('email')||{value:''}).value.trim();
+      const address   = document.getElementById('address').value.trim();
+      const date      = document.getElementById('date').value;
+      const time      = (document.getElementById('time')||{value:''}).value;
+      const rooms     = (document.getElementById('rooms')||{value:''}).value;
+      const notes     = (document.getElementById('notes')||{value:''}).value.trim();
+      const selected  = document.querySelector('.service-opt.selected');
+      if (!firstName || !phone || !address || !selected) {
+        showFieldError('Please fill in your name, phone, address, and select a service type. 🦋'); return;
+      }
+      const serviceType = selected.querySelector('input').value;
+      const btn = document.querySelector('.btn-submit');
+      const originalText = btn.innerHTML;
+      btn.disabled = true;
+      btn.innerHTML = '<span style="opacity:0.7">Sending… 🦋</span>';
+      const payload = { action:"saveBooking", data:{firstName,lastName,phone,email,address,serviceType,date,time,rooms,notes} };
+      try {
+        const res  = await fetch(APPS_SCRIPT_URL,{method:"POST",body:JSON.stringify(payload),headers:{"Content-Type":"text/plain"}});
+        const json = await res.json().catch(()=>({success:true}));
+        if (json.error) throw new Error(json.error);
+        document.getElementById('formContent').classList.add('hide');
+        document.getElementById('successOverlay').classList.add('show');
+        window.scrollTo({top:0,behavior:'smooth'});
+      } catch(err) {
+        btn.disabled = false; btn.innerHTML = originalText;
+        showFieldError('There was an error. Please text Michelle directly at 956-368-3793. 🦋');
+      }
+    }
+    function showFieldError(msg) {
+      let el = document.getElementById('bookingError');
+      if (!el) {
+        el = document.createElement('div');
+        el.id = 'bookingError';
+        el.style.cssText = 'background:var(--lavender-soft);border:2px solid var(--lavender-pale);color:var(--purple-dark);padding:14px 18px;border-radius:14px;font-size:13px;font-weight:700;margin-bottom:20px;font-family:Nunito,sans-serif;';
+        document.querySelector('.form-card').insertBefore(el, document.querySelector('.form-card').firstChild);
+      }
+      el.textContent = msg;
+      el.scrollIntoView({behavior:'smooth',block:'center'});
+      setTimeout(()=>{if(el)el.remove();},6000);
+    }
+  </script>
+</body>
+</html>

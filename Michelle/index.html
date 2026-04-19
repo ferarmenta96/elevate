@@ -1,0 +1,893 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Michelle's Cleaning & Organization — Harlingen · San Benito · La Feria</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@500;700&family=Nunito:ital,wght@0,400;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --lavender:      #d4a8e8;
+      --lavender-light:#eed9f8;
+      --lavender-pale: #f8eeff;
+      --lavender-soft: #fdf5ff;
+      --purple:        #b565d4;
+      --purple-dark:   #8a3aad;
+      --purple-deep:   #6b2090;
+      --pink:          #f06fa8;
+      --pink-light:    #f8a8cc;
+      --pink-pale:     #ffe0ef;
+      --pink-soft:     #fff5f9;
+      --gold:          #f5c842;
+      --gold-light:    #fff0b3;
+      --cream:         #fdf8ff;
+      --warm-white:    #fffcff;
+      --text-dark:     #3a1850;
+      --text-mid:      #7a4a90;
+      --text-light:    #b090c0;
+    }
+
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+    html { scroll-behavior:smooth; }
+
+    body {
+      background: var(--cream);
+      color: var(--text-dark);
+      font-family: 'Nunito', sans-serif;
+      overflow-x: hidden;
+    }
+
+    /* ── DREAMY BG ── */
+    body::before {
+      content: '';
+      position: fixed; inset: 0; pointer-events: none; z-index: 0;
+      background:
+        radial-gradient(ellipse 80% 60% at 10% 20%, rgba(212,168,232,0.18) 0%, transparent 55%),
+        radial-gradient(ellipse 60% 50% at 90% 80%, rgba(240,111,168,0.14) 0%, transparent 55%),
+        radial-gradient(ellipse 50% 40% at 50% 50%, rgba(245,200,66,0.04) 0%, transparent 60%);
+    }
+
+    /* ── FLOATING HEARTS & BUBBLES ── */
+    .floaties { position:fixed; inset:0; pointer-events:none; z-index:0; overflow:hidden; }
+    .floatie {
+      position:absolute; border-radius:50%; animation: riseUp linear infinite;
+      background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.7), rgba(212,168,232,0.2));
+      border: 1px solid rgba(212,168,232,0.4);
+    }
+    .floatie:nth-child(1)  { width:55px;  height:55px;  left:4%;  animation-duration:20s; animation-delay:0s; }
+    .floatie:nth-child(2)  { width:35px;  height:35px;  left:12%; animation-duration:15s; animation-delay:3s; }
+    .floatie:nth-child(3)  { width:70px;  height:70px;  left:25%; animation-duration:25s; animation-delay:1s; }
+    .floatie:nth-child(4)  { width:28px;  height:28px;  left:42%; animation-duration:13s; animation-delay:5s; }
+    .floatie:nth-child(5)  { width:48px;  height:48px;  left:60%; animation-duration:22s; animation-delay:2s; }
+    .floatie:nth-child(6)  { width:38px;  height:38px;  left:75%; animation-duration:17s; animation-delay:4s; }
+    .floatie:nth-child(7)  { width:22px;  height:22px;  left:88%; animation-duration:12s; animation-delay:7s; }
+    .floatie:nth-child(8)  { width:62px;  height:62px;  left:50%; animation-duration:28s; animation-delay:0.5s; }
+    @keyframes riseUp {
+      0%   { transform:translateY(105vh) scale(0.7); opacity:0; }
+      8%   { opacity:0.6; }
+      92%  { opacity:0.3; }
+      100% { transform:translateY(-8vh) scale(1.15); opacity:0; }
+    }
+
+    /* ── NAV ── */
+    nav {
+      position:fixed; top:0; left:0; right:0; z-index:200;
+      display:flex; align-items:center; justify-content:space-between;
+      padding:0 48px; height:72px;
+      background:rgba(253,248,255,0.92); backdrop-filter:blur(20px);
+      border-bottom:2px solid rgba(212,168,232,0.25);
+      box-shadow:0 2px 20px rgba(138,58,173,0.06);
+    }
+    .nav-logo { display:flex; align-items:center; gap:12px; text-decoration:none; }
+    .nav-logo-bubble {
+      width:46px; height:46px; border-radius:50%;
+      background:linear-gradient(135deg, var(--lavender-pale), var(--lavender));
+      border:2px solid var(--lavender);
+      display:flex; align-items:center; justify-content:center; font-size:22px;
+    }
+    .nav-brand-name {
+      font-family:'Dancing Script', cursive;
+      font-size:22px; color:var(--purple-dark); line-height:1.1;
+    }
+    .nav-brand-sub {
+      font-size:9px; color:var(--text-light); letter-spacing:0.14em;
+      text-transform:uppercase; display:block; font-weight:700;
+    }
+    .nav-actions { display:flex; align-items:center; gap:12px; }
+    .btn-nav-book {
+      padding:10px 28px;
+      background:linear-gradient(135deg, var(--purple-dark), var(--purple));
+      color:#fff; font-family:'Nunito', sans-serif; font-weight:800;
+      font-size:13px; border:none; border-radius:40px;
+      cursor:pointer; text-decoration:none; letter-spacing:0.06em;
+      box-shadow:0 4px 18px rgba(138,58,173,0.3); transition:all 0.3s;
+    }
+    .btn-nav-book:hover { filter:brightness(1.1); transform:translateY(-1px); }
+    .btn-nav-admin {
+      padding:10px 22px; background:transparent;
+      color:var(--text-mid); font-family:'Nunito',sans-serif; font-size:13px; font-weight:700;
+      border:2px solid var(--lavender-light); border-radius:40px;
+      cursor:pointer; text-decoration:none; transition:all 0.3s;
+    }
+    .btn-nav-admin:hover { background:var(--lavender-pale); border-color:var(--lavender); color:var(--purple-dark); }
+
+    /* ── HERO ── */
+    .hero {
+      min-height:100vh; display:grid; grid-template-columns:1fr 1fr;
+      padding-top:72px; position:relative; z-index:1; overflow:hidden;
+    }
+    .hero-left {
+      display:flex; flex-direction:column; justify-content:center;
+      padding:80px 56px 80px 80px; position:relative; z-index:2;
+    }
+    .hero-eyebrow {
+      display:inline-flex; align-items:center; gap:10px;
+      margin-bottom:22px; animation:fadeUp 0.8s ease both;
+    }
+    .hero-eyebrow-dot { width:8px; height:8px; border-radius:50%; background:var(--purple); }
+    .hero-eyebrow-text {
+      font-size:11px; font-weight:800; letter-spacing:0.22em;
+      text-transform:uppercase; color:var(--purple);
+    }
+    .hero-brand {
+      font-family:'Dancing Script', cursive;
+      font-size:clamp(52px, 6vw, 80px);
+      color:var(--purple-dark); line-height:1.0; margin-bottom:2px;
+      animation:fadeUp 0.8s ease 0.1s both;
+      text-shadow:3px 3px 0 rgba(138,58,173,0.12);
+    }
+    .hero-sub-brand {
+      font-family:'Nunito', sans-serif; font-weight:800;
+      font-size:clamp(18px, 2vw, 26px); letter-spacing:0.18em;
+      text-transform:uppercase; color:var(--pink);
+      margin-bottom:26px;
+      animation:fadeUp 0.8s ease 0.15s both;
+    }
+    .hero-location {
+      display:inline-flex; align-items:center; gap:8px;
+      background:var(--lavender-pale); border:2px solid var(--lavender-light);
+      border-radius:50px; padding:8px 18px; margin-bottom:20px;
+      font-size:13px; font-weight:700; color:var(--purple-dark);
+      animation:fadeUp 0.8s ease 0.2s both;
+    }
+    .hero-tagline {
+      font-size:15px; line-height:1.7; color:var(--text-mid);
+      max-width:420px; margin-bottom:40px;
+      animation:fadeUp 0.8s ease 0.25s both;
+    }
+    .hero-tagline strong { color:var(--purple-dark); }
+    .hero-cta-group {
+      display:flex; align-items:center; gap:20px;
+      animation:fadeUp 0.8s ease 0.3s both;
+    }
+    .btn-primary {
+      padding:16px 40px;
+      background:linear-gradient(135deg, var(--purple-deep), var(--purple), var(--pink));
+      color:#fff; font-family:'Nunito',sans-serif; font-weight:800;
+      font-size:14px; letter-spacing:0.08em; text-transform:uppercase;
+      border:none; border-radius:50px; cursor:pointer; text-decoration:none;
+      box-shadow:0 8px 32px rgba(138,58,173,0.35); transition:all 0.3s;
+      display:inline-flex; align-items:center; gap:10px;
+    }
+    .btn-primary:hover { filter:brightness(1.08); transform:translateY(-3px); box-shadow:0 14px 40px rgba(138,58,173,0.45); }
+    .hero-contact-inline { display:flex; flex-direction:column; gap:4px; }
+    .hero-contact-label { font-size:10px; letter-spacing:0.15em; text-transform:uppercase; color:var(--text-light); font-weight:800; }
+    .hero-contact-phone {
+      font-family:'Dancing Script', cursive; font-size:26px;
+      color:var(--purple-dark); text-decoration:none; transition:color 0.2s;
+    }
+    .hero-contact-phone:hover { color:var(--purple); }
+
+    /* hero right */
+    .hero-right {
+      position:relative; display:flex; align-items:center;
+      justify-content:center; overflow:hidden;
+    }
+    .hero-right-bg {
+      position:absolute; inset:0;
+      background:linear-gradient(145deg, #f0d8ff 0%, #ffe0ef 45%, #e8d0ff 100%);
+    }
+    .hero-circle {
+      position:absolute; border-radius:50%; pointer-events:none;
+    }
+    .hero-circle-1 { width:440px; height:440px; top:50%; left:50%; transform:translate(-50%,-50%); border:2px solid rgba(212,168,232,0.35); }
+    .hero-circle-2 { width:320px; height:320px; top:50%; left:50%; transform:translate(-50%,-50%); border:2px solid rgba(240,111,168,0.3); }
+    .hero-circle-3 { width:200px; height:200px; top:50%; left:50%; transform:translate(-50%,-50%); border:2px solid rgba(245,200,66,0.3); }
+
+    /* butterflies */
+    .butterfly { position:absolute; font-size:28px; animation:flutter ease-in-out infinite; }
+    .butterfly:nth-child(1) { top:12%; left:10%; animation-duration:3.5s; animation-delay:0s; font-size:24px; }
+    .butterfly:nth-child(2) { top:18%; right:12%; animation-duration:4s;   animation-delay:1s; }
+    .butterfly:nth-child(3) { bottom:22%; left:8%;  animation-duration:3s;   animation-delay:0.7s; font-size:20px; }
+    .butterfly:nth-child(4) { bottom:15%; right:10%; animation-duration:4.5s; animation-delay:1.8s; }
+    @keyframes flutter {
+      0%,100%{ transform:translateY(0) rotate(-5deg) scale(1); }
+      25%    { transform:translateY(-12px) rotate(5deg) scale(1.05); }
+      75%    { transform:translateY(8px) rotate(-3deg) scale(0.97); }
+    }
+
+    /* sparkles */
+    .sparkle { position:absolute; animation:twinkle ease-in-out infinite; }
+    .sparkle:nth-child(5) { top:25%; left:20%; font-size:18px; animation-duration:2s; }
+    .sparkle:nth-child(6) { top:60%; right:20%; font-size:22px; animation-duration:2.5s; animation-delay:1s; }
+    .sparkle:nth-child(7) { bottom:35%; left:35%; font-size:16px; animation-duration:1.8s; animation-delay:0.5s; }
+    @keyframes twinkle { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.3;transform:scale(0.6)} }
+
+    .hero-illustration {
+      position:relative; z-index:2; text-align:center;
+      animation:float 5s ease-in-out infinite;
+    }
+    .hero-illustration-img {
+      width:400px; height:400px;
+      object-fit:contain;
+      filter:drop-shadow(0 20px 50px rgba(138,58,173,0.22));
+      border-radius:24px;
+    }
+    @keyframes float { 0%,100%{ transform:translateY(0) rotate(-2deg); } 50%{ transform:translateY(-18px) rotate(2deg); } }
+
+    .hero-badge {
+      position:absolute; bottom:60px; right:44px;
+      background:rgba(255,252,255,0.96); border:2px solid var(--lavender-light);
+      border-radius:20px; padding:18px 24px; backdrop-filter:blur(12px);
+      box-shadow:0 8px 40px rgba(138,58,173,0.1);
+      animation:fadeUp 1s ease 0.5s both; text-align:center;
+    }
+    .hero-badge-value { font-family:'Dancing Script',cursive; font-size:36px; color:var(--purple-dark); line-height:1; }
+    .hero-badge-label { font-size:11px; color:var(--text-mid); font-weight:700; margin-top:4px; }
+    .hero-badge-stars { color:var(--gold); font-size:16px; margin-top:5px; letter-spacing:2px; }
+
+    .hero-deposit-tag {
+      position:absolute; top:46px; left:38px;
+      background:linear-gradient(135deg, var(--gold), #f8d070);
+      color:#5a3800; font-family:'Nunito',sans-serif; font-weight:800; font-size:12px;
+      padding:10px 18px; border-radius:30px;
+      box-shadow:0 4px 18px rgba(245,200,66,0.45);
+      animation:fadeUp 0.8s ease 0.4s both;
+    }
+
+    /* ── SERVICES ── */
+    .services {
+      padding:120px 80px; background:var(--cream); position:relative; z-index:1;
+    }
+    .services::before {
+      content:''; position:absolute; top:0; left:0; right:0; height:3px;
+      background:linear-gradient(90deg, transparent, var(--lavender), var(--pink-light), var(--gold), var(--pink-light), var(--lavender), transparent);
+    }
+    .section-header { text-align:center; margin-bottom:72px; }
+    .section-tag {
+      display:inline-block; font-size:11px; font-weight:800;
+      letter-spacing:0.22em; text-transform:uppercase; color:var(--purple); margin-bottom:14px;
+    }
+    .section-title {
+      font-family:'Dancing Script', cursive;
+      font-size:clamp(38px, 4vw, 56px); color:var(--purple-dark); line-height:1.1;
+    }
+    .section-title span { color:var(--pink); }
+
+    /* ── SPECIALS GRID ── */
+    .specials-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:28px; max-width:1100px; margin:0 auto 80px; }
+
+    .special-card {
+      background:var(--warm-white); border:2px solid var(--lavender-light);
+      border-radius:28px; padding:40px 32px; text-align:center;
+      transition:all 0.4s; position:relative; overflow:hidden;
+    }
+    .special-card::before {
+      content:''; position:absolute; inset:0;
+      background:linear-gradient(135deg, var(--lavender-pale), transparent);
+      opacity:0; transition:opacity 0.4s;
+    }
+    .special-card:hover { transform:translateY(-8px); box-shadow:0 24px 60px rgba(138,58,173,0.15); border-color:var(--lavender); }
+    .special-card:hover::before { opacity:1; }
+
+    .special-card.featured {
+      border-color:var(--purple);
+      background:linear-gradient(145deg, var(--lavender-pale), var(--pink-pale));
+    }
+    .special-card.featured::after {
+      content:'✨ SPECIAL'; position:absolute; top:14px; right:-28px;
+      background:var(--purple-dark); color:#fff; font-size:9px; font-weight:800;
+      letter-spacing:0.12em; padding:6px 36px; transform:rotate(30deg);
+    }
+
+    .special-hours {
+      font-family:'Dancing Script',cursive; font-size:42px; color:var(--purple-dark);
+      line-height:1; margin-bottom:6px; position:relative; z-index:1;
+    }
+    .special-label {
+      font-size:14px; font-weight:800; color:var(--purple); margin-bottom:20px;
+      text-transform:uppercase; letter-spacing:0.1em; position:relative; z-index:1;
+    }
+    .special-price {
+      font-family:'Nunito',sans-serif; font-weight:800;
+      font-size:52px; color:var(--pink); line-height:1;
+      margin-bottom:16px; position:relative; z-index:1;
+    }
+    .special-price span { font-size:28px; vertical-align:top; margin-top:8px; display:inline-block; }
+    .special-note {
+      font-size:12px; color:var(--text-light); line-height:1.6;
+      position:relative; z-index:1;
+    }
+    .special-deposit {
+      margin-top:16px; padding:10px 20px;
+      background:rgba(138,58,173,0.1); border-radius:12px;
+      font-size:13px; font-weight:700; color:var(--purple-dark);
+      position:relative; z-index:1;
+    }
+
+    /* ── SERVICES CARDS ── */
+    .services-grid {
+      display:grid; grid-template-columns:repeat(4,1fr); gap:24px;
+      max-width:1200px; margin:0 auto;
+    }
+    .service-card {
+      background:var(--warm-white); border:2px solid var(--lavender-light);
+      border-radius:24px; padding:32px 22px; text-align:center;
+      transition:all 0.4s; position:relative; overflow:hidden;
+    }
+    .service-card::before {
+      content:''; position:absolute; inset:0;
+      background:linear-gradient(135deg, var(--lavender-pale), transparent);
+      opacity:0; transition:opacity 0.4s;
+    }
+    .service-card:hover { transform:translateY(-8px); box-shadow:0 24px 60px rgba(138,58,173,0.14); border-color:var(--lavender); }
+    .service-card:hover::before { opacity:1; }
+    .service-icon-wrap {
+      width:72px; height:72px; border-radius:50%;
+      background:linear-gradient(135deg, var(--lavender-pale), var(--pink-pale));
+      display:flex; align-items:center; justify-content:center;
+      margin:0 auto 18px; font-size:32px;
+      border:2px solid rgba(212,168,232,0.4); position:relative; z-index:1;
+      transition:transform 0.3s;
+    }
+    .service-card:hover .service-icon-wrap { transform:scale(1.12) rotate(-6deg); }
+    .service-card-title { font-weight:800; font-size:15px; color:var(--purple-dark); margin-bottom:8px; position:relative; z-index:1; }
+    .service-card-desc { font-size:12.5px; color:var(--text-mid); line-height:1.6; position:relative; z-index:1; }
+
+    /* ── PRICING TABLE ── */
+    .pricing-section {
+      padding:0 80px 100px; position:relative; z-index:1;
+    }
+    .pricing-grid { display:grid; grid-template-columns:1fr 1fr; gap:40px; max-width:1000px; margin:0 auto; align-items:start; }
+
+    .pricing-card {
+      background:var(--warm-white); border:2px solid var(--lavender-light);
+      border-radius:28px; overflow:hidden;
+    }
+    .pricing-card-header {
+      background:linear-gradient(135deg, var(--purple-dark), var(--purple));
+      padding:28px 32px;
+    }
+    .pricing-card-title { font-family:'Dancing Script',cursive; font-size:28px; color:#fff; }
+    .pricing-card-sub { font-size:12px; color:rgba(255,255,255,0.7); font-weight:700; margin-top:4px; letter-spacing:0.08em; text-transform:uppercase; }
+    .pricing-rows { padding:8px 0; }
+    .pricing-row {
+      display:flex; align-items:center; justify-content:space-between;
+      padding:16px 28px; border-bottom:1px solid var(--lavender-pale);
+    }
+    .pricing-row:last-child { border-bottom:none; }
+    .pricing-row-left { display:flex; align-items:center; gap:10px; }
+    .pricing-row-icon { font-size:22px; }
+    .pricing-row-name { font-size:14px; font-weight:700; color:var(--text-dark); }
+    .pricing-row-price {
+      font-family:'Dancing Script',cursive; font-size:26px; color:var(--purple-dark); font-weight:700;
+    }
+
+    /* addons */
+    .addons-card {
+      background:var(--warm-white); border:2px solid var(--lavender-light); border-radius:28px; overflow:hidden;
+    }
+    .addons-header {
+      background:linear-gradient(135deg, var(--pink), var(--pink-light));
+      padding:22px 28px;
+    }
+    .addons-title { font-family:'Dancing Script',cursive; font-size:26px; color:#fff; }
+    .addons-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; padding:20px 24px; }
+    .addon-chip {
+      display:flex; align-items:center; gap:8px;
+      background:var(--lavender-pale); border:2px solid var(--lavender-light);
+      border-radius:50px; padding:10px 14px;
+      font-size:13px; font-weight:700; color:var(--purple-dark);
+    }
+    .addon-chip-icon { font-size:18px; }
+
+    .supplies-badge {
+      margin:20px 24px; padding:16px 20px;
+      background:linear-gradient(135deg, var(--gold), #f8d070);
+      border-radius:16px; text-align:center;
+    }
+    .supplies-badge-text { font-weight:800; font-size:14px; color:#5a3800; }
+    .supplies-badge-deposit { font-family:'Dancing Script',cursive; font-size:22px; color:var(--purple-deep); margin-top:4px; }
+
+    /* ── DEEP CLEAN CHECKLIST ── */
+    .checklist-section {
+      padding:0 80px 100px; position:relative; z-index:1;
+    }
+    .checklist-wrap {
+      max-width:900px; margin:0 auto;
+      background:var(--warm-white); border:2px solid var(--lavender-light);
+      border-radius:28px; overflow:hidden;
+    }
+    .checklist-header {
+      background:linear-gradient(135deg, var(--purple-deep), var(--purple), var(--pink));
+      padding:32px 40px; text-align:center;
+    }
+    .checklist-header-title { font-family:'Dancing Script',cursive; font-size:36px; color:#fff; }
+    .checklist-header-sub { font-size:13px; color:rgba(255,255,255,0.75); font-weight:700; margin-top:6px; letter-spacing:0.1em; text-transform:uppercase; }
+    .checklist-body { padding:36px 40px; }
+    .checklist-grid { display:grid; grid-template-columns:1fr 1fr; gap:14px 40px; }
+    .checklist-item {
+      display:flex; align-items:flex-start; gap:10px;
+    }
+    .checklist-dot {
+      width:20px; height:20px; border-radius:50%; flex-shrink:0;
+      background:linear-gradient(135deg, var(--purple), var(--pink));
+      display:flex; align-items:center; justify-content:center;
+      color:#fff; font-size:10px; margin-top:2px;
+    }
+    .checklist-text { font-size:14px; font-weight:600; color:var(--text-dark); line-height:1.4; }
+
+    /* ── WHY US ── */
+    .why-section { background:var(--cream); padding:0 0 40px; position:relative; z-index:1; }
+    .why-us { padding:100px 80px; display:grid; grid-template-columns:1fr 1fr; gap:80px; align-items:center; max-width:1300px; margin:0 auto; }
+    .why-visual {
+      background:linear-gradient(145deg, var(--lavender-pale), var(--pink-pale));
+      border-radius:28px; height:480px;
+      display:flex; align-items:center; justify-content:center;
+      position:relative; overflow:hidden;
+    }
+    .why-visual-img {
+      width:88%; height:88%;
+      object-fit:contain;
+      filter:drop-shadow(0 8px 24px rgba(138,58,173,0.18));
+      border-radius:16px;
+      position:relative; z-index:1;
+    }
+    .why-visual-placeholder { font-size:110px; animation:float 4s ease-in-out infinite; }
+    .why-stat-card {
+      position:absolute; background:rgba(255,252,255,0.97);
+      border:2px solid var(--lavender-light); border-radius:18px;
+      padding:18px 22px; box-shadow:0 12px 40px rgba(138,58,173,0.1); text-align:center;
+    }
+    .why-stat-card.one { top:28px; right:-28px; }
+    .why-stat-card.two { bottom:38px; left:-28px; }
+    .why-stat-num { font-family:'Dancing Script',cursive; font-size:28px; color:var(--purple-dark); line-height:1; }
+    .why-stat-label { font-size:11px; color:var(--text-mid); font-weight:700; margin-top:4px; }
+    .why-list { list-style:none; margin-top:36px; }
+    .why-item { display:flex; gap:18px; padding:20px 0; border-bottom:1px solid var(--lavender-pale); }
+    .why-item:last-child { border-bottom:none; }
+    .why-item-icon {
+      width:46px; height:46px; border-radius:14px;
+      background:var(--lavender-pale); display:flex; align-items:center;
+      justify-content:center; font-size:22px; flex-shrink:0;
+      border:2px solid rgba(212,168,232,0.4);
+    }
+    .why-item-title { font-weight:800; font-size:16px; color:var(--purple-dark); margin-bottom:4px; }
+    .why-item-desc { font-size:13.5px; color:var(--text-mid); line-height:1.6; }
+
+    /* ── AREAS ── */
+    .areas {
+      padding:100px 80px;
+      background:linear-gradient(135deg, var(--purple-deep) 0%, var(--purple) 50%, var(--pink) 100%);
+      position:relative; overflow:hidden; text-align:center; z-index:1;
+    }
+    .areas::before {
+      content:'🦋 ✨ 💜 ✨ 🦋 ✨ 💜 ✨ 🦋';
+      position:absolute; top:16px; left:0; right:0;
+      text-align:center; font-size:20px; letter-spacing:8px; opacity:0.4;
+    }
+    .areas .section-tag { color:var(--gold-light); }
+    .areas .section-title { color:#fff; }
+    .areas-grid { display:flex; flex-wrap:wrap; justify-content:center; gap:14px; margin-top:52px; max-width:800px; margin-left:auto; margin-right:auto; }
+    .area-pill {
+      padding:12px 28px; background:rgba(255,255,255,0.12);
+      border:2px solid rgba(255,255,255,0.28); border-radius:40px;
+      color:#fff; font-size:14px; font-weight:800;
+      backdrop-filter:blur(8px); transition:all 0.3s;
+    }
+    .area-pill:hover { background:rgba(255,255,255,0.22); transform:translateY(-2px); }
+
+    /* ── OFFER BANNER ── */
+    .offer {
+      margin:80px; position:relative; z-index:1;
+      background:linear-gradient(135deg, var(--gold) 0%, #f8d070 50%, var(--gold) 100%);
+      border-radius:28px; padding:60px;
+      display:flex; align-items:center; justify-content:space-between; overflow:hidden;
+    }
+    .offer::before { content:''; position:absolute; width:300px; height:300px; border-radius:50%; background:rgba(255,255,255,0.1); top:-80px; right:100px; }
+    .offer-eyebrow { font-size:11px; font-weight:800; letter-spacing:0.2em; text-transform:uppercase; color:rgba(255,255,255,0.8); margin-bottom:10px; }
+    .offer-headline { font-family:'Dancing Script',cursive; font-size:50px; color:#fff; line-height:1.1; }
+    .offer-sub { font-size:15px; color:rgba(255,255,255,0.88); margin-top:10px; max-width:400px; line-height:1.6; }
+    .btn-offer {
+      padding:18px 44px; background:#fff; color:var(--purple-dark);
+      font-family:'Nunito',sans-serif; font-weight:800; font-size:15px;
+      border:none; border-radius:50px; cursor:pointer; text-decoration:none;
+      transition:all 0.3s; white-space:nowrap; flex-shrink:0;
+      box-shadow:0 8px 30px rgba(0,0,0,0.15);
+    }
+    .btn-offer:hover { transform:translateY(-2px); box-shadow:0 14px 40px rgba(0,0,0,0.2); }
+
+    /* ── CONTACT ── */
+    .contact { padding:120px 80px; background:var(--lavender-soft); text-align:center; position:relative; z-index:1; }
+    .contact-cards { display:flex; justify-content:center; gap:24px; margin-top:52px; }
+    .contact-card {
+      background:var(--warm-white); border:2px solid var(--lavender-light);
+      border-radius:24px; padding:44px 52px; flex:1; max-width:340px; transition:all 0.3s;
+    }
+    .contact-card:hover { transform:translateY(-6px); box-shadow:0 20px 50px rgba(138,58,173,0.12); border-color:var(--lavender); }
+    .contact-card-icon { font-size:40px; margin-bottom:18px; }
+    .contact-card-label { font-size:11px; font-weight:800; letter-spacing:0.18em; text-transform:uppercase; color:var(--purple); margin-bottom:12px; }
+    .contact-card-value {
+      font-family:'Dancing Script',cursive; font-size:24px;
+      color:var(--purple-dark); text-decoration:none; display:block; transition:color 0.2s;
+    }
+    .contact-card-value:hover { color:var(--purple); }
+
+    /* ── FOOTER ── */
+    footer {
+      background:var(--purple-deep); padding:50px 80px;
+      display:flex; align-items:center; justify-content:space-between; position:relative; z-index:1;
+    }
+    .footer-brand { font-family:'Dancing Script',cursive; font-size:26px; color:#fff; }
+    .footer-tagline { font-size:12px; color:rgba(255,255,255,0.45); margin-top:4px; font-weight:600; }
+    .footer-links { display:flex; gap:28px; }
+    .footer-links a { color:rgba(255,255,255,0.55); text-decoration:none; font-size:13px; font-weight:700; letter-spacing:0.04em; transition:color 0.2s; }
+    .footer-links a:hover { color:var(--gold-light); }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp { from{opacity:0;transform:translateY(24px)} to{opacity:1;transform:translateY(0)} }
+    .reveal { opacity:0; transform:translateY(30px); transition:opacity 0.7s ease, transform 0.7s ease; }
+    .reveal.visible { opacity:1; transform:translateY(0); }
+
+    /* ── RESPONSIVE ── */
+    @media(max-width:1024px) {
+      nav { padding:0 24px; }
+      .hero { grid-template-columns:1fr; }
+      .hero-right { height:360px; }
+      .hero-left { padding:60px 32px; }
+      .services { padding:80px 32px; }
+      .services-grid { grid-template-columns:repeat(2,1fr); }
+      .specials-grid { grid-template-columns:1fr; max-width:440px; }
+      .pricing-section, .checklist-section { padding:0 32px 80px; }
+      .pricing-grid { grid-template-columns:1fr; }
+      .why-us { grid-template-columns:1fr; padding:80px 32px; }
+      .areas { padding:80px 32px; }
+      .offer { margin:40px 32px; flex-direction:column; gap:32px; text-align:center; }
+      .contact { padding:80px 32px; }
+      .contact-cards { flex-direction:column; align-items:center; }
+      footer { flex-direction:column; gap:24px; text-align:center; padding:40px 32px; }
+    }
+    @media(max-width:600px) {
+      .services-grid { grid-template-columns:1fr; }
+      .checklist-grid { grid-template-columns:1fr; }
+      .addons-grid { grid-template-columns:1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="floaties">
+    <span class="floatie"></span><span class="floatie"></span>
+    <span class="floatie"></span><span class="floatie"></span>
+    <span class="floatie"></span><span class="floatie"></span>
+    <span class="floatie"></span><span class="floatie"></span>
+  </div>
+
+  <!-- NAV -->
+  <nav>
+    <a href="index.html" class="nav-logo">
+      <div class="nav-logo-bubble" style="overflow:hidden; padding:0; background:transparent; border:none;">
+        <img src="michelle_logo.jpeg" alt="Michelle's Cleaning" style="width:52px;height:52px;object-fit:contain;border-radius:0;" onerror="this.style.display='none'; this.parentElement.innerHTML='<span style=\'font-size:22px\'>🦋</span>';" />
+      </div>
+      <div>
+        <span class="nav-brand-name">Michelle's</span>
+        <span class="nav-brand-sub">Cleaning & Organization</span>
+      </div>
+    </a>
+    <div class="nav-actions">
+      <a href="admin/index.html" class="btn-nav-admin">Admin</a>
+      <a href="booking/index.html" class="btn-nav-book">Book Now ✨</a>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-left">
+      <div class="hero-eyebrow">
+        <span class="hero-eyebrow-dot"></span>
+        <span class="hero-eyebrow-text">We Provide All Supplies · $25 Deposit to Lock Your Spot</span>
+      </div>
+      <div class="hero-brand">Michelle's</div>
+      <div class="hero-sub-brand">Cleaning & Organization</div>
+      <div class="hero-location">📍 Harlingen · San Benito · La Feria Area</div>
+      <p class="hero-tagline">
+        <strong>Deep Cleans & Organization</strong> done right. Reliable, thorough, and done with heart. Message us for other areas quoting! 🦋
+      </p>
+      <div class="hero-cta-group">
+        <a href="booking/index.html" class="btn-primary">Book a Cleaning ✨</a>
+        <div class="hero-contact-inline">
+          <span class="hero-contact-label">Call or Text</span>
+          <a href="tel:9563683793" class="hero-contact-phone">956-368-3793</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="hero-right">
+      <div class="hero-right-bg"></div>
+      <div class="hero-circle hero-circle-1"></div>
+      <div class="hero-circle hero-circle-2"></div>
+      <div class="hero-circle hero-circle-3"></div>
+      <span class="butterfly">🦋</span>
+      <span class="butterfly">🦋</span>
+      <span class="butterfly">🦋</span>
+      <span class="butterfly">🦋</span>
+      <span class="sparkle">✨</span>
+      <span class="sparkle">💜</span>
+      <span class="sparkle">⭐</span>
+      <div class="hero-illustration">
+        <img
+          src="michelle_logo.jpeg"
+          alt="Michelle's Cleaning & Organization"
+          class="hero-illustration-img"
+          onerror="this.style.display='none'; this.nextElementSibling.style.display='block';"
+        />
+        <span style="display:none;font-size:150px;line-height:1;">🦋</span>
+      </div>
+      <div class="hero-badge">
+        <div class="hero-badge-value">100%</div>
+        <div class="hero-badge-label">Satisfaction Guaranteed</div>
+        <div class="hero-badge-stars">★★★★★</div>
+      </div>
+      <div class="hero-deposit-tag">✨ $25 Deposit · We Provide Supplies</div>
+    </div>
+  </section>
+
+  <!-- HOUR SPECIALS -->
+  <section class="services" style="padding-bottom:0;">
+    <div class="section-header reveal">
+      <div class="section-tag">💜 Time-Based Packages</div>
+      <h2 class="section-title">Hour <span>Specials</span></h2>
+    </div>
+    <div class="specials-grid reveal">
+      <div class="special-card">
+        <div class="special-hours">4 Hour</div>
+        <div class="special-label">Cleaning / Organization</div>
+        <div class="special-price"><span>$</span>125</div>
+        <div class="special-note">Great for main areas! Does not guarantee a full house. Ask for a quote on full home cleaning.</div>
+        <div class="special-deposit">💰 $25 Deposit to Set Your Apt</div>
+      </div>
+      <div class="special-card featured">
+        <div class="special-hours">5 Hour</div>
+        <div class="special-label">Cleaning / Organization</div>
+        <div class="special-price"><span>$</span>150</div>
+        <div class="special-note">More time for a more thorough clean! Ask about add-ons and full home quotes.</div>
+        <div class="special-deposit">💰 $25 Deposit to Set Your Apt</div>
+      </div>
+      <div class="special-card">
+        <div class="special-hours">Full House</div>
+        <div class="special-label">Custom Quote</div>
+        <div class="special-price" style="font-size:36px;margin-top:8px;">Message Us!</div>
+        <div class="special-note">Every home is different. Contact Michelle for a personalized full house quote.</div>
+        <div class="special-deposit">📱 Feel free to ask for a quote!</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MAINTAIN PRICING -->
+  <section class="pricing-section" style="padding-top:80px;">
+    <div class="section-header reveal" style="margin-bottom:48px;">
+      <div class="section-tag">💜 Maintain Cleaning</div>
+      <h2 class="section-title">Pricing <span>List</span></h2>
+    </div>
+    <div class="pricing-grid reveal">
+      <div class="pricing-card">
+        <div class="pricing-card-header">
+          <div class="pricing-card-title">Maintain Cleaning</div>
+          <div class="pricing-card-sub">Regular scheduled service</div>
+        </div>
+        <div class="pricing-rows">
+          <div class="pricing-row">
+            <div class="pricing-row-left">
+              <span class="pricing-row-icon">🏠</span>
+              <span class="pricing-row-name">2 Bedroom / 2 Bath</span>
+            </div>
+            <div class="pricing-row-price">$95</div>
+          </div>
+          <div class="pricing-row">
+            <div class="pricing-row-left">
+              <span class="pricing-row-icon">🏡</span>
+              <span class="pricing-row-name">3 Bedroom / 2 Bath</span>
+            </div>
+            <div class="pricing-row-price">$120</div>
+          </div>
+          <div class="pricing-row">
+            <div class="pricing-row-left">
+              <span class="pricing-row-icon">🏘️</span>
+              <span class="pricing-row-name">4 Bedroom / 2 Bath</span>
+            </div>
+            <div class="pricing-row-price">$180</div>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <div class="addons-card">
+          <div class="addons-header">
+            <div class="addons-title">✨ Add-Ons</div>
+          </div>
+          <div class="addons-grid">
+            <div class="addon-chip"><span class="addon-chip-icon">❄️</span> Fridge</div>
+            <div class="addon-chip"><span class="addon-chip-icon">🗄️</span> Pantry</div>
+            <div class="addon-chip"><span class="addon-chip-icon">🚪</span> Inside Cabinets</div>
+            <div class="addon-chip"><span class="addon-chip-icon">🧺</span> Laundry</div>
+            <div class="addon-chip"><span class="addon-chip-icon">🍳</span> Inside Oven/Stove</div>
+          </div>
+          <div class="supplies-badge">
+            <div class="supplies-badge-text">✨ We Provide All Supplies</div>
+            <div class="supplies-badge-deposit">$25 Deposit to Lock Your Spot 💰</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- DEEP CLEAN CHECKLIST -->
+  <section class="checklist-section">
+    <div class="section-header reveal" style="margin-bottom:48px;">
+      <div class="section-tag">💜 Deep Cleaning</div>
+      <h2 class="section-title">What's <span>Included</span></h2>
+    </div>
+    <div class="checklist-wrap reveal">
+      <div class="checklist-header">
+        <div class="checklist-header-title">Deep Cleaning Includes</div>
+        <div class="checklist-header-sub">Everything listed below · We bring all supplies</div>
+      </div>
+      <div class="checklist-body">
+        <div class="checklist-grid">
+          <div class="checklist-item"><div class="checklist-dot">✓</div><div class="checklist-text">Sweep, Mop / Dust</div></div>
+          <div class="checklist-item"><div class="checklist-dot">✓</div><div class="checklist-text">Dust TV, Blinds & Exterior Cabinets</div></div>
+          <div class="checklist-item"><div class="checklist-dot">✓</div><div class="checklist-text">Organize & Disinfect Counters</div></div>
+          <div class="checklist-item"><div class="checklist-dot">✓</div><div class="checklist-text">Scrub Toilet (Inside & Out)</div></div>
+          <div class="checklist-item"><div class="checklist-dot">✓</div><div class="checklist-text">Clean Sink, Take Out Trash, Wipe Mirrors</div></div>
+          <div class="checklist-item"><div class="checklist-dot">✓</div><div class="checklist-text">Scrub Shower Walls & Floors</div></div>
+          <div class="checklist-item"><div class="checklist-dot">✓</div><div class="checklist-text">Glass Surfaces & Kitchen Appliances</div></div>
+          <div class="checklist-item"><div class="checklist-dot">✓</div><div class="checklist-text">Make Beds</div></div>
+          <div class="checklist-item"><div class="checklist-dot">✓</div><div class="checklist-text">Ceiling Fans, Windowsills, Exterior Surfaces</div></div>
+          <div class="checklist-item"><div class="checklist-dot">✓</div><div class="checklist-text">Dishes & Organizing</div></div>
+          <div class="checklist-item"><div class="checklist-dot">✓</div><div class="checklist-text">Clean Vent Hood</div></div>
+          <div class="checklist-item"><div class="checklist-dot">✓</div><div class="checklist-text">Baseboards & Light Fixtures</div></div>
+          <div class="checklist-item"><div class="checklist-dot">✓</div><div class="checklist-text">Clean Under Beds & Sofas</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SERVICES GRID -->
+  <section class="services" style="padding-top:40px;">
+    <div class="section-header reveal">
+      <div class="section-tag">What We Offer</div>
+      <h2 class="section-title">All Our <span>Services</span> 🦋</h2>
+    </div>
+    <div class="services-grid">
+      <div class="service-card reveal"><div class="service-icon-wrap">🧹</div><h3 class="service-card-title">Sweep, Mop & Dust</h3><p class="service-card-desc">Complete floor care and surface dusting throughout every room.</p></div>
+      <div class="service-card reveal"><div class="service-icon-wrap">🍽️</div><h3 class="service-card-title">Kitchen & Counters</h3><p class="service-card-desc">Disinfect and organize counters, appliances, sink and more.</p></div>
+      <div class="service-card reveal"><div class="service-icon-wrap">🚿</div><h3 class="service-card-title">Bathrooms</h3><p class="service-card-desc">Scrub toilet, shower walls & floors, sink, mirrors — fully sanitized.</p></div>
+      <div class="service-card reveal"><div class="service-icon-wrap">🛏️</div><h3 class="service-card-title">Bedrooms</h3><p class="service-card-desc">Make beds, dust blinds, clean under beds and organize spaces.</p></div>
+      <div class="service-card reveal"><div class="service-icon-wrap">🏠</div><h3 class="service-card-title">Full Home Clean</h3><p class="service-card-desc">Complete top-to-bottom house cleaning. Every corner, every room.</p></div>
+      <div class="service-card reveal"><div class="service-icon-wrap">📦</div><h3 class="service-card-title">Organization</h3><p class="service-card-desc">Dishes, cabinets, pantry — declutter and organize any space.</p></div>
+      <div class="service-card reveal"><div class="service-icon-wrap">🧺</div><h3 class="service-card-title">Laundry (Add-On)</h3><p class="service-card-desc">Wash, dry and fold as an add-on to any cleaning service.</p></div>
+      <div class="service-card reveal"><div class="service-icon-wrap">⏰</div><h3 class="service-card-title">Hourly Specials</h3><p class="service-card-desc">4-hour ($125) and 5-hour ($150) packages for focused cleaning.</p></div>
+    </div>
+  </section>
+
+  <!-- WHY US -->
+  <section class="why-section">
+    <div class="why-us">
+      <div class="why-left reveal">
+        <div class="why-visual">
+          <img
+            src="michelle_logo.jpeg"
+            alt="Michelle's Cleaning"
+            class="why-visual-img"
+            onerror="this.style.display='none'; this.nextElementSibling.style.display='block';"
+          />
+          <span class="why-visual-placeholder" style="display:none;">💜</span>
+          <div class="why-stat-card one"><div class="why-stat-num">5★</div><div class="why-stat-label">Rated Service</div></div>
+          <div class="why-stat-card two"><div class="why-stat-num">100%</div><div class="why-stat-label">Satisfaction Guaranteed</div></div>
+        </div>
+      </div>
+      <div class="why-right reveal">
+        <div class="section-tag">Why Choose Michelle</div>
+        <h2 class="section-title" style="margin-top:12px;">The Michelle <span>Difference</span> 🦋</h2>
+        <ul class="why-list">
+          <li class="why-item"><div class="why-item-icon">🦋</div><div><div class="why-item-title">Reliable & Punctual</div><div class="why-item-desc">We show up on time, every time. Your schedule always matters.</div></div></li>
+          <li class="why-item"><div class="why-item-icon">✨</div><div><div class="why-item-title">Detailed & Thorough</div><div class="why-item-desc">We notice what others miss. Every surface, every corner — spotless.</div></div></li>
+          <li class="why-item"><div class="why-item-icon">🧹</div><div><div class="why-item-title">We Provide All Supplies</div><div class="why-item-desc">No need to worry about products. We bring everything needed.</div></div></li>
+          <li class="why-item"><div class="why-item-icon">💬</div><div><div class="why-item-title">Easy to Contact</div><div class="why-item-desc">Call or text 956-368-3793. Fast response, easy scheduling.</div></div></li>
+          <li class="why-item"><div class="why-item-icon">🏆</div><div><div class="why-item-title">100% Satisfaction Guaranteed</div><div class="why-item-desc">Not happy? We'll make it right — no questions asked.</div></div></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- AREAS -->
+  <section class="areas">
+    <div class="section-tag">Where We Work</div>
+    <h2 class="section-title reveal">Service <span style="color:var(--gold-light)">Areas</span></h2>
+    <div class="areas-grid reveal">
+      <span class="area-pill">Harlingen</span>
+      <span class="area-pill">San Benito</span>
+      <span class="area-pill">La Feria</span>
+      <span class="area-pill">& Surrounding Areas</span>
+      <span class="area-pill">Message Us for Other Areas</span>
+    </div>
+  </section>
+
+  <!-- OFFER BANNER -->
+  <div class="offer reveal">
+    <div class="offer-text">
+      <div class="offer-eyebrow">✨ Lock In Your Spot Today</div>
+      <div class="offer-headline">$25 Deposit<br/>We Provide Supplies!</div>
+      <div class="offer-sub">Call or text Michelle today. We bring everything needed for a sparkling clean home!</div>
+    </div>
+    <a href="booking/index.html" class="btn-offer">Book Now → 🦋</a>
+  </div>
+
+  <!-- CONTACT -->
+  <section class="contact">
+    <div class="section-tag">Get In Touch</div>
+    <h2 class="section-title reveal">Contact Michelle for a <span>Free Quote</span> 💜</h2>
+    <div class="contact-cards">
+      <div class="contact-card reveal">
+        <div class="contact-card-icon">📞</div>
+        <div class="contact-card-label">Call or Text</div>
+        <a href="tel:9563683793" class="contact-card-value">956-368-3793</a>
+      </div>
+      <div class="contact-card reveal">
+        <div class="contact-card-icon">💬</div>
+        <div class="contact-card-label">Text Me</div>
+        <a href="sms:9563683793" class="contact-card-value">Michelle's Cleaning</a>
+      </div>
+      <div class="contact-card reveal">
+        <div class="contact-card-icon">📅</div>
+        <div class="contact-card-label">Book Online</div>
+        <a href="booking/index.html" class="contact-card-value">Schedule Now</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div style="display:flex; align-items:center; gap:18px;">
+      <img src="michelle_logo.jpeg" alt="Michelle's Logo" style="width:72px;height:72px;object-fit:contain;border-radius:12px;flex-shrink:0;" onerror="this.style.display='none';" />
+      <div>
+        <div class="footer-brand">Michelle's Cleaning & Organization</div>
+        <div class="footer-tagline">Harlingen · San Benito · La Feria · 956-368-3793 · We Provide All Supplies</div>
+      </div>
+    </div>
+    <div class="footer-links">
+      <a href="index.html">Home</a>
+      <a href="booking/index.html">Book Now</a>
+      <a href="admin/index.html">Admin</a>
+      <a href="tel:9563683793">Call</a>
+    </div>
+  </footer>
+
+  <script>
+    const reveals = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry, i) => {
+        if (entry.isIntersecting) setTimeout(() => entry.target.classList.add('visible'), i * 80);
+      });
+    }, { threshold: 0.1 });
+    reveals.forEach(el => observer.observe(el));
+
+    const nav = document.querySelector('nav');
+    window.addEventListener('scroll', () => {
+      nav.style.boxShadow = window.scrollY > 20 ? '0 4px 30px rgba(138,58,173,0.1)' : 'none';
+    });
+  </script>
+</body>
+</html>
