@@ -183,7 +183,7 @@
     /* hero right */
     .hero-right {
       position:relative; display:flex; align-items:center;
-      justify-content:center; overflow:hidden;
+      justify-content:center; overflow:visible;
     }
     .hero-right-bg {
       position:absolute; inset:0;
@@ -544,7 +544,13 @@
     @media(max-width:1024px) {
       nav { padding:0 24px; }
       .hero { grid-template-columns:1fr; }
-      .hero-right { height:360px; }
+      .hero-right { height:auto; min-height:340px; }
+      .hero-illustration-img { width:100%; max-width:360px; height:auto; }
+      /* Ocultar elementos flotantes dentro del hero-right en móvil */
+      .hero-badge, .hero-deposit-tag,
+      .hero-circle, .butterfly, .sparkle { display:none !important; }
+      /* Mostrar el deposit tag de abajo del hero */
+      .hero-mobile-tag { display:flex !important; }
       .hero-left { padding:60px 32px; }
       .services { padding:80px 32px; }
       .services-grid { grid-template-columns:repeat(2,1fr); }
@@ -557,6 +563,16 @@
       .contact { padding:80px 32px; }
       .contact-cards { flex-direction:column; align-items:center; }
       footer { flex-direction:column; gap:24px; text-align:center; padding:40px 32px; }
+    }
+    /* Tag móvil: oculto por defecto, visible solo en móvil */
+    .hero-mobile-tag {
+      display:none;
+      align-items:center; justify-content:center; gap:10px;
+      background:linear-gradient(135deg, var(--gold), #f8d070);
+      padding:12px 24px; margin:0 24px 32px;
+      border-radius:50px;
+      font-size:13px; font-weight:800; color:#5a3800;
+      box-shadow:0 4px 18px rgba(245,200,66,0.35);
     }
     @media(max-width:600px) {
       .services-grid { grid-template-columns:1fr; }
@@ -647,6 +663,12 @@
       </div>
     </div>
   </section>
+
+  <!-- TAG MÓVIL: visible solo en pantallas pequeñas -->
+  <div class="hero-mobile-tag">
+    <img src="michelle_logo.png" alt="" style="width:32px;height:32px;object-fit:contain;border-radius:8px;" onerror="this.style.display='none';" />
+    ✨ $25 Deposit · We Provide All Supplies
+  </div>
 
   <!-- HOUR SPECIALS -->
   <section class="services" style="padding-bottom:0;">
