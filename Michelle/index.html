@@ -220,10 +220,9 @@
       animation:float 5s ease-in-out infinite;
     }
     .hero-illustration-img {
-      width:400px; height:400px;
+      width:360px; height:440px;
       object-fit:contain;
       filter:drop-shadow(0 20px 50px rgba(138,58,173,0.22));
-      border-radius:24px;
     }
     @keyframes float { 0%,100%{ transform:translateY(0) rotate(-2deg); } 50%{ transform:translateY(-18px) rotate(2deg); } }
 
@@ -628,19 +627,24 @@
       <span class="sparkle">⭐</span>
       <div class="hero-illustration">
         <img
-          src="michelle_logo.jpeg"
+          src="michelle_mascot.jpeg"
           alt="Michelle's Cleaning & Organization"
           class="hero-illustration-img"
           onerror="this.style.display='none'; this.nextElementSibling.style.display='block';"
         />
         <span style="display:none;font-size:150px;line-height:1;">🦋</span>
       </div>
-      <div class="hero-badge">
-        <div class="hero-badge-value">100%</div>
-        <div class="hero-badge-label">Satisfaction Guaranteed</div>
-        <div class="hero-badge-stars">★★★★★</div>
+      <!-- Logo en esquina inferior derecha -->
+      <div class="hero-badge" style="padding:0;background:transparent;border:none;box-shadow:none;bottom:40px;right:32px;">
+        <img src="michelle_logo.jpeg" alt="Michelle's Logo"
+          style="width:130px;height:130px;object-fit:contain;border-radius:16px;filter:drop-shadow(0 6px 20px rgba(138,58,173,0.25));"
+          onerror="this.style.display='none';" />
       </div>
-      <div class="hero-deposit-tag">✨ $25 Deposit · We Provide Supplies</div>
+      <!-- Logo pequeño esquina superior -->
+      <div class="hero-deposit-tag" style="display:flex;align-items:center;gap:8px;padding:6px 14px 6px 6px;">
+        <img src="michelle_logo.jpeg" alt="" style="width:36px;height:36px;object-fit:contain;border-radius:8px;" onerror="this.style.display='none';" />
+        <span>✨ $25 Deposit · We Provide Supplies</span>
+      </div>
     </div>
   </section>
 
