@@ -1,214 +1,352 @@
-<!DOCTYPE html><html lang="en"><head>    <meta charset="UTF-8">    <meta name="viewport" content="width=device-width, initial-scale=1.0">    <title>HORUS | Enterprise AI Systems That Multiply Revenue</title>    <meta name="description" content="We design AI infrastructures that automate growth, optimize operations, and increase profitability for any business.">    <link rel="preconnect" href="https://fonts.googleapis.com">    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,600&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.3.0/dist/chart.umd.min.js"></script>    <style>
-        :root {
-            --bg:#ffffff;
-            --bg-card:#f8f6f2;
-            --bg-elevated:#f0ede8;
-            --text:#1a1612;
-            --text-muted:#5a5350;
-            --gold:#9a6f2a;
-            --gold-light:#b8893a;
-            --gold-dim:rgba(154,111,42,0.08);
-            --border:rgba(154,111,42,0.18);
-            --border-dim:rgba(0,0,0,0.07);
-            --nav-h:72px;
-            --font-d:'Cormorant Garamond',serif;
-            --font-b:'DM Sans',sans-serif;
-        }
-        *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
-        html{scroll-behavior:smooth;background:var(--bg);}
-        body{background:var(--bg);color:var(--text);overflow-x:hidden;-webkit-font-smoothing:antialiased;font-family:var(--font-b);cursor:none;}
-        ::-webkit-scrollbar{width:2px;}
-        ::-webkit-scrollbar-track{background:var(--bg);}
-        ::-webkit-scrollbar-thumb{background:var(--gold);}
-        #cursor{position:fixed;width:8px;height:8px;background:var(--gold);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:width .2s,height .2s,opacity .2s;}
-        #cursor-ring{position:fixed;width:32px;height:32px;border:1px solid rgba(154,111,42,0.4);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:transform .12s ease,width .3s,height .3s,border-color .3s;}
-        body:hover #cursor{opacity:1;}
-        body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");pointer-events:none;z-index:9990;opacity:.18;}
-        header{position:fixed;top:0;width:100%;height:var(--nav-h);display:flex;justify-content:space-between;align-items:center;padding:0 6%;z-index:1000;background:rgba(255,255,255,0.92);backdrop-filter:blur(32px);-webkit-backdrop-filter:blur(32px);border-bottom:1px solid var(--border);}
-        .logo{font-family:var(--font-d);font-size:21px;font-weight:600;letter-spacing:5px;color:var(--text);display:flex;align-items:center;gap:0;}
-        .logo span{color:var(--text);}
-        .logo-eye{display:inline-flex;align-items:center;justify-content:center;width:16px;height:16px;border:1.5px solid var(--gold);border-radius:50%;position:relative;flex-shrink:0;margin:0 5px 0 5px;box-shadow:0 0 8px rgba(154,111,42,0.4);animation:eyeGlow 3s ease-in-out infinite;}
-        .logo-eye::after{content:'';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:6px;height:6px;background:var(--gold);border-radius:50%;box-shadow:0 0 6px var(--gold);}
-        @keyframes eyeGlow{0%,100%{box-shadow:0 0 8px rgba(154,111,42,0.4);}50%{box-shadow:0 0 16px rgba(154,111,42,0.8),0 0 30px rgba(154,111,42,0.2);}}
-        nav{display:flex;gap:36px;align-items:center;}
-        nav a{color:var(--text-muted);text-decoration:none;font-size:10px;font-weight:500;text-transform:uppercase;letter-spacing:2px;transition:color .3s;position:relative;}
-        nav a::after{content:'';position:absolute;bottom:-2px;left:0;width:0;height:1px;background:var(--gold);transition:width .3s;}
-        nav a:hover{color:var(--gold);}
-        nav a:hover::after{width:100%;}
-        /* NAV CTA — texto blanco forzado sobre dorado */
-        .nav-cta{background:var(--gold)!important;color:#fff!important;padding:10px 24px;border-radius:1px;font-weight:700!important;letter-spacing:2px!important;}
-        .nav-cta::after{display:none!important;}
-        .nav-cta:hover{background:var(--gold-light)!important;color:#fff!important;}
-        .nav-programming{border:1px solid rgba(154,111,42,0.35)!important;padding:9px 18px;color:var(--gold)!important;font-weight:600!important;}
-        .nav-programming::after{display:none!important;}
-        .nav-programming:hover{background:rgba(154,111,42,0.07)!important;border-color:var(--gold)!important;}
-        .sw{max-width:1360px;margin:0 auto;padding:140px 6%;}
-        .label{font-size:9px;font-weight:600;letter-spacing:4px;text-transform:uppercase;color:var(--gold);margin-bottom:20px;display:flex;align-items:center;gap:12px;}
-        .label::before{content:'';width:24px;height:1px;background:var(--gold);display:inline-block;flex-shrink:0;}
-        .display{font-family:var(--font-d);font-weight:600;line-height:.95;letter-spacing:-.02em;}
-        .body-text{color:var(--text-muted);line-height:1.8;font-size:15px;margin-top:20px;font-weight:400;}
-        .gold-line{width:1px;height:60px;background:linear-gradient(to bottom,var(--gold),transparent);display:block;margin:28px 0;}
-        .reveal{opacity:0;transform:translateY(40px);}
-        .revealed{opacity:1!important;transform:translateY(0)!important;transition:opacity .9s cubic-bezier(.2,.8,.2,1),transform .9s cubic-bezier(.2,.8,.2,1);}
-        /* BTN GOLD — texto blanco siempre visible */
-        .btn-gold{display:inline-flex;align-items:center;gap:12px;padding:16px 38px;background:var(--gold);color:#fff;font-family:var(--font-b);font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;text-decoration:none;border:none;cursor:pointer;transition:all .3s;position:relative;overflow:hidden;}
-        .btn-gold::before{content:'';position:absolute;inset:0;background:var(--gold-light);transform:scaleX(0);transform-origin:left;transition:transform .4s cubic-bezier(.2,.8,.2,1);}
-        .btn-gold:hover::before{transform:scaleX(1);}
-        .btn-gold span{position:relative;z-index:1;color:#fff;}
-        /* BTN GHOST */
-        .btn-ghost{display:inline-flex;align-items:center;gap:12px;padding:15px 37px;background:transparent;color:var(--gold);font-family:var(--font-b);font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;text-decoration:none;border:1px solid rgba(154,111,42,0.4);cursor:pointer;transition:all .3s;}
-        .btn-ghost:hover{border-color:var(--gold);background:var(--gold-dim);color:var(--gold);transform:translateY(-2px);}
-        .hero{min-height:100vh;position:relative;display:flex;align-items:center;justify-content:center;text-align:center;overflow:hidden;padding-top:var(--nav-h);}
-        #heroCanvas{position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;}
-        .hero-overlay{position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 50% 20%,rgba(154,111,42,0.05) 0%,transparent 70%),linear-gradient(to bottom,transparent 50%,var(--bg) 100%);z-index:1;}
-        .hero-content{position:relative;z-index:2;max-width:1000px;padding:0 24px;}
-        .hero-eyebrow{display:inline-flex;align-items:center;gap:10px;padding:9px 22px;border:1px solid var(--border);font-size:10px;font-weight:500;letter-spacing:2px;color:var(--gold);margin-bottom:50px;background:rgba(154,111,42,0.04);text-transform:uppercase;}
-        .hero-eyebrow-dot{width:5px;height:5px;border-radius:50%;background:var(--gold);animation:pulse 2s infinite;}
-        @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.3;transform:scale(.8)}}
-        .hero h1{font-size:clamp(56px,8vw,104px);font-family:var(--font-d);font-weight:600;line-height:.92;margin-bottom:32px;letter-spacing:-.02em;color:var(--text);}
-        .hero h1 em{font-style:italic;color:var(--gold);font-weight:400;}
-        /* .thin — antes era invisible (0.45 opacity), ahora legible */
-        .hero h1 .thin{font-weight:300;color:rgba(26,22,18,0.58);}
-        .hero-sub{font-size:clamp(15px,1.6vw,18px);max-width:620px;margin:0 auto;color:var(--text-muted);line-height:1.75;font-weight:400;}
-        .hero-ctas{display:flex;gap:16px;justify-content:center;margin-top:54px;flex-wrap:wrap;}
-        .hero-scroll{position:absolute;bottom:40px;left:50%;transform:translateX(-50%);z-index:2;display:flex;flex-direction:column;align-items:center;gap:8px;}
-        .hero-scroll span{font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--text-muted);}
-        .scroll-line{width:1px;height:50px;background:linear-gradient(to bottom,var(--gold),transparent);animation:scrollLine 2s ease infinite;}
-        @keyframes scrollLine{0%{transform:scaleY(0);transform-origin:top}50%{transform:scaleY(1);transform-origin:top}51%{transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}
-        .trusted-bar{margin-top:100px;display:flex;flex-direction:column;align-items:center;gap:22px;}
-        .trusted-label{font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--text-muted);}
-        /* logos de confianza — antes opacity:.3 era casi invisible */
-        .trusted-logos{display:flex;gap:48px;align-items:center;flex-wrap:wrap;justify-content:center;opacity:.5;filter:grayscale(1);}
-        .trusted-logos span{font-family:var(--font-d);font-size:14px;font-weight:600;letter-spacing:3px;text-transform:uppercase;}
-        .pain-center{text-align:center;max-width:740px;margin:0 auto;}
-        .pain-grid{display:grid;grid-template-columns:1fr 1fr;margin-top:80px;}
-        .pain-stat{padding:56px 50px;border:1px solid var(--border);margin:-1px 0 0 -1px;position:relative;overflow:hidden;transition:background .4s;}
-        .pain-stat::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(154,111,42,0.04) 0%,transparent 60%);opacity:0;transition:opacity .4s;}
-        .pain-stat:hover{background:var(--bg-card);}
-        .pain-stat:hover::after{opacity:1;}
-        .pain-accent{position:absolute;top:0;left:0;width:0;height:2px;background:linear-gradient(to right,var(--gold),transparent);transition:width .6s cubic-bezier(.2,.8,.2,1);}
-        .pain-stat:hover .pain-accent{width:100%;}
-        .pain-number{font-family:var(--font-d);font-size:clamp(60px,7vw,88px);font-weight:700;color:var(--gold);line-height:1;display:block;}
-        .pain-unit{font-size:14px;color:rgba(154,111,42,0.8);font-family:var(--font-d);font-style:italic;margin-top:4px;display:block;}
-        .pain-stat h3{font-family:var(--font-d);font-size:20px;margin-top:20px;font-weight:600;letter-spacing:.5px;color:var(--text);}
-        .pain-stat p{font-size:13px;color:var(--text-muted);margin-top:10px;line-height:1.7;font-weight:400;}
-        .tier{margin-bottom:120px;}
-        .tier-header{display:flex;align-items:flex-start;gap:60px;margin-bottom:50px;}
-        .tier-num{font-family:var(--font-d);font-size:100px;font-weight:700;color:rgba(154,111,42,0.1);line-height:1;flex-shrink:0;margin-top:-10px;}
-        .tier-title-block h2{font-size:clamp(32px,4vw,54px);font-family:var(--font-d);font-weight:600;color:var(--text);}
-        .tier-grid{display:grid;grid-template-columns:1.3fr 1fr;gap:1px;background:rgba(154,111,42,0.1);}
-        .tier-image{grid-row:span 2;overflow:hidden;min-height:440px;position:relative;}
-        .tier-image img{width:100%;height:100%;object-fit:cover;filter:grayscale(30%) brightness(0.9);transition:all 1.4s cubic-bezier(.2,.8,.2,1);display:block;}
-        .tier-image::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(154,111,42,0.06) 0%,transparent 50%);}
-        .tier:hover .tier-image img{filter:grayscale(0%) brightness(1);transform:scale(1.06);}
-        .service-item{background:var(--bg-card);padding:26px 30px;display:flex;align-items:center;gap:16px;transition:background .25s,padding-left .25s;}
-        .service-item:hover{background:var(--bg-elevated);padding-left:36px;}
-        .service-dot{width:5px;height:5px;border-radius:50%;background:var(--gold);flex-shrink:0;transition:transform .25s;}
-        .service-item:hover .service-dot{transform:scale(1.6);}
-        .service-item span{font-size:13px;font-weight:400;color:var(--text-muted);letter-spacing:.3px;transition:color .25s;}
-        .service-item:hover span{color:var(--text);}
-        /* tier-cta-block — texto de apoyo más visible, botón con texto blanco */
-        .tier-cta-block{background:var(--bg-card);padding:30px;display:flex;align-items:center;justify-content:space-between;gap:20px;border-top:1px solid var(--border);}
-        .tier-cta-block>span{font-size:12px;color:var(--text);font-weight:500;}
-        .results-header{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:end;margin-bottom:70px;}
-        .results-header h2{font-size:clamp(40px,5vw,68px);font-family:var(--font-d);font-weight:600;color:var(--text);}
-        .results-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);margin-bottom:2px;}
-        .result-card{background:var(--bg-card);padding:48px 36px;transition:background .3s;position:relative;overflow:hidden;}
-        .result-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(to right,transparent,var(--gold),transparent);opacity:0;transition:opacity .4s;}
-        .result-card:hover{background:var(--bg-elevated);}
-        .result-card:hover::before{opacity:1;}
-        .result-kpi{font-family:var(--font-d);font-size:60px;font-weight:700;color:var(--gold);line-height:1;display:block;}
-        .result-card h3{font-size:15px;font-weight:600;margin-top:16px;letter-spacing:.3px;color:var(--text);}
-        .result-card p{font-size:13px;color:var(--text-muted);margin-top:10px;line-height:1.7;font-weight:400;}
-        .testimonials-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--border);}
-        .testimonial{background:var(--bg-card);padding:44px;position:relative;transition:background .3s;}
-        .testimonial:hover{background:var(--bg-elevated);}
-        .testimonial::before{content:'\201C';font-family:var(--font-d);font-size:120px;color:var(--gold);opacity:.1;position:absolute;top:10px;left:24px;line-height:1;}
-        .testimonial p{font-size:15px;line-height:1.8;color:rgba(26,22,18,0.8);font-weight:400;margin:0;position:relative;z-index:1;font-style:italic;}
-        .testimonial-author{margin-top:28px;display:flex;align-items:center;gap:14px;}
-        .author-avatar{width:44px;height:44px;border-radius:50%;background:var(--gold-dim);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-family:var(--font-d);font-weight:600;color:var(--gold);font-size:18px;flex-shrink:0;}
-        .author-info strong{display:block;font-size:13px;font-weight:600;letter-spacing:.3px;color:var(--text);}
-        .author-info span{font-size:11px;color:var(--text-muted);letter-spacing:.5px;}
-        .full-banner{width:100%;height:460px;overflow:hidden;position:relative;border-top:1px solid var(--border);border-bottom:1px solid var(--border);}
-        .full-banner img{width:100%;height:130%;object-fit:cover;filter:grayscale(50%) brightness(0.55);display:block;}
-        .banner-overlay{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,0.12);}
-        .banner-text{text-align:center;padding:0 24px;}
-        .banner-text h2{font-family:var(--font-d);font-size:clamp(32px,5vw,68px);font-weight:600;line-height:.95;color:#fff;text-shadow:0 2px 20px rgba(0,0,0,0.4);}
-        .banner-text h2 em{font-style:italic;color:var(--gold-light);}
-        .banner-text p{font-size:14px;color:rgba(255,255,255,0.85);margin-top:18px;letter-spacing:1px;text-transform:uppercase;text-shadow:0 1px 8px rgba(0,0,0,0.3);}
-        .metrics-title{text-align:center;max-width:760px;margin:0 auto 60px;}
-        .metrics-title h2{font-size:clamp(40px,5vw,64px);color:var(--text);}
-        .chart-wrap{background:var(--bg-card);border:1px solid var(--border);padding:50px;position:relative;overflow:hidden;}
-        .chart-wrap::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(to right,transparent,var(--gold),transparent);}
-        .chart-container-fix{position:relative;height:45vh;min-height:380px;}
-        .infra-grid{display:grid;grid-template-columns:1fr 1fr;gap:100px;align-items:center;}
-        .infra-image-wrap{overflow:hidden;position:relative;}
-        .infra-image-wrap::after{content:'';position:absolute;inset:0;border:1px solid var(--border);pointer-events:none;}
-        .infra-image-wrap img{width:100%;display:block;filter:grayscale(20%) brightness(0.95);transition:all 1.4s cubic-bezier(.2,.8,.2,1);}
-        .infra-grid:hover .infra-image-wrap img{filter:grayscale(0%) brightness(1);transform:scale(1.04);}
-        .authority-inner{text-align:center;max-width:820px;margin:0 auto;}
-        .authority-badges{display:flex;justify-content:center;gap:12px;margin-top:64px;flex-wrap:wrap;}
-        .badge{border:1px solid var(--border);padding:18px 26px;display:flex;flex-direction:column;align-items:center;gap:10px;transition:border-color .3s,background .3s;cursor:pointer;position:relative;overflow:hidden;}
-        .badge::before{content:'';position:absolute;inset:0;background:var(--gold-dim);transform:scaleY(0);transform-origin:bottom;transition:transform .4s cubic-bezier(.2,.8,.2,1);}
-        .badge:hover::before{transform:scaleY(1);}
-        .badge:hover{border-color:var(--gold);}
-        .badge-icon{color:var(--gold);font-size:18px;position:relative;}
-        .badge span{font-size:9px;letter-spacing:2px;text-transform:uppercase;font-weight:600;color:var(--text-muted);position:relative;}
-        .split-authority{display:grid;grid-template-columns:1fr 1fr;gap:100px;align-items:center;margin-top:110px;}
-        .split-authority img{width:100%;aspect-ratio:4/3;object-fit:cover;filter:grayscale(20%) brightness(0.95);transition:all 1.4s;display:block;}
-        .split-authority:hover img{filter:grayscale(0%) brightness(1);}
-        .img-frame{overflow:hidden;position:relative;}
-        .img-frame::after{content:'';position:absolute;inset:0;border:1px solid var(--border);pointer-events:none;}
-        .contact-inner{display:grid;grid-template-columns:1fr 1.2fr;gap:100px;}
-        .contact-info h2{font-size:clamp(36px,5vw,60px);color:var(--text);}
-        .contact-disclaimer{margin-top:40px;padding:24px;border-left:2px solid var(--gold);background:rgba(154,111,42,0.04);font-size:12px;line-height:1.75;color:var(--text-muted);}
-        .contact-disclaimer strong{color:var(--gold);display:block;margin-bottom:8px;font-size:9px;letter-spacing:3px;text-transform:uppercase;}
-        .contact-detail{display:flex;align-items:center;gap:14px;margin-top:16px;}
-        .contact-detail-icon{width:36px;height:36px;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;color:var(--gold);font-size:14px;flex-shrink:0;}
-        .contact-detail span{font-size:13px;color:var(--text-muted);}
-        .form-card{background:var(--bg-card);border:1px solid var(--border);padding:52px;position:relative;overflow:hidden;}
-        .form-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(to right,transparent,var(--gold),transparent);}
-        .form-success{display:none;text-align:center;padding:60px 30px;}
-        .success-icon{font-family:var(--font-d);font-size:56px;color:var(--gold);margin-bottom:24px;display:block;}
-        .form-success h3{font-family:var(--font-d);font-size:36px;font-weight:600;margin-bottom:14px;color:var(--text);}
-        .form-success p{color:var(--text-muted);font-size:14px;line-height:1.7;font-weight:400;}
-        .form-success .divider{width:1px;height:40px;background:linear-gradient(to bottom,var(--gold),transparent);margin:28px auto;}
-        .form-fields{display:flex;flex-direction:column;gap:12px;}
-        .form-row-2{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
-        .field-wrap{display:flex;flex-direction:column;gap:4px;}
-        .field-error{font-size:10px;color:#c0392b;min-height:14px;padding-left:2px;letter-spacing:.3px;}
-        input,textarea,select{padding:15px 18px;border:1px solid var(--border-dim);background:rgba(255,255,255,0.9);color:var(--text);font-family:var(--font-b);font-size:13px;transition:border-color .3s,background .3s;outline:none;width:100%;border-radius:0;}
-        input:focus,textarea:focus,select:focus{border-color:rgba(154,111,42,0.5);background:#fff;}
-        input::placeholder,textarea::placeholder{color:rgba(90,83,80,0.7);}
-        textarea{resize:vertical;min-height:110px;}
-        select option{background:#fff;color:var(--text);}
-        /* SUBMIT BTN — texto blanco siempre visible sobre dorado */
-        #submit-btn{width:100%;padding:18px;background:var(--gold);color:#fff;border:none;font-family:var(--font-b);font-weight:700;font-size:11px;letter-spacing:2.5px;text-transform:uppercase;cursor:pointer;transition:all .3s;margin-top:8px;position:relative;overflow:hidden;}
-        #submit-btn::before{content:'';position:absolute;inset:0;background:var(--gold-light);transform:scaleX(0);transform-origin:left;transition:transform .4s cubic-bezier(.2,.8,.2,1);}
-        #submit-btn:hover::before{transform:scaleX(1);}
-        #submit-btn span{position:relative;z-index:1;color:#fff;}
-        #submit-btn:disabled{opacity:.6;cursor:not-allowed;}
-        footer{border-top:1px solid var(--border);background:var(--bg-card);}
-        .footer-main{max-width:1360px;margin:0 auto;padding:90px 6% 56px;display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:60px;}
-        .footer-brand .logo{font-size:22px;}
-        .footer-brand p{font-size:13px;color:var(--text-muted);margin-top:18px;line-height:1.75;font-weight:400;max-width:260px;}
-        .footer-social{display:flex;gap:10px;margin-top:32px;}
-        .social-link{width:34px;height:34px;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;color:var(--text-muted);text-decoration:none;font-size:11px;font-weight:700;transition:all .3s;cursor:pointer;}
-        .social-link:hover{border-color:var(--gold);color:var(--gold);}
-        .footer-col h4{font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--text-muted);margin-bottom:26px;font-weight:600;}
-        .footer-col a{display:block;color:var(--text-muted);text-decoration:none;font-size:13px;margin-bottom:14px;transition:color .3s;font-weight:400;}
-        .footer-col a:hover{color:var(--gold);}
-        /* footer bottom — texto completamente visible */
-        .footer-bottom{border-top:1px solid var(--border-dim);padding:28px 6%;max-width:1360px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;}
-        .footer-bottom p{font-size:11px;color:var(--text-muted);font-weight:400;letter-spacing:.5px;}
-        @media(max-width:1024px){.pain-grid,.tier-grid,.infra-grid,.contact-inner,.split-authority,.results-header,[style*="grid-template-columns:1fr 1fr"],[style*="grid-template-columns:1.1fr 1fr"]{grid-template-columns:1fr!important;gap:50px!important;}.tier-image{grid-row:auto;min-height:280px;}.results-grid{grid-template-columns:1fr 1fr;}.footer-main{grid-template-columns:1fr 1fr;}}
-        @media(max-width:768px){nav a:not(.nav-cta){display:none;}.lang-switch{display:none;}.testimonials-grid,.results-grid,.form-row-2{grid-template-columns:1fr;}.tier-header{flex-direction:column;gap:16px;}.tier-num{font-size:60px;}.footer-main{grid-template-columns:1fr;gap:40px;}.footer-bottom{flex-direction:column;gap:12px;text-align:center;}.full-banner{height:320px;}body{cursor:auto;}#cursor,#cursor-ring{display:none;}}
-        .lang-switch{display:flex;align-items:center;gap:0;margin-left:16px;padding-left:16px;border-left:1px solid var(--border);flex-shrink:0;}
-        .lang-switch a{display:flex;align-items:center;gap:7px;padding:8px 14px;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;text-decoration:none;color:var(--text-muted);border:1px solid transparent;transition:color .3s,border-color .3s,background .3s;}
-        .lang-switch a:hover{color:var(--gold);}
-        .lang-switch a.active{color:var(--gold);border:1px solid rgba(154,111,42,0.35);background:rgba(154,111,42,0.05);}
-        .lang-switch a svg{width:13px;height:13px;opacity:.6;flex-shrink:0;}
-    </style></head><body>
+<!DOCTYPE html><html lang="en"><head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="canonical" href="https://www.horussystemco.com/">
+<title>Páginas Web, CRM y Chatbots con IA | HORUS System Co. — Automatización Empresarial</title>
+<meta name="description" content="Diseñamos páginas web de alta conversión, CRM personalizados, chatbots con IA para WhatsApp y sistemas de automatización empresarial. Escala tu negocio 24/7 con HORUS.">
+<meta name="keywords" content="páginas web profesionales, diseño web empresarial, CRM personalizado, chatbot con inteligencia artificial, chatbot WhatsApp, automatización de ventas, sistema SaaS, landing page alta conversión, automatización empresarial, agencia digital Reynosa, agencia digital Rio Grande Valley, desarrollo web México, software CRM México, chatbot para negocios, automatización marketing, página web para empresa, sistema de gestión clientes, web development Tamaulipas, AI automation, enterprise AI, lead generation automation">
+<meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+<meta name="googlebot" content="index, follow">
+<meta name="author" content="HORUS System Co.">
+<meta name="publisher" content="HORUS System Co.">
+<meta name="copyright" content="HORUS System Co. 2026">
+<meta name="language" content="es, en">
+<meta name="geo.region" content="MX-TAM">
+<meta name="geo.placename" content="Reynosa, Tamaulipas">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="HORUS System Co.">
+<meta property="og:title" content="Páginas Web, CRM y Chatbots con IA | HORUS System Co.">
+<meta property="og:description" content="Páginas web profesionales, CRM personalizados, chatbots con IA y automatización empresarial 24/7. Haz crecer tu negocio con HORUS.">
+<meta property="og:url" content="https://www.horussystemco.com/">
+<meta property="og:image" content="https://www.horussystemco.com/assets/og-image.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="HORUS System Co. — Páginas Web, CRM y Chatbots con IA">
+<meta property="og:locale" content="es_MX">
+<meta property="og:locale:alternate" content="en_US">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@horussystemco">
+<meta name="twitter:title" content="Páginas Web, CRM y Chatbots con IA | HORUS System Co.">
+<meta name="twitter:description" content="Automatización empresarial con IA: páginas web, CRM, chatbots WhatsApp y sistemas SaaS a la medida.">
+<meta name="twitter:image" content="https://www.horussystemco.com/assets/og-image.jpg">
+<link rel="alternate" hreflang="es" href="https://www.horussystemco.com/ES/">
+<link rel="alternate" hreflang="en" href="https://www.horussystemco.com/">
+<link rel="alternate" hreflang="x-default" href="https://www.horussystemco.com/">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
+<meta name="theme-color" content="#9a6f2a">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
+<link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://www.horussystemco.com/#organization",
+      "name": "HORUS System Co.",
+      "url": "https://www.horussystemco.com/",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://www.horussystemco.com/assets/logo.png",
+        "width": 300,
+        "height": 80
+      },
+      "description": "Agencia de desarrollo web, CRM personalizados, chatbots con inteligencia artificial y automatización empresarial para negocios que quieren escalar.",
+      "foundingLocation": { "@type": "Place", "name": "Reynosa, Tamaulipas, México" },
+      "areaServed": [
+        { "@type": "City", "name": "Reynosa" },
+        { "@type": "City", "name": "McAllen" },
+        { "@type": "City", "name": "Monterrey" },
+        { "@type": "State", "name": "Texas" },
+        { "@type": "AdministrativeArea", "name": "Rio Grande Valley" }
+      ],
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "contactType": "sales",
+        "email": "info@horussystem.net",
+        "availableLanguage": ["Spanish", "English"]
+      },
+      "sameAs": [
+        "https://www.linkedin.com/company/horussystemco",
+        "https://www.instagram.com/horussystemco",
+        "https://twitter.com/horussystemco"
+      ]
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://www.horussystemco.com/#website",
+      "url": "https://www.horussystemco.com/",
+      "name": "HORUS System Co.",
+      "publisher": { "@id": "https://www.horussystemco.com/#organization" },
+      "inLanguage": ["es", "en"]
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://www.horussystemco.com/#webpage",
+      "url": "https://www.horussystemco.com/",
+      "name": "Páginas Web, CRM y Chatbots con IA | HORUS System Co.",
+      "description": "Diseñamos páginas web de alta conversión, CRM personalizados, chatbots con IA y sistemas de automatización empresarial 24/7.",
+      "isPartOf": { "@id": "https://www.horussystemco.com/#website" },
+      "about": { "@id": "https://www.horussystemco.com/#organization" },
+      "inLanguage": "en"
+    },
+    {
+      "@type": "ProfessionalService",
+      "@id": "https://www.horussystemco.com/#service",
+      "name": "HORUS System Co.",
+      "image": "https://www.horussystemco.com/assets/og-image.jpg",
+      "url": "https://www.horussystemco.com/",
+      "email": "info@horussystem.net",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Reynosa",
+        "addressRegion": "Tamaulipas",
+        "addressCountry": "MX"
+      },
+      "priceRange": "$$$",
+      "openingHoursSpecification": {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday"],
+        "opens": "09:00",
+        "closes": "18:00"
+      },
+      "hasOfferCatalog": {
+        "@type": "OfferCatalog",
+        "name": "Soluciones Digitales HORUS",
+        "itemListElement": [
+          { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Diseño de Páginas Web Profesionales", "description": "Páginas web de alta conversión para empresas y negocios. Diseño moderno, optimizado para SEO y dispositivos móviles." } },
+          { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "CRM Personalizado", "description": "Sistemas CRM a la medida para gestión de clientes, seguimiento de leads y automatización del pipeline de ventas." } },
+          { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Chatbot con Inteligencia Artificial", "description": "Chatbots inteligentes para WhatsApp, sitios web y Facebook que califican leads, responden preguntas y agendan citas 24/7." } },
+          { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Automatización Empresarial con IA", "description": "Sistemas de automatización para ventas, marketing, seguimiento de clientes y operaciones internas." } },
+          { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Landing Pages de Alta Conversión", "description": "Landing pages optimizadas para convertir visitantes en clientes con diseño premium y estrategia de conversión." } },
+          { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Sistemas SaaS a la Medida", "description": "Desarrollo de software como servicio personalizado para negocios que necesitan plataformas escalables." } }
+        ]
+      }
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        { "@type": "Question", "name": "¿Cuánto cuesta una página web profesional?", "acceptedAnswer": { "@type": "Answer", "text": "El costo de una página web profesional varía según el alcance. En HORUS ofrecemos desde landing pages de alta conversión hasta sitios corporativos completos. Contáctanos para una consulta estratégica y cotización personalizada." } },
+        { "@type": "Question", "name": "¿Qué incluye un CRM personalizado?", "acceptedAnswer": { "@type": "Answer", "text": "Un CRM personalizado de HORUS incluye gestión de contactos y leads, automatización de seguimiento, pipeline de ventas visual, integración con WhatsApp y email, reportes y dashboards, y soporte continuo." } },
+        { "@type": "Question", "name": "¿Cómo funciona un chatbot con IA para WhatsApp?", "acceptedAnswer": { "@type": "Answer", "text": "El chatbot con IA de HORUS se integra a tu número de WhatsApp Business, responde mensajes automáticamente 24/7, califica prospectos, agenda citas y transfiere al equipo humano cuando es necesario." } },
+        { "@type": "Question", "name": "¿Trabajan con empresas en Estados Unidos y México?", "acceptedAnswer": { "@type": "Answer", "text": "Sí. HORUS System Co. atiende empresas en Reynosa, Monterrey, McAllen, el Rio Grande Valley y toda Norteamérica. Operamos de forma remota con disponibilidad en español e inglés." } }
+      ]
+    }
+  ]
+}
+</script>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,600&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.3.0/dist/chart.umd.min.js"></script>
+<style>
+    :root {
+        --bg:#ffffff;
+        --bg-card:#f8f6f2;
+        --bg-elevated:#f0ede8;
+        --text:#1a1612;
+        --text-muted:#5a5350;
+        --gold:#9a6f2a;
+        --gold-light:#b8893a;
+        --gold-dim:rgba(154,111,42,0.08);
+        --border:rgba(154,111,42,0.18);
+        --border-dim:rgba(0,0,0,0.07);
+        --nav-h:72px;
+        --font-d:'Cormorant Garamond',serif;
+        --font-b:'DM Sans',sans-serif;
+    }
+    *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+    html{scroll-behavior:smooth;background:var(--bg);}
+    body{background:var(--bg);color:var(--text);overflow-x:hidden;-webkit-font-smoothing:antialiased;font-family:var(--font-b);cursor:none;}
+    ::-webkit-scrollbar{width:2px;}
+    ::-webkit-scrollbar-track{background:var(--bg);}
+    ::-webkit-scrollbar-thumb{background:var(--gold);}
+    #cursor{position:fixed;width:8px;height:8px;background:var(--gold);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:width .2s,height .2s,opacity .2s;}
+    #cursor-ring{position:fixed;width:32px;height:32px;border:1px solid rgba(154,111,42,0.4);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:transform .12s ease,width .3s,height .3s,border-color .3s;}
+    body:hover #cursor{opacity:1;}
+    body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");pointer-events:none;z-index:9990;opacity:.18;}
+    header{position:fixed;top:0;width:100%;height:var(--nav-h);display:flex;justify-content:space-between;align-items:center;padding:0 6%;z-index:1000;background:rgba(255,255,255,0.92);backdrop-filter:blur(32px);-webkit-backdrop-filter:blur(32px);border-bottom:1px solid var(--border);}
+    .logo{font-family:var(--font-d);font-size:21px;font-weight:600;letter-spacing:5px;color:var(--text);display:flex;align-items:center;gap:0;}
+    .logo span{color:var(--text);}
+    .logo-eye{display:inline-flex;align-items:center;justify-content:center;width:16px;height:16px;border:1.5px solid var(--gold);border-radius:50%;position:relative;flex-shrink:0;margin:0 5px 0 5px;box-shadow:0 0 8px rgba(154,111,42,0.4);animation:eyeGlow 3s ease-in-out infinite;}
+    .logo-eye::after{content:'';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:6px;height:6px;background:var(--gold);border-radius:50%;box-shadow:0 0 6px var(--gold);}
+    @keyframes eyeGlow{0%,100%{box-shadow:0 0 8px rgba(154,111,42,0.4);}50%{box-shadow:0 0 16px rgba(154,111,42,0.8),0 0 30px rgba(154,111,42,0.2);}}
+    nav{display:flex;gap:36px;align-items:center;}
+    nav a{color:var(--text-muted);text-decoration:none;font-size:10px;font-weight:500;text-transform:uppercase;letter-spacing:2px;transition:color .3s;position:relative;}
+    nav a::after{content:'';position:absolute;bottom:-2px;left:0;width:0;height:1px;background:var(--gold);transition:width .3s;}
+    nav a:hover{color:var(--gold);}
+    nav a:hover::after{width:100%;}
+    .nav-cta{background:var(--gold)!important;color:#fff!important;padding:10px 24px;border-radius:1px;font-weight:700!important;letter-spacing:2px!important;}
+    .nav-cta::after{display:none!important;}
+    .nav-cta:hover{background:var(--gold-light)!important;color:#fff!important;}
+    .nav-programming{border:1px solid rgba(154,111,42,0.35)!important;padding:9px 18px;color:var(--gold)!important;font-weight:600!important;}
+    .nav-programming::after{display:none!important;}
+    .nav-programming:hover{background:rgba(154,111,42,0.07)!important;border-color:var(--gold)!important;}
+    .sw{max-width:1360px;margin:0 auto;padding:140px 6%;}
+    .label{font-size:9px;font-weight:600;letter-spacing:4px;text-transform:uppercase;color:var(--gold);margin-bottom:20px;display:flex;align-items:center;gap:12px;}
+    .label::before{content:'';width:24px;height:1px;background:var(--gold);display:inline-block;flex-shrink:0;}
+    .display{font-family:var(--font-d);font-weight:600;line-height:.95;letter-spacing:-.02em;}
+    .body-text{color:var(--text-muted);line-height:1.8;font-size:15px;margin-top:20px;font-weight:400;}
+    .gold-line{width:1px;height:60px;background:linear-gradient(to bottom,var(--gold),transparent);display:block;margin:28px 0;}
+    .reveal{opacity:0;transform:translateY(40px);}
+    .revealed{opacity:1!important;transform:translateY(0)!important;transition:opacity .9s cubic-bezier(.2,.8,.2,1),transform .9s cubic-bezier(.2,.8,.2,1);}
+    .btn-gold{display:inline-flex;align-items:center;gap:12px;padding:16px 38px;background:var(--gold);color:#fff;font-family:var(--font-b);font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;text-decoration:none;border:none;cursor:pointer;transition:all .3s;position:relative;overflow:hidden;}
+    .btn-gold::before{content:'';position:absolute;inset:0;background:var(--gold-light);transform:scaleX(0);transform-origin:left;transition:transform .4s cubic-bezier(.2,.8,.2,1);}
+    .btn-gold:hover::before{transform:scaleX(1);}
+    .btn-gold span{position:relative;z-index:1;color:#fff;}
+    .btn-ghost{display:inline-flex;align-items:center;gap:12px;padding:15px 37px;background:transparent;color:var(--gold);font-family:var(--font-b);font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;text-decoration:none;border:1px solid rgba(154,111,42,0.4);cursor:pointer;transition:all .3s;}
+    .btn-ghost:hover{border-color:var(--gold);background:var(--gold-dim);color:var(--gold);transform:translateY(-2px);}
+    .hero{min-height:100vh;position:relative;display:flex;align-items:center;justify-content:center;text-align:center;overflow:hidden;padding-top:var(--nav-h);}
+    #heroCanvas{position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;}
+    .hero-overlay{position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 50% 20%,rgba(154,111,42,0.05) 0%,transparent 70%),linear-gradient(to bottom,transparent 50%,var(--bg) 100%);z-index:1;}
+    .hero-content{position:relative;z-index:2;max-width:1000px;padding:0 24px;}
+    .hero-eyebrow{display:inline-flex;align-items:center;gap:10px;padding:9px 22px;border:1px solid var(--border);font-size:10px;font-weight:500;letter-spacing:2px;color:var(--gold);margin-bottom:50px;background:rgba(154,111,42,0.04);text-transform:uppercase;}
+    .hero-eyebrow-dot{width:5px;height:5px;border-radius:50%;background:var(--gold);animation:pulse 2s infinite;}
+    @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.3;transform:scale(.8)}}
+    .hero h1{font-size:clamp(56px,8vw,104px);font-family:var(--font-d);font-weight:600;line-height:.92;margin-bottom:32px;letter-spacing:-.02em;color:var(--text);}
+    .hero h1 em{font-style:italic;color:var(--gold);font-weight:400;}
+    .hero h1 .thin{font-weight:300;color:rgba(26,22,18,0.58);}
+    .hero-sub{font-size:clamp(15px,1.6vw,18px);max-width:620px;margin:0 auto;color:var(--text-muted);line-height:1.75;font-weight:400;}
+    .hero-ctas{display:flex;gap:16px;justify-content:center;margin-top:54px;flex-wrap:wrap;}
+    .hero-scroll{position:absolute;bottom:40px;left:50%;transform:translateX(-50%);z-index:2;display:flex;flex-direction:column;align-items:center;gap:8px;}
+    .hero-scroll span{font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--text-muted);}
+    .scroll-line{width:1px;height:50px;background:linear-gradient(to bottom,var(--gold),transparent);animation:scrollLine 2s ease infinite;}
+    @keyframes scrollLine{0%{transform:scaleY(0);transform-origin:top}50%{transform:scaleY(1);transform-origin:top}51%{transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}
+    .trusted-bar{margin-top:100px;display:flex;flex-direction:column;align-items:center;gap:22px;}
+    .trusted-label{font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--text-muted);}
+    .trusted-logos{display:flex;gap:48px;align-items:center;flex-wrap:wrap;justify-content:center;opacity:.5;filter:grayscale(1);}
+    .trusted-logos span{font-family:var(--font-d);font-size:14px;font-weight:600;letter-spacing:3px;text-transform:uppercase;}
+    .pain-center{text-align:center;max-width:740px;margin:0 auto;}
+    .pain-grid{display:grid;grid-template-columns:1fr 1fr;margin-top:80px;}
+    .pain-stat{padding:56px 50px;border:1px solid var(--border);margin:-1px 0 0 -1px;position:relative;overflow:hidden;transition:background .4s;}
+    .pain-stat::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(154,111,42,0.04) 0%,transparent 60%);opacity:0;transition:opacity .4s;}
+    .pain-stat:hover{background:var(--bg-card);}
+    .pain-stat:hover::after{opacity:1;}
+    .pain-accent{position:absolute;top:0;left:0;width:0;height:2px;background:linear-gradient(to right,var(--gold),transparent);transition:width .6s cubic-bezier(.2,.8,.2,1);}
+    .pain-stat:hover .pain-accent{width:100%;}
+    .pain-number{font-family:var(--font-d);font-size:clamp(60px,7vw,88px);font-weight:700;color:var(--gold);line-height:1;display:block;}
+    .pain-unit{font-size:14px;color:rgba(154,111,42,0.8);font-family:var(--font-d);font-style:italic;margin-top:4px;display:block;}
+    .pain-stat h3{font-family:var(--font-d);font-size:20px;margin-top:20px;font-weight:600;letter-spacing:.5px;color:var(--text);}
+    .pain-stat p{font-size:13px;color:var(--text-muted);margin-top:10px;line-height:1.7;font-weight:400;}
+    .tier{margin-bottom:120px;}
+    .tier-header{display:flex;align-items:flex-start;gap:60px;margin-bottom:50px;}
+    .tier-num{font-family:var(--font-d);font-size:100px;font-weight:700;color:rgba(154,111,42,0.1);line-height:1;flex-shrink:0;margin-top:-10px;}
+    .tier-title-block h2{font-size:clamp(32px,4vw,54px);font-family:var(--font-d);font-weight:600;color:var(--text);}
+    .tier-grid{display:grid;grid-template-columns:1.3fr 1fr;gap:1px;background:rgba(154,111,42,0.1);}
+    .tier-image{grid-row:span 2;overflow:hidden;min-height:440px;position:relative;}
+    .tier-image img{width:100%;height:100%;object-fit:cover;filter:grayscale(30%) brightness(0.9);transition:all 1.4s cubic-bezier(.2,.8,.2,1);display:block;}
+    .tier-image::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(154,111,42,0.06) 0%,transparent 50%);}
+    .tier:hover .tier-image img{filter:grayscale(0%) brightness(1);transform:scale(1.06);}
+    .service-item{background:var(--bg-card);padding:26px 30px;display:flex;align-items:center;gap:16px;transition:background .25s,padding-left .25s;}
+    .service-item:hover{background:var(--bg-elevated);padding-left:36px;}
+    .service-dot{width:5px;height:5px;border-radius:50%;background:var(--gold);flex-shrink:0;transition:transform .25s;}
+    .service-item:hover .service-dot{transform:scale(1.6);}
+    .service-item span{font-size:13px;font-weight:400;color:var(--text-muted);letter-spacing:.3px;transition:color .25s;}
+    .service-item:hover span{color:var(--text);}
+    .tier-cta-block{background:var(--bg-card);padding:30px;display:flex;align-items:center;justify-content:space-between;gap:20px;border-top:1px solid var(--border);}
+    .tier-cta-block>span{font-size:12px;color:var(--text);font-weight:500;}
+    .results-header{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:end;margin-bottom:70px;}
+    .results-header h2{font-size:clamp(40px,5vw,68px);font-family:var(--font-d);font-weight:600;color:var(--text);}
+    .results-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);margin-bottom:2px;}
+    .result-card{background:var(--bg-card);padding:48px 36px;transition:background .3s;position:relative;overflow:hidden;}
+    .result-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(to right,transparent,var(--gold),transparent);opacity:0;transition:opacity .4s;}
+    .result-card:hover{background:var(--bg-elevated);}
+    .result-card:hover::before{opacity:1;}
+    .result-kpi{font-family:var(--font-d);font-size:60px;font-weight:700;color:var(--gold);line-height:1;display:block;}
+    .result-card h3{font-size:15px;font-weight:600;margin-top:16px;letter-spacing:.3px;color:var(--text);}
+    .result-card p{font-size:13px;color:var(--text-muted);margin-top:10px;line-height:1.7;font-weight:400;}
+    .testimonials-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--border);}
+    .testimonial{background:var(--bg-card);padding:44px;position:relative;transition:background .3s;}
+    .testimonial:hover{background:var(--bg-elevated);}
+    .testimonial::before{content:'\201C';font-family:var(--font-d);font-size:120px;color:var(--gold);opacity:.1;position:absolute;top:10px;left:24px;line-height:1;}
+    .testimonial p{font-size:15px;line-height:1.8;color:rgba(26,22,18,0.8);font-weight:400;margin:0;position:relative;z-index:1;font-style:italic;}
+    .testimonial-author{margin-top:28px;display:flex;align-items:center;gap:14px;}
+    .author-avatar{width:44px;height:44px;border-radius:50%;background:var(--gold-dim);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-family:var(--font-d);font-weight:600;color:var(--gold);font-size:18px;flex-shrink:0;}
+    .author-info strong{display:block;font-size:13px;font-weight:600;letter-spacing:.3px;color:var(--text);}
+    .author-info span{font-size:11px;color:var(--text-muted);letter-spacing:.5px;}
+    .full-banner{width:100%;height:460px;overflow:hidden;position:relative;border-top:1px solid var(--border);border-bottom:1px solid var(--border);}
+    .full-banner img{width:100%;height:130%;object-fit:cover;filter:grayscale(50%) brightness(0.55);display:block;}
+    .banner-overlay{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,0.12);}
+    .banner-text{text-align:center;padding:0 24px;}
+    .banner-text h2{font-family:var(--font-d);font-size:clamp(32px,5vw,68px);font-weight:600;line-height:.95;color:#fff;text-shadow:0 2px 20px rgba(0,0,0,0.4);}
+    .banner-text h2 em{font-style:italic;color:var(--gold-light);}
+    .banner-text p{font-size:14px;color:rgba(255,255,255,0.85);margin-top:18px;letter-spacing:1px;text-transform:uppercase;text-shadow:0 1px 8px rgba(0,0,0,0.3);}
+    .metrics-title{text-align:center;max-width:760px;margin:0 auto 60px;}
+    .metrics-title h2{font-size:clamp(40px,5vw,64px);color:var(--text);}
+    .chart-wrap{background:var(--bg-card);border:1px solid var(--border);padding:50px;position:relative;overflow:hidden;}
+    .chart-wrap::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(to right,transparent,var(--gold),transparent);}
+    .chart-container-fix{position:relative;height:45vh;min-height:380px;}
+    .infra-grid{display:grid;grid-template-columns:1fr 1fr;gap:100px;align-items:center;}
+    .infra-image-wrap{overflow:hidden;position:relative;}
+    .infra-image-wrap::after{content:'';position:absolute;inset:0;border:1px solid var(--border);pointer-events:none;}
+    .infra-image-wrap img{width:100%;display:block;filter:grayscale(20%) brightness(0.95);transition:all 1.4s cubic-bezier(.2,.8,.2,1);}
+    .infra-grid:hover .infra-image-wrap img{filter:grayscale(0%) brightness(1);transform:scale(1.04);}
+    .authority-inner{text-align:center;max-width:820px;margin:0 auto;}
+    .authority-badges{display:flex;justify-content:center;gap:12px;margin-top:64px;flex-wrap:wrap;}
+    .badge{border:1px solid var(--border);padding:18px 26px;display:flex;flex-direction:column;align-items:center;gap:10px;transition:border-color .3s,background .3s;cursor:pointer;position:relative;overflow:hidden;}
+    .badge::before{content:'';position:absolute;inset:0;background:var(--gold-dim);transform:scaleY(0);transform-origin:bottom;transition:transform .4s cubic-bezier(.2,.8,.2,1);}
+    .badge:hover::before{transform:scaleY(1);}
+    .badge:hover{border-color:var(--gold);}
+    .badge-icon{color:var(--gold);font-size:18px;position:relative;}
+    .badge span{font-size:9px;letter-spacing:2px;text-transform:uppercase;font-weight:600;color:var(--text-muted);position:relative;}
+    .split-authority{display:grid;grid-template-columns:1fr 1fr;gap:100px;align-items:center;margin-top:110px;}
+    .split-authority img{width:100%;aspect-ratio:4/3;object-fit:cover;filter:grayscale(20%) brightness(0.95);transition:all 1.4s;display:block;}
+    .split-authority:hover img{filter:grayscale(0%) brightness(1);}
+    .img-frame{overflow:hidden;position:relative;}
+    .img-frame::after{content:'';position:absolute;inset:0;border:1px solid var(--border);pointer-events:none;}
+    .contact-inner{display:grid;grid-template-columns:1fr 1.2fr;gap:100px;}
+    .contact-info h2{font-size:clamp(36px,5vw,60px);color:var(--text);}
+    .contact-disclaimer{margin-top:40px;padding:24px;border-left:2px solid var(--gold);background:rgba(154,111,42,0.04);font-size:12px;line-height:1.75;color:var(--text-muted);}
+    .contact-disclaimer strong{color:var(--gold);display:block;margin-bottom:8px;font-size:9px;letter-spacing:3px;text-transform:uppercase;}
+    .contact-detail{display:flex;align-items:center;gap:14px;margin-top:16px;}
+    .contact-detail-icon{width:36px;height:36px;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;color:var(--gold);font-size:14px;flex-shrink:0;}
+    .contact-detail span{font-size:13px;color:var(--text-muted);}
+    .form-card{background:var(--bg-card);border:1px solid var(--border);padding:52px;position:relative;overflow:hidden;}
+    .form-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(to right,transparent,var(--gold),transparent);}
+    .form-success{display:none;text-align:center;padding:60px 30px;}
+    .success-icon{font-family:var(--font-d);font-size:56px;color:var(--gold);margin-bottom:24px;display:block;}
+    .form-success h3{font-family:var(--font-d);font-size:36px;font-weight:600;margin-bottom:14px;color:var(--text);}
+    .form-success p{color:var(--text-muted);font-size:14px;line-height:1.7;font-weight:400;}
+    .form-success .divider{width:1px;height:40px;background:linear-gradient(to bottom,var(--gold),transparent);margin:28px auto;}
+    .form-fields{display:flex;flex-direction:column;gap:12px;}
+    .form-row-2{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+    .field-wrap{display:flex;flex-direction:column;gap:4px;}
+    .field-error{font-size:10px;color:#c0392b;min-height:14px;padding-left:2px;letter-spacing:.3px;}
+    input,textarea,select{padding:15px 18px;border:1px solid var(--border-dim);background:rgba(255,255,255,0.9);color:var(--text);font-family:var(--font-b);font-size:13px;transition:border-color .3s,background .3s;outline:none;width:100%;border-radius:0;}
+    input:focus,textarea:focus,select:focus{border-color:rgba(154,111,42,0.5);background:#fff;}
+    input::placeholder,textarea::placeholder{color:rgba(90,83,80,0.7);}
+    textarea{resize:vertical;min-height:110px;}
+    select option{background:#fff;color:var(--text);}
+    #submit-btn{width:100%;padding:18px;background:var(--gold);color:#fff;border:none;font-family:var(--font-b);font-weight:700;font-size:11px;letter-spacing:2.5px;text-transform:uppercase;cursor:pointer;transition:all .3s;margin-top:8px;position:relative;overflow:hidden;}
+    #submit-btn::before{content:'';position:absolute;inset:0;background:var(--gold-light);transform:scaleX(0);transform-origin:left;transition:transform .4s cubic-bezier(.2,.8,.2,1);}
+    #submit-btn:hover::before{transform:scaleX(1);}
+    #submit-btn span{position:relative;z-index:1;color:#fff;}
+    #submit-btn:disabled{opacity:.6;cursor:not-allowed;}
+    footer{border-top:1px solid var(--border);background:var(--bg-card);}
+    .footer-main{max-width:1360px;margin:0 auto;padding:90px 6% 56px;display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:60px;}
+    .footer-brand .logo{font-size:22px;}
+    .footer-brand p{font-size:13px;color:var(--text-muted);margin-top:18px;line-height:1.75;font-weight:400;max-width:260px;}
+    .footer-social{display:flex;gap:10px;margin-top:32px;}
+    .social-link{width:34px;height:34px;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;color:var(--text-muted);text-decoration:none;font-size:11px;font-weight:700;transition:all .3s;cursor:pointer;}
+    .social-link:hover{border-color:var(--gold);color:var(--gold);}
+    .footer-col h4{font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--text-muted);margin-bottom:26px;font-weight:600;}
+    .footer-col a{display:block;color:var(--text-muted);text-decoration:none;font-size:13px;margin-bottom:14px;transition:color .3s;font-weight:400;}
+    .footer-col a:hover{color:var(--gold);}
+    .footer-bottom{border-top:1px solid var(--border-dim);padding:28px 6%;max-width:1360px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;}
+    .footer-bottom p{font-size:11px;color:var(--text-muted);font-weight:400;letter-spacing:.5px;}
+    @media(max-width:1024px){.pain-grid,.tier-grid,.infra-grid,.contact-inner,.split-authority,.results-header{grid-template-columns:1fr!important;gap:50px!important;}.tier-image{grid-row:auto;min-height:280px;}.results-grid{grid-template-columns:1fr 1fr;}.footer-main{grid-template-columns:1fr 1fr;}}
+    @media(max-width:768px){nav a:not(.nav-cta){display:none;}.lang-switch{display:none;}.testimonials-grid,.results-grid,.form-row-2{grid-template-columns:1fr;}.tier-header{flex-direction:column;gap:16px;}.tier-num{font-size:60px;}.footer-main{grid-template-columns:1fr;gap:40px;}.footer-bottom{flex-direction:column;gap:12px;text-align:center;}.full-banner{height:320px;}body{cursor:auto;}#cursor,#cursor-ring{display:none;}}
+    .lang-switch{display:flex;align-items:center;gap:0;margin-left:16px;padding-left:16px;border-left:1px solid var(--border);flex-shrink:0;}
+    .lang-switch a{display:flex;align-items:center;gap:7px;padding:8px 14px;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;text-decoration:none;color:var(--text-muted);border:1px solid transparent;transition:color .3s,border-color .3s,background .3s;}
+    .lang-switch a:hover{color:var(--gold);}
+    .lang-switch a.active{color:var(--gold);border:1px solid rgba(154,111,42,0.35);background:rgba(154,111,42,0.05);}
+    .lang-switch a svg{width:13px;height:13px;opacity:.6;flex-shrink:0;}
+</style>
+</head><body>
 <div id="cursor"></div><div id="cursor-ring"></div>
 <header>
     <div class="logo"><span style="letter-spacing:5px;">H</span><span class="logo-eye"></span><span style="letter-spacing:5px;">RUS</span></div>
@@ -225,7 +363,7 @@
                 EN
             </a>
             <a href="https://www.horussystemco.com/ES" title="Español">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1 4-10z"/></svg>
                 ES
             </a>
         </div>
@@ -253,7 +391,6 @@
     <div class="hero-scroll"><span>Scroll</span><div class="scroll-line"></div></div>
 </section>
 
-<!-- ── WHAT HORUS DOES ── -->
 <div class="sw" id="what-horus-does" style="padding-top:100px;padding-bottom:100px;">
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:100px;align-items:center;" class="reveal">
         <div>
@@ -297,21 +434,9 @@
         <p class="body-text">HORUS operates through specialized strategic divisions, bringing enterprise-grade AI to every sector of your business.</p>
     </div>
     <div class="results-grid reveal">
-        <div class="result-card" style="padding:56px 40px;">
-            <span style="font-size:10px;font-weight:600;color:var(--gold);letter-spacing:3px;text-transform:uppercase;">Agency</span>
-            <h3 style="font-family:var(--font-d);font-size:32px;color:var(--text);margin-top:12px;font-weight:600;">HORUS Growth</h3>
-            <p style="font-size:14px;margin-top:16px;color:var(--text-muted);">Revenue automation systems for professional services and high-growth businesses — AI lead qualification, CRM automation, client acquisition funnels, and intelligent follow-up systems.</p>
-        </div>
-        <div class="result-card" style="padding:56px 40px;">
-            <span style="font-size:10px;font-weight:600;color:var(--gold);letter-spacing:3px;text-transform:uppercase;">Manufacturing</span>
-            <h3 style="font-family:var(--font-d);font-size:32px;color:var(--text);margin-top:12px;font-weight:600;">HORUS Industrial</h3>
-            <p style="font-size:14px;margin-top:16px;color:var(--text-muted);">Industrial AI systems for manufacturers and operational companies — predictive maintenance, production intelligence, inventory optimization, and real-time performance dashboards.</p>
-        </div>
-        <div class="result-card" style="padding:56px 40px;">
-            <span style="font-size:10px;font-weight:600;color:var(--gold);letter-spacing:3px;text-transform:uppercase;">Consulting</span>
-            <h3 style="font-family:var(--font-d);font-size:32px;color:var(--text);margin-top:12px;font-weight:600;">HORUS Strategy</h3>
-            <p style="font-size:14px;margin-top:16px;color:var(--text-muted);">Executive AI architecture and digital transformation advisory for owners and plant managers seeking scalable, secure, enterprise-grade intelligence infrastructure.</p>
-        </div>
+        <div class="result-card" style="padding:56px 40px;"><span style="font-size:10px;font-weight:600;color:var(--gold);letter-spacing:3px;text-transform:uppercase;">Agency</span><h3 style="font-family:var(--font-d);font-size:32px;color:var(--text);margin-top:12px;font-weight:600;">HORUS Growth</h3><p style="font-size:14px;margin-top:16px;color:var(--text-muted);">Revenue automation systems for professional services and high-growth businesses — AI lead qualification, CRM automation, client acquisition funnels, and intelligent follow-up systems.</p></div>
+        <div class="result-card" style="padding:56px 40px;"><span style="font-size:10px;font-weight:600;color:var(--gold);letter-spacing:3px;text-transform:uppercase;">Manufacturing</span><h3 style="font-family:var(--font-d);font-size:32px;color:var(--text);margin-top:12px;font-weight:600;">HORUS Industrial</h3><p style="font-size:14px;margin-top:16px;color:var(--text-muted);">Industrial AI systems for manufacturers and operational companies — predictive maintenance, production intelligence, inventory optimization, and real-time performance dashboards.</p></div>
+        <div class="result-card" style="padding:56px 40px;"><span style="font-size:10px;font-weight:600;color:var(--gold);letter-spacing:3px;text-transform:uppercase;">Consulting</span><h3 style="font-family:var(--font-d);font-size:32px;color:var(--text);margin-top:12px;font-weight:600;">HORUS Strategy</h3><p style="font-size:14px;margin-top:16px;color:var(--text-muted);">Executive AI architecture and digital transformation advisory for owners and plant managers seeking scalable, secure, enterprise-grade intelligence infrastructure.</p></div>
     </div>
 </div>
 
@@ -429,18 +554,9 @@
         <p class="body-text" style="margin-top:24px;">HORUS is engineered for plant managers, founders, and operational leaders who care about throughput, downtime, margin, and measurable performance — not vanity metrics.</p>
     </div>
     <div class="results-grid reveal" style="margin-top:60px;">
-        <div class="result-card" style="padding:48px 40px;">
-            <h3 style="font-family:var(--font-d);font-size:26px;font-weight:600;color:var(--gold);">Production Intelligence</h3>
-            <p class="body-text" style="margin-top:16px;">Identify bottlenecks, reduce downtime, and deploy predictive maintenance systems powered by real operational data.</p>
-        </div>
-        <div class="result-card" style="padding:48px 40px;">
-            <h3 style="font-family:var(--font-d);font-size:26px;font-weight:600;color:var(--gold);">Operational Automation</h3>
-            <p class="body-text" style="margin-top:16px;">Automate procurement, inventory tracking, reporting, and internal workflows to eliminate human friction across departments.</p>
-        </div>
-        <div class="result-card" style="padding:48px 40px;">
-            <h3 style="font-family:var(--font-d);font-size:26px;font-weight:600;color:var(--gold);">Revenue Systems</h3>
-            <p class="body-text" style="margin-top:16px;">AI-powered lead qualification, CRM automation, and client acquisition systems for professional firms and service-based operators.</p>
-        </div>
+        <div class="result-card" style="padding:48px 40px;"><h3 style="font-family:var(--font-d);font-size:26px;font-weight:600;color:var(--gold);">Production Intelligence</h3><p class="body-text" style="margin-top:16px;">Identify bottlenecks, reduce downtime, and deploy predictive maintenance systems powered by real operational data.</p></div>
+        <div class="result-card" style="padding:48px 40px;"><h3 style="font-family:var(--font-d);font-size:26px;font-weight:600;color:var(--gold);">Operational Automation</h3><p class="body-text" style="margin-top:16px;">Automate procurement, inventory tracking, reporting, and internal workflows to eliminate human friction across departments.</p></div>
+        <div class="result-card" style="padding:48px 40px;"><h3 style="font-family:var(--font-d);font-size:26px;font-weight:600;color:var(--gold);">Revenue Systems</h3><p class="body-text" style="margin-top:16px;">AI-powered lead qualification, CRM automation, and client acquisition systems for professional firms and service-based operators.</p></div>
     </div>
     <div class="reveal" style="text-align:center;max-width:820px;margin:60px auto 0;">
         <p class="body-text">We don't sell software licenses. We architect AI infrastructure inside real businesses — from manufacturing floors to professional service firms — so operators can scale with precision.</p>
@@ -448,7 +564,6 @@
     </div>
 </div>
 
-<!-- ── DIGITAL TEAM ── -->
 <div class="sw" id="digital-team" style="padding-top:100px;padding-bottom:100px;">
     <div style="display:grid;grid-template-columns:1.1fr 1fr;gap:100px;align-items:center;" class="reveal">
         <div>
@@ -457,22 +572,10 @@
             <div class="gold-line"></div>
             <p class="body-text">Every missed message is a missed sale. Every delayed follow-up is a lost client. HORUS ensures that no opportunity slips through — delivering immediate responses, consistent follow-up, and measurable business outcomes every single day.</p>
             <div style="display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border);margin-top:48px;">
-                <div style="background:var(--bg-card);padding:28px 24px;">
-                    <div style="font-family:var(--font-d);font-size:36px;font-weight:700;color:var(--gold);line-height:1;">24/7</div>
-                    <div style="font-size:12px;color:var(--text-muted);margin-top:8px;font-weight:400;">Immediate responses,<br>no delays</div>
-                </div>
-                <div style="background:var(--bg-card);padding:28px 24px;">
-                    <div style="font-family:var(--font-d);font-size:36px;font-weight:700;color:var(--gold);line-height:1;">0</div>
-                    <div style="font-size:12px;color:var(--text-muted);margin-top:8px;font-weight:400;">Operational tasks<br>left unexecuted</div>
-                </div>
-                <div style="background:var(--bg-card);padding:28px 24px;">
-                    <div style="font-family:var(--font-d);font-size:36px;font-weight:700;color:var(--gold);line-height:1;">↑</div>
-                    <div style="font-size:12px;color:var(--text-muted);margin-top:8px;font-weight:400;">More clients without<br>increasing workload</div>
-                </div>
-                <div style="background:var(--bg-card);padding:28px 24px;">
-                    <div style="font-family:var(--font-d);font-size:36px;font-weight:700;color:var(--gold);line-height:1;">×</div>
-                    <div style="font-size:12px;color:var(--text-muted);margin-top:8px;font-weight:400;">Greater efficiency<br>and business control</div>
-                </div>
+                <div style="background:var(--bg-card);padding:28px 24px;"><div style="font-family:var(--font-d);font-size:36px;font-weight:700;color:var(--gold);line-height:1;">24/7</div><div style="font-size:12px;color:var(--text-muted);margin-top:8px;font-weight:400;">Immediate responses,<br>no delays</div></div>
+                <div style="background:var(--bg-card);padding:28px 24px;"><div style="font-family:var(--font-d);font-size:36px;font-weight:700;color:var(--gold);line-height:1;">0</div><div style="font-size:12px;color:var(--text-muted);margin-top:8px;font-weight:400;">Operational tasks<br>left unexecuted</div></div>
+                <div style="background:var(--bg-card);padding:28px 24px;"><div style="font-family:var(--font-d);font-size:36px;font-weight:700;color:var(--gold);line-height:1;">↑</div><div style="font-size:12px;color:var(--text-muted);margin-top:8px;font-weight:400;">More clients without<br>increasing workload</div></div>
+                <div style="background:var(--bg-card);padding:28px 24px;"><div style="font-family:var(--font-d);font-size:36px;font-weight:700;color:var(--gold);line-height:1;">×</div><div style="font-size:12px;color:var(--text-muted);margin-top:8px;font-weight:400;">Greater efficiency<br>and business control</div></div>
             </div>
         </div>
         <div style="background:var(--bg-card);border:1px solid var(--border);padding:56px;position:relative;overflow:hidden;">
@@ -481,18 +584,9 @@
             <h3 class="display" style="font-size:clamp(28px,3vw,42px);margin-top:4px;">Stop losing opportunities<br>to lack of follow-up.</h3>
             <p class="body-text" style="margin-top:20px;">With HORUS, every message matters, every prospect gets attended to, and every process moves forward automatically. Your business scales — without scaling your headcount.</p>
             <div style="margin-top:40px;display:flex;flex-direction:column;gap:14px;">
-                <div style="display:flex;align-items:center;gap:14px;">
-                    <div style="width:6px;height:6px;border-radius:50%;background:var(--gold);flex-shrink:0;"></div>
-                    <span style="font-size:13px;color:var(--text-muted);">Every message counts — none ignored</span>
-                </div>
-                <div style="display:flex;align-items:center;gap:14px;">
-                    <div style="width:6px;height:6px;border-radius:50%;background:var(--gold);flex-shrink:0;"></div>
-                    <span style="font-size:13px;color:var(--text-muted);">Every prospect attended — none lost</span>
-                </div>
-                <div style="display:flex;align-items:center;gap:14px;">
-                    <div style="width:6px;height:6px;border-radius:50%;background:var(--gold);flex-shrink:0;"></div>
-                    <span style="font-size:13px;color:var(--text-muted);">Every process advancing — automatically</span>
-                </div>
+                <div style="display:flex;align-items:center;gap:14px;"><div style="width:6px;height:6px;border-radius:50%;background:var(--gold);flex-shrink:0;"></div><span style="font-size:13px;color:var(--text-muted);">Every message counts — none ignored</span></div>
+                <div style="display:flex;align-items:center;gap:14px;"><div style="width:6px;height:6px;border-radius:50%;background:var(--gold);flex-shrink:0;"></div><span style="font-size:13px;color:var(--text-muted);">Every prospect attended — none lost</span></div>
+                <div style="display:flex;align-items:center;gap:14px;"><div style="width:6px;height:6px;border-radius:50%;background:var(--gold);flex-shrink:0;"></div><span style="font-size:13px;color:var(--text-muted);">Every process advancing — automatically</span></div>
             </div>
             <div style="margin-top:44px;"><a href="#contact" class="btn-gold"><span>Start Scaling With HORUS →</span></a></div>
         </div>
@@ -506,13 +600,10 @@
             <h2 class="display" style="font-size:clamp(36px,5vw,58px);">Apply for Executive Strategy Session</h2>
             <div class="gold-line"></div>
             <p class="body-text">We work only with businesses ready to scale with enterprise AI infrastructure. This is not a sales call — it is a strategic audit of your operations.</p>
-            <div class="contact-disclaimer">
-                <strong>Confidential &amp; Selective</strong>
-                We accept a limited number of new clients per quarter. Only serious inquiries from high-value businesses seeking transformational growth will receive a response.
-            </div>
+            <div class="contact-disclaimer"><strong>Confidential &amp; Selective</strong>We accept a limited number of new clients per quarter. Only serious inquiries from high-value businesses seeking transformational growth will receive a response.</div>
             <div style="margin-top:36px;">
-                <div class="contact-detail"><div class="contact-detail-icon">◎</div><span><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="b7ded9d1d8f7dfd8c5c2c4c4cec4c3d2da99d9d2c3">[email&#160;protected]</a></span></div>
-                <div class="contact-detail"><div class="contact-detail-icon">◎</div><span><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="681b0d1a1e010b0d1b281d1b00071a1d1b460b0705">[email&#160;protected]</a></span></div>
+                <div class="contact-detail"><div class="contact-detail-icon">◎</div><span>info@horussystem.net</span></div>
+                <div class="contact-detail"><div class="contact-detail-icon">◎</div><span>contact@horussystemco.com</span></div>
             </div>
         </div>
         <div class="form-card reveal">
@@ -531,32 +622,8 @@
                 <div class="field-wrap"><input type="text" id="website" placeholder="Company Website (e.g. www.yourcompany.com)"><span class="field-error" id="err-website"></span></div>
                 <div class="field-wrap"><input type="email" id="email" placeholder="Corporate Email" required><span class="field-error" id="err-email"></span></div>
                 <div class="field-wrap"><input type="tel" id="phone" placeholder="Phone Number" required><span class="field-error" id="err-phone"></span></div>
-                <select id="industry">
-                    <option value="" disabled selected>Industry / Sector</option>
-                    <option>Manufacturing &amp; Industrial</option>
-                    <option>CNC / Machining</option>
-                    <option>Logistics &amp; Supply Chain</option>
-                    <option>Industrial Automation</option>
-                    <option>Construction &amp; Home Services</option>
-                    <option>Automotive</option>
-                    <option>Healthcare &amp; Medical</option>
-                    <option>Legal &amp; Financial Services</option>
-                    <option>Restaurant &amp; Food Service</option>
-                    <option>Retail &amp; Commerce</option>
-                    <option>Business Services &amp; Agency</option>
-                    <option>Education</option>
-                    <option>Technology</option>
-                    <option>Real Estate</option>
-                    <option>Other</option>
-                </select>
-                <select id="revenue">
-                    <option value="" disabled selected>Annual Revenue Range</option>
-                    <option>$500K – $1M</option>
-                    <option>$1M – $5M</option>
-                    <option>$5M – $10M</option>
-                    <option>$10M – $25M</option>
-                    <option>$25M+</option>
-                </select>
+                <select id="industry"><option value="" disabled selected>Industry / Sector</option><option>Manufacturing &amp; Industrial</option><option>CNC / Machining</option><option>Logistics &amp; Supply Chain</option><option>Industrial Automation</option><option>Construction &amp; Home Services</option><option>Automotive</option><option>Healthcare &amp; Medical</option><option>Legal &amp; Financial Services</option><option>Restaurant &amp; Food Service</option><option>Retail &amp; Commerce</option><option>Business Services &amp; Agency</option><option>Education</option><option>Technology</option><option>Real Estate</option><option>Other</option></select>
+                <select id="revenue"><option value="" disabled selected>Annual Revenue Range</option><option>$500K – $1M</option><option>$1M – $5M</option><option>$5M – $10M</option><option>$10M – $25M</option><option>$25M+</option></select>
                 <div class="field-wrap"><textarea id="message" placeholder="Describe your business and what you want to automate or optimize..." required></textarea><span class="field-error" id="err-message"></span></div>
                 <button type="button" id="submit-btn" onclick="submitForm()"><span>Submit Application →</span></button>
                 <p style="font-size:10px;color:var(--text-muted);text-align:center;margin-top:8px;letter-spacing:.3px;">By submitting you agree to our <a href="#" style="color:var(--gold);text-decoration:none;">Privacy Policy</a>. All information is strictly confidential.</p>
@@ -570,9 +637,7 @@
         <div class="footer-brand">
             <div class="logo"><span style="letter-spacing:5px;">H</span><span class="logo-eye"></span><span style="letter-spacing:5px;">RUS</span></div>
             <p>The all-seeing AI operating system for the next generation of enterprise intelligence.</p>
-            <div class="footer-social">
-                <a href="#" class="social-link">in</a><a href="#" class="social-link">tw</a><a href="#" class="social-link">yt</a><a href="#" class="social-link">ig</a>
-            </div>
+            <div class="footer-social"><a href="#" class="social-link">in</a><a href="#" class="social-link">tw</a><a href="#" class="social-link">yt</a><a href="#" class="social-link">ig</a></div>
         </div>
         <div class="footer-col"><h4>Solutions</h4><a href="#">Voice AI Agents</a><a href="#">CRM Automation</a><a href="#">Inventory AI</a><a href="#">Revenue Intelligence</a><a href="#">Custom AI Apps</a></div>
         <div class="footer-col"><h4>Company</h4><a href="#">About Us</a><a href="#">Executive Team</a><a href="#">Case Studies</a><a href="#">Careers</a></div>
@@ -584,7 +649,7 @@
     </div>
 </footer>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+<script>
 const cur=document.getElementById('cursor');const ring=document.getElementById('cursor-ring');let mx=0,my=0,rx=0,ry=0;
 document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.left=mx+'px';cur.style.top=my+'px';});
 function animRing(){rx+=(mx-rx)*.12;ry+=(my-ry)*.12;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(animRing);}
@@ -631,21 +696,19 @@ if(bannerImg){window.addEventListener('scroll',()=>{const r=bannerImg.closest('.
 
 <script>
 var FORM_URL = "https://script.google.com/macros/s/AKfycbypecBPovvQYmAZ4ny28bEoJJ5VWeEnHHuLPuwZB5RVxh4LBJkfBOq8GiEQHfZswANhLg/exec";
-
 function showFieldError(id,msg){var e=document.getElementById("err-"+id);var i=document.getElementById(id);if(e)e.textContent=msg;if(i)i.style.borderColor="#c0392b";}
 function clearErrors(){["fullName","company","website","email","phone","message"].forEach(function(id){var e=document.getElementById("err-"+id);var i=document.getElementById(id);if(e)e.textContent="";if(i)i.style.borderColor="";});}
-
 function submitForm(){
     clearErrors();
-    var fullName = document.getElementById("fullName").value.trim();
-    var company  = document.getElementById("company").value.trim();
-    var website  = document.getElementById("website").value.trim();
-    var email    = document.getElementById("email").value.trim();
-    var phone    = document.getElementById("phone").value.trim();
-    var industry = document.getElementById("industry").value;
-    var revenue  = document.getElementById("revenue").value;
-    var message  = document.getElementById("message").value.trim();
-    var valid = true;
+    var fullName=document.getElementById("fullName").value.trim();
+    var company=document.getElementById("company").value.trim();
+    var website=document.getElementById("website").value.trim();
+    var email=document.getElementById("email").value.trim();
+    var phone=document.getElementById("phone").value.trim();
+    var industry=document.getElementById("industry").value;
+    var revenue=document.getElementById("revenue").value;
+    var message=document.getElementById("message").value.trim();
+    var valid=true;
     if(!fullName){showFieldError("fullName","Full name is required");valid=false;}
     if(!company){showFieldError("company","Company name is required");valid=false;}
     if(!email||!email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)){showFieldError("email","Enter a valid email");valid=false;}
@@ -663,11 +726,8 @@ function submitForm(){
     })
     .catch(function(){
         btn.disabled=false;btn.querySelector('span').textContent="Submit Application →";
-           alert("Network error. Please try again.");
-           alert("Network error. Please try again!");
+        alert("Network error. Please try again.");
     });
 }
 </script>
-
-</body>
-</html>
+</body></html>
