@@ -1,424 +1,416 @@
 <!DOCTYPE html>
-
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Cerro de la Silla — Solar Energy</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300&family=Barlow:wght@300;400;500;600&family=Barlow+Condensed:wght@300;400;500;700&display=swap" rel="stylesheet">
 <style>
-  /* Fallback font stack while Google Fonts loads */
-  body { font-family: 'Barlow', 'Helvetica Neue', Helvetica, Arial, sans-serif; }
-</style>
-<style>
 /* ─── RESET & BASE ─── */
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300&family=Barlow:wght@300;400;500;600&family=Barlow+Condensed:wght@300;400;500;700&display=swap');
-
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html { scroll-behavior: smooth; }
 body {
-background: #070f1c;
-color: #f8fafc;
-font-family: ‘Barlow’, sans-serif;
-font-weight: 300;
-overflow-x: hidden;
+  background: #070f1c;
+  color: #f8fafc;
+  font-family: 'Barlow', sans-serif;
+  font-weight: 300;
+  overflow-x: hidden;
 }
 img { display: block; max-width: 100%; }
 
 /* ─── VARIABLES ─── */
 :root {
-–deep:   #070f1c;
-–navy:   #0a1628;
-–mid:    #0d2240;
-–blue:   #0ea5e9;
-–light:  #38bdf8;
-–orange: #f97316;
-–gold:   #f59e0b;
-–white:  #f8fafc;
-–muted:  rgba(255,255,255,0.5);
-–line:   rgba(255,255,255,0.07);
+  --deep:   #070f1c;
+  --navy:   #0a1628;
+  --mid:    #0d2240;
+  --blue:   #0ea5e9;
+  --light:  #38bdf8;
+  --orange: #f97316;
+  --gold:   #f59e0b;
+  --white:  #f8fafc;
+  --muted:  rgba(255,255,255,0.5);
+  --line:   rgba(255,255,255,0.07);
 }
 
 /* ─── NAV (fixed, does not affect flow) ─── */
 nav {
-position: fixed; top: 0; left: 0; right: 0; z-index: 500;
-height: 68px;
-display: flex; align-items: center; justify-content: space-between;
-padding: 0 6vw;
-background: rgba(7,15,28,0.90);
-backdrop-filter: blur(20px);
-border-bottom: 1px solid var(–line);
-transition: background 0.3s;
+  position: fixed; top: 0; left: 0; right: 0; z-index: 500;
+  height: 68px;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 6vw;
+  background: rgba(7,15,28,0.90);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--line);
+  transition: background 0.3s;
 }
 .brand { display: flex; align-items: center; gap: 14px; text-decoration: none; }
 .brand-ring {
-width: 42px; height: 42px; border-radius: 50%; flex-shrink: 0;
-background: conic-gradient(from 200deg, #0ea5e9, #f97316 60%, #f59e0b 80%, #0ea5e9);
-display: flex; align-items: center; justify-content: center;
-font-size: 20px; box-shadow: 0 0 16px rgba(14,165,233,0.4);
+  width: 42px; height: 42px; border-radius: 50%; flex-shrink: 0;
+  background: conic-gradient(from 200deg, #0ea5e9, #f97316 60%, #f59e0b 80%, #0ea5e9);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 20px; box-shadow: 0 0 16px rgba(14,165,233,0.4);
 }
 .brand-text { line-height: 1.2; }
-.brand-text b { display: block; font-family: ‘Barlow Condensed’, sans-serif; font-weight: 700; font-size: 15px; letter-spacing: 0.07em; color: #fff; }
-.brand-text small { font-size: 10px; letter-spacing: 0.22em; text-transform: uppercase; color: var(–light); font-weight: 400; }
+.brand-text b { display: block; font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 15px; letter-spacing: 0.07em; color: #fff; }
+.brand-text small { font-size: 10px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--light); font-weight: 400; }
 .nav-links { display: flex; align-items: center; gap: 32px; list-style: none; }
 .nav-links a { font-size: 12.5px; letter-spacing: 0.08em; text-transform: uppercase; font-weight: 400; color: rgba(255,255,255,0.6); text-decoration: none; transition: color 0.2s; }
 .nav-links a:hover { color: #fff; }
-.nav-cta { background: var(–blue); color: #fff !important; padding: 9px 24px; border-radius: 2px; font-weight: 500 !important; }
+.nav-cta { background: var(--blue); color: #fff !important; padding: 9px 24px; border-radius: 2px; font-weight: 500 !important; }
 .nav-cta:hover { background: #0284c7 !important; }
 
-/* ─── HERO (100vh con imagen de fondo, texto sobre overlay) ─── */
-/* Image is background-image of container div, NOT a loose <img> */
+/* ─── HERO (100vh background image, text above overlay) ─── */
+/* Image is background-image of the container div, NOT a loose <img> */
 .hero {
-position: relative;
-/* Offset fixed nav */
-margin-top: 68px;
-height: calc(100vh - 68px);
-min-height: 580px;
-display: flex; flex-direction: column;
-align-items: center; justify-content: center;
-text-align: center;
-overflow: hidden;
-/* Image as background of the hero itself */
-background-image: url(‘https://images.unsplash.com/photo-1509391366360-2e959784a276?w=1920&q=85&fit=crop&crop=center’);
-background-size: cover;
-background-position: center 35%;
+  position: relative;
+  /* Offset the fixed nav */
+  margin-top: 68px;
+  height: calc(100vh - 68px);
+  min-height: 580px;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  text-align: center;
+  overflow: hidden;
+  /* Image as background of the hero itself */
+  background-image: url('https://images.unsplash.com/photo-1509391366360-2e959784a276?w=1920&q=85&fit=crop&crop=center');
+  background-size: cover;
+  background-position: center 35%;
 }
-/* Overlay over background image — pseudo-element, never covers content */
+/* Overlay on background image — pseudo-element, never covers content */
 .hero::before {
-content: ‘’;
-position: absolute; inset: 0; z-index: 0;
-background: linear-gradient(
-to bottom,
-rgba(7,15,28,0.60) 0%,
-rgba(7,15,28,0.35) 30%,
-rgba(7,15,28,0.70) 75%,
-rgba(7,15,28,1.00) 100%
-);
+  content: '';
+  position: absolute; inset: 0; z-index: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(7,15,28,0.60) 0%,
+    rgba(7,15,28,0.35) 30%,
+    rgba(7,15,28,0.70) 75%,
+    rgba(7,15,28,1.00) 100%
+  );
 }
-/* All hero content sits above overlay */
+/* All hero content sits above the overlay */
 .hero > * { position: relative; z-index: 1; }
 
 .hero-content { max-width: 860px; padding: 0 24px; }
 
 .hero-badge {
-display: inline-flex; align-items: center; gap: 8px;
-border: 1px solid rgba(56,189,248,0.4); padding: 5px 18px; border-radius: 2px;
-margin-bottom: 32px;
-animation: rise 0.9s ease both;
+  display: inline-flex; align-items: center; gap: 8px;
+  border: 1px solid rgba(56,189,248,0.4); padding: 5px 18px; border-radius: 2px;
+  margin-bottom: 32px;
+  animation: rise 0.9s ease both;
 }
-.hero-badge span { font-family: ‘Barlow Condensed’, sans-serif; font-size: 11px; letter-spacing: 0.25em; text-transform: uppercase; color: var(–light); }
+.hero-badge span { font-family: 'Barlow Condensed', sans-serif; font-size: 11px; letter-spacing: 0.25em; text-transform: uppercase; color: var(--light); }
 
-.blink-dot { width: 6px; height: 6px; border-radius: 50%; background: var(–orange); animation: blink 1.6s infinite; flex-shrink: 0; }
+.blink-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--orange); animation: blink 1.6s infinite; flex-shrink: 0; }
 
 .hero-h1 {
-font-family: ‘Cormorant Garamond’, serif;
-font-size: clamp(3rem, 8vw, 7.5rem);
-font-weight: 300; line-height: 1.02;
-animation: rise 0.9s ease 0.1s both;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(3rem, 8vw, 7.5rem);
+  font-weight: 300; line-height: 1.02;
+  animation: rise 0.9s ease 0.1s both;
 }
-.hero-h1 em { font-style: italic; color: var(–light); }
+.hero-h1 em { font-style: italic; color: var(--light); }
 .hero-h1 strong {
-font-weight: 600; font-style: normal;
-background: linear-gradient(100deg, var(–light) 0%, var(–orange) 80%);
--webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  font-weight: 600; font-style: normal;
+  background: linear-gradient(100deg, var(--light) 0%, var(--orange) 80%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
 }
 .hero-sub {
-font-size: clamp(1rem, 1.8vw, 1.15rem); font-weight: 300;
-color: rgba(255,255,255,0.68); max-width: 500px; margin: 22px auto 0; line-height: 1.65;
-animation: rise 0.9s ease 0.2s both;
+  font-size: clamp(1rem, 1.8vw, 1.15rem); font-weight: 300;
+  color: rgba(255,255,255,0.68); max-width: 500px; margin: 22px auto 0; line-height: 1.65;
+  animation: rise 0.9s ease 0.2s both;
 }
 .hero-pill {
-display: inline-flex; align-items: center; gap: 10px;
-background: rgba(249,115,22,0.12); border: 1px solid rgba(249,115,22,0.35);
-padding: 10px 24px; border-radius: 2px; margin-top: 28px;
-animation: rise 0.9s ease 0.3s both;
+  display: inline-flex; align-items: center; gap: 10px;
+  background: rgba(249,115,22,0.12); border: 1px solid rgba(249,115,22,0.35);
+  padding: 10px 24px; border-radius: 2px; margin-top: 28px;
+  animation: rise 0.9s ease 0.3s both;
 }
-.hero-pill span { font-family: ‘Barlow Condensed’, sans-serif; font-size: 13px; letter-spacing: 0.14em; text-transform: uppercase; color: var(–orange); font-weight: 500; }
+.hero-pill span { font-family: 'Barlow Condensed', sans-serif; font-size: 13px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--orange); font-weight: 500; }
 
 .hero-actions {
-display: flex; gap: 14px; justify-content: center;
-margin-top: 36px;
-animation: rise 0.9s ease 0.4s both;
-flex-wrap: wrap;
+  display: flex; gap: 14px; justify-content: center;
+  margin-top: 36px;
+  animation: rise 0.9s ease 0.4s both;
+  flex-wrap: wrap;
 }
 
 .btn {
-padding: 15px 40px;
-font-family: ‘Barlow’, sans-serif; font-size: 13px; font-weight: 500;
-letter-spacing: 0.09em; text-transform: uppercase; border-radius: 2px;
-cursor: pointer; text-decoration: none;
-display: inline-flex; align-items: center; gap: 8px;
-transition: all 0.2s; border: none;
+  padding: 15px 40px;
+  font-family: 'Barlow', sans-serif; font-size: 13px; font-weight: 500;
+  letter-spacing: 0.09em; text-transform: uppercase; border-radius: 2px;
+  cursor: pointer; text-decoration: none;
+  display: inline-flex; align-items: center; gap: 8px;
+  transition: all 0.2s; border: none;
 }
-.btn-solid { background: var(–blue); color: #fff; }
+.btn-solid { background: var(--blue); color: #fff; }
 .btn-solid:hover { background: #0284c7; transform: translateY(-2px); box-shadow: 0 8px 24px rgba(14,165,233,0.3); }
 .btn-outline { background: transparent; color: rgba(255,255,255,0.85); border: 1px solid rgba(255,255,255,0.25); }
 .btn-outline:hover { border-color: rgba(255,255,255,0.55); color: #fff; background: rgba(255,255,255,0.04); }
 
 .hero-scroll {
-position: absolute; bottom: 32px; left: 50%; transform: translateX(-50%);
-display: flex; flex-direction: column; align-items: center; gap: 8px;
-opacity: 0.4; z-index: 1;
-animation: rise 1s ease 0.9s both;
+  position: absolute; bottom: 32px; left: 50%; transform: translateX(-50%);
+  display: flex; flex-direction: column; align-items: center; gap: 8px;
+  opacity: 0.4; z-index: 1;
+  animation: rise 1s ease 0.9s both;
 }
 .hero-scroll span { font-size: 10px; letter-spacing: 0.22em; text-transform: uppercase; }
 .scroll-bar { width: 1px; height: 44px; background: linear-gradient(to bottom, #fff, transparent); animation: drip 2.2s ease-in-out infinite; }
 
 /* ─── STRIP ─── */
 .strip {
-display: flex; align-items: center; justify-content: center;
-gap: 20px; flex-wrap: wrap; padding: 18px 5vw;
-background: linear-gradient(90deg, rgba(249,115,22,0.10), rgba(14,165,233,0.10));
-border-bottom: 1px solid rgba(249,115,22,0.22);
+  display: flex; align-items: center; justify-content: center;
+  gap: 20px; flex-wrap: wrap; padding: 18px 5vw;
+  background: linear-gradient(90deg, rgba(249,115,22,0.10), rgba(14,165,233,0.10));
+  border-bottom: 1px solid rgba(249,115,22,0.22);
 }
-.strip-item { display: flex; align-items: center; gap: 8px; font-family: ‘Barlow Condensed’, sans-serif; font-size: 13px; letter-spacing: 0.15em; text-transform: uppercase; color: var(–orange); font-weight: 500; }
+.strip-item { display: flex; align-items: center; gap: 8px; font-family: 'Barlow Condensed', sans-serif; font-size: 13px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--orange); font-weight: 500; }
 .strip-sep { width: 1px; height: 18px; background: rgba(255,255,255,0.12); }
 .strip p { font-size: 13px; color: rgba(255,255,255,0.55); font-weight: 300; }
 
 /* ─── SECTION HELPERS ─── */
 .section { padding: 110px 6vw; }
 .wrap { max-width: 1160px; margin: 0 auto; }
-.s-label { font-family: ‘Barlow Condensed’, sans-serif; font-size: 11px; letter-spacing: 0.3em; text-transform: uppercase; color: var(–light); margin-bottom: 14px; }
-.s-title { font-family: ‘Cormorant Garamond’, serif; font-size: clamp(2rem, 4.5vw, 3.8rem); font-weight: 300; line-height: 1.1; }
-.s-title b { font-weight: 600; background: linear-gradient(90deg, var(–light) 0%, var(–orange) 90%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
-.s-lead { font-size: 15px; color: var(–muted); line-height: 1.65; margin-top: 14px; max-width: 460px; }
+.s-label { font-family: 'Barlow Condensed', sans-serif; font-size: 11px; letter-spacing: 0.3em; text-transform: uppercase; color: var(--light); margin-bottom: 14px; }
+.s-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(2rem, 4.5vw, 3.8rem); font-weight: 300; line-height: 1.1; }
+.s-title b { font-weight: 600; background: linear-gradient(90deg, var(--light) 0%, var(--orange) 90%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+.s-lead { font-size: 15px; color: var(--muted); line-height: 1.65; margin-top: 14px; max-width: 460px; }
 
 /* ─── PACKAGES ─── */
-.pkg-section { background: var(–navy); border-top: 1px solid var(–line); border-bottom: 1px solid var(–line); }
+.pkg-section { background: var(--navy); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
 .pkg-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 56px; }
 
-/* Card: normal flow, image top, body below — no position absolute on body */
+/* Card: normal flow, image on top, body below — no position absolute on body */
 .pkg-card {
-border: 1px solid var(–line); border-radius: 6px;
-overflow: hidden;
-background: rgba(255,255,255,0.02);
-transition: border-color 0.3s, transform 0.3s;
-display: flex; flex-direction: column;
+  border: 1px solid var(--line); border-radius: 6px;
+  overflow: hidden;
+  background: rgba(255,255,255,0.02);
+  transition: border-color 0.3s, transform 0.3s;
+  display: flex; flex-direction: column;
 }
 .pkg-card:hover { border-color: rgba(14,165,233,0.3); transform: translateY(-5px); }
 .pkg-card.star { border-color: rgba(14,165,233,0.2); background: rgba(14,165,233,0.04); }
 
 /* Color bar at the top */
 .pkg-top-bar { height: 3px; width: 100%; flex-shrink: 0; }
-.pkg-top-bar.blue  { background: linear-gradient(90deg, var(–blue), var(–light)); }
-.pkg-top-bar.orange { background: linear-gradient(90deg, var(–orange), var(–gold)); }
+.pkg-top-bar.blue  { background: linear-gradient(90deg, var(--blue), var(--light)); }
+.pkg-top-bar.orange { background: linear-gradient(90deg, var(--orange), var(--gold)); }
 
-/* Image container — relative only for overlay and floating label */
+/* Image container — relative position only for overlay and floating label */
 .pkg-img-container {
-position: relative;
-width: 100%;
-height: 200px;
-overflow: hidden;
-flex-shrink: 0;
+  position: relative;
+  width: 100%;
+  height: 200px;
+  overflow: hidden;
+  flex-shrink: 0;
 }
 .pkg-img {
-width: 100%; height: 100%;
-object-fit: cover; object-position: center;
-filter: brightness(0.70);
-transition: filter 0.4s;
+  width: 100%; height: 100%;
+  object-fit: cover; object-position: center;
+  filter: brightness(0.70);
+  transition: filter 0.4s;
 }
 .pkg-card:hover .pkg-img { filter: brightness(0.88); }
-/* Gradient overlay at bottom of image — does NOT extend into body */
+/* Gradient overlay at the bottom of the image — does NOT extend to body */
 .pkg-img-container::after {
-content: ‘’;
-position: absolute; bottom: 0; left: 0; right: 0;
-height: 80px;
-background: linear-gradient(to bottom, transparent, rgba(7,15,28,0.7));
-pointer-events: none;
+  content: '';
+  position: absolute; bottom: 0; left: 0; right: 0;
+  height: 80px;
+  background: linear-gradient(to bottom, transparent, rgba(7,15,28,0.7));
+  pointer-events: none;
 }
 /* Floating label over the image */
 .pkg-label {
-position: absolute; top: 14px; left: 16px;
-display: flex; align-items: center; gap: 8px;
-z-index: 2;
+  position: absolute; top: 14px; left: 16px;
+  display: flex; align-items: center; gap: 8px;
+  z-index: 2;
 }
-.pkg-tag-text { font-family: ‘Barlow Condensed’, sans-serif; font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(255,255,255,0.85); text-shadow: 0 1px 4px rgba(0,0,0,0.8); }
-.pkg-badge { background: var(–orange); color: #fff; font-family: ‘Barlow Condensed’, sans-serif; font-size: 10px; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; padding: 3px 10px; border-radius: 2px; }
+.pkg-tag-text { font-family: 'Barlow Condensed', sans-serif; font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(255,255,255,0.85); text-shadow: 0 1px 4px rgba(0,0,0,0.8); }
+.pkg-badge { background: var(--orange); color: #fff; font-family: 'Barlow Condensed', sans-serif; font-size: 10px; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; padding: 3px 10px; border-radius: 2px; }
 
 /* Card body — normal flow, never overlaps the image */
 .pkg-body { padding: 32px 36px 36px; flex: 1; display: flex; flex-direction: column; }
-.pkg-count { font-family: ‘Cormorant Garamond’, serif; font-size: 3rem; font-weight: 600; line-height: 1; margin-bottom: 4px; }
+.pkg-count { font-family: 'Cormorant Garamond', serif; font-size: 3rem; font-weight: 600; line-height: 1; margin-bottom: 4px; }
 .pkg-count.gradient { background: linear-gradient(90deg,#38bdf8,#f97316); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
-.pkg-panels-note { font-size: 13px; color: var(–muted); margin-bottom: 22px; }
+.pkg-panels-note { font-size: 13px; color: var(--muted); margin-bottom: 22px; }
 .pkg-panels-note b { color: rgba(255,255,255,0.85); font-weight: 500; }
-.pkg-price { font-family: ‘Barlow Condensed’, sans-serif; font-size: 3.6rem; font-weight: 700; letter-spacing: -0.02em; line-height: 1; }
+.pkg-price { font-family: 'Barlow Condensed', sans-serif; font-size: 3.6rem; font-weight: 700; letter-spacing: -0.02em; line-height: 1; }
 .pkg-price.gradient { background: linear-gradient(90deg,#38bdf8,#f97316); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
 .pkg-price sup { font-size: 1.4rem; font-weight: 400; vertical-align: super; }
 .pkg-price sup.grad-sup { -webkit-text-fill-color: #38bdf8; }
 .pkg-note { font-size: 12px; color: rgba(255,255,255,0.32); margin-top: 6px; margin-bottom: 26px; }
-.pkg-divider { border: none; border-top: 1px solid var(–line); margin: 22px 0; }
-.pkg-inc { font-family: ‘Barlow Condensed’, sans-serif; font-size: 10px; letter-spacing: 0.25em; text-transform: uppercase; color: rgba(255,255,255,0.22); margin-bottom: 14px; }
+.pkg-divider { border: none; border-top: 1px solid var(--line); margin: 22px 0; }
+.pkg-inc { font-family: 'Barlow Condensed', sans-serif; font-size: 10px; letter-spacing: 0.25em; text-transform: uppercase; color: rgba(255,255,255,0.22); margin-bottom: 14px; }
 .pkg-list { list-style: none; display: flex; flex-direction: column; gap: 10px; margin-bottom: 28px; flex: 1; }
 .pkg-list li { font-size: 14px; color: rgba(255,255,255,0.68); display: flex; align-items: flex-start; gap: 10px; line-height: 1.45; }
-.chk { width: 17px; height: 17px; border-radius: 50%; border: 1px solid rgba(14,165,233,0.4); background: rgba(14,165,233,0.1); flex-shrink: 0; margin-top: 1px; display: flex; align-items: center; justify-content: center; font-size: 9px; color: var(–light); }
-.chk.hot { border-color: rgba(249,115,22,0.45); background: rgba(249,115,22,0.1); color: var(–orange); }
-.pkg-btn { width: 100%; padding: 14px; font-family: ‘Barlow’, sans-serif; font-size: 13px; font-weight: 500; letter-spacing: 0.09em; text-transform: uppercase; border-radius: 2px; cursor: pointer; transition: all 0.2s; border: 1px solid rgba(255,255,255,0.18); background: transparent; color: #fff; margin-top: auto; }
+.chk { width: 17px; height: 17px; border-radius: 50%; border: 1px solid rgba(14,165,233,0.4); background: rgba(14,165,233,0.1); flex-shrink: 0; margin-top: 1px; display: flex; align-items: center; justify-content: center; font-size: 9px; color: var(--light); }
+.chk.hot { border-color: rgba(249,115,22,0.45); background: rgba(249,115,22,0.1); color: var(--orange); }
+.pkg-btn { width: 100%; padding: 14px; font-family: 'Barlow', sans-serif; font-size: 13px; font-weight: 500; letter-spacing: 0.09em; text-transform: uppercase; border-radius: 2px; cursor: pointer; transition: all 0.2s; border: 1px solid rgba(255,255,255,0.18); background: transparent; color: #fff; margin-top: auto; }
 .pkg-btn:hover { background: rgba(255,255,255,0.07); border-color: rgba(255,255,255,0.45); }
-.pkg-btn.filled { background: var(–blue); border-color: var(–blue); }
+.pkg-btn.filled { background: var(--blue); border-color: var(--blue); }
 .pkg-btn.filled:hover { background: #0284c7; }
 
 /* ─── PANORAMIC BANNER ─── */
 /* Image as div background, not a floating <img> */
 .banner {
-position: relative;
-padding: 100px 8vw;
-background-image: url(‘https://images.unsplash.com/photo-1497440001374-f26997328c1b?w=1800&q=80&fit=crop’);
-background-size: cover;
-background-position: center 60%;
-background-attachment: fixed; /* smooth parallax */
+  position: relative;
+  padding: 100px 8vw;
+  background-image: url('https://images.unsplash.com/photo-1497440001374-f26997328c1b?w=1800&q=80&fit=crop');
+  background-size: cover;
+  background-position: center 60%;
+  background-attachment: fixed; /* smooth parallax */
 }
 .banner::before {
-content: ‘’;
-position: absolute; inset: 0; z-index: 0;
-background: linear-gradient(90deg, rgba(7,15,28,0.92) 45%, rgba(7,15,28,0.30) 100%);
+  content: '';
+  position: absolute; inset: 0; z-index: 0;
+  background: linear-gradient(90deg, rgba(7,15,28,0.92) 45%, rgba(7,15,28,0.30) 100%);
 }
 .banner > * { position: relative; z-index: 1; }
 .banner-content { max-width: 580px; }
-.banner-content h2 { font-family: ‘Cormorant Garamond’, serif; font-size: clamp(2.2rem, 5vw, 4rem); font-weight: 300; line-height: 1.06; }
-.banner-content h2 b { font-weight: 600; color: var(–light); }
+.banner-content h2 { font-family: 'Cormorant Garamond', serif; font-size: clamp(2.2rem, 5vw, 4rem); font-weight: 300; line-height: 1.06; }
+.banner-content h2 b { font-weight: 600; color: var(--light); }
 .banner-content p { font-size: 15px; color: rgba(255,255,255,0.58); line-height: 1.65; margin-top: 18px; max-width: 440px; }
 .banner-stats { display: flex; gap: 48px; margin-top: 40px; flex-wrap: wrap; }
-.stat-n { font-family: ‘Barlow Condensed’, sans-serif; font-size: 2.8rem; font-weight: 700; color: #fff; line-height: 1; }
-.stat-n span { font-size: 1.2rem; color: var(–light); font-weight: 400; }
+.stat-n { font-family: 'Barlow Condensed', sans-serif; font-size: 2.8rem; font-weight: 700; color: #fff; line-height: 1; }
+.stat-n span { font-size: 1.2rem; color: var(--light); font-weight: 400; }
 .stat-l { font-size: 12px; color: rgba(255,255,255,0.38); letter-spacing: 0.08em; text-transform: uppercase; margin-top: 4px; }
 
 /* ─── SPECS GRID ─── */
-.specs-section { background: var(–navy); border-top: 1px solid var(–line); border-bottom: 1px solid var(–line); }
+.specs-section { background: var(--navy); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
 .specs-grid {
-display: grid; grid-template-columns: repeat(3, 1fr);
-gap: 1px; background: var(–line);
-border: 1px solid var(–line); border-radius: 4px; overflow: hidden;
-margin-top: 56px;
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 1px; background: var(--line);
+  border: 1px solid var(--line); border-radius: 4px; overflow: hidden;
+  margin-top: 56px;
 }
 .spec { background: #0a1628; padding: 44px 36px; transition: background 0.25s; }
 .spec:hover { background: rgba(14,165,233,0.07); }
-.spec-n { font-family: ‘Barlow Condensed’, sans-serif; font-size: 3.2rem; font-weight: 700; letter-spacing: -0.02em; line-height: 1; }
-.spec-u { font-size: 1.2rem; color: var(–light); font-weight: 400; }
+.spec-n { font-family: 'Barlow Condensed', sans-serif; font-size: 3.2rem; font-weight: 700; letter-spacing: -0.02em; line-height: 1; }
+.spec-u { font-size: 1.2rem; color: var(--light); font-weight: 400; }
 .spec-l { font-size: 13px; color: rgba(255,255,255,0.4); margin-top: 8px; }
 
 /* ─── HOW IT WORKS ─── */
-/* Grid: image left (own height), text right */
+/* Grid: image on the left (own height), text on the right */
 .how-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 72px; align-items: start; }
 
 /* Contained image — NO absolute position, normal flow */
 .how-img-wrap {
-border-radius: 6px; overflow: hidden;
-position: relative; /* only for internal caption */
+  border-radius: 6px; overflow: hidden;
+  position: relative; /* only for the internal caption */
 }
 .how-img {
-width: 100%; height: 480px;
-object-fit: cover; object-position: center;
-filter: brightness(0.82);
-display: block;
+  width: 100%; height: 480px;
+  object-fit: cover; object-position: center;
+  filter: brightness(0.82);
+  display: block;
 }
-/* Caption: wrap pseudo-element, never overflows */
+/* Caption: pseudo-element of wrap, never overflows */
 .how-caption {
-background: linear-gradient(to top, rgba(7,15,28,0.92) 0%, transparent 100%);
-padding: 40px 28px 24px;
+  background: linear-gradient(to top, rgba(7,15,28,0.92) 0%, transparent 100%);
+  padding: 40px 28px 24px;
 }
-.how-caption-tag { font-family: ‘Barlow Condensed’, sans-serif; font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: var(–light); }
+.how-caption-tag { font-family: 'Barlow Condensed', sans-serif; font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--light); }
 .how-caption-sub { font-size: 14px; color: rgba(255,255,255,0.52); margin-top: 4px; }
 
 .how-steps { display: flex; flex-direction: column; gap: 42px; margin-top: 44px; }
 .how-step { display: flex; gap: 22px; }
-.step-n { font-family: ‘Cormorant Garamond’, serif; font-size: 3rem; font-weight: 300; color: rgba(14,165,233,0.18); flex-shrink: 0; line-height: 1; width: 42px; }
-.step-body h4 { font-family: ‘Barlow Condensed’, sans-serif; font-size: 1rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 7px; color: #fff; }
-.step-body p { font-size: 14px; color: var(–muted); line-height: 1.65; }
+.step-n { font-family: 'Cormorant Garamond', serif; font-size: 3rem; font-weight: 300; color: rgba(14,165,233,0.18); flex-shrink: 0; line-height: 1; width: 42px; }
+.step-body h4 { font-family: 'Barlow Condensed', sans-serif; font-size: 1rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 7px; color: #fff; }
+.step-body p { font-size: 14px; color: var(--muted); line-height: 1.65; }
 
-/* ─── GALLERY ─── */
-/* Pure block flow — grid with fixed heights, no overflow */
+/* ─── GALERÍA ─── */
+/* Flujo de bloque puro — grid con alturas fijas, sin desbordamiento */
 .gallery-section { padding: 0 6vw 80px; }
 .gallery-grid {
-max-width: 1160px; margin: 0 auto;
-display: grid;
-grid-template-columns: 2fr 1fr 1fr;
-grid-template-rows: 280px;
-gap: 5px;
-border-radius: 6px; overflow: hidden;
+  max-width: 1160px; margin: 0 auto;
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  grid-template-rows: 280px;
+  gap: 5px;
+  border-radius: 6px; overflow: hidden;
 }
 .gallery-img {
-width: 100%; height: 100%;
-object-fit: cover; object-position: center;
-filter: brightness(0.68);
-transition: filter 0.4s;
-display: block;
+  width: 100%; height: 100%;
+  object-fit: cover; object-position: center;
+  filter: brightness(0.68);
+  transition: filter 0.4s;
+  display: block;
 }
 .gallery-img:hover { filter: brightness(1); }
 
 /* ─── INVERTERS ─── */
-.inv-section { background: var(–mid); border-top: 1px solid var(–line); border-bottom: 1px solid var(–line); }
+.inv-section { background: var(--mid); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
 .inv-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 56px; }
 
-/* Card: image top in normal flow, body below */
+/* Card: imagen arriba en flujo normal, body abajo */
 .inv-card {
-border: 1px solid var(–line); border-radius: 6px; overflow: hidden;
-background: rgba(255,255,255,0.02);
-transition: border-color 0.3s, transform 0.3s;
-display: flex; flex-direction: column;
+  border: 1px solid var(--line); border-radius: 6px; overflow: hidden;
+  background: rgba(255,255,255,0.02);
+  transition: border-color 0.3s, transform 0.3s;
+  display: flex; flex-direction: column;
 }
 .inv-card:hover { border-color: rgba(14,165,233,0.3); transform: translateY(-4px); }
 .inv-img {
-width: 100%; height: 160px;
-object-fit: cover; object-position: center;
-filter: brightness(0.58) saturate(0.7);
-transition: filter 0.3s;
-flex-shrink: 0;
+  width: 100%; height: 160px;
+  object-fit: cover; object-position: center;
+  filter: brightness(0.58) saturate(0.7);
+  transition: filter 0.3s;
+  flex-shrink: 0;
 }
 .inv-card:hover .inv-img { filter: brightness(0.82) saturate(1); }
 .inv-body { padding: 26px; flex: 1; }
-.inv-name { font-family: ‘Barlow Condensed’, sans-serif; font-size: 1.4rem; font-weight: 700; letter-spacing: 0.04em; color: #fff; }
-.inv-kw { font-size: 12.5px; color: var(–light); margin: 4px 0 10px; }
+.inv-name { font-family: 'Barlow Condensed', sans-serif; font-size: 1.4rem; font-weight: 700; letter-spacing: 0.04em; color: #fff; }
+.inv-kw { font-size: 12.5px; color: var(--light); margin: 4px 0 10px; }
 .inv-desc { font-size: 13px; color: rgba(255,255,255,0.42); line-height: 1.55; }
 
-/* ─── CONTACT ─── */
-/* Image as section background — text always on top */
+/* ─── CONTACTO ─── */
+/* Imagen como background del section — texto siempre encima */
 .contact-section {
-position: relative;
-padding: 120px 6vw;
-background-image: url(‘https://images.unsplash.com/photo-1466611653911-95081537e5b7?w=1600&q=80&fit=crop’);
-background-size: cover; background-position: center;
+  position: relative;
+  padding: 120px 6vw;
+  background-image: url('https://images.unsplash.com/photo-1466611653911-95081537e5b7?w=1600&q=80&fit=crop');
+  background-size: cover; background-position: center;
 }
 .contact-section::before {
-content: ‘’;
-position: absolute; inset: 0; z-index: 0;
-background: linear-gradient(135deg, rgba(7,15,28,0.96) 55%, rgba(7,15,28,0.78));
+  content: '';
+  position: absolute; inset: 0; z-index: 0;
+  background: linear-gradient(135deg, rgba(7,15,28,0.96) 55%, rgba(7,15,28,0.78));
 }
 .contact-section > * { position: relative; z-index: 1; }
 .contact-inner { max-width: 640px; margin: 0 auto; text-align: center; }
 .contact-pill {
-display: inline-flex; align-items: center; gap: 10px;
-background: rgba(249,115,22,0.10); border: 1px solid rgba(249,115,22,0.30);
-padding: 10px 28px; border-radius: 2px; margin: 28px auto;
+  display: inline-flex; align-items: center; gap: 10px;
+  background: rgba(249,115,22,0.10); border: 1px solid rgba(249,115,22,0.30);
+  padding: 10px 28px; border-radius: 2px; margin: 28px auto;
 }
-.contact-pill span { font-family: ‘Barlow Condensed’, sans-serif; font-size: 13px; letter-spacing: 0.14em; text-transform: uppercase; color: var(–orange); }
+.contact-pill span { font-family: 'Barlow Condensed', sans-serif; font-size: 13px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--orange); }
 .contact-lbl { font-size: 11px; letter-spacing: 0.22em; text-transform: uppercase; color: rgba(255,255,255,0.30); }
-.contact-phone { display: block; font-family: ‘Cormorant Garamond’, serif; font-size: clamp(2.5rem, 7vw, 5rem); font-weight: 300; letter-spacing: 0.05em; color: #fff; text-decoration: none; transition: color 0.2s; margin-top: 4px; }
-.contact-phone:hover { color: var(–light); }
+.contact-phone { display: block; font-family: 'Cormorant Garamond', serif; font-size: clamp(2.5rem, 7vw, 5rem); font-weight: 300; letter-spacing: 0.05em; color: #fff; text-decoration: none; transition: color 0.2s; margin-top: 4px; }
+.contact-phone:hover { color: var(--light); }
 .contact-fb { display: inline-flex; align-items: center; gap: 8px; color: rgba(255,255,255,0.42); font-size: 14px; text-decoration: none; margin-top: 16px; transition: color 0.2s; }
-.contact-fb:hover { color: var(–light); }
+.contact-fb:hover { color: var(--light); }
 .contact-btns { display: flex; gap: 16px; justify-content: center; margin-top: 40px; flex-wrap: wrap; }
 
 /* ─── FOOTER ─── */
 footer {
-padding: 36px 6vw;
-border-top: 1px solid var(–line);
-display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px;
-background: var(–deep);
+  padding: 36px 6vw;
+  border-top: 1px solid var(--line);
+  display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px;
+  background: var(--deep);
 }
-.foot-brand { font-family: ‘Barlow Condensed’, sans-serif; font-size: 13px; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255,255,255,0.30); }
+.foot-brand { font-family: 'Barlow Condensed', sans-serif; font-size: 13px; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255,255,255,0.30); }
 .foot-brand b { color: rgba(255,255,255,0.60); }
 .foot-copy { font-size: 12px; color: rgba(255,255,255,0.20); }
 .foot-horus {
-display: inline-flex; align-items: center; gap: 9px;
-text-decoration: none;
-color: rgba(201,168,76,0.55);
-font-size: 12px; letter-spacing: 0.04em;
-transition: color 0.2s;
+  display: inline-flex; align-items: center; gap: 9px;
+  text-decoration: none;
+  color: rgba(201,168,76,0.55);
+  font-size: 12px; letter-spacing: 0.04em;
+  transition: color 0.2s;
 }
 .foot-horus:hover { color: #C9A84C; }
-.foot-horus span { font-family: ‘Barlow’, sans-serif; font-weight: 300; }
+.foot-horus span { font-family: 'Barlow', sans-serif; font-weight: 300; }
 .foot-horus b { font-weight: 600; color: inherit; }
 
 /* ─── REVEAL ON SCROLL ─── */
@@ -432,33 +424,31 @@ transition: color 0.2s;
 
 /* ─── RESPONSIVE ─── */
 @media (max-width: 900px) {
-.nav-links { display: none; }
-.pkg-grid { grid-template-columns: 1fr; }
-.specs-grid { grid-template-columns: 1fr 1fr; }
-.how-grid { grid-template-columns: 1fr; gap: 40px; }
-.inv-grid { grid-template-columns: 1fr; }
-.gallery-grid { grid-template-columns: 1fr 1fr; grid-template-rows: 200px 200px; }
-.gallery-img:first-child { grid-column: 1 / -1; }
-footer { flex-direction: column; text-align: center; }
-.banner { background-attachment: scroll; }
-.banner-stats { gap: 32px; }
-.contact-btns { flex-direction: column; align-items: center; }
-.how-img { height: 300px; }
+  .nav-links { display: none; }
+  .pkg-grid { grid-template-columns: 1fr; }
+  .specs-grid { grid-template-columns: 1fr 1fr; }
+  .how-grid { grid-template-columns: 1fr; gap: 40px; }
+  .inv-grid { grid-template-columns: 1fr; }
+  .gallery-grid { grid-template-columns: 1fr 1fr; grid-template-rows: 200px 200px; }
+  .gallery-img:first-child { grid-column: 1 / -1; }
+  footer { flex-direction: column; text-align: center; }
+  .banner { background-attachment: scroll; }
+  .banner-stats { gap: 32px; }
+  .contact-btns { flex-direction: column; align-items: center; }
+  .how-img { height: 300px; }
 }
 @media (max-width: 540px) {
-.hero-actions { flex-direction: column; align-items: center; }
-.specs-grid { grid-template-columns: 1fr 1fr; }
-.banner-stats { flex-direction: column; gap: 20px; }
-.gallery-grid { grid-template-columns: 1fr; grid-template-rows: repeat(3, 180px); }
-.gallery-img:first-child { grid-column: 1; }
+  .hero-actions { flex-direction: column; align-items: center; }
+  .specs-grid { grid-template-columns: 1fr 1fr; }
+  .banner-stats { flex-direction: column; gap: 20px; }
+  .gallery-grid { grid-template-columns: 1fr; grid-template-rows: repeat(3, 180px); }
+  .gallery-img:first-child { grid-column: 1; }
 }
 </style>
-
 </head>
 <body>
 
 <!-- ════════ NAV ════════ -->
-
 <nav id="mainNav">
   <a href="#" class="brand">
     <div class="brand-ring">☀</div>
@@ -468,15 +458,14 @@ footer { flex-direction: column; text-align: center; }
     </div>
   </a>
   <ul class="nav-links">
-    <li><a href="#packages">Packages</a></li>
+    <li><a href="#paquetes">Packages</a></li>
     <li><a href="#specs">Specs</a></li>
-    <li><a href="#how-it-works">How It Works</a></li>
-    <li><a href="#contact" class="nav-cta">Free Quote</a></li>
+    <li><a href="#proceso">How It Works</a></li>
+    <li><a href="#contacto" class="nav-cta">Free Quote</a></li>
   </ul>
 </nav>
 
 <!-- ════════ HERO ════════ -->
-
 <section class="hero">
   <div class="hero-content">
     <div class="hero-badge">
@@ -495,8 +484,8 @@ footer { flex-direction: column; text-align: center; }
       <span>Active promo — Free bonus panel with every package</span>
     </div>
     <div class="hero-actions">
-      <a href="#packages" class="btn btn-solid">View Packages</a>
-      <a href="https://wa.me/528186035944?text=Hello!%20I%27m%20interested%20in%20a%20solar%20panel%20quote" target="_blank" class="btn btn-outline">
+      <a href="#paquetes" class="btn btn-solid">View Packages</a>
+      <a href="https://wa.me/528186035944?text=Hola!%20Me%20interesa%20get%20a%20solar%20quote" target="_blank" class="btn btn-outline">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
         WhatsApp
       </a>
@@ -509,7 +498,6 @@ footer { flex-direction: column; text-align: center; }
 </section>
 
 <!-- ════════ STRIP ════════ -->
-
 <div class="strip">
   <div class="strip-item"><div class="blink-dot"></div>&nbsp;No Down Payment!</div>
   <div class="strip-sep"></div>
@@ -520,98 +508,93 @@ footer { flex-direction: column; text-align: center; }
   <p>Monterrey &amp; metro area</p>
 </div>
 
-<!-- ════════ PAQUETES ════════ -->
-
-<section class="section pkg-section" id="packages">
+<!-- ════════ PACKAGES ════════ -->
+<section class="section pkg-section" id="paquetes">
   <div class="wrap">
     <p class="s-label">Current Promotions</p>
     <h2 class="s-title">Choose your <b>solar system</b></h2>
     <p class="s-lead">No down payment. No hassle. Professional installation completed in one business day.</p>
 
-```
-<div class="pkg-grid">
+    <div class="pkg-grid">
 
-  <!-- CARD 1 — Standard -->
-  <div class="pkg-card reveal">
-    <div class="pkg-top-bar blue"></div>
-    <div class="pkg-img-container">
-      <img class="pkg-img"
-        src="https://images.unsplash.com/photo-1613665813446-82a78c468a1d?w=900&q=80&fit=crop"
-        alt="Residential solar panels"
-        loading="lazy"
-        onerror="this.src='https://images.unsplash.com/photo-1508514177221-188b1cf16e9d?w=900&q=80&fit=crop'">
-      <div class="pkg-label">
-        <span class="pkg-tag-text">Standard Package</span>
+      <!-- CARD 1 — Standard -->
+      <div class="pkg-card reveal">
+        <div class="pkg-top-bar blue"></div>
+        <div class="pkg-img-container">
+          <img class="pkg-img"
+            src="https://images.unsplash.com/photo-1613665813446-82a78c468a1d?w=900&q=80&fit=crop"
+            alt="Residential solar panels"
+            loading="lazy"
+            onerror="this.src='https://images.unsplash.com/photo-1508514177221-188b1cf16e9d?w=900&q=80&fit=crop'">
+          <div class="pkg-label">
+            <span class="pkg-tag-text">Standard Package</span>
+          </div>
+        </div>
+        <div class="pkg-body">
+          <div class="pkg-count">8 + 1</div>
+          <p class="pkg-panels-note">8 panels + 1 free bonus = <b>9 total</b></p>
+          <div class="pkg-price"><sup>$</sup>64,500</div>
+          <p class="pkg-note">MXN · No down payment · Pay upon installation</p>
+          <hr class="pkg-divider">
+          <p class="pkg-inc">Includes</p>
+          <ul class="pkg-list">
+            <li><div class="chk">✓</div>630 W high-efficiency panels</li>
+            <li><div class="chk">✓</div>6 kW inverter (Huawei / Browatt / Livoltek)</li>
+            <li><div class="chk">✓</div>CUPRUM aluminum frame 1.5×1.5 — 1/8"</li>
+            <li><div class="chk">✓</div>Gauge 10 photovoltaic cable</li>
+            <li><div class="chk">✓</div>Basic installation included</li>
+          </ul>
+          <a href="#contacto" style="text-decoration:none">
+            <button class="pkg-btn">Request This Package</button>
+          </a>
+        </div>
       </div>
-    </div>
-    <div class="pkg-body">
-      <div class="pkg-count">8 + 1</div>
-      <p class="pkg-panels-note">8 panels + 1 free bonus = <b>9 total</b></p>
-      <div class="pkg-price"><sup>$</sup>64,500</div>
-      <p class="pkg-note">MXN · No down payment · Pay upon installation</p>
-      <hr class="pkg-divider">
-      <p class="pkg-inc">Includes</p>
-      <ul class="pkg-list">
-        <li><div class="chk">✓</div>630 W high-efficiency panels</li>
-        <li><div class="chk">✓</div>6 kW inverter (Huawei / Browatt / Livoltek)</li>
-        <li><div class="chk">✓</div>CUPRUM aluminum frame 1.5×1.5 — 1/8"</li>
-        <li><div class="chk">✓</div>Gauge 10 photovoltaic cable</li>
-        <li><div class="chk">✓</div>Basic installation included</li>
-      </ul>
-      <a href="#contact" style="text-decoration:none">
-        <button class="pkg-btn">Request This Package</button>
-      </a>
-    </div>
-  </div>
 
-  <!-- CARD 2 — Premium -->
-  <div class="pkg-card star reveal" style="transition-delay:.12s">
-    <div class="pkg-top-bar orange"></div>
-    <div class="pkg-img-container">
-      <img class="pkg-img"
-        src="https://images.unsplash.com/photo-1548337138-e87d889cc369?w=900&q=80&fit=crop"
-        alt="Premium solar installation"
-        loading="lazy"
-        onerror="this.src='https://images.unsplash.com/photo-1509391366360-2e959784a276?w=900&q=80&fit=crop'">
-      <div class="pkg-label">
-        <span class="pkg-tag-text">Premium Package</span>
-        <span class="pkg-badge">Recommended</span>
+      <!-- CARD 2 — Premium -->
+      <div class="pkg-card star reveal" style="transition-delay:.12s">
+        <div class="pkg-top-bar orange"></div>
+        <div class="pkg-img-container">
+          <img class="pkg-img"
+            src="https://images.unsplash.com/photo-1548337138-e87d889cc369?w=900&q=80&fit=crop"
+            alt="Premium solar installation"
+            loading="lazy"
+            onerror="this.src='https://images.unsplash.com/photo-1509391366360-2e959784a276?w=900&q=80&fit=crop'">
+          <div class="pkg-label">
+            <span class="pkg-tag-text">Premium Package</span>
+            <span class="pkg-badge">Recommended</span>
+          </div>
+        </div>
+        <div class="pkg-body">
+          <div class="pkg-count gradient">10 + 1</div>
+          <p class="pkg-panels-note">10 panels + 1 free bonus = <b>11 total</b></p>
+          <div class="pkg-price gradient"><sup class="grad-sup">$</sup>74,500</div>
+          <p class="pkg-note">MXN · No down payment · Pay upon installation</p>
+          <hr class="pkg-divider">
+          <p class="pkg-inc">Includes</p>
+          <ul class="pkg-list">
+            <li><div class="chk hot">✓</div>630 W high-efficiency panels</li>
+            <li><div class="chk hot">✓</div>6 kW inverter (Huawei / Browatt / Livoltek)</li>
+            <li><div class="chk hot">✓</div>CUPRUM aluminum frame 1.5×1.5 — 1/8"</li>
+            <li><div class="chk hot">✓</div>Gauge 10 photovoltaic cable</li>
+            <li><div class="chk hot">✓</div>Basic installation included</li>
+            <li><div class="chk hot">✓</div>Higher capacity — ideal for full home or business</li>
+          </ul>
+          <a href="#contacto" style="text-decoration:none">
+            <button class="pkg-btn filled">Solicitar Premium Package</button>
+          </a>
+        </div>
       </div>
-    </div>
-    <div class="pkg-body">
-      <div class="pkg-count gradient">10 + 1</div>
-      <p class="pkg-panels-note">10 panels + 1 free bonus = <b>11 total</b></p>
-      <div class="pkg-price gradient"><sup class="grad-sup">$</sup>74,500</div>
-      <p class="pkg-note">MXN · No down payment · Pay upon installation</p>
-      <hr class="pkg-divider">
-      <p class="pkg-inc">Includes</p>
-      <ul class="pkg-list">
-        <li><div class="chk hot">✓</div>630 W high-efficiency panels</li>
-        <li><div class="chk hot">✓</div>6 kW inverter (Huawei / Browatt / Livoltek)</li>
-        <li><div class="chk hot">✓</div>CUPRUM aluminum frame 1.5×1.5 — 1/8"</li>
-        <li><div class="chk hot">✓</div>Gauge 10 photovoltaic cable</li>
-        <li><div class="chk hot">✓</div>Basic installation included</li>
-        <li><div class="chk hot">✓</div>Higher capacity — ideal for full home or business</li>
-      </ul>
-      <a href="#contact" style="text-decoration:none">
-        <button class="pkg-btn filled">Request Premium Package</button>
-      </a>
-    </div>
-  </div>
 
-</div>
-```
-
+    </div>
   </div>
 </section>
 
 <!-- ════════ PANORAMIC BANNER ════════ -->
-
 <div class="banner">
   <div class="banner-content reveal">
     <p class="s-label" style="margin-bottom:18px">Real Impact</p>
     <h2>Monterrey's sun works<br><b>for your wallet.</b></h2>
-    <p>The metro area receives over 2,800 hours of sunlight per year. Every panel converts that energy into direct savings on your electricity bill from day one.</p>
+    <p>The metro area receives over 2,800 hours of sunlight per year. Every panel we install converts that energy into direct savings on your electricity bill from day one.</p>
     <div class="banner-stats">
       <div><div class="stat-n">630<span>W</span></div><div class="stat-l">per panel</div></div>
       <div><div class="stat-n">6<span>kW</span></div><div class="stat-l">full system</div></div>
@@ -621,7 +604,6 @@ footer { flex-direction: column; text-align: center; }
 </div>
 
 <!-- ════════ SPECIFICATIONS ════════ -->
-
 <section class="section specs-section" id="specs">
   <div class="wrap">
     <p class="s-label">Technical Specifications</p>
@@ -638,62 +620,57 @@ footer { flex-direction: column; text-align: center; }
 </section>
 
 <!-- ════════ HOW IT WORKS ════════ -->
-
-<section class="section" id="how-it-works" style="background:var(--deep);">
+<section class="section" id="proceso" style="background:var(--deep);">
   <div class="wrap">
     <div class="how-grid">
 
-```
-  <!-- Image in normal flow — not absolute -->
-  <div class="how-img-wrap reveal">
-    <img class="how-img"
-      src="https://images.unsplash.com/photo-1621905251189-08b45d6a269e?w=900&q=80&fit=crop"
-      alt="Solar panel technician"
-      loading="lazy"
-      onerror="this.src='https://images.unsplash.com/photo-1508514177221-188b1cf16e9d?w=900&q=80&fit=crop'">
-    <div class="how-caption">
-      <p class="how-caption-tag">Professional Installation</p>
-      <p class="how-caption-sub">Full system completed in one business day</p>
+      <!-- Image in normal flow — no absolute -->
+      <div class="how-img-wrap reveal">
+        <img class="how-img"
+          src="https://images.unsplash.com/photo-1621905251189-08b45d6a269e?w=900&q=80&fit=crop"
+          alt="Solar panel technician installing system"
+          loading="lazy"
+          onerror="this.src='https://images.unsplash.com/photo-1508514177221-188b1cf16e9d?w=900&q=80&fit=crop'">
+        <div class="how-caption">
+          <p class="how-caption-tag">Professional Installation</p>
+          <p class="how-caption-sub">Full system completed in one business day</p>
+        </div>
+      </div>
+
+      <!-- Text in normal flow -->
+      <div class="reveal" style="transition-delay:.14s">
+        <p class="s-label">Process</p>
+        <h2 class="s-title">As simple as<br><b>three steps</b></h2>
+        <div class="how-steps">
+          <div class="how-step">
+            <span class="step-n">01</span>
+            <div class="step-body">
+              <h4>Free quote</h4>
+              <p>Contact us via WhatsApp or phone. We analyze your energy usage and design the ideal system — completely free, no commitment.</p>
+            </div>
+          </div>
+          <div class="how-step">
+            <span class="step-n">02</span>
+            <div class="step-body">
+              <h4>Professional installation</h4>
+              <p>Our team installs panels, inverter, CUPRUM aluminum frame and gauge-10 cabling with a professional finish — all in one day.</p>
+            </div>
+          </div>
+          <div class="how-step">
+            <span class="step-n">03</span>
+            <div class="step-body">
+              <h4>Pay when it's done</h4>
+              <p>No deposit, no risk. Payment is collected only after your system is installed, running, and verified.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
     </div>
-  </div>
-
-  <!-- Text in normal flow -->
-  <div class="reveal" style="transition-delay:.14s">
-    <p class="s-label">Process</p>
-    <h2 class="s-title">As simple as<br><b>three steps</b></h2>
-    <div class="how-steps">
-      <div class="how-step">
-        <span class="step-n">01</span>
-        <div class="step-body">
-          <h4>Free quote</h4>
-          <p>Contact us via WhatsApp or phone. We analyze your energy usage and design the ideal system — completely free, no commitment.</p>
-        </div>
-      </div>
-      <div class="how-step">
-        <span class="step-n">02</span>
-        <div class="step-body">
-          <h4>Professional installation</h4>
-          <p>Our team installs panels, inverter, CUPRUM aluminum frame and gauge-10 cabling with a professional finish — all in one day.</p>
-        </div>
-      </div>
-      <div class="how-step">
-        <span class="step-n">03</span>
-        <div class="step-body">
-          <h4>Pay when it's done</h4>
-          <p>No deposit, no risk. Payment is collected only after your system is installed, running, and verified.</p>
-        </div>
-      </div>
-    </div>
-  </div>
-
-</div>
-```
-
   </div>
 </section>
 
 <!-- ════════ GALLERY ════════ -->
-
 <div class="gallery-section">
   <div class="gallery-grid">
     <img class="gallery-img"
@@ -712,8 +689,7 @@ footer { flex-direction: column; text-align: center; }
 </div>
 
 <!-- ════════ INVERTERS ════════ -->
-
-<section class="section inv-section" id="inverters">
+<section class="section inv-section" id="inversores">
   <div class="wrap">
     <p class="s-label">Certified Inverters</p>
     <h2 class="s-title">Globally trusted <b>brands</b></h2>
@@ -757,8 +733,7 @@ footer { flex-direction: column; text-align: center; }
 </section>
 
 <!-- ════════ CONTACT ════════ -->
-
-<section class="contact-section" id="contact">
+<section class="contact-section" id="contacto">
   <div class="contact-inner reveal">
     <p class="s-label">Get in Touch</p>
     <h2 class="s-title" style="text-align:center">Start today.<br><b>Zero upfront cost.</b></h2>
@@ -767,7 +742,7 @@ footer { flex-direction: column; text-align: center; }
     </p>
     <div class="contact-pill">
       <div class="blink-dot"></div>
-      <span>No Down Payment! — Pay upon installation</span>
+      <span>No Down Payment! — Pagas al instalar</span>
     </div>
     <p class="contact-lbl">Phone / WhatsApp</p>
     <a href="tel:8186035944" class="contact-phone">81 86 03 59 44</a>
@@ -779,7 +754,7 @@ footer { flex-direction: column; text-align: center; }
     <div class="contact-btns">
       <a href="https://wa.me/528186035944?text=Hello!%20I%27m%20interested%20in%20a%20solar%20panel%20quote" target="_blank" class="btn btn-solid">
         <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-        Escribir por WhatsApp
+        Message on WhatsApp
       </a>
       <a href="tel:8186035944" class="btn btn-outline">Call Now</a>
     </div>
@@ -787,7 +762,6 @@ footer { flex-direction: column; text-align: center; }
 </section>
 
 <!-- ════════ FOOTER ════════ -->
-
 <footer>
   <div class="foot-brand"><b>Cerro de la Silla</b> — Solar Energy</div>
   <p class="foot-copy">© 2025 · Monterrey, Nuevo León · All rights reserved</p>
@@ -818,6 +792,5 @@ footer { flex-direction: column; text-align: center; }
       window.scrollY > 80 ? 'rgba(7,15,28,0.99)' : 'rgba(7,15,28,0.90)';
   }, { passive: true });
 </script>
-
 </body>
 </html>
