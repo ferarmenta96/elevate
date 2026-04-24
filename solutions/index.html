@@ -415,12 +415,41 @@
     to   { opacity: 1; transform: translateY(0); }
   }
 
-  /* ── HIDDEN LAYERS ── */
+  /* ── LANGUAGE VISIBILITY ── */
+
+  /* Default (EN): hide all ES elements */
   [data-lang="es"] { display: none; }
+
+  /* EN mode: hero-eyebrow uses flex */
+  .hero-eyebrow[data-lang="en"] { display: flex; }
+
+  /* ES mode: show ES, hide EN */
   body.lang-es [data-lang="en"] { display: none; }
   body.lang-es [data-lang="es"] { display: revert; }
 
-  /* Fix display for specific elements */
+  /* Fix: hero-eyebrow in ES mode needs flex, not revert */
+  body.lang-es .hero-eyebrow[data-lang="es"] { display: flex; }
+
+  /* FIX CRITICAL: feat-list li uses display:flex via .feat-list li rule,
+     which overrides display:none from [data-lang]. Must override explicitly. */
+
+  /* EN mode (default): hide ES list items */
+  .feat-list li[data-lang="es"],
+  .feat-2col li[data-lang="es"] { display: none; }
+
+  /* EN mode (default): show EN list items with flex */
+  .feat-list li[data-lang="en"],
+  .feat-2col li[data-lang="en"] { display: flex; }
+
+  /* ES mode: hide EN list items */
+  body.lang-es .feat-list li[data-lang="en"],
+  body.lang-es .feat-2col li[data-lang="en"] { display: none; }
+
+  /* ES mode: show ES list items with flex */
+  body.lang-es .feat-list li[data-lang="es"],
+  body.lang-es .feat-2col li[data-lang="es"] { display: flex; }
+
+  /* Fix display for specific elements in ES mode */
   body.lang-es .pack-name[data-lang="es"],
   body.lang-es .pack-sub[data-lang="es"],
   body.lang-es .hero h1[data-lang="es"],
