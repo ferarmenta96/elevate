@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Don Barbacoa — Panel de Pedidos</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Oswald:wght@300;400;600&family=Lora:ital,wght@0,400;1,400&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --rojo:  #B71C1C; --rojo2: #8B0000;
+      --oro:   #C8922A; --oro2:  #F5C842;
+      --crema: #FDF3E3; --humo:  #1A0A00; --humo2: #100500;
+      --dim:   rgba(253,243,227,0.55);
+    }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Oswald', sans-serif; background: var(--humo2); color: var(--crema); min-height: 100vh; overflow-x: hidden; }
+    body::before {
+      content: ''; position: fixed; inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none; z-index: 9999; opacity: 0.5;
+    }
+    header {
+      background: rgba(16,5,0,0.97); border-bottom: 1px solid rgba(200,146,42,0.2);
+      padding: 16px 40px; display: flex; align-items: center; justify-content: space-between;
+      position: sticky; top: 0; z-index: 100; backdrop-filter: blur(8px);
+    }
+    .logo { font-family: 'Playfair Display', serif; font-size: 1.3rem; font-weight: 900; color: var(--oro); letter-spacing: 2px; }
+    .header-tag { font-size: .58rem; letter-spacing: 4px; text-transform: uppercase; color: rgba(200,146,42,0.5); background: rgba(200,146,42,0.07); border: 1px solid rgba(200,146,42,0.2); padding: 4px 14px; }
+    main { max-width: 640px; margin: 0 auto; padding: 52px 24px 80px; }
+    .page-title { margin-bottom: 40px; animation: fadeUp .6s ease both; }
+    @keyframes fadeUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
+    .page-title .eyebrow { font-size: .6rem; letter-spacing: 5px; text-transform: uppercase; color: var(--oro); border-top: 1px solid rgba(200,146,42,0.4); padding-top: 7px; margin-bottom: 12px; display: inline-block; }
+    .page-title h1 { font-family: 'Playfair Display', serif; font-size: clamp(2rem,5vw,2.8rem); font-weight: 900; color: var(--crema); line-height: 1.05; }
+    .page-title h1 em { color: var(--oro); font-style: italic; }
+    .page-title p { font-family: 'Lora', serif; font-style: italic; font-size: .9rem; color: var(--dim); margin-top: 10px; }
+    .card { background: rgba(255,255,255,0.025); border: 1px solid rgba(200,146,42,0.18); margin-bottom: 24px; position: relative; animation: fadeUp .6s ease both; }
+    .card::before { content: ''; position: absolute; top: 0; left: 0; width: 3px; height: 100%; background: var(--oro); }
+    .card-header { padding: 13px 22px; border-bottom: 1px solid rgba(200,146,42,0.12); display: flex; align-items: center; gap: 10px; }
+    .card-title { font-size: .62rem; letter-spacing: 4px; text-transform: uppercase; color: var(--oro); font-weight: 600; }
+    .card-body { padding: 24px 22px; }
+    .field { margin-bottom: 22px; }
+    .field:last-child { margin-bottom: 0; }
+    .field label { display: block; font-size: .58rem; letter-spacing: 4px; text-transform: uppercase; color: var(--oro); margin-bottom: 8px; font-weight: 400; }
+    .field input, .field textarea {
+      width: 100%; background: rgba(0,0,0,0.35); border: 1px solid rgba(200,146,42,0.22);
+      border-radius: 0; padding: 13px 16px; font-family: 'Lora', serif; font-size: 1rem;
+      color: var(--crema); outline: none; transition: border-color .2s, box-shadow .2s, background .2s; -webkit-appearance: none;
+    }
+    .field input::placeholder, .field textarea::placeholder { color: rgba(253,243,227,0.2); font-style: italic; }
+    .field input:focus, .field textarea:focus { border-color: var(--oro); background: rgba(200,146,42,0.05); box-shadow: 0 0 0 3px rgba(200,146,42,0.08); }
+    .field textarea { resize: vertical; min-height: 90px; }
+    .field-hint { font-family: 'Lora', serif; font-style: italic; font-size: .78rem; color: rgba(200,146,42,0.45); margin-top: 6px; }
+    .preview-box { background: rgba(200,146,42,0.04); border: 1px dashed rgba(200,146,42,0.25); padding: 22px 24px; font-family: 'Lora', serif; font-size: .95rem; line-height: 2; color: var(--crema); }
+    .preview-box .lbl { font-family: 'Oswald', sans-serif; font-size: .55rem; letter-spacing: 4px; text-transform: uppercase; color: rgba(200,146,42,0.5); display: block; margin-bottom: 12px; }
+    .preview-val { color: var(--oro2); }
+    .preview-static { color: var(--dim); font-style: italic; }
+    .btn-generate {
+      width: 100%; padding: 18px; background: var(--rojo2); border: 1px solid rgba(200,146,42,0.3);
+      color: var(--crema); font-family: 'Oswald', sans-serif; font-size: .85rem; letter-spacing: 4px;
+      text-transform: uppercase; font-weight: 600; cursor: pointer;
+      transition: background .25s, transform .15s, box-shadow .25s; position: relative; overflow: hidden; margin-top: 4px;
+    }
+    .btn-generate:hover { background: #6B0000; box-shadow: 0 6px 28px rgba(183,28,28,0.35); }
+    .btn-generate:active { transform: scale(0.98); }
+    .btn-generate:disabled { opacity: .45; cursor: not-allowed; }
+    .spinner { display: none; width: 18px; height: 18px; border: 2px solid rgba(253,243,227,0.3); border-top-color: var(--crema); border-radius: 50%; animation: spin .7s linear infinite; margin: 0 auto; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .result-box { display: none; border: 1px solid rgba(200,146,42,0.35); background: rgba(200,146,42,0.05); padding: 24px; margin-top: 24px; animation: fadeUp .4s ease both; }
+    .result-box.visible { display: block; }
+    .result-box .rlabel { font-size: .58rem; letter-spacing: 4px; text-transform: uppercase; color: var(--oro); margin-bottom: 10px; font-family: 'Oswald', sans-serif; }
+    .result-url { font-family: 'Lora', serif; font-size: .85rem; color: var(--crema); word-break: break-all; line-height: 1.6; background: rgba(0,0,0,0.3); border: 1px solid rgba(200,146,42,0.15); padding: 12px 16px; margin-bottom: 14px; }
+    .result-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+    .btn-action { flex: 1; min-width: 120px; padding: 12px 16px; border: 1px solid rgba(200,146,42,0.3); background: transparent; color: var(--oro); font-family: 'Oswald', sans-serif; font-size: .7rem; letter-spacing: 3px; text-transform: uppercase; font-weight: 600; cursor: pointer; transition: background .2s, color .2s, border-color .2s; text-decoration: none; text-align: center; }
+    .btn-action:hover { background: rgba(200,146,42,0.12); border-color: var(--oro); }
+    .btn-action.wa { background: #25D366; border-color: #25D366; color: #fff; }
+    .btn-action.wa:hover { background: #1da851; border-color: #1da851; }
+    .btn-action.copied { border-color: #25D366; color: #25D366; }
+    .error-msg { display: none; background: rgba(183,28,28,0.12); border: 1px solid rgba(183,28,28,0.4); border-left: 3px solid var(--rojo); padding: 14px 18px; font-family: 'Lora', serif; font-size: .88rem; color: rgba(253,243,227,0.8); margin-top: 16px; white-space: pre-line; }
+    .error-msg.visible { display: block; }
+    .toast { position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%) translateY(16px); background: rgba(16,5,0,0.97); border: 1px solid rgba(200,146,42,0.4); color: var(--oro2); font-family: 'Oswald', sans-serif; font-size: .68rem; letter-spacing: 3px; text-transform: uppercase; padding: 12px 28px; opacity: 0; pointer-events: none; transition: opacity .3s, transform .3s; z-index: 9998; white-space: nowrap; }
+    .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+    footer { border-top: 1px solid rgba(200,146,42,0.1); padding: 24px 40px; text-align: center; }
+    footer p { font-size: .6rem; letter-spacing: 3px; text-transform: uppercase; color: rgba(253,243,227,0.2); }
+    @media (max-width: 600px) { header { padding: 14px 16px; } main { padding: 36px 16px 60px; } footer { padding: 20px; } }
+  </style>
+</head>
+<body>
+
+<header>
+  <span class="logo">Don Barbacoa</span>
+  <span class="header-tag">Panel de Pedidos</span>
+</header>
+
+<main>
+  <div class="page-title">
+    <span class="eyebrow">Nuevo Pedido</span>
+    <h1>Genera el link<br/><em>de confirmación</em></h1>
+    <p>Llena los datos del pedido y comparte el link único con tu cliente.</p>
+  </div>
+
+  <div class="card" style="animation-delay:.05s">
+    <div class="card-header">
+      <span style="font-size:1rem">📋</span>
+      <span class="card-title">Datos del pedido</span>
+    </div>
+    <div class="card-body">
+      <div class="field">
+        <label for="inp-nombre">Nombre del cliente</label>
+        <input id="inp-nombre" type="text" placeholder="Ej. María González" autocomplete="off" spellcheck="false"/>
+      </div>
+      <div class="field">
+        <label for="inp-pedido">Orden / Detalle del pedido</label>
+        <textarea id="inp-pedido" placeholder="Ej. 2 kg de barbacoa, con tortillas y limones"></textarea>
+      </div>
+      <div class="field">
+        <label for="inp-monto">Monto a cobrar</label>
+        <input id="inp-monto" type="text" placeholder="Ej. $480.00" autocomplete="off"/>
+        <div class="field-hint">Incluye el símbolo $ si gustas</div>
+      </div>
+      <div class="field">
+        <label for="inp-fecha">Fecha / Hora de entrega <span style="color:rgba(200,146,42,0.4)">(opcional)</span></label>
+        <input id="inp-fecha" type="text" placeholder="Ej. Sábado 3 de mayo a las 9:00 AM" autocomplete="off"/>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" style="animation-delay:.1s">
+    <div class="card-header">
+      <span style="font-size:1rem">👁</span>
+      <span class="card-title">Vista previa</span>
+    </div>
+    <div class="card-body">
+      <div class="preview-box">
+        <span class="lbl">Así verá el cliente su página</span>
+        <span class="preview-static">Hola </span><span class="preview-val" id="prev-nombre">__________</span>
+        <span class="preview-static">, su orden de </span><span class="preview-val" id="prev-pedido">__________</span>
+        <span class="preview-static"> estará lista</span>
+        <span id="prev-fecha-wrap"><span class="preview-static"> el </span><span class="preview-val" id="prev-fecha">__________</span></span>
+        <span class="preview-static">.<br/>Continue con la transferencia de </span>
+        <span class="preview-val" id="prev-monto">__________</span>
+        <span class="preview-static"> para confirmar su pedido.<br/><br/>Al finalizar, </span>
+        <strong style="color:var(--crema)">envíe su comprobante por WhatsApp</strong>
+        <span class="preview-static"> y agendaremos su pedido. 🤝</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" style="animation-delay:.15s">
+    <div class="card-header">
+      <span style="font-size:1rem">🔗</span>
+      <span class="card-title">Generar link único</span>
+    </div>
+    <div class="card-body">
+      <button class="btn-generate" id="btnGenerar" onclick="generarLink()">
+        <span id="btn-text">Generar Link del Pedido</span>
+        <div class="spinner" id="btn-spinner"></div>
+      </button>
+      <div class="error-msg" id="errorMsg"></div>
+      <div class="result-box" id="resultBox">
+        <div class="rlabel">✓ Link generado — comparte con tu cliente</div>
+        <div class="result-url" id="resultUrl"></div>
+        <div class="result-actions">
+          <button class="btn-action" id="btnCopiar" onclick="copiarLink()">Copiar Link</button>
+          <a class="btn-action wa" id="btnCompartir" href="#" target="_blank">Compartir por WhatsApp</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<footer><p>Don Barbacoa · Panel Interno · Reynosa, Tamaulipas</p></footer>
+<div class="toast" id="toast"></div>
+
+<script>
+  // ══════════════════════════════════════════════
+  //  CONFIGURACIÓN
+  // ══════════════════════════════════════════════
+  var GAS_URL      = 'https://script.google.com/macros/s/AKfycbz0x0BUr-jacuB-SRiWRYzTA1nxowz0lfghvRB6N6rBRWu0RBIYSp9gBSkCe3vklagtiQ/exec';
+  var RECEIVER_URL = 'https://ferarmenta96.github.io/LR/receiver.html';
+  // ══════════════════════════════════════════════
+
+  var WA_NUMBER = '528991346597';
+
+  // Live preview
+  ['inp-nombre','inp-pedido','inp-monto','inp-fecha'].forEach(function(id) {
+    document.getElementById(id).addEventListener('input', actualizarPreview);
+  });
+
+  function actualizarPreview() {
+    var nombre = document.getElementById('inp-nombre').value.trim();
+    var pedido = document.getElementById('inp-pedido').value.trim();
+    var monto  = document.getElementById('inp-monto').value.trim();
+    var fecha  = document.getElementById('inp-fecha').value.trim();
+    document.getElementById('prev-nombre').textContent = nombre || '__________';
+    document.getElementById('prev-pedido').textContent = pedido || '__________';
+    document.getElementById('prev-monto').textContent  = monto  || '__________';
+    document.getElementById('prev-fecha').textContent  = fecha  || '__________';
+    document.getElementById('prev-fecha-wrap').style.display = fecha ? '' : 'none';
+  }
+  actualizarPreview();
+
+  // JSONP helper
+  function callGAS(params) {
+    return new Promise(function(resolve, reject) {
+      var cbName = 'cb_' + Date.now() + '_' + Math.floor(Math.random() * 99999);
+      var url    = new URL(GAS_URL);
+      Object.keys(params).forEach(function(k) { url.searchParams.set(k, String(params[k])); });
+      url.searchParams.set('callback', cbName);
+
+      var script = document.createElement('script');
+      var timer  = setTimeout(function() { cleanup(); reject(new Error('Timeout — revisa la URL del script')); }, 15000);
+
+      window[cbName] = function(data) { cleanup(); resolve(data); };
+
+      function cleanup() {
+        clearTimeout(timer);
+        delete window[cbName];
+        if (script.parentNode) script.parentNode.removeChild(script);
+      }
+
+      script.onerror = function() { cleanup(); reject(new Error('No se pudo conectar con el servidor')); };
+      script.src = url.toString();
+      document.head.appendChild(script);
+    });
+  }
+
+  // Generar link
+  async function generarLink() {
+    var nombre = document.getElementById('inp-nombre').value.trim();
+    var pedido = document.getElementById('inp-pedido').value.trim();
+    var monto  = document.getElementById('inp-monto').value.trim();
+    var fecha  = document.getElementById('inp-fecha').value.trim();
+
+    if (!nombre) { mostrarError('Por favor escribe el nombre del cliente.'); document.getElementById('inp-nombre').focus(); return; }
+    if (!pedido) { mostrarError('Por favor describe el pedido.'); document.getElementById('inp-pedido').focus(); return; }
+    if (!monto)  { mostrarError('Por favor escribe el monto.'); document.getElementById('inp-monto').focus(); return; }
+
+    ocultarError();
+    setLoading(true);
+
+    try {
+      var data = await callGAS({
+        action: 'createPedido',
+        nombre: nombre,
+        pedido: pedido,
+        monto:  monto,
+        fecha:  fecha
+      });
+
+      if (!data.ok) throw new Error(data.error || 'Error al guardar el pedido');
+
+      var link = RECEIVER_URL + '?id=' + encodeURIComponent(data.id);
+      mostrarResultado(link);
+      toast('✓ Link generado correctamente');
+
+    } catch (err) {
+      mostrarError('Error: ' + err.message + '\n\nVerifica que la URL del script esté correcta y que el despliegue sea público.');
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  function mostrarResultado(link) {
+    document.getElementById('resultUrl').textContent = link;
+    document.getElementById('resultBox').classList.add('visible');
+    var msg = encodeURIComponent('🍖 *Don Barbacoa*\n\nHola! Aquí está el link con los datos de tu pedido:\n\n' + link + '\n\nRealiza tu transferencia y envíanos el comprobante. Cualquier duda escríbenos 🤙');
+    document.getElementById('btnCompartir').href = 'https://wa.me/' + WA_NUMBER + '?text=' + msg;
+    document.getElementById('resultBox').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  function copiarLink() {
+    var link = document.getElementById('resultUrl').textContent;
+    navigator.clipboard.writeText(link).then(function() {
+      var btn = document.getElementById('btnCopiar');
+      btn.textContent = '✓ Copiado';
+      btn.classList.add('copied');
+      toast('Link copiado al portapapeles');
+      setTimeout(function() { btn.textContent = 'Copiar Link'; btn.classList.remove('copied'); }, 2200);
+    }).catch(function() { toast('Error al copiar'); });
+  }
+
+  function setLoading(state) {
+    var btn  = document.getElementById('btnGenerar');
+    var txt  = document.getElementById('btn-text');
+    var spin = document.getElementById('btn-spinner');
+    btn.disabled = state;
+    txt.style.display  = state ? 'none' : '';
+    spin.style.display = state ? 'block' : 'none';
+  }
+
+  function mostrarError(msg) {
+    var el = document.getElementById('errorMsg');
+    el.textContent = msg;
+    el.classList.add('visible');
+    el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+
+  function ocultarError() { document.getElementById('errorMsg').classList.remove('visible'); }
+
+  var toastTimer;
+  function toast(msg) {
+    var t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function() { t.classList.remove('show'); }, 2500);
+  }
+</script>
+</body>
+</html>
