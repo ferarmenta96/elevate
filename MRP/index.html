@@ -416,9 +416,18 @@
   }
 
   /* ── HIDDEN LAYERS ── */
-  [data-lang="es"] { display: none; }
-  body.lang-es [data-lang="en"] { display: none; }
-  body.lang-es [data-lang="es"] { display: revert; }
+    /* EN is default — hide all ES */
+  [data-lang="es"] { display: none !important; }
+  /* When lang-es is active — swap */
+  body.lang-es [data-lang="es"] { display: block !important; }
+  body.lang-es [data-lang="en"] { display: none !important; }
+  /* Inline elements need inline not block */
+  body.lang-es span[data-lang="es"],
+  body.lang-es a[data-lang="es"],
+  body.lang-es small[data-lang="es"] { display: inline !important; }
+  span[data-lang="en"],
+  a[data-lang="en"],
+  small[data-lang="en"] { display: inline; }
 
   /* Fix display for specific elements */
   body.lang-es .pack-name[data-lang="es"],
