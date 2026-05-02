@@ -459,10 +459,11 @@
     var partes = [];
     if (orden.kilos  > 0) partes.push(orden.kilos + (orden.kilos === 1 ? ' kilo' : ' kilos') + ' de barbacoa');
     if (orden.medios > 0) partes.push(orden.medios + (orden.medios === 1 ? ' medio kilo' : ' medios kilos') + ' de barbacoa');
+    partes.push('1 consomé gratis');
     if (orden.consomes > 0) partes.push(orden.consomes + ' consomé' + (orden.consomes > 1 ? 's' : '') + ' extra');
-    partes.push('envío a domicilio');
     partes.push('tortillas incluidas');
-    return partes.join(', ');
+    partes.push('envio a domicilio $50');
+    return partes.join(' | ');
   }
 
   function actualizarResumen() {
@@ -484,7 +485,7 @@
     items.push('envío $50');
 
     document.getElementById('resumenItems').textContent = items.join(' · ');
-    document.getElementById('resumenTotal').textContent = total.toLocaleString('es-MX');
+    document.getElementById('resumenTotal').textContent = total;
   }
 
   // ── NAVEGACIÓN ───────────────────────
@@ -550,7 +551,7 @@
     setLoadingConf(true);
 
     var pedidoTexto = textoOrden();
-    var montoTexto  = '$' + calcTotal().toLocaleString('es-MX');
+    var montoTexto  = '$' + calcTotal();
 
     // Detalle completo para la hoja
     var detalleHoja = [];
