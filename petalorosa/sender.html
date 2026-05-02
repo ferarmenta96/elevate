@@ -467,7 +467,7 @@
   // ══════════════════════════════════════════════
   //  CONFIGURACIÓN
   // ══════════════════════════════════════════════
-  var GAS_URL      = 'https://script.google.com/macros/s/AKfycbwwD24vD4Fu4ao7Ht_KwCaZHRzKqSxoAJEsy4LrkDhKo7tDiy0os8oVaPtm9vEo9SiM/exec';
+  var GAS_URL      = 'https://script.google.com/macros/s/AKfycbyacOaAcDPz-o2mL1_OExLl27ntHDVX5Rqptg8nCToQ2b5gRat1eGLyPZRpNp3rJurw/exec';
   var RECEIVER_URL = 'https://horussystemco.com/PetaloRosa/receiver.html';
   // ══════════════════════════════════════════════
 
@@ -515,7 +515,7 @@
     if (!monto)  { mostrarError('Por favor escribe el monto 💰'); document.getElementById('inp-monto').focus(); return; }
     ocultarError(); setLoading(true);
     try {
-      var data = await callGAS({ action: 'createCobro', nombre, monto, fecha });
+      var data = await callGAS({ action: 'createPedido', nombre: nombre, pedido: 'Pedido Pétalo Rosa', monto: monto, fecha: fecha });
       if (!data.ok) throw new Error(data.error || 'Error al guardar');
       var link = RECEIVER_URL + '?id=' + encodeURIComponent(data.id);
       mostrarResultado(link, nombre, monto);
