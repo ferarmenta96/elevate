@@ -1,0 +1,28 @@
+{
+  "name": "Horus Pay",
+  "short_name": "Horus Pay",
+  "description": "Panel de cobros y pagos — Horus System Co.",
+  "start_url": "/horuspay/sender.html",
+  "scope": "/horuspay/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#071828",
+  "theme_color": "#0A2240",
+  "lang": "es",
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "screenshots": [],
+  "categories": ["finance", "business"]
+}
