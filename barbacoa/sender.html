@@ -419,7 +419,9 @@
       html += '<div class="pedido-nombre">' + esc(p.nombre) + '</div>';
       html += '<div class="pedido-detalle">' + esc(p.pedido) + '</div>';
       html += '<div class="pedido-monto">' + esc(p.monto) + '</div>';
-      if (fecha) html += '<div class="pedido-fecha">' + fecha + '</div>';
+      if (p.telefono)  html += '<div class="pedido-fecha">📱 ' + esc(p.telefono) + '</div>';
+      if (p.direccion) html += '<div class="pedido-fecha">📍 ' + esc(p.direccion) + '</div>';
+      if (fecha) html += '<div class="pedido-fecha">🕐 ' + fecha + '</div>';
       html += '</div>';
 
       html += '<div class="pedido-actions">';

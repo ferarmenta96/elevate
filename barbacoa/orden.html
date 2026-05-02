@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Ordenar — Don Barbacoa</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Oswald:wght@300;400;600&family=Lora:ital,wght@0,400;1,400&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
+    :root {
+      --rojo:#B71C1C; --rojo2:#8B0000;
+      --oro:#C8922A; --oro2:#F5C842;
+      --crema:#FDF3E3; --humo:#1A0A00; --humo2:#100500;
+      --dim:rgba(253,243,227,0.55);
+    }
+    html { scroll-behavior:smooth; }
+    body { font-family:'Oswald',sans-serif; background:var(--humo); color:var(--crema); min-height:100vh; overflow-x:hidden; }
+    body::before { content:''; position:fixed; inset:0; background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E"); pointer-events:none; z-index:9999; opacity:.5; }
+
+    /* HEADER */
+    header { background:rgba(16,5,0,.97); border-bottom:1px solid rgba(200,146,42,.2); padding:16px 24px; display:flex; align-items:center; justify-content:space-between; position:sticky; top:0; z-index:100; backdrop-filter:blur(8px); }
+    .logo { font-family:'Playfair Display',serif; font-size:1.3rem; font-weight:900; color:var(--oro); letter-spacing:2px; }
+    .header-tag { font-size:.55rem; letter-spacing:4px; text-transform:uppercase; color:rgba(200,146,42,.5); }
+
+    /* HERO */
+    .hero { background:var(--rojo2); padding:44px 24px 52px; text-align:center; position:relative; overflow:hidden; }
+    .hero::before { content:''; position:absolute; inset:0; background:radial-gradient(ellipse at center,rgba(200,146,42,.12),transparent 65%); pointer-events:none; }
+    .hero::after { content:''; position:absolute; bottom:-2px; left:0; right:0; height:52px; background:var(--humo); clip-path:polygon(0 100%,100% 0,100% 100%); }
+    .eyebrow { display:inline-block; font-size:.58rem; letter-spacing:5px; text-transform:uppercase; color:rgba(253,243,227,.6); border-top:1px solid rgba(200,146,42,.45); padding-top:6px; margin-bottom:12px; position:relative; z-index:1; }
+    .hero h1 { font-family:'Playfair Display',serif; font-size:clamp(2rem,7vw,3rem); font-weight:900; color:var(--crema); line-height:1.05; position:relative; z-index:1; }
+    .hero h1 em { color:var(--oro2); font-style:italic; }
+    .hero p { font-family:'Lora',serif; font-style:italic; font-size:.9rem; color:rgba(253,243,227,.6); margin-top:10px; position:relative; z-index:1; }
+
+    /* STEPS */
+    .steps { display:flex; justify-content:center; gap:0; background:rgba(0,0,0,.25); border-bottom:1px solid rgba(200,146,42,.1); }
+    .step { flex:1; max-width:200px; padding:14px 8px; text-align:center; font-size:.55rem; letter-spacing:3px; text-transform:uppercase; color:rgba(253,243,227,.25); border-bottom:2px solid transparent; transition:all .3s; position:relative; }
+    .step.active { color:var(--oro); border-bottom-color:var(--oro); }
+    .step.done { color:rgba(37,211,102,.7); border-bottom-color:rgba(37,211,102,.4); }
+    .step-num { display:inline-flex; align-items:center; justify-content:center; width:22px; height:22px; border-radius:50%; border:1px solid currentColor; font-size:.65rem; margin-bottom:5px; }
+    .step.done .step-num::before { content:'✓'; }
+
+    /* PANELS */
+    .panel { display:none; max-width:640px; margin:0 auto; padding:40px 20px 80px; }
+    .panel.active { display:block; }
+
+    @keyframes fadeUp { from{opacity:0;transform:translateY(18px)} to{opacity:1;transform:translateY(0)} }
+
+    /* SECTION TITLE */
+    .sec-title { margin-bottom:24px; animation:fadeUp .5s ease both; }
+    .sec-eyebrow { font-size:.58rem; letter-spacing:5px; text-transform:uppercase; color:var(--oro); border-top:1px solid rgba(200,146,42,.35); padding-top:6px; margin-bottom:10px; display:inline-block; }
+    .sec-title h2 { font-family:'Playfair Display',serif; font-size:clamp(1.6rem,4vw,2.2rem); font-weight:900; color:var(--crema); line-height:1.05; }
+    .sec-title h2 em { color:var(--oro); font-style:italic; }
+    .sec-title p { font-family:'Lora',serif; font-style:italic; font-size:.87rem; color:var(--dim); margin-top:7px; }
+
+    /* CARD */
+    .card { background:rgba(255,255,255,.025); border:1px solid rgba(200,146,42,.16); margin-bottom:18px; position:relative; animation:fadeUp .5s ease both; }
+    .card::before { content:''; position:absolute; top:0; left:0; width:3px; height:100%; background:var(--oro); }
+    .card-header { padding:12px 20px; border-bottom:1px solid rgba(200,146,42,.1); display:flex; align-items:center; gap:10px; }
+    .card-title { font-size:.6rem; letter-spacing:4px; text-transform:uppercase; color:var(--oro); font-weight:600; }
+    .card-body { padding:20px 20px; }
+
+    /* CANTIDAD SELECTOR */
+    .qty-row { display:flex; align-items:center; justify-content:space-between; padding:14px 0; border-bottom:1px solid rgba(200,146,42,.08); }
+    .qty-row:last-child { border-bottom:none; }
+    .qty-info { flex:1; }
+    .qty-name { font-family:'Oswald',sans-serif; font-size:.95rem; font-weight:600; color:var(--crema); letter-spacing:1px; }
+    .qty-desc { font-family:'Lora',serif; font-style:italic; font-size:.78rem; color:var(--dim); margin-top:2px; }
+    .qty-price { font-family:'Oswald',sans-serif; font-size:.9rem; color:var(--oro); letter-spacing:1px; margin:0 16px; white-space:nowrap; }
+    .qty-ctrl { display:flex; align-items:center; gap:0; }
+    .qty-btn { width:36px; height:36px; background:rgba(200,146,42,.1); border:1px solid rgba(200,146,42,.25); color:var(--oro); font-size:1.2rem; font-family:'Oswald',sans-serif; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:all .15s; -webkit-tap-highlight-color:transparent; user-select:none; }
+    .qty-btn:hover { background:rgba(200,146,42,.2); }
+    .qty-btn:active { transform:scale(.92); }
+    .qty-val { width:44px; text-align:center; font-family:'Playfair Display',serif; font-size:1.3rem; font-weight:900; color:var(--crema); background:transparent; border:none; outline:none; }
+
+    /* TOGGLE (consomé extra) */
+    .toggle-row { display:flex; align-items:center; justify-content:space-between; padding:14px 0; border-bottom:1px solid rgba(200,146,42,.08); }
+    .toggle-row:last-child { border-bottom:none; }
+    .toggle-info { flex:1; }
+    .toggle-name { font-family:'Oswald',sans-serif; font-size:.95rem; font-weight:600; color:var(--crema); letter-spacing:1px; }
+    .toggle-desc { font-family:'Lora',serif; font-style:italic; font-size:.78rem; color:var(--dim); margin-top:2px; }
+    .toggle-price { font-family:'Oswald',sans-serif; font-size:.9rem; color:var(--oro); letter-spacing:1px; margin:0 16px; white-space:nowrap; }
+
+    /* Consomé extra qty (hidden by default) */
+    .consome-extra-wrap { display:flex; align-items:center; gap:10px; }
+    .consome-toggle-btn { padding:8px 16px; background:rgba(200,146,42,.08); border:1px solid rgba(200,146,42,.25); color:rgba(200,146,42,.6); font-family:'Oswald',sans-serif; font-size:.6rem; letter-spacing:3px; text-transform:uppercase; cursor:pointer; transition:all .2s; white-space:nowrap; }
+    .consome-toggle-btn.active { background:rgba(200,146,42,.18); border-color:var(--oro); color:var(--oro); }
+
+    /* RESUMEN FLOTANTE */
+    .resumen {
+      position:sticky; bottom:0; left:0; right:0;
+      background:rgba(16,5,0,.97);
+      border-top:1px solid rgba(200,146,42,.25);
+      padding:14px 24px;
+      display:flex; align-items:center; justify-content:space-between; gap:16px;
+      backdrop-filter:blur(10px);
+      z-index:50;
+    }
+    .resumen-left { flex:1; }
+    .resumen-items { font-family:'Lora',serif; font-style:italic; font-size:.78rem; color:var(--dim); margin-bottom:3px; min-height:18px; }
+    .resumen-total { font-family:'Playfair Display',serif; font-size:1.6rem; font-weight:900; color:var(--oro2); line-height:1; }
+    .resumen-total span { font-size:.75rem; font-family:'Oswald',sans-serif; font-weight:300; letter-spacing:2px; color:rgba(200,146,42,.5); margin-right:4px; }
+    .btn-next { background:var(--rojo2); border:1px solid rgba(200,146,42,.3); color:var(--crema); font-family:'Oswald',sans-serif; font-size:.78rem; letter-spacing:3px; text-transform:uppercase; font-weight:600; padding:14px 28px; cursor:pointer; transition:background .2s, transform .15s; white-space:nowrap; -webkit-tap-highlight-color:transparent; }
+    .btn-next:hover { background:#6B0000; }
+    .btn-next:active { transform:scale(.97); }
+    .btn-next:disabled { opacity:.35; cursor:not-allowed; transform:none; }
+
+    /* INCLUDED BADGE */
+    .badge-inc { display:inline-block; background:rgba(37,211,102,.1); border:1px solid rgba(37,211,102,.3); color:#4ade80; font-family:'Oswald',sans-serif; font-size:.52rem; letter-spacing:2px; text-transform:uppercase; padding:2px 8px; vertical-align:middle; margin-left:6px; }
+
+    /* PANEL 2: DATOS */
+    .field { margin-bottom:18px; }
+    .field label { display:block; font-size:.58rem; letter-spacing:4px; text-transform:uppercase; color:var(--oro); margin-bottom:7px; }
+    .field input, .field textarea { width:100%; background:rgba(0,0,0,.35); border:1px solid rgba(200,146,42,.22); border-radius:0; padding:13px 15px; font-family:'Lora',serif; font-size:1rem; color:var(--crema); outline:none; transition:border-color .2s, background .2s; -webkit-appearance:none; }
+    .field input::placeholder, .field textarea::placeholder { color:rgba(253,243,227,.2); font-style:italic; }
+    .field input:focus, .field textarea:focus { border-color:var(--oro); background:rgba(200,146,42,.05); box-shadow:0 0 0 3px rgba(200,146,42,.08); }
+    .field textarea { resize:vertical; min-height:80px; }
+
+    /* RESUMEN DE ORDEN (panel 2) */
+    .orden-resumen { background:rgba(200,146,42,.04); border:1px dashed rgba(200,146,42,.22); padding:18px 20px; margin-bottom:18px; }
+    .orden-resumen-title { font-size:.58rem; letter-spacing:4px; text-transform:uppercase; color:var(--oro); margin-bottom:14px; font-family:'Oswald',sans-serif; }
+    .orden-item { display:flex; justify-content:space-between; align-items:center; padding:6px 0; border-bottom:1px solid rgba(200,146,42,.07); }
+    .orden-item:last-child { border-bottom:none; }
+    .orden-item-name { font-family:'Lora',serif; font-size:.9rem; color:var(--dim); font-style:italic; }
+    .orden-item-price { font-family:'Oswald',sans-serif; font-size:.9rem; color:var(--crema); letter-spacing:1px; }
+    .orden-total-row { display:flex; justify-content:space-between; align-items:center; margin-top:14px; padding-top:12px; border-top:1px solid rgba(200,146,42,.2); }
+    .orden-total-label { font-size:.62rem; letter-spacing:4px; text-transform:uppercase; color:var(--oro); }
+    .orden-total-val { font-family:'Playfair Display',serif; font-size:1.8rem; font-weight:900; color:var(--oro2); }
+    .orden-total-val span { font-size:.8rem; font-family:'Oswald',sans-serif; font-weight:300; color:rgba(200,146,42,.5); margin-right:4px; }
+
+    /* BTN CONFIRMAR */
+    .btn-confirmar { width:100%; padding:18px; background:var(--rojo2); border:1px solid rgba(200,146,42,.3); color:var(--crema); font-family:'Oswald',sans-serif; font-size:.85rem; letter-spacing:4px; text-transform:uppercase; font-weight:600; cursor:pointer; transition:background .25s, transform .15s; margin-top:4px; }
+    .btn-confirmar:hover { background:#6B0000; }
+    .btn-confirmar:active { transform:scale(.98); }
+    .btn-confirmar:disabled { opacity:.4; cursor:not-allowed; }
+    .spinner { display:none; width:18px; height:18px; border:2px solid rgba(253,243,227,.3); border-top-color:var(--crema); border-radius:50%; animation:spin .7s linear infinite; margin:0 auto; }
+    @keyframes spin { to{transform:rotate(360deg)} }
+
+    /* BTN VOLVER */
+    .btn-back { background:transparent; border:none; color:rgba(200,146,42,.5); font-family:'Oswald',sans-serif; font-size:.6rem; letter-spacing:3px; text-transform:uppercase; cursor:pointer; padding:0; margin-bottom:20px; display:flex; align-items:center; gap:6px; transition:color .2s; }
+    .btn-back:hover { color:var(--oro); }
+
+    /* ERROR */
+    .error-msg { display:none; background:rgba(183,28,28,.12); border:1px solid rgba(183,28,28,.4); border-left:3px solid var(--rojo); padding:12px 16px; font-family:'Lora',serif; font-size:.86rem; color:rgba(253,243,227,.8); margin-top:14px; white-space:pre-line; }
+    .error-msg.visible { display:block; }
+
+    /* PANEL 3: LINK GENERADO */
+    .link-screen { text-align:center; padding:20px 0; animation:fadeUp .5s ease both; }
+    .link-screen .big-icon { font-size:4rem; display:block; margin-bottom:16px; animation:bounce .8s ease infinite alternate; }
+    @keyframes bounce { from{transform:translateY(0)} to{transform:translateY(-8px)} }
+    .link-screen h2 { font-family:'Playfair Display',serif; font-size:2rem; font-weight:900; color:var(--crema); margin-bottom:8px; }
+    .link-screen h2 em { color:var(--oro2); font-style:italic; }
+    .link-screen p { font-family:'Lora',serif; font-style:italic; font-size:.9rem; color:var(--dim); margin-bottom:24px; line-height:1.7; }
+    .link-box { background:rgba(0,0,0,.3); border:1px solid rgba(200,146,42,.2); padding:14px 16px; font-family:'Lora',serif; font-size:.82rem; color:var(--crema); word-break:break-all; line-height:1.6; margin-bottom:14px; text-align:left; }
+    .link-actions { display:flex; flex-direction:column; gap:12px; }
+    .btn-copiar { width:100%; padding:15px; background:transparent; border:1px solid rgba(200,146,42,.3); color:var(--oro); font-family:'Oswald',sans-serif; font-size:.75rem; letter-spacing:3px; text-transform:uppercase; font-weight:600; cursor:pointer; transition:all .2s; }
+    .btn-copiar:hover { background:rgba(200,146,42,.1); border-color:var(--oro); }
+    .btn-copiar.ok { border-color:#25D366; color:#25D366; }
+    .btn-wa-link { width:100%; padding:17px; background:#25D366; border:none; color:#fff; font-family:'Oswald',sans-serif; font-size:.82rem; letter-spacing:3px; text-transform:uppercase; font-weight:600; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:12px; text-decoration:none; transition:background .2s; animation:pulseShadow 2.5s infinite; }
+    @keyframes pulseShadow { 0%,100%{box-shadow:0 4px 24px rgba(37,211,102,.25),0 0 0 0 rgba(37,211,102,.3)} 50%{box-shadow:0 4px 24px rgba(37,211,102,.25),0 0 0 12px rgba(37,211,102,0)} }
+    .btn-wa-link:hover { background:#1da851; }
+    .btn-wa-link svg { width:20px; height:20px; fill:currentColor; }
+    .btn-nueva { width:100%; padding:13px; background:transparent; border:1px solid rgba(253,243,227,.1); color:rgba(253,243,227,.35); font-family:'Oswald',sans-serif; font-size:.65rem; letter-spacing:3px; text-transform:uppercase; cursor:pointer; margin-top:4px; transition:all .2s; }
+    .btn-nueva:hover { color:var(--crema); border-color:rgba(253,243,227,.3); }
+
+    /* TOAST */
+    .toast { position:fixed; bottom:90px; left:50%; transform:translateX(-50%) translateY(16px); background:rgba(16,5,0,.97); border:1px solid rgba(200,146,42,.4); color:var(--oro2); font-family:'Oswald',sans-serif; font-size:.65rem; letter-spacing:3px; text-transform:uppercase; padding:11px 24px; opacity:0; pointer-events:none; transition:opacity .3s,transform .3s; z-index:9998; white-space:nowrap; }
+    .toast.show { opacity:1; transform:translateX(-50%) translateY(0); }
+
+    /* WA FLOAT */
+    .wa-float { position:fixed; bottom:90px; right:20px; z-index:200; background:#25D366; width:50px; height:50px; border-radius:50%; display:flex; align-items:center; justify-content:center; text-decoration:none; box-shadow:0 4px 18px rgba(37,211,102,.4); }
+    .wa-float svg { width:26px; height:26px; fill:#fff; }
+
+    footer { background:var(--humo2); border-top:1px solid rgba(200,146,42,.1); padding:20px 24px; text-align:center; }
+    footer p { font-size:.58rem; letter-spacing:2px; text-transform:uppercase; color:rgba(253,243,227,.2); }
+
+    @media (max-width:420px) {
+      .qty-price { margin:0 8px; font-size:.8rem; }
+      .btn-next { padding:14px 18px; font-size:.7rem; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <span class="logo">Don Barbacoa</span>
+  <span class="header-tag">Hacer Pedido</span>
+</header>
+
+<div class="hero">
+  <span class="eyebrow">Reynosa, Tamaulipas · Pedido en línea</span>
+  <h1>Tu barbacoa,<br/><em>a la puerta</em></h1>
+  <p>Selecciona lo que quieres y te enviamos tu link de pago.</p>
+</div>
+
+<!-- STEPS -->
+<div class="steps">
+  <div class="step active" id="step1">
+    <div class="step-num">1</div>
+    <div>Tu orden</div>
+  </div>
+  <div class="step" id="step2">
+    <div class="step-num">2</div>
+    <div>Tus datos</div>
+  </div>
+  <div class="step" id="step3">
+    <div class="step-num">3</div>
+    <div>Pagar</div>
+  </div>
+</div>
+
+<!-- ══ PANEL 1: SELECCIÓN ══ -->
+<div class="panel active" id="panel1">
+  <div class="sec-title">
+    <span class="sec-eyebrow">Paso 1</span>
+    <h2>¿Qué vas<br/><em>a pedir?</em></h2>
+    <p>Incluye tortillas en cada compra. Mínimo medio kilo.</p>
+  </div>
+
+  <!-- BARBACOA -->
+  <div class="card" style="animation-delay:.05s">
+    <div class="card-header"><span>🥩</span><span class="card-title">Barbacoa de Res</span></div>
+    <div class="card-body">
+
+      <div class="qty-row">
+        <div class="qty-info">
+          <div class="qty-name">Kilo</div>
+          <div class="qty-desc">Incluye paquete de tortillas <span class="badge-inc">+ tortillas</span></div>
+        </div>
+        <div class="qty-price">$599</div>
+        <div class="qty-ctrl">
+          <button class="qty-btn" onclick="cambiar('kilos', -1)">−</button>
+          <div class="qty-val" id="val-kilos">0</div>
+          <button class="qty-btn" onclick="cambiar('kilos', 1)">+</button>
+        </div>
+      </div>
+
+      <div class="qty-row">
+        <div class="qty-info">
+          <div class="qty-name">Medio Kilo</div>
+          <div class="qty-desc">Incluye paquete de tortillas <span class="badge-inc">+ tortillas</span></div>
+        </div>
+        <div class="qty-price">$299</div>
+        <div class="qty-ctrl">
+          <button class="qty-btn" onclick="cambiar('medios', -1)">−</button>
+          <div class="qty-val" id="val-medios">0</div>
+          <button class="qty-btn" onclick="cambiar('medios', 1)">+</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- CONSOMÉ -->
+  <div class="card" style="animation-delay:.1s">
+    <div class="card-header"><span>🍲</span><span class="card-title">Consomé</span></div>
+    <div class="card-body">
+
+      <div class="toggle-row">
+        <div class="toggle-info">
+          <div class="toggle-name">Consomé <span class="badge-inc">Gratis</span></div>
+          <div class="toggle-desc">1 consomé incluido con tu pedido</div>
+        </div>
+        <div style="font-family:'Oswald',sans-serif;font-size:.85rem;color:#4ade80;letter-spacing:1px;">Incluido</div>
+      </div>
+
+      <div class="toggle-row">
+        <div class="toggle-info">
+          <div class="toggle-name">Consomé Extra</div>
+          <div class="toggle-desc">$20 por pieza adicional</div>
+        </div>
+        <div class="consome-extra-wrap">
+          <div class="qty-ctrl" id="consome-qty-ctrl" style="display:none">
+            <button class="qty-btn" onclick="cambiar('consomes', -1)">−</button>
+            <div class="qty-val" id="val-consomes">0</div>
+            <button class="qty-btn" onclick="cambiar('consomes', 1)">+</button>
+          </div>
+          <button class="consome-toggle-btn" id="btnConsomeToggle" onclick="toggleConsome()">+ Agregar</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ENVÍO -->
+  <div class="card" style="animation-delay:.15s">
+    <div class="card-header"><span>🛵</span><span class="card-title">Entrega a Domicilio</span></div>
+    <div class="card-body">
+      <div class="qty-row" style="border:none;padding:8px 0">
+        <div class="qty-info">
+          <div class="qty-name">Envío a domicilio</div>
+          <div class="qty-desc">Reynosa, Tamaulipas · Costo fijo</div>
+        </div>
+        <div class="qty-price" style="color:var(--crema)">$50</div>
+        <div style="font-family:'Lora',serif;font-style:italic;font-size:.78rem;color:#4ade80;">Incluido</div>
+      </div>
+    </div>
+  </div>
+
+  <div style="height:90px"></div><!-- espacio para resumen sticky -->
+</div>
+
+<!-- ══ PANEL 2: DATOS ══ -->
+<div class="panel" id="panel2">
+  <button class="btn-back" onclick="irA(1)">← Volver a mi orden</button>
+
+  <div class="sec-title">
+    <span class="sec-eyebrow">Paso 2</span>
+    <h2>Tus<br/><em>datos</em></h2>
+    <p>Para poder entregarte tu pedido necesitamos tu información.</p>
+  </div>
+
+  <!-- Resumen de orden -->
+  <div class="card" style="animation-delay:.05s">
+    <div class="card-header"><span>📋</span><span class="card-title">Resumen de tu orden</span></div>
+    <div class="card-body">
+      <div class="orden-resumen" id="ordenResumen"></div>
+    </div>
+  </div>
+
+  <!-- Datos -->
+  <div class="card" style="animation-delay:.1s">
+    <div class="card-header"><span>👤</span><span class="card-title">Información de entrega</span></div>
+    <div class="card-body">
+      <div class="field">
+        <label for="inp-nombre">Tu nombre completo</label>
+        <input id="inp-nombre" type="text" placeholder="Ej. María González" autocomplete="name" spellcheck="false"/>
+      </div>
+      <div class="field">
+        <label for="inp-telefono">WhatsApp / Teléfono</label>
+        <input id="inp-telefono" type="tel" placeholder="Ej. 899 123 4567" autocomplete="tel"/>
+      </div>
+      <div class="field">
+        <label for="inp-direccion">Dirección de entrega</label>
+        <textarea id="inp-direccion" placeholder="Calle, número, colonia, referencias..."></textarea>
+      </div>
+      <div class="field">
+        <label for="inp-fecha">¿Para cuándo lo quieres? <span style="color:rgba(200,146,42,.4)">(opcional)</span></label>
+        <input id="inp-fecha" type="text" placeholder="Ej. Sábado 10 de mayo en la mañana"/>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" style="animation-delay:.15s">
+    <div class="card-header"><span>💳</span><span class="card-title">Confirmar y pagar</span></div>
+    <div class="card-body">
+      <button class="btn-confirmar" id="btnConfirmar" onclick="confirmarPedido()">
+        <span id="btn-conf-text">Generar Link de Pago</span>
+        <div class="spinner" id="btn-conf-spin"></div>
+      </button>
+      <div class="error-msg" id="errorMsg"></div>
+    </div>
+  </div>
+
+  <div style="height:20px"></div>
+</div>
+
+<!-- ══ PANEL 3: LINK GENERADO ══ -->
+<div class="panel" id="panel3">
+  <div class="link-screen">
+    <span class="big-icon">🎉</span>
+    <h2>¡Pedido<br/><em>registrado!</em></h2>
+    <p>Tu orden quedó guardada. Realiza tu pago en el link de abajo y envíanos el comprobante por WhatsApp.</p>
+    <div class="link-box" id="linkBox"></div>
+    <div class="link-actions">
+      <button class="btn-copiar" id="btnCopiar" onclick="copiarLink()">Copiar Link de Pago</button>
+      <a class="btn-wa-link" id="btnWaLink" href="#" target="_blank">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        Ir a pagar por WhatsApp
+      </a>
+      <button class="btn-nueva" onclick="nuevaOrden()">Hacer otro pedido</button>
+    </div>
+  </div>
+</div>
+
+<!-- RESUMEN STICKY (panel 1) -->
+<div class="resumen" id="resumenBar">
+  <div class="resumen-left">
+    <div class="resumen-items" id="resumenItems">Selecciona tu orden arriba</div>
+    <div class="resumen-total"><span>MXN</span><span id="resumenTotal">0</span></div>
+  </div>
+  <button class="btn-next" id="btnSiguiente" onclick="irA(2)" disabled>Siguiente →</button>
+</div>
+
+<a href="https://wa.me/528991346597" target="_blank" class="wa-float" aria-label="WhatsApp">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+</a>
+
+<footer><p>© 2025 Don Barbacoa · Reynosa, Tamaulipas · Órdenes por WhatsApp</p></footer>
+<div class="toast" id="toast"></div>
+
+<script>
+  // ══════════════════════════════════════
+  //  CONFIGURACIÓN
+  // ══════════════════════════════════════
+  var GAS_URL      = 'https://script.google.com/macros/s/AKfycbzt1OO8jiuPEkmF1Vn5SYoeDndIqaXg2uMHhuokZ9JRztMYDnUYKE6OKwkP9PDvT5nzoA/exec';
+  var RECEIVER_URL = 'https://horussystemco.com/barbacoa/receiver.html';
+  var WA_NUMBER    = '528991346597';
+  // ══════════════════════════════════════
+
+  var PRECIOS = { kilo:599, medio:299, consome:20, envio:50 };
+
+  var orden = { kilos:0, medios:0, consomes:0, consomeExtra:false };
+
+  // ── CANTIDAD ─────────────────────────
+  function cambiar(tipo, delta) {
+    if (tipo === 'kilos') {
+      orden.kilos = Math.max(0, orden.kilos + delta);
+      document.getElementById('val-kilos').textContent = orden.kilos;
+    } else if (tipo === 'medios') {
+      orden.medios = Math.max(0, orden.medios + delta);
+      document.getElementById('val-medios').textContent = orden.medios;
+    } else if (tipo === 'consomes') {
+      orden.consomes = Math.max(0, orden.consomes + delta);
+      document.getElementById('val-consomes').textContent = orden.consomes;
+      if (orden.consomes === 0) {
+        toggleConsome(); // apagar si llega a 0
+      }
+    }
+    actualizarResumen();
+  }
+
+  function toggleConsome() {
+    orden.consomeExtra = !orden.consomeExtra;
+    var ctrl = document.getElementById('consome-qty-ctrl');
+    var btn  = document.getElementById('btnConsomeToggle');
+    if (orden.consomeExtra) {
+      orden.consomes = orden.consomes || 1;
+      document.getElementById('val-consomes').textContent = orden.consomes;
+      ctrl.style.display = 'flex';
+      btn.textContent = '− Quitar';
+      btn.classList.add('active');
+    } else {
+      orden.consomes = 0;
+      document.getElementById('val-consomes').textContent = 0;
+      ctrl.style.display = 'none';
+      btn.textContent = '+ Agregar';
+      btn.classList.remove('active');
+    }
+    actualizarResumen();
+  }
+
+  // ── CÁLCULO ───────────────────────────
+  function calcTotal() {
+    return (orden.kilos * PRECIOS.kilo) +
+           (orden.medios * PRECIOS.medio) +
+           (orden.consomes * PRECIOS.consome) +
+           PRECIOS.envio;
+  }
+
+  function calcValido() {
+    return (orden.kilos + orden.medios) > 0;
+  }
+
+  function textoOrden() {
+    var partes = [];
+    if (orden.kilos  > 0) partes.push(orden.kilos + (orden.kilos === 1 ? ' kilo' : ' kilos') + ' de barbacoa');
+    if (orden.medios > 0) partes.push(orden.medios + (orden.medios === 1 ? ' medio kilo' : ' medios kilos') + ' de barbacoa');
+    if (orden.consomes > 0) partes.push(orden.consomes + ' consomé' + (orden.consomes > 1 ? 's' : '') + ' extra');
+    partes.push('envío a domicilio');
+    partes.push('tortillas incluidas');
+    return partes.join(', ');
+  }
+
+  function actualizarResumen() {
+    var valido = calcValido();
+    var total  = calcTotal();
+
+    document.getElementById('btnSiguiente').disabled = !valido;
+
+    if (!valido) {
+      document.getElementById('resumenItems').textContent = 'Selecciona al menos medio kilo';
+      document.getElementById('resumenTotal').textContent = '0';
+      return;
+    }
+
+    var items = [];
+    if (orden.kilos  > 0) items.push(orden.kilos + ' kilo' + (orden.kilos > 1 ? 's' : ''));
+    if (orden.medios > 0) items.push(orden.medios + ' medio' + (orden.medios > 1 ? 's' : ''));
+    if (orden.consomes > 0) items.push(orden.consomes + ' consomé' + (orden.consomes > 1 ? 's' : '') + ' extra');
+    items.push('envío $50');
+
+    document.getElementById('resumenItems').textContent = items.join(' · ');
+    document.getElementById('resumenTotal').textContent = total.toLocaleString('es-MX');
+  }
+
+  // ── NAVEGACIÓN ───────────────────────
+  function irA(num) {
+    if (num === 2 && !calcValido()) return;
+
+    // Actualizar steps
+    [1,2,3].forEach(function(n) {
+      var s = document.getElementById('step' + n);
+      s.classList.remove('active','done');
+      if (n < num) s.classList.add('done');
+      else if (n === num) s.classList.add('active');
+    });
+
+    // Mostrar panel
+    document.querySelectorAll('.panel').forEach(function(p) { p.classList.remove('active'); });
+    document.getElementById('panel' + num).classList.add('active');
+
+    // Resumen bar solo en panel 1
+    document.getElementById('resumenBar').style.display = num === 1 ? 'flex' : 'none';
+
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+
+    if (num === 2) construirResumenPanel2();
+  }
+
+  function construirResumenPanel2() {
+    var html = '<div class="orden-resumen-title">Detalle de tu orden</div>';
+
+    if (orden.kilos > 0) {
+      html += item('Barbacoa ' + orden.kilos + ' kilo' + (orden.kilos>1?'s':'') + ' + tortillas', '$' + (orden.kilos * PRECIOS.kilo).toLocaleString('es-MX'));
+    }
+    if (orden.medios > 0) {
+      html += item('Barbacoa medio kilo x' + orden.medios + ' + tortillas', '$' + (orden.medios * PRECIOS.medio).toLocaleString('es-MX'));
+    }
+    html += item('Consomé (incluido)', 'Gratis');
+    if (orden.consomes > 0) {
+      html += item('Consomé extra x' + orden.consomes, '$' + (orden.consomes * PRECIOS.consome).toLocaleString('es-MX'));
+    }
+    html += item('Envío a domicilio', '$50');
+
+    html += '<div class="orden-total-row"><div class="orden-total-label">Total</div><div class="orden-total-val"><span>MXN</span>' + calcTotal().toLocaleString('es-MX') + '</div></div>';
+
+    document.getElementById('ordenResumen').innerHTML = html;
+  }
+
+  function item(name, price) {
+    return '<div class="orden-item"><div class="orden-item-name">' + name + '</div><div class="orden-item-price">' + price + '</div></div>';
+  }
+
+  // ── CONFIRMAR ────────────────────────
+  async function confirmarPedido() {
+    var nombre    = document.getElementById('inp-nombre').value.trim();
+    var telefono  = document.getElementById('inp-telefono').value.trim();
+    var direccion = document.getElementById('inp-direccion').value.trim();
+    var fecha     = document.getElementById('inp-fecha').value.trim();
+
+    if (!nombre)    { mostrarError('Por favor escribe tu nombre.'); return; }
+    if (!telefono)  { mostrarError('Por favor escribe tu WhatsApp o teléfono.'); return; }
+    if (!direccion) { mostrarError('Por favor escribe tu dirección de entrega.'); return; }
+
+    ocultarError();
+    setLoadingConf(true);
+
+    var pedidoTexto = textoOrden();
+    var montoTexto  = '$' + calcTotal().toLocaleString('es-MX');
+
+    // Detalle completo para la hoja
+    var detalleHoja = [];
+    if (orden.kilos  > 0) detalleHoja.push(orden.kilos + ' kilo(s) barbacoa');
+    if (orden.medios > 0) detalleHoja.push(orden.medios + ' medio(s) kilo barbacoa');
+    if (orden.consomes > 0) detalleHoja.push(orden.consomes + ' consomé(s) extra');
+    detalleHoja.push('envío $50');
+    detalleHoja.push('dir: ' + direccion);
+    detalleHoja.push('tel: ' + telefono);
+    if (fecha) detalleHoja.push('fecha: ' + fecha);
+
+    try {
+      var data = await callGAS({
+        action:    'createPedido',
+        nombre:    nombre,
+        telefono:  telefono,
+        direccion: direccion,
+        pedido:    pedidoTexto,
+        monto:     montoTexto,
+        fecha:     fecha
+      });
+
+      if (!data.ok) throw new Error(data.error || 'Error al guardar');
+
+      var link = RECEIVER_URL + '?id=' + encodeURIComponent(data.id);
+      mostrarLink(link, nombre, pedidoTexto, montoTexto);
+      irA(3);
+
+    } catch(err) {
+      mostrarError('Error al conectar: ' + err.message + '\n\nIntenta de nuevo o escríbenos por WhatsApp.');
+    } finally {
+      setLoadingConf(false);
+    }
+  }
+
+  function mostrarLink(link, nombre, pedido, monto) {
+    document.getElementById('linkBox').textContent = link;
+
+    var msg = encodeURIComponent(
+      '🍖 *Don Barbacoa* — Mi pedido\n\n' +
+      'Nombre: ' + nombre + '\n' +
+      'Pedido: ' + pedido + '\n' +
+      'Total: ' + monto + '\n\n' +
+      'Link de pago: ' + link + '\n\n' +
+      'Voy a realizar mi transferencia y envío el comprobante. 🤙'
+    );
+    document.getElementById('btnWaLink').href = 'https://wa.me/' + WA_NUMBER + '?text=' + msg;
+  }
+
+  function copiarLink() {
+    var link = document.getElementById('linkBox').textContent;
+    navigator.clipboard.writeText(link).then(function() {
+      var btn = document.getElementById('btnCopiar');
+      btn.textContent = '✓ Copiado';
+      btn.classList.add('ok');
+      toast('Link copiado');
+      setTimeout(function() { btn.textContent = 'Copiar Link de Pago'; btn.classList.remove('ok'); }, 2200);
+    });
+  }
+
+  function nuevaOrden() {
+    orden = { kilos:0, medios:0, consomes:0, consomeExtra:false };
+    document.getElementById('val-kilos').textContent  = 0;
+    document.getElementById('val-medios').textContent = 0;
+    document.getElementById('val-consomes').textContent = 0;
+    document.getElementById('consome-qty-ctrl').style.display = 'none';
+    document.getElementById('btnConsomeToggle').textContent = '+ Agregar';
+    document.getElementById('btnConsomeToggle').classList.remove('active');
+    document.getElementById('inp-nombre').value    = '';
+    document.getElementById('inp-telefono').value  = '';
+    document.getElementById('inp-direccion').value = '';
+    document.getElementById('inp-fecha').value     = '';
+    actualizarResumen();
+    irA(1);
+  }
+
+  // ── JSONP ─────────────────────────────
+  function callGAS(params) {
+    return new Promise(function(resolve, reject) {
+      var cbName = 'cb_' + Date.now() + '_' + Math.floor(Math.random() * 99999);
+      var url    = new URL(GAS_URL);
+      Object.keys(params).forEach(function(k) { url.searchParams.set(k, String(params[k])); });
+      url.searchParams.set('callback', cbName);
+
+      var script = document.createElement('script');
+      var timer  = setTimeout(function() { cleanup(); reject(new Error('Timeout')); }, 15000);
+
+      window[cbName] = function(data) { cleanup(); resolve(data); };
+
+      function cleanup() {
+        clearTimeout(timer); delete window[cbName];
+        if (script.parentNode) script.parentNode.removeChild(script);
+      }
+
+      script.onerror = function() { cleanup(); reject(new Error('No se pudo conectar con el servidor')); };
+      script.src = url.toString();
+      document.head.appendChild(script);
+    });
+  }
+
+  // ── HELPERS ───────────────────────────
+  function setLoadingConf(state) {
+    document.getElementById('btnConfirmar').disabled = state;
+    document.getElementById('btn-conf-text').style.display = state ? 'none' : '';
+    document.getElementById('btn-conf-spin').style.display = state ? 'block' : 'none';
+  }
+
+  function mostrarError(msg) {
+    var el = document.getElementById('errorMsg');
+    el.textContent = msg; el.classList.add('visible');
+    el.scrollIntoView({ behavior:'smooth', block:'nearest' });
+  }
+
+  function ocultarError() { document.getElementById('errorMsg').classList.remove('visible'); }
+
+  var toastTimer;
+  function toast(msg) {
+    var t = document.getElementById('toast');
+    t.textContent = msg; t.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function() { t.classList.remove('show'); }, 2200);
+  }
+
+  // Init
+  actualizarResumen();
+</script>
+</body>
+</html>

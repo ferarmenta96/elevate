@@ -179,6 +179,7 @@
           <span class="msg-static"> para confirmar su pedido.<br/><br/>Al finalizar, </span>
           <strong style="color:var(--crema)">envíe su comprobante por WhatsApp</strong>
           <span class="msg-static"> y agendaremos su entrega. 🤝</span>
+          <span id="p-dir-wrap" style="display:none"><br/><br/><span class="msg-static">📍 Entrega en: </span><span class="msg-val" id="p-direccion"></span></span>
         </div>
       </div>
     </div>
@@ -343,6 +344,10 @@
         document.getElementById('p-fecha-wrap').style.display = '';
       } else {
         document.getElementById('p-fecha-wrap').style.display = 'none';
+      }
+      if (data.direccion) {
+        document.getElementById('p-direccion').textContent = data.direccion;
+        document.getElementById('p-dir-wrap').style.display = '';
       }
 
       var msgP = encodeURIComponent('Hola Don Barbacoa! 🍖\n\nLe comparto mi comprobante para confirmar mi pedido.\n\nNombre: ' + data.nombre + '\nPedido: ' + data.pedido + '\nMonto: ' + data.monto + '\n\n[Adjunto comprobante 📸]');
