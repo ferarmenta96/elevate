@@ -510,7 +510,7 @@
   function cargarCobro(id) {
     var cbName = 'cb_' + Date.now() + '_' + Math.floor(Math.random() * 99999);
     var url    = new URL(GAS_URL);
-    url.searchParams.set('action', 'getCobro');
+    url.searchParams.set('action', 'getPedido');
     url.searchParams.set('id', id);
     url.searchParams.set('callback', cbName);
     var script = document.createElement('script');

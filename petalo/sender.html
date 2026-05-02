@@ -608,7 +608,7 @@
     if (!monto)  { mostrarError('Por favor escribe el monto 💰'); document.getElementById('inp-monto').focus(); return; }
     ocultarError(); setLoading(true);
     try {
-      var data = await callGAS({ action: 'createCobro', nombre, monto, fecha });
+      var data = await callGAS({ action: 'createPedido', nombre: nombre, pedido: 'Pétalo Rosa', monto: monto, fecha: fecha });
       if (!data.ok) throw new Error(data.error || 'Error al guardar');
       var link = RECEIVER_URL + '?id=' + encodeURIComponent(data.id);
       mostrarResultado(link, nombre, monto);
