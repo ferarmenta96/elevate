@@ -295,9 +295,13 @@
   function callGAS(params) {
     return new Promise(function(resolve, reject) {
       var cbName = 'cb_' + Date.now() + '_' + Math.floor(Math.random() * 99999);
-      var url    = new URL(GAS_URL);
-      Object.keys(params).forEach(function(k) { url.searchParams.set(k, String(params[k])); });
-      url.searchParams.set('callback', cbName);
+
+      var qs = Object.keys(params).map(function(k) {
+        return encodeURIComponent(k) + '=' + encodeURIComponent(String(params[k]));
+      }).join('&');
+      qs += '&callback=' + encodeURIComponent(cbName);
+
+      var url = GAS_URL + '?' + qs;
 
       var script = document.createElement('script');
       var timer  = setTimeout(function() { cleanup(); reject(new Error('Timeout')); }, 15000);
@@ -311,7 +315,7 @@
       }
 
       script.onerror = function() { cleanup(); reject(new Error('No se pudo conectar')); };
-      script.src = url.toString();
+      script.src = url;
       document.head.appendChild(script);
     });
   }

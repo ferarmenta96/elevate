@@ -633,12 +633,17 @@
   function callGAS(params) {
     return new Promise(function(resolve, reject) {
       var cbName = 'cb_' + Date.now() + '_' + Math.floor(Math.random() * 99999);
-      var url    = new URL(GAS_URL);
-      Object.keys(params).forEach(function(k) { url.searchParams.set(k, String(params[k])); });
-      url.searchParams.set('callback', cbName);
+
+      // Construir query string manualmente con encodeURIComponent robusto
+      var qs = Object.keys(params).map(function(k) {
+        return encodeURIComponent(k) + '=' + encodeURIComponent(String(params[k]));
+      }).join('&');
+      qs += '&callback=' + encodeURIComponent(cbName);
+
+      var url = GAS_URL + '?' + qs;
 
       var script = document.createElement('script');
-      var timer  = setTimeout(function() { cleanup(); reject(new Error('Timeout')); }, 15000);
+      var timer  = setTimeout(function() { cleanup(); reject(new Error('Timeout — revisa la conexión')); }, 15000);
 
       window[cbName] = function(data) { cleanup(); resolve(data); };
 
@@ -648,7 +653,7 @@
       }
 
       script.onerror = function() { cleanup(); reject(new Error('No se pudo conectar con el servidor')); };
-      script.src = url.toString();
+      script.src = url;
       document.head.appendChild(script);
     });
   }

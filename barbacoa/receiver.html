@@ -292,10 +292,7 @@
 
   function cargarPedido(id) {
     var cbName = 'cb_' + Date.now() + '_' + Math.floor(Math.random() * 99999);
-    var url    = new URL(GAS_URL);
-    url.searchParams.set('action', 'getPedido');
-    url.searchParams.set('id', id);
-    url.searchParams.set('callback', cbName);
+    var url = GAS_URL + '?action=getPedido&id=' + encodeURIComponent(id) + '&callback=' + encodeURIComponent(cbName);
 
     var script = document.createElement('script');
     var timer  = setTimeout(function() { cleanup(); mostrarError(); }, 15000);
@@ -311,7 +308,7 @@
     }
 
     script.onerror = function() { cleanup(); mostrarError(); };
-    script.src = url.toString();
+    script.src = url;
     document.head.appendChild(script);
   }
 
