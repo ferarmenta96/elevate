@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Horus Pay — Panel de Cobros</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,600&family=Inter:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --navy:    #0A2240;
+      --navy2:   #0d2d55;
+      --navy3:   #071828;
+      --gold:    #C9A84C;
+      --gold2:   #e0be72;
+      --gold3:   #a07c2a;
+      --cream:   #F8F5EF;
+      --cream2:  #F0EBE0;
+      --blanco:  #FFFFFF;
+      --gris:    #64748B;
+      --gris-cl: #F1F5F9;
+      --borde:   rgba(201,168,76,0.22);
+      --borde2:  rgba(10,34,64,0.1);
+      --negro:   #0F1923;
+      --shadow:  0 4px 28px rgba(10,34,64,0.09);
+    }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Inter', sans-serif; background: var(--cream); color: var(--negro); min-height: 100vh; overflow-x: hidden; }
+    body::before { content: ''; position: fixed; inset: 0; background-image: radial-gradient(ellipse at 10% 0%, rgba(201,168,76,0.055) 0%, transparent 55%), radial-gradient(ellipse at 90% 100%, rgba(10,34,64,0.055) 0%, transparent 55%); pointer-events: none; z-index: 0; }
+
+    /* ─── HEADER ─── */
+    header { background: var(--navy3); border-bottom: 1px solid rgba(201,168,76,0.18); padding: 0 48px; height: 70px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 20px rgba(0,0,0,0.22); }
+    .logo-wrap { display: flex; align-items: center; gap: 13px; }
+    .logo-icon { width: 36px; height: 36px; background: linear-gradient(135deg, var(--gold), var(--gold3)); border-radius: 7px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .logo-icon svg { width: 20px; height: 20px; fill: var(--navy3); }
+    .logo-name { font-family: 'Cormorant Garamond', serif; font-size: 1.5rem; font-weight: 700; color: var(--blanco); letter-spacing: .4px; line-height: 1; }
+    .logo-sub  { font-size: .52rem; letter-spacing: 3px; text-transform: uppercase; color: var(--gold); font-weight: 600; margin-top: 2px; }
+    .header-badge { font-size: .56rem; letter-spacing: 3px; text-transform: uppercase; color: var(--gold); border: 1px solid rgba(201,168,76,0.32); padding: 6px 16px; font-weight: 600; background: rgba(201,168,76,0.07); border-radius: 4px; }
+
+    /* ─── HERO ─── */
+    .hero { background: linear-gradient(158deg, var(--navy3) 0%, var(--navy) 55%, var(--navy2) 100%); padding: 72px 48px 64px; text-align: center; position: relative; overflow: hidden; border-bottom: 1px solid rgba(201,168,76,0.13); }
+    .hero-grid { position: absolute; inset: 0; pointer-events: none; background-image: linear-gradient(rgba(201,168,76,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(201,168,76,0.04) 1px, transparent 1px); background-size: 52px 52px; }
+    .hero-glow { position: absolute; top: -80px; left: 50%; transform: translateX(-50%); width: 500px; height: 260px; background: radial-gradient(ellipse, rgba(201,168,76,0.1) 0%, transparent 70%); pointer-events: none; }
+    .hero-inner { position: relative; z-index: 1; }
+    .eyebrow { display: inline-flex; align-items: center; gap: 8px; font-size: .56rem; letter-spacing: 4px; text-transform: uppercase; color: var(--gold); background: rgba(201,168,76,0.09); border: 1px solid rgba(201,168,76,0.22); padding: 6px 18px; border-radius: 4px; margin-bottom: 24px; font-weight: 600; }
+    .eyebrow::before, .eyebrow::after { content: '◆'; font-size: .38rem; opacity: .55; }
+    .hero h1 { font-family: 'Cormorant Garamond', serif; font-size: clamp(2.8rem, 7vw, 4.4rem); font-weight: 700; color: var(--blanco); line-height: 1.04; margin-bottom: 16px; letter-spacing: -.5px; }
+    .hero h1 em { color: var(--gold); font-style: italic; }
+    .hero p { font-size: .88rem; color: rgba(255,255,255,0.45); font-weight: 400; letter-spacing: .3px; }
+
+    /* ─── MAIN ─── */
+    main { max-width: 640px; margin: 0 auto; padding: 52px 20px 88px; position: relative; z-index: 1; }
+
+    /* ─── CARDS ─── */
+    .card { background: var(--blanco); border: 1px solid var(--borde2); border-radius: 12px; margin-bottom: 18px; position: relative; animation: fadeUp .5s ease both; box-shadow: var(--shadow); overflow: hidden; }
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+    .card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, var(--gold3), var(--gold), var(--gold2)); }
+    .card-header { padding: 14px 24px; border-bottom: 1px solid var(--gris-cl); display: flex; align-items: center; gap: 10px; background: #FAFBFC; }
+    .card-icon { width: 28px; height: 28px; border-radius: 6px; background: linear-gradient(135deg, var(--navy), var(--navy2)); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .card-icon svg { width: 14px; height: 14px; fill: var(--gold); }
+    .card-title { font-size: .58rem; letter-spacing: 3px; text-transform: uppercase; color: var(--navy); font-weight: 700; }
+    .card-body { padding: 26px 24px; }
+
+    /* ─── FIELDS ─── */
+    .field { margin-bottom: 18px; }
+    .field:last-child { margin-bottom: 0; }
+    .field label { display: block; font-size: .56rem; letter-spacing: 2.5px; text-transform: uppercase; color: var(--navy); margin-bottom: 8px; font-weight: 700; }
+    .field label .opt { color: var(--gris); font-style: italic; letter-spacing: 1px; font-weight: 400; }
+    .field input, .field textarea { width: 100%; background: var(--gris-cl); border: 1.5px solid var(--borde2); border-radius: 7px; padding: 12px 16px; font-family: 'Inter', sans-serif; font-size: .9rem; font-weight: 400; color: var(--negro); outline: none; transition: border-color .2s, box-shadow .2s, background .2s; }
+    .field input::placeholder, .field textarea::placeholder { color: #B0BEC5; }
+    .field input:focus, .field textarea:focus { border-color: var(--gold); background: var(--blanco); box-shadow: 0 0 0 3px rgba(201,168,76,0.11); }
+    .field textarea { resize: vertical; min-height: 80px; }
+    .field-hint { font-size: .72rem; color: var(--gris); margin-top: 5px; }
+
+    /* ─── SYNC BANNER ─── */
+    .sync-banner { display: flex; align-items: center; gap: 12px; background: linear-gradient(135deg, var(--navy3), var(--navy)); border: 1px solid rgba(201,168,76,0.2); border-radius: 8px; padding: 12px 16px; margin-bottom: 20px; }
+    .sync-banner svg { width: 20px; height: 20px; fill: var(--gold); flex-shrink: 0; }
+    .sync-title { font-size: .58rem; letter-spacing: 2.5px; text-transform: uppercase; color: var(--gold); font-weight: 700; }
+    .sync-desc  { font-size: .72rem; color: rgba(255,255,255,0.45); margin-top: 2px; }
+
+    /* ─── PAYMENT METHOD BLOCKS ─── */
+    .pay-method-block { border: 1.5px solid var(--borde2); border-radius: 10px; margin-bottom: 12px; overflow: hidden; transition: border-color .2s, box-shadow .2s; }
+    .pay-method-block.active { border-color: rgba(201,168,76,0.45); box-shadow: 0 0 0 3px rgba(201,168,76,0.06); }
+    .pay-method-header { display: flex; align-items: center; gap: 12px; padding: 14px 16px; background: #FAFBFC; cursor: pointer; user-select: none; transition: background .15s; }
+    .pay-method-header:hover { background: var(--gris-cl); }
+    .pay-method-logo { width: 36px; height: 36px; border-radius: 8px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 1.15rem; background: var(--gris-cl); border: 1px solid var(--borde2); }
+    .pay-method-label { flex: 1; }
+    .pay-method-name { font-size: .85rem; font-weight: 600; color: var(--negro); }
+    .pay-method-desc { font-size: .72rem; color: var(--gris); margin-top: 1px; }
+    .toggle-switch { position: relative; width: 42px; height: 24px; flex-shrink: 0; }
+    .toggle-switch input { opacity: 0; width: 0; height: 0; position: absolute; }
+    .toggle-track { position: absolute; inset: 0; background: #CBD5E1; border-radius: 24px; cursor: pointer; transition: background .2s; }
+    .toggle-track::after { content: ''; position: absolute; width: 18px; height: 18px; left: 3px; top: 3px; background: #fff; border-radius: 50%; transition: transform .2s; box-shadow: 0 1px 4px rgba(0,0,0,0.18); }
+    .toggle-switch input:checked + .toggle-track { background: var(--gold); }
+    .toggle-switch input:checked + .toggle-track::after { transform: translateX(18px); }
+    .pay-method-fields { padding: 18px 16px; border-top: 1px solid var(--gris-cl); display: none; background: var(--blanco); }
+    .pay-method-block.active .pay-method-fields { display: block; }
+    .pay-method-fields .field { margin-bottom: 14px; }
+    .pay-method-fields .field:last-child { margin-bottom: 0; }
+
+    /* ─── SAVE BADGE ─── */
+    .save-badge { display: inline-flex; align-items: center; gap: 6px; font-size: .54rem; letter-spacing: 1.5px; text-transform: uppercase; color: #25a244; background: rgba(37,162,68,0.08); border: 1px solid rgba(37,162,68,0.22); padding: 3px 12px; border-radius: 4px; font-weight: 700; margin-left: auto; opacity: 0; transition: opacity .35s, color .3s, background .3s, border-color .3s; }
+    .save-badge.show { opacity: 1; }
+
+    /* ─── PREVIEW ─── */
+    .preview-box { background: linear-gradient(135deg, var(--navy3), var(--navy)); border: 1px solid rgba(201,168,76,0.18); border-radius: 10px; padding: 24px 26px; font-size: .9rem; line-height: 2; color: rgba(255,255,255,0.55); }
+    .preview-box .plbl { font-size: .52rem; letter-spacing: 3px; text-transform: uppercase; color: var(--gold); display: block; margin-bottom: 14px; font-weight: 700; opacity: .75; }
+    .pval { color: var(--gold2); font-weight: 600; }
+    .pstatic { color: rgba(255,255,255,0.45); }
+    .pay-preview { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 14px; }
+    .pay-chip { background: rgba(201,168,76,0.11); border: 1px solid rgba(201,168,76,0.22); border-radius: 4px; padding: 4px 12px; font-size: .63rem; font-weight: 600; color: var(--gold2); letter-spacing: 1px; }
+    .pay-chip.none { color: rgba(255,255,255,0.2); background: none; border-color: rgba(255,255,255,0.08); }
+
+    /* ─── BOTÓN ─── */
+    .btn-generate { width: 100%; padding: 16px; background: linear-gradient(135deg, var(--gold), var(--gold3)); border: none; border-radius: 8px; color: var(--navy3); font-family: 'Inter', sans-serif; font-size: .7rem; letter-spacing: 3px; text-transform: uppercase; font-weight: 700; cursor: pointer; transition: opacity .2s, transform .15s, box-shadow .2s; box-shadow: 0 4px 20px rgba(201,168,76,0.28); margin-top: 4px; }
+    .btn-generate:hover { opacity: .9; box-shadow: 0 8px 28px rgba(201,168,76,0.38); }
+    .btn-generate:active { transform: scale(.98); }
+    .btn-generate:disabled { opacity: .32; cursor: not-allowed; }
+    .spinner { display: none; width: 16px; height: 16px; border: 2px solid rgba(10,34,64,0.18); border-top-color: var(--navy3); border-radius: 50%; animation: spin .7s linear infinite; margin: 0 auto; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ─── RESULTADO ─── */
+    .result-box { display: none; border: 1px solid rgba(201,168,76,0.28); background: rgba(201,168,76,0.04); border-radius: 10px; padding: 20px; margin-top: 16px; animation: fadeUp .4s ease both; }
+    .result-box.visible { display: block; }
+    .rlabel { font-size: .54rem; letter-spacing: 3px; text-transform: uppercase; color: var(--navy); margin-bottom: 10px; font-weight: 700; }
+    .result-url { font-family: 'DM Mono', monospace; font-size: .78rem; color: var(--navy); word-break: break-all; line-height: 1.6; background: var(--blanco); border: 1px solid var(--borde2); border-radius: 6px; padding: 10px 14px; margin-bottom: 12px; }
+    .result-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+    .btn-action { flex: 1; min-width: 120px; padding: 11px 16px; border: 1.5px solid var(--borde2); border-radius: 7px; background: var(--blanco); color: var(--navy); font-family: 'Inter', sans-serif; font-size: .6rem; letter-spacing: 2px; text-transform: uppercase; font-weight: 700; cursor: pointer; transition: all .2s; text-decoration: none; text-align: center; }
+    .btn-action:hover { border-color: var(--gold); color: var(--gold3); background: rgba(201,168,76,0.05); }
+    .btn-action.wa { background: #25D366; border-color: #25D366; color: #fff; }
+    .btn-action.wa:hover { background: #1da851; border-color: #1da851; color: #fff; }
+    .btn-action.copied { border-color: #25D366; color: #25D366; }
+
+    /* ─── ERROR ─── */
+    .error-msg { display: none; background: #FFF5F5; border: 1px solid #FED7D7; border-left: 3px solid #E53E3E; border-radius: 7px; padding: 12px 16px; font-size: .84rem; color: #742A2A; margin-top: 14px; white-space: pre-line; }
+    .error-msg.visible { display: block; }
+
+    /* ─── TOAST ─── */
+    .toast { position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%) translateY(14px); background: var(--navy3); border: 1px solid rgba(201,168,76,0.28); color: var(--gold); font-family: 'Inter', sans-serif; font-size: .6rem; letter-spacing: 2px; text-transform: uppercase; font-weight: 700; padding: 10px 24px; border-radius: 6px; opacity: 0; pointer-events: none; transition: opacity .3s, transform .3s; z-index: 9998; white-space: nowrap; box-shadow: 0 4px 20px rgba(0,0,0,0.28); }
+    .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+    /* ─── MONITOREO ─── */
+    .section-label { font-size: .56rem; letter-spacing: 4px; text-transform: uppercase; color: var(--navy); font-weight: 700; margin-bottom: 14px; display: flex; align-items: center; gap: 10px; }
+    .section-label::after { content:''; flex:1; height:1px; background: var(--borde2); }
+    .poll-bar { display:flex; gap:10px; align-items:center; flex-wrap:wrap; margin-bottom:18px; }
+    .btn-poll { padding: 9px 20px; border-radius: 6px; border: 1.5px solid var(--borde2); background: var(--blanco); color: var(--navy); font-family: 'Inter', sans-serif; font-size: .6rem; letter-spacing: 2px; text-transform: uppercase; font-weight: 700; cursor: pointer; transition: all .2s; }
+    .btn-poll:hover { border-color: var(--gold); color: var(--gold3); }
+    .btn-poll.active { background: var(--navy); border-color: var(--navy); color: var(--gold); }
+    .poll-status { font-size: .63rem; color: var(--gris); font-weight: 600; display:flex; align-items:center; gap:6px; }
+    .poll-dot { width:7px; height:7px; border-radius:50%; background:#CBD5E1; }
+    .poll-status.live { color: var(--gold3); }
+    .poll-status.live .poll-dot { background: var(--gold); animation: parpadeo 1s step-end infinite; }
+    @keyframes parpadeo { 0%,100%{opacity:1} 50%{opacity:.2} }
+    .poll-timer { margin-left:auto; font-size:.6rem; color:var(--gris); font-weight:600; }
+    .table-wrap { overflow-x:auto; border-radius:8px; border:1px solid var(--borde2); }
+    table { width:100%; border-collapse:collapse; font-size:.75rem; }
+    thead tr { background:#FAFBFC; border-bottom:1px solid var(--borde2); }
+    th { text-align:left; padding:10px 14px; font-size:.52rem; letter-spacing:2.5px; text-transform:uppercase; color:var(--navy); font-weight:700; }
+    td { padding:10px 14px; border-bottom:1px solid var(--gris-cl); color:var(--negro); font-weight:400; vertical-align:middle; }
+    tbody tr:last-child td { border-bottom:none; }
+    tbody tr:hover { background:var(--gris-cl); }
+    .badge-activo { background:rgba(201,168,76,0.1); border:1px solid rgba(201,168,76,0.28); color:var(--gold3); padding:3px 10px; border-radius:4px; font-size:.52rem; letter-spacing:2px; text-transform:uppercase; font-weight:700; }
+    .badge-exp { background:#FFF5F5; border:1px solid #FED7D7; color:#E53E3E; padding:3px 10px; border-radius:4px; font-size:.52rem; letter-spacing:2px; text-transform:uppercase; font-weight:700; }
+    .map-btn { display:inline-block; padding:4px 12px; border-radius:5px; font-size:.56rem; letter-spacing:1px; text-transform:uppercase; font-weight:700; text-decoration:none; transition:all .2s; border:1px solid var(--borde2); color:var(--navy); background:var(--blanco); margin-right:4px; }
+    .map-btn:hover { border-color:var(--gold); color:var(--gold3); }
+    .empty-mon { text-align:center; padding:32px 16px; color:#CBD5E1; }
+    .empty-mon p { font-size:.75rem; font-weight:500; }
+    .stat-row { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin-bottom:18px; }
+    .stat { background:var(--blanco); border:1px solid var(--borde2); border-radius:8px; padding:14px 16px; text-align:center; }
+    .stat-val { font-family:'Cormorant Garamond',serif; font-size:2.2rem; color:var(--navy); line-height:1; font-weight:700; }
+    .stat-lbl { font-size:.5rem; letter-spacing:2px; text-transform:uppercase; color:var(--gris); font-weight:600; margin-top:4px; }
+
+    /* ─── FOOTER ─── */
+    footer { background: var(--navy3); border-top: 1px solid rgba(201,168,76,0.13); padding: 28px 48px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 14px; }
+    .footer-brand { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+    .f-logo-icon { width: 26px; height: 26px; background: linear-gradient(135deg, var(--gold), var(--gold3)); border-radius: 5px; display: flex; align-items: center; justify-content: center; }
+    .f-logo-icon svg { width: 14px; height: 14px; fill: var(--navy3); }
+    .f-brand-name { font-family: 'Cormorant Garamond', serif; font-size: 1.05rem; font-weight: 700; color: var(--blanco); }
+    .f-brand-sub  { font-size: .5rem; letter-spacing: 2.5px; text-transform: uppercase; color: rgba(255,255,255,0.25); margin-top: 1px; }
+    .footer-right { font-size: .52rem; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,0.22); font-weight: 600; text-align: right; }
+    .footer-right a { color: var(--gold); text-decoration: none; }
+    .footer-right a:hover { color: var(--gold2); }
+
+    @media (max-width: 600px) {
+      header { padding: 0 18px; }
+      .hero  { padding: 52px 18px 44px; }
+      main   { padding: 36px 14px 64px; }
+      footer { padding: 22px 18px; flex-direction: column; align-items: flex-start; }
+      .stat-row { grid-template-columns: 1fr 1fr; }
+      .footer-right { text-align: left; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="logo-wrap">
+    <div class="logo-icon">
+      <svg viewBox="0 0 24 24"><path d="M12 2L2 7v10l10 5 10-5V7L12 2zm0 2.18L20 8.5v7L12 19.82 4 15.5v-7L12 4.18z"/></svg>
+    </div>
+    <div>
+      <div class="logo-name">Horus</div>
+      <div class="logo-sub">System Co.</div>
+    </div>
+  </div>
+  <span class="header-badge">Panel de Cobros</span>
+</header>
+
+<div class="hero">
+  <div class="hero-grid"></div>
+  <div class="hero-glow"></div>
+  <div class="hero-inner">
+    <span class="eyebrow">Horus Pay</span>
+    <h1>Genera tu link<br/><em>de cobro</em></h1>
+    <p>Configura tus métodos de pago y comparte el link con tu cliente</p>
+  </div>
+</div>
+
+<main>
+
+  <!-- MÉTODOS DE PAGO -->
+  <div class="card" style="animation-delay:.04s">
+    <div class="card-header">
+      <div class="card-icon"><svg viewBox="0 0 24 24"><path d="M20 4H4c-1.11 0-2 .89-2 2v12c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V6c0-1.11-.89-2-2-2zm0 14H4v-6h16v6zm0-10H4V6h16v2z"/></svg></div>
+      <span class="card-title">Métodos de cobro</span>
+      <span class="save-badge" id="saveBadge"></span>
+    </div>
+    <div class="card-body">
+      <p style="font-size:.8rem;color:var(--gris);margin-bottom:16px;line-height:1.65;">Activa los métodos que aceptas y completa tus datos. Se sincronizan automáticamente en la nube.</p>
+
+      <div class="sync-banner">
+        <svg viewBox="0 0 24 24"><path d="M19.35 10.04A7.49 7.49 0 0012 4a7.5 7.5 0 00-7.35 6.04A5.994 5.994 0 006 22h13a5.994 5.994 0 00.35-11.96z"/></svg>
+        <div>
+          <div class="sync-title">Horus Cloud Sync</div>
+          <div class="sync-desc">Tus datos se guardan en la nube — disponibles desde cualquier dispositivo</div>
+        </div>
+      </div>
+
+      <div class="pay-method-block" id="block-cuenta">
+        <div class="pay-method-header" onclick="toggleMethod('cuenta')">
+          <div class="pay-method-logo">🏦</div>
+          <div class="pay-method-label">
+            <div class="pay-method-name">Cuenta Bancaria / CLABE</div>
+            <div class="pay-method-desc">Número de cuenta o CLABE interbancaria</div>
+          </div>
+          <label class="toggle-switch" onclick="event.stopPropagation()">
+            <input type="checkbox" id="toggle-cuenta" onchange="onToggle('cuenta')"/>
+            <span class="toggle-track"></span>
+          </label>
+        </div>
+        <div class="pay-method-fields" id="fields-cuenta">
+          <div class="field"><label>Banco</label><input id="pm-banco" type="text" placeholder="Ej. Santander, BBVA, Banamex..." oninput="guardarMetodos()"/></div>
+          <div class="field"><label>Nombre del beneficiario</label><input id="pm-nombre-banco" type="text" placeholder="Ej. Juan Pérez" oninput="guardarMetodos()"/></div>
+          <div class="field"><label>Número de Cuenta <span class="opt">(opcional si usas CLABE)</span></label><input id="pm-cuenta" type="text" placeholder="Ej. 1234567890" oninput="guardarMetodos()"/></div>
+          <div class="field"><label>CLABE Interbancaria <span class="opt">(opcional si usas N° cuenta)</span></label><input id="pm-clabe" type="text" placeholder="18 dígitos" maxlength="18" oninput="guardarMetodos()"/></div>
+        </div>
+      </div>
+
+      <div class="pay-method-block" id="block-zelle">
+        <div class="pay-method-header" onclick="toggleMethod('zelle')">
+          <div class="pay-method-logo">💵</div>
+          <div class="pay-method-label">
+            <div class="pay-method-name">Zelle</div>
+            <div class="pay-method-desc">Número de teléfono, correo o código QR</div>
+          </div>
+          <label class="toggle-switch" onclick="event.stopPropagation()">
+            <input type="checkbox" id="toggle-zelle" onchange="onToggle('zelle')"/>
+            <span class="toggle-track"></span>
+          </label>
+        </div>
+        <div class="pay-method-fields" id="fields-zelle">
+          <div class="field"><label>Nombre en Zelle</label><input id="pm-zelle-nombre" type="text" placeholder="Ej. Juan Pérez" oninput="guardarMetodos()"/></div>
+          <div class="field"><label>Teléfono o correo Zelle</label><input id="pm-zelle-tel" type="text" placeholder="Ej. +1 (956) 123-4567" oninput="guardarMetodos()"/></div>
+          <div class="field"><label>URL del código QR <span class="opt">(opcional)</span></label><input id="pm-zelle-qr" type="text" placeholder="https://..." oninput="guardarMetodos()"/><div class="field-hint">Sube tu QR a imgBB, Google Drive o Dropbox y pega el link directo</div></div>
+        </div>
+      </div>
+
+      <div class="pay-method-block" id="block-cashapp">
+        <div class="pay-method-header" onclick="toggleMethod('cashapp')">
+          <div class="pay-method-logo">💚</div>
+          <div class="pay-method-label">
+            <div class="pay-method-name">CashApp</div>
+            <div class="pay-method-desc">Link de pago directo por $cashtag</div>
+          </div>
+          <label class="toggle-switch" onclick="event.stopPropagation()">
+            <input type="checkbox" id="toggle-cashapp" onchange="onToggle('cashapp')"/>
+            <span class="toggle-track"></span>
+          </label>
+        </div>
+        <div class="pay-method-fields" id="fields-cashapp">
+          <div class="field"><label>$Cashtag</label><input id="pm-cashapp-tag" type="text" placeholder="Ej. $MiNegocio" oninput="guardarMetodos(); actualizarCashLink()"/></div>
+          <div class="field"><label>Link de CashApp <span class="opt">(se genera automáticamente)</span></label><input id="pm-cashapp-link" type="text" placeholder="https://cash.app/$MiNegocio" oninput="guardarMetodos()"/></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DATOS DEL COBRO -->
+  <div class="card" style="animation-delay:.09s">
+    <div class="card-header">
+      <div class="card-icon"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8l-6-6zm4 18H6V4h7v5h5v11z"/></svg></div>
+      <span class="card-title">Datos del cobro</span>
+    </div>
+    <div class="card-body">
+      <div class="field"><label for="inp-nombre">Nombre del cliente</label><input id="inp-nombre" type="text" placeholder="Ej. Carlos Ramírez" autocomplete="off" spellcheck="false" oninput="actualizarPreview()"/></div>
+      <div class="field"><label for="inp-monto">Monto a cobrar</label><input id="inp-monto" type="text" placeholder="Ej. $1,200.00 MXN" autocomplete="off" oninput="actualizarPreview()"/><div class="field-hint">Incluye símbolo y moneda si lo deseas</div></div>
+      <div class="field"><label for="inp-fecha">Fecha límite de pago <span class="opt">(opcional)</span></label><input id="inp-fecha" type="text" placeholder="Ej. viernes 9 de mayo" autocomplete="off" oninput="actualizarPreview()"/></div>
+    </div>
+  </div>
+
+  <!-- VISTA PREVIA -->
+  <div class="card" style="animation-delay:.14s">
+    <div class="card-header">
+      <div class="card-icon"><svg viewBox="0 0 24 24"><path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg></div>
+      <span class="card-title">Vista previa del link</span>
+    </div>
+    <div class="card-body">
+      <div class="preview-box">
+        <span class="plbl">◆ Así verá el cliente su página de pago</span>
+        <span class="pstatic">Hola, </span><span class="pval" id="prev-nombre">__________</span>
+        <span class="pstatic">. Tu pago está listo</span>
+        <span id="prev-fecha-wrap"><span class="pstatic"> — vence el </span><span class="pval" id="prev-fecha">__________</span></span>
+        <span class="pstatic">.<br/>Monto: </span><span class="pval" id="prev-monto">__________</span>
+        <span class="pstatic">. Puedes pagar con:</span>
+        <div class="pay-preview" id="prev-metodos"><span class="pay-chip none">Sin métodos activos</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- GENERAR LINK -->
+  <div class="card" style="animation-delay:.19s">
+    <div class="card-header">
+      <div class="card-icon"><svg viewBox="0 0 24 24"><path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z"/></svg></div>
+      <span class="card-title">Generar link único</span>
+    </div>
+    <div class="card-body">
+      <button class="btn-generate" id="btnGenerar" onclick="generarLink()">
+        <span id="btn-text">◆ Generar Link de Pago</span>
+        <div class="spinner" id="btn-spinner"></div>
+      </button>
+      <div class="error-msg" id="errorMsg"></div>
+      <div class="result-box" id="resultBox">
+        <div class="rlabel">◆ Link generado — comparte con tu cliente</div>
+        <div class="result-url" id="resultUrl"></div>
+        <div class="result-actions">
+          <button class="btn-action" id="btnCopiar" onclick="copiarLink()">Copiar Link</button>
+          <a class="btn-action wa" id="btnCompartir" href="#" target="_blank">Enviar por WhatsApp</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MONITOREO -->
+  <div class="card" style="animation-delay:.24s">
+    <div class="card-header">
+      <div class="card-icon"><svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg></div>
+      <span class="card-title">Ubicaciones capturadas</span>
+    </div>
+    <div class="card-body">
+      <div class="stat-row">
+        <div class="stat"><div class="stat-val" id="statTotal">0</div><div class="stat-lbl">Capturas</div></div>
+        <div class="stat"><div class="stat-val" id="statActive">0</div><div class="stat-lbl">Recientes</div></div>
+        <div class="stat"><div class="stat-val" id="statLinks">0</div><div class="stat-lbl">Links</div></div>
+      </div>
+      <div class="poll-bar">
+        <button class="btn-poll" id="pollBtn" onclick="togglePolling()">▶ Iniciar monitoreo</button>
+        <div class="poll-status" id="pollStatus"><span class="poll-dot"></span> Inactivo</div>
+        <span class="poll-timer" id="pollTimer"></span>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>ID</th><th>Latitud</th><th>Longitud</th><th>Hora</th><th>Estado</th><th>Ver</th></tr></thead>
+          <tbody id="tableBody"><tr><td colspan="6"><div class="empty-mon"><p>Sin capturas aún. Inicia el monitoreo.</p></div></td></tr></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<footer>
+  <div class="footer-brand">
+    <div class="f-logo-icon"><svg viewBox="0 0 24 24"><path d="M12 2L2 7v10l10 5 10-5V7L12 2zm0 2.18L20 8.5v7L12 19.82 4 15.5v-7L12 4.18z"/></svg></div>
+    <div>
+      <div class="f-brand-name">Horus System Co.</div>
+      <div class="f-brand-sub">Soluciones Digitales</div>
+    </div>
+  </div>
+  <div class="footer-right">
+    <a href="https://horussystemco.com" target="_blank">horussystemco.com</a><br/>
+    info@horussystem.net
+  </div>
+</footer>
+
+<div class="toast" id="toast"></div>
+
+<script>
+  var GAS_URL      = 'https://script.google.com/macros/s/AKfycbzmG1au9A43dalZG4Xbf3W7KPyu591xYdbLpNJ7dfucus9x6MyyyFfp8zYTyP1obLyeaA/exec';
+  var RECEIVER_URL = 'https://horussystemco.com/horuspay/receiver.html';
+  var WA_NUMBER    = '19562726415';
+  var LS_KEY       = 'horus_pay_metodos';
+  var CONFIG_KEY   = 'metodos_pago';
+
+  function callGAS(params) {
+    return new Promise(function(resolve, reject) {
+      var cbName = 'cb_' + Date.now() + '_' + Math.floor(Math.random() * 99999);
+      var url = new URL(GAS_URL);
+      Object.keys(params).forEach(function(k) { url.searchParams.set(k, String(params[k])); });
+      url.searchParams.set('callback', cbName);
+      var script = document.createElement('script');
+      var timer = setTimeout(function() { cleanup(); reject(new Error('Timeout')); }, 15000);
+      window[cbName] = function(data) { cleanup(); resolve(data); };
+      function cleanup() { clearTimeout(timer); delete window[cbName]; if (script.parentNode) script.parentNode.removeChild(script); }
+      script.onerror = function() { cleanup(); reject(new Error('Error de red')); };
+      script.src = url.toString();
+      document.head.appendChild(script);
+    });
+  }
+
+  function aplicarDatos(data) {
+    if (!data) return;
+    if (data.cuenta) {
+      document.getElementById('toggle-cuenta').checked = true;
+      document.getElementById('block-cuenta').classList.add('active');
+      document.getElementById('pm-banco').value        = data.cuenta.banco  || '';
+      document.getElementById('pm-nombre-banco').value = data.cuenta.nombre || '';
+      document.getElementById('pm-cuenta').value       = data.cuenta.cuenta || '';
+      document.getElementById('pm-clabe').value        = data.cuenta.clabe  || '';
+    }
+    if (data.zelle) {
+      document.getElementById('toggle-zelle').checked = true;
+      document.getElementById('block-zelle').classList.add('active');
+      document.getElementById('pm-zelle-nombre').value = data.zelle.nombre || '';
+      document.getElementById('pm-zelle-tel').value    = data.zelle.tel    || '';
+      document.getElementById('pm-zelle-qr').value     = data.zelle.qr     || '';
+    }
+    if (data.cashapp) {
+      document.getElementById('toggle-cashapp').checked = true;
+      document.getElementById('block-cashapp').classList.add('active');
+      document.getElementById('pm-cashapp-tag').value  = data.cashapp.tag  || '';
+      document.getElementById('pm-cashapp-link').value = data.cashapp.link || '';
+    }
+    actualizarPreview();
+  }
+
+  function cargarMetodos() {
+    setSaveStatus('loading');
+    callGAS({ action: 'getConfig', key: CONFIG_KEY })
+      .then(function(res) {
+        if (res.ok && res.value) {
+          var data = JSON.parse(res.value);
+          localStorage.setItem(LS_KEY, res.value);
+          aplicarDatos(data); setSaveStatus('cloud');
+        } else { cargarDesdeLocal(); }
+      }).catch(function() { cargarDesdeLocal(); });
+  }
+
+  function cargarDesdeLocal() {
+    try {
+      var raw = localStorage.getItem(LS_KEY);
+      if (raw) { aplicarDatos(JSON.parse(raw)); setSaveStatus('local'); }
+      else { setSaveStatus('empty'); }
+    } catch(e) { setSaveStatus('empty'); }
+  }
+
+  var saveTimer;
+  function guardarMetodos() {
+    clearTimeout(saveTimer);
+    actualizarPreview();
+    saveTimer = setTimeout(function() {
+      var data = leerFormulario();
+      var json = JSON.stringify(data);
+      localStorage.setItem(LS_KEY, json);
+      setSaveStatus('saving');
+      callGAS({ action: 'saveConfig', key: CONFIG_KEY, value: json })
+        .then(function(res) { setSaveStatus(res.ok ? 'cloud' : 'local'); })
+        .catch(function() { setSaveStatus('local'); });
+    }, 800);
+  }
+
+  function leerFormulario() {
+    var data = {};
+    if (document.getElementById('toggle-cuenta').checked) {
+      data.cuenta = { banco: document.getElementById('pm-banco').value.trim(), nombre: document.getElementById('pm-nombre-banco').value.trim(), cuenta: document.getElementById('pm-cuenta').value.trim(), clabe: document.getElementById('pm-clabe').value.trim() };
+    }
+    if (document.getElementById('toggle-zelle').checked) {
+      data.zelle = { nombre: document.getElementById('pm-zelle-nombre').value.trim(), tel: document.getElementById('pm-zelle-tel').value.trim(), qr: document.getElementById('pm-zelle-qr').value.trim() };
+    }
+    if (document.getElementById('toggle-cashapp').checked) {
+      data.cashapp = { tag: document.getElementById('pm-cashapp-tag').value.trim(), link: document.getElementById('pm-cashapp-link').value.trim() };
+    }
+    return data;
+  }
+
+  var statusCfg = {
+    loading: { text: '⏳ Cargando...', color: '#94A3B8' },
+    saving:  { text: '☁ Guardando...', color: '#94A3B8' },
+    cloud:   { text: '☁ Guardado en la nube', color: '#25a244' },
+    local:   { text: '💾 Solo en este dispositivo', color: '#d97706' },
+    empty:   { text: '', color: '' }
+  };
+  function setSaveStatus(state) {
+    var badge = document.getElementById('saveBadge');
+    var cfg = statusCfg[state] || statusCfg.empty;
+    badge.textContent = cfg.text;
+    badge.style.color       = cfg.color;
+    badge.style.borderColor = cfg.color ? cfg.color + '55' : '';
+    badge.style.background  = cfg.color ? cfg.color + '14' : '';
+    cfg.text ? badge.classList.add('show') : badge.classList.remove('show');
+  }
+
+  function toggleMethod(key) { var t = document.getElementById('toggle-' + key); t.checked = !t.checked; onToggle(key); }
+  function onToggle(key) { document.getElementById('block-' + key).classList.toggle('active', document.getElementById('toggle-' + key).checked); guardarMetodos(); }
+  function actualizarCashLink() {
+    var tag = document.getElementById('pm-cashapp-tag').value.trim();
+    if (tag) { var c = tag.startsWith('$') ? tag : '$' + tag; document.getElementById('pm-cashapp-link').value = 'https://cash.app/' + c; }
+  }
+
+  function actualizarPreview() {
+    var nombre = document.getElementById('inp-nombre').value.trim();
+    var monto  = document.getElementById('inp-monto').value.trim();
+    var fecha  = document.getElementById('inp-fecha').value.trim();
+    document.getElementById('prev-nombre').textContent = nombre || '__________';
+    document.getElementById('prev-monto').textContent  = monto  || '__________';
+    document.getElementById('prev-fecha').textContent  = fecha  || '__________';
+    document.getElementById('prev-fecha-wrap').style.display = fecha ? '' : 'none';
+    var chips = [];
+    if (document.getElementById('toggle-cuenta').checked)  chips.push('🏦 Banco / CLABE');
+    if (document.getElementById('toggle-zelle').checked)   chips.push('💵 Zelle');
+    if (document.getElementById('toggle-cashapp').checked) chips.push('💚 CashApp');
+    document.getElementById('prev-metodos').innerHTML = chips.length
+      ? chips.map(function(c) { return '<span class="pay-chip">' + c + '</span>'; }).join('')
+      : '<span class="pay-chip none">Sin métodos activos</span>';
+  }
+
+  var linksGenerados = 0;
+  async function generarLink() {
+    var nombre = document.getElementById('inp-nombre').value.trim();
+    var monto  = document.getElementById('inp-monto').value.trim();
+    var fecha  = document.getElementById('inp-fecha').value.trim();
+    if (!nombre) { mostrarError('Por favor escribe el nombre del cliente'); document.getElementById('inp-nombre').focus(); return; }
+    if (!monto)  { mostrarError('Por favor escribe el monto'); document.getElementById('inp-monto').focus(); return; }
+    var metodos = {}; try { metodos = JSON.parse(localStorage.getItem(LS_KEY) || '{}'); } catch(e) {}
+    ocultarError(); setLoading(true);
+    try {
+      var data = await callGAS({ action: 'createPedido', nombre: nombre, pedido: 'Horus Pay', monto: monto, fecha: fecha, metodos: JSON.stringify(metodos) });
+      if (!data.ok) throw new Error(data.error || 'Error al guardar');
+      var link = RECEIVER_URL + '?id=' + encodeURIComponent(data.id);
+      mostrarResultado(link, nombre, monto);
+      toast('◆ Link generado correctamente');
+    } catch(err) { mostrarError('Error: ' + err.message); }
+    finally { setLoading(false); }
+  }
+
+  function mostrarResultado(link, nombre, monto) {
+    document.getElementById('resultUrl').textContent = link;
+    document.getElementById('resultBox').classList.add('visible');
+    linksGenerados++;
+    var el = document.getElementById('statLinks'); if (el) el.textContent = linksGenerados;
+    var msg = encodeURIComponent('◆ Horus Pay — Link de pago\n\nHola ' + nombre + ', aquí está tu link de pago:\n\n' + link + '\n\nRealiza tu pago con el método de tu preferencia y envíanos tu comprobante.\n\n¡Gracias!');
+    document.getElementById('btnCompartir').href = 'https://wa.me/' + WA_NUMBER + '?text=' + msg;
+    document.getElementById('resultBox').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  function copiarLink() {
+    navigator.clipboard.writeText(document.getElementById('resultUrl').textContent).then(function() {
+      var btn = document.getElementById('btnCopiar'); btn.textContent = '✓ Copiado'; btn.classList.add('copied');
+      toast('Link copiado'); setTimeout(function() { btn.textContent = 'Copiar Link'; btn.classList.remove('copied'); }, 2200);
+    }).catch(function() { toast('Error al copiar'); });
+  }
+
+  function setLoading(s) { document.getElementById('btnGenerar').disabled = s; document.getElementById('btn-text').style.display = s ? 'none' : ''; document.getElementById('btn-spinner').style.display = s ? 'block' : 'none'; }
+  function mostrarError(msg) { var el = document.getElementById('errorMsg'); el.textContent = msg; el.classList.add('visible'); el.scrollIntoView({ behavior: 'smooth', block: 'nearest' }); }
+  function ocultarError() { document.getElementById('errorMsg').classList.remove('visible'); }
+
+  var pollInterval = null, isPolling = false, pollCountdown = 8, countdownInt = null;
+  function togglePolling() { isPolling ? stopPolling() : startPolling(); }
+  function startPolling() {
+    isPolling = true;
+    document.getElementById('pollBtn').textContent = '■ Detener'; document.getElementById('pollBtn').classList.add('active');
+    document.getElementById('pollStatus').innerHTML = '<span class="poll-dot"></span> En vivo'; document.getElementById('pollStatus').classList.add('live');
+    fetchLocations(); pollInterval = setInterval(fetchLocations, 8000); pollCountdown = 8;
+    countdownInt = setInterval(function() { pollCountdown--; if (pollCountdown < 0) pollCountdown = 8; document.getElementById('pollTimer').textContent = 'Actualiza en: ' + pollCountdown + 's'; }, 1000);
+  }
+  function stopPolling() {
+    isPolling = false; clearInterval(pollInterval); clearInterval(countdownInt);
+    document.getElementById('pollBtn').textContent = '▶ Iniciar monitoreo'; document.getElementById('pollBtn').classList.remove('active');
+    document.getElementById('pollStatus').innerHTML = '<span class="poll-dot"></span> Inactivo'; document.getElementById('pollStatus').classList.remove('live');
+    document.getElementById('pollTimer').textContent = '';
+  }
+  function fetchLocations() { callGAS({ action: 'getData' }).then(function(json) { renderTabla(json.data || []); }).catch(function() {}); }
+  function renderTabla(rows) {
+    document.getElementById('statTotal').textContent  = rows.length;
+    document.getElementById('statActive').textContent = rows.filter(function(r) { return (Date.now() - new Date(r.timestamp).getTime()) < 300000; }).length;
+    var tbody = document.getElementById('tableBody');
+    if (!rows.length) { tbody.innerHTML = '<tr><td colspan="6"><div class="empty-mon"><p>Sin capturas aún. Inicia el monitoreo.</p></div></td></tr>'; return; }
+    tbody.innerHTML = rows.map(function(r) {
+      var ts = new Date(r.timestamp), fresh = (Date.now() - ts.getTime()) < 300000;
+      var lat = Number(r.lat).toFixed(6), lng = Number(r.lng).toFixed(6);
+      return '<tr><td>' + r.id + '</td><td>' + lat + '</td><td>' + lng + '</td><td>' + ts.toLocaleTimeString('es-MX') + '</td>' +
+        '<td>' + (fresh ? '<span class="badge-activo">Activa</span>' : '<span class="badge-exp">Expirada</span>') + '</td>' +
+        '<td><a class="map-btn" href="https://www.google.com/maps?q=' + lat + ',' + lng + '" target="_blank">Mapa</a>' +
+        '<a class="map-btn" href="https://www.google.com/maps/@?api=1&map_action=pano&viewpoint=' + lat + ',' + lng + '" target="_blank">Street</a></td></tr>';
+    }).join('');
+  }
+
+  var toastTimer;
+  function toast(msg) { var t = document.getElementById('toast'); t.textContent = msg; t.classList.add('show'); clearTimeout(toastTimer); toastTimer = setTimeout(function() { t.classList.remove('show'); }, 2500); }
+
+  actualizarPreview();
+  cargarMetodos();
+</script>
+</body>
+</html>

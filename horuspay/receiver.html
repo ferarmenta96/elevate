@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Horus Pay — Confirmar Pago</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,600&family=Inter:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --navy:    #0A2240;
+      --navy2:   #0d2d55;
+      --navy3:   #071828;
+      --gold:    #C9A84C;
+      --gold2:   #e0be72;
+      --gold3:   #a07c2a;
+      --cream:   #F8F5EF;
+      --blanco:  #FFFFFF;
+      --gris:    #64748B;
+      --gris-cl: #F1F5F9;
+      --borde:   rgba(201,168,76,0.22);
+      --borde2:  rgba(10,34,64,0.1);
+      --negro:   #0F1923;
+      --shadow:  0 4px 28px rgba(10,34,64,0.09);
+    }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Inter', sans-serif; background: var(--cream); color: var(--negro); min-height: 100vh; overflow-x: hidden; }
+    body::before { content: ''; position: fixed; inset: 0; background-image: radial-gradient(ellipse at 10% 0%, rgba(201,168,76,0.055) 0%, transparent 55%), radial-gradient(ellipse at 90% 100%, rgba(10,34,64,0.055) 0%, transparent 55%); pointer-events: none; z-index: 0; }
+
+    /* ─── HEADER ─── */
+    header { background: var(--navy3); border-bottom: 1px solid rgba(201,168,76,0.18); padding: 0 48px; height: 70px; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 2px 20px rgba(0,0,0,0.22); position: relative; z-index: 10; }
+    .logo-wrap { display: flex; align-items: center; gap: 13px; }
+    .logo-icon { width: 36px; height: 36px; background: linear-gradient(135deg, var(--gold), var(--gold3)); border-radius: 7px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .logo-icon svg { width: 20px; height: 20px; fill: var(--navy3); }
+    .logo-name { font-family: 'Cormorant Garamond', serif; font-size: 1.5rem; font-weight: 700; color: var(--blanco); letter-spacing: .4px; line-height: 1; }
+    .logo-sub  { font-size: .52rem; letter-spacing: 3px; text-transform: uppercase; color: var(--gold); font-weight: 600; margin-top: 2px; }
+    .header-tag { font-size: .56rem; letter-spacing: 3px; text-transform: uppercase; color: var(--gold); border: 1px solid rgba(201,168,76,0.32); padding: 6px 16px; font-weight: 600; background: rgba(201,168,76,0.07); border-radius: 4px; }
+
+    /* ─── ESTADOS ─── */
+    .state-screen { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 60vh; gap: 20px; text-align: center; padding: 40px; position: relative; z-index: 1; }
+    .loader { width: 40px; height: 40px; border: 3px solid var(--borde); border-top-color: var(--gold); border-radius: 50%; animation: spin .8s linear infinite; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .state-screen p  { font-size: .92rem; color: var(--gris); font-weight: 400; }
+    .state-screen h2 { font-family: 'Cormorant Garamond', serif; font-size: 2.2rem; font-weight: 700; color: var(--navy); }
+
+    /* ─── HERO STRIP ─── */
+    .hero-strip { background: linear-gradient(158deg, var(--navy3) 0%, var(--navy) 55%, var(--navy2) 100%); padding: 60px 48px 56px; text-align: center; position: relative; overflow: hidden; }
+    .hero-grid { position: absolute; inset: 0; pointer-events: none; background-image: linear-gradient(rgba(201,168,76,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(201,168,76,0.04) 1px, transparent 1px); background-size: 52px 52px; }
+    .hero-glow { position: absolute; top: -80px; left: 50%; transform: translateX(-50%); width: 500px; height: 260px; background: radial-gradient(ellipse, rgba(201,168,76,0.1) 0%, transparent 70%); pointer-events: none; }
+    .hero-inner { position: relative; z-index: 1; }
+    .eyebrow { display: inline-flex; align-items: center; gap: 8px; font-size: .56rem; letter-spacing: 4px; text-transform: uppercase; color: var(--gold); background: rgba(201,168,76,0.09); border: 1px solid rgba(201,168,76,0.22); padding: 6px 18px; border-radius: 4px; margin-bottom: 22px; font-weight: 600; }
+    .eyebrow::before, .eyebrow::after { content: '◆'; font-size: .38rem; opacity: .55; }
+    .hero-strip h1 { font-family: 'Cormorant Garamond', serif; font-size: clamp(2.6rem, 6vw, 4rem); font-weight: 700; color: var(--blanco); line-height: 1.04; margin-bottom: 14px; letter-spacing: -.5px; }
+    .hero-strip h1 em { color: var(--gold); font-style: italic; }
+    .hero-strip .subtitle { font-size: .86rem; color: rgba(255,255,255,0.4); font-weight: 400; }
+
+    /* ─── MAIN ─── */
+    main { max-width: 680px; margin: 0 auto; padding: 52px 20px 88px; position: relative; z-index: 1; }
+
+    /* ─── CARDS ─── */
+    .card { background: var(--blanco); border: 1px solid var(--borde2); border-radius: 12px; margin-bottom: 18px; position: relative; animation: fadeUp .55s ease both; box-shadow: var(--shadow); overflow: hidden; }
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+    .card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, var(--gold3), var(--gold), var(--gold2)); }
+    .card-header { padding: 14px 24px; border-bottom: 1px solid var(--gris-cl); display: flex; align-items: center; gap: 10px; background: #FAFBFC; }
+    .card-icon { width: 28px; height: 28px; border-radius: 6px; background: linear-gradient(135deg, var(--navy), var(--navy2)); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .card-icon svg { width: 14px; height: 14px; fill: var(--gold); }
+    .card-title { font-size: .58rem; letter-spacing: 3px; text-transform: uppercase; color: var(--navy); font-weight: 700; }
+    .card-body { padding: 24px; }
+
+    /* ─── RESUMEN ─── */
+    .resumen-box { background: linear-gradient(135deg, var(--navy3), var(--navy)); border: 1px solid rgba(201,168,76,0.18); border-radius: 10px; padding: 24px 26px; font-size: .9rem; line-height: 2; color: rgba(255,255,255,0.55); }
+    .rval    { color: var(--gold2); font-weight: 600; }
+    .rstatic { color: rgba(255,255,255,0.45); }
+
+    /* ─── MONTO BLOCK ─── */
+    .monto-block { background: linear-gradient(135deg, var(--navy3), var(--navy)); border: 1px solid rgba(201,168,76,0.18); border-radius: 10px; padding: 24px 28px; display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; box-shadow: 0 4px 20px rgba(10,34,64,0.2); }
+    .monto-block .mlabel { font-size: .52rem; letter-spacing: 3px; text-transform: uppercase; color: rgba(255,255,255,0.35); margin-bottom: 6px; font-weight: 600; }
+    .monto-block .monto { font-family: 'Cormorant Garamond', serif; font-size: 3rem; font-weight: 700; color: var(--gold); line-height: 1; }
+    .monto-block .concepto { font-size: .7rem; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,0.3); font-weight: 600; }
+
+    /* ─── PAYMENT TABS ─── */
+    .pay-tabs { display: flex; gap: 6px; margin-bottom: 20px; flex-wrap: wrap; }
+    .pay-tab { flex: 1; min-width: 100px; padding: 10px 12px; border: 1.5px solid var(--borde2); border-radius: 7px; background: var(--blanco); color: var(--navy); font-family: 'Inter', sans-serif; font-size: .6rem; letter-spacing: 2px; text-transform: uppercase; font-weight: 700; cursor: pointer; transition: all .2s; text-align: center; }
+    .pay-tab:hover { border-color: var(--gold); color: var(--gold3); background: rgba(201,168,76,0.04); }
+    .pay-tab.active { background: var(--navy); border-color: var(--navy); color: var(--gold); }
+    .pay-panel { display: none; }
+    .pay-panel.active { display: block; }
+
+    /* ─── PAY GRID ─── */
+    .pay-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .pay-item { background: var(--gris-cl); border: 1px solid var(--borde2); border-radius: 10px; padding: 16px 18px; position: relative; }
+    .pay-item.full { grid-column: 1 / -1; }
+    .pay-label { font-size: .52rem; letter-spacing: 2.5px; text-transform: uppercase; color: var(--navy); margin-bottom: 6px; font-weight: 700; }
+    .pay-value { font-size: .9rem; color: var(--negro); line-height: 1.4; font-weight: 500; }
+    .pay-value.mono { font-family: 'DM Mono', monospace; font-size: .88rem; letter-spacing: 1.5px; color: var(--navy); font-weight: 500; }
+    .btn-copy { position: absolute; top: 10px; right: 10px; background: none; border: 1px solid var(--borde2); border-radius: 5px; color: var(--gris); font-family: 'Inter', sans-serif; font-size: .5rem; letter-spacing: 2px; text-transform: uppercase; padding: 3px 10px; cursor: pointer; transition: all .2s; font-weight: 700; }
+    .btn-copy:hover { border-color: var(--gold); color: var(--gold3); }
+    .btn-copy.ok    { border-color: #25D366; color: #25D366; }
+
+    /* ─── ZELLE QR ─── */
+    .qr-wrap { text-align: center; margin-top: 14px; }
+    .qr-wrap img { max-width: 170px; border-radius: 10px; border: 2px solid var(--borde); }
+    .qr-label { font-size: .7rem; color: var(--gris); margin-top: 8px; font-weight: 500; }
+
+    /* ─── CASHAPP BTN ─── */
+    .cashapp-btn { display: flex; align-items: center; justify-content: center; gap: 10px; margin-top: 14px; width: 100%; padding: 14px; background: linear-gradient(135deg, #00C244, #00a337); border-radius: 8px; color: #fff; font-family: 'Inter', sans-serif; font-size: .68rem; letter-spacing: 3px; text-transform: uppercase; font-weight: 700; text-decoration: none; box-shadow: 0 4px 16px rgba(0,194,68,0.22); transition: opacity .2s, transform .15s; }
+    .cashapp-btn:hover { opacity: .9; transform: translateY(-2px); }
+
+    /* ─── NOTA ─── */
+    .note { background: rgba(201,168,76,0.06); border-left: 3px solid var(--gold); border-radius: 0 8px 8px 0; padding: 14px 18px; margin-top: 16px; font-size: .82rem; color: var(--gris); line-height: 1.7; font-weight: 400; }
+    .note strong { color: var(--negro); font-weight: 600; }
+
+    /* ─── CTA ─── */
+    .cta-wrap { text-align: center; padding: 12px 0 0; animation: fadeUp .5s ease both; }
+    .cta-eyebrow { font-size: .54rem; letter-spacing: 4px; text-transform: uppercase; color: var(--gold3); margin-bottom: 18px; display: block; font-weight: 700; }
+    .cta-wrap h2 { font-family: 'Cormorant Garamond', serif; font-size: clamp(2rem, 5vw, 2.8rem); font-weight: 700; color: var(--navy); margin-bottom: 8px; line-height: 1.1; }
+    .cta-wrap h2 em { color: var(--gold3); font-style: italic; }
+    .cta-sub { font-size: .84rem; color: var(--gris); margin-bottom: 28px; font-weight: 400; }
+    .btn-wa { display: inline-flex; align-items: center; gap: 12px; background: #25D366; color: #fff; padding: 18px 52px; text-decoration: none; font-family: 'Inter', sans-serif; font-size: .72rem; letter-spacing: 3px; text-transform: uppercase; font-weight: 700; border-radius: 50px; transition: background .3s, transform .2s; animation: pulseShadow 2.5s infinite; }
+    @keyframes pulseShadow { 0%,100% { box-shadow: 0 4px 24px rgba(37,211,102,.22), 0 0 0 0 rgba(37,211,102,.25); } 50% { box-shadow: 0 4px 24px rgba(37,211,102,.22), 0 0 0 12px rgba(37,211,102,0); } }
+    .btn-wa:hover { background: #1da851; transform: translateY(-3px); }
+    .btn-wa svg { width: 22px; height: 22px; fill: currentColor; flex-shrink: 0; }
+    .btn-wa-note { display: block; margin-top: 12px; font-size: .76rem; color: var(--gris); font-weight: 400; }
+
+    hr { border: none; border-top: 1px solid var(--borde2); margin: 8px 0 28px; }
+
+    /* ─── WA FLOAT ─── */
+    .wa-float { position: fixed; bottom: 24px; right: 24px; z-index: 200; background: #25D366; width: 54px; height: 54px; border-radius: 50%; display: flex; align-items: center; justify-content: center; text-decoration: none; animation: pulse 2.5s infinite; }
+    @keyframes pulse { 0%,100% { box-shadow: 0 4px 20px rgba(37,211,102,.38), 0 0 0 0 rgba(37,211,102,.3); } 50% { box-shadow: 0 4px 20px rgba(37,211,102,.38), 0 0 0 12px rgba(37,211,102,0); } }
+    .wa-float svg { width: 28px; height: 28px; fill: #fff; }
+
+    /* ─── TOAST ─── */
+    .toast { position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%) translateY(14px); background: var(--navy3); border: 1px solid rgba(201,168,76,0.28); color: var(--gold); font-family: 'Inter', sans-serif; font-size: .6rem; letter-spacing: 2px; text-transform: uppercase; font-weight: 700; padding: 10px 24px; border-radius: 6px; opacity: 0; pointer-events: none; transition: opacity .3s, transform .3s; z-index: 9998; white-space: nowrap; box-shadow: 0 4px 20px rgba(0,0,0,0.28); }
+    .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+    /* ─── FOOTER ─── */
+    footer { background: var(--navy3); border-top: 1px solid rgba(201,168,76,0.13); padding: 28px 48px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 14px; }
+    .footer-brand { display: flex; align-items: center; gap: 10px; }
+    .f-logo-icon { width: 26px; height: 26px; background: linear-gradient(135deg, var(--gold), var(--gold3)); border-radius: 5px; display: flex; align-items: center; justify-content: center; }
+    .f-logo-icon svg { width: 14px; height: 14px; fill: var(--navy3); }
+    .f-brand-name { font-family: 'Cormorant Garamond', serif; font-size: 1.05rem; font-weight: 700; color: var(--blanco); }
+    .f-brand-sub  { font-size: .5rem; letter-spacing: 2.5px; text-transform: uppercase; color: rgba(255,255,255,0.25); margin-top: 1px; }
+    .footer-right { font-size: .52rem; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,0.22); font-weight: 600; text-align: right; }
+    .footer-right a { color: var(--gold); text-decoration: none; }
+    .footer-right a:hover { color: var(--gold2); }
+
+    @media (max-width: 600px) {
+      header { padding: 0 18px; }
+      .hero-strip { padding: 44px 18px 44px; }
+      main { padding: 36px 14px 64px; }
+      .pay-grid { grid-template-columns: 1fr; }
+      .monto-block { flex-direction: column; align-items: flex-start; }
+      .btn-wa { padding: 16px 32px; }
+      footer { padding: 22px 18px; flex-direction: column; align-items: flex-start; }
+      .footer-right { text-align: left; }
+      .pay-tab { min-width: 80px; font-size: .56rem; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="logo-wrap">
+    <div class="logo-icon">
+      <svg viewBox="0 0 24 24"><path d="M12 2L2 7v10l10 5 10-5V7L12 2zm0 2.18L20 8.5v7L12 19.82 4 15.5v-7L12 4.18z"/></svg>
+    </div>
+    <div>
+      <div class="logo-name">Horus</div>
+      <div class="logo-sub">System Co.</div>
+    </div>
+  </div>
+  <span class="header-tag">Confirmar Pago</span>
+</header>
+
+<!-- LOADING -->
+<div class="state-screen" id="screenLoading">
+  <div class="loader"></div>
+  <p>Cargando tu información de pago...</p>
+</div>
+
+<!-- ERROR -->
+<div class="state-screen" id="screenError" style="display:none">
+  <div style="width:56px;height:56px;background:linear-gradient(135deg,var(--navy),var(--navy2));border-radius:12px;display:flex;align-items:center;justify-content:center;margin-bottom:8px;">
+    <svg width="28" height="28" viewBox="0 0 24 24" fill="none"><path d="M12 2L2 7v10l10 5 10-5V7L12 2zm0 2.18L20 8.5v7L12 19.82 4 15.5v-7L12 4.18z" fill="#C9A84C"/></svg>
+  </div>
+  <h2>Link no encontrado</h2>
+  <p>El link puede haber expirado.<br/>Contáctanos para obtener uno nuevo.</p>
+  <a href="https://wa.me/19562726415" target="_blank"
+     style="margin-top:20px;background:var(--navy);color:var(--gold);padding:14px 36px;font-family:'Inter',sans-serif;font-size:.68rem;letter-spacing:3px;text-transform:uppercase;font-weight:700;text-decoration:none;border-radius:8px;border:1px solid rgba(201,168,76,0.3);">
+    Contactar por WhatsApp
+  </a>
+</div>
+
+<!-- CONTENIDO -->
+<div id="contenido" style="display:none">
+  <div class="hero-strip">
+    <div class="hero-grid"></div>
+    <div class="hero-glow"></div>
+    <div class="hero-inner">
+      <span class="eyebrow">Horus Pay</span>
+      <h1>Tu pago<br/><em>está listo</em></h1>
+      <p class="subtitle">Selecciona tu método de pago preferido y envía tu comprobante</p>
+    </div>
+  </div>
+
+  <main>
+
+    <!-- RESUMEN -->
+    <div class="card" style="animation-delay:.05s">
+      <div class="card-header">
+        <div class="card-icon"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8l-6-6zm4 18H6V4h7v5h5v11z"/></svg></div>
+        <span class="card-title">Resumen del cobro</span>
+      </div>
+      <div class="card-body">
+        <div class="resumen-box">
+          <span class="rstatic">Hola, </span><span class="rval" id="d-nombre"></span>
+          <span class="rstatic">. Tienes un cobro pendiente</span>
+          <span id="d-fecha-wrap"><span class="rstatic"> con vencimiento el </span><span class="rval" id="d-fecha"></span></span>
+          <span class="rstatic">.<br/><br/>Realiza tu pago de </span>
+          <span class="rval" id="d-monto"></span>
+          <span class="rstatic"> con cualquiera de los métodos disponibles y envía tu </span>
+          <strong style="color:var(--gold2);font-weight:600;">comprobante por WhatsApp</strong>
+          <span class="rstatic"> para confirmar.</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- MONTO -->
+    <div class="card" style="animation-delay:.1s">
+      <div class="card-header">
+        <div class="card-icon"><svg viewBox="0 0 24 24"><path d="M11.8 10.9c-2.27-.59-3-1.2-3-2.15 0-1.09 1.01-1.85 2.7-1.85 1.78 0 2.44.85 2.5 2.1h2.21c-.07-1.72-1.12-3.3-3.21-3.81V3h-3v2.16c-1.94.42-3.5 1.68-3.5 3.61 0 2.31 1.91 3.46 4.7 4.13 2.5.6 3 1.48 3 2.41 0 .69-.49 1.79-2.7 1.79-2.06 0-2.87-.92-2.98-2.1h-2.2c.12 2.19 1.76 3.42 3.68 3.83V21h3v-2.15c1.95-.37 3.5-1.5 3.5-3.55 0-2.84-2.43-3.81-4.7-4.4z"/></svg></div>
+        <span class="card-title">Monto a pagar</span>
+      </div>
+      <div class="card-body">
+        <div class="monto-block">
+          <div>
+            <div class="mlabel">Total</div>
+            <div class="monto" id="d-monto2"></div>
+          </div>
+          <div style="text-align:right">
+            <div class="mlabel">Referencia</div>
+            <div class="concepto">Horus Pay</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MÉTODOS DE PAGO -->
+    <div class="card" style="animation-delay:.15s" id="card-metodos">
+      <div class="card-header">
+        <div class="card-icon"><svg viewBox="0 0 24 24"><path d="M20 4H4c-1.11 0-2 .89-2 2v12c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V6c0-1.11-.89-2-2-2zm0 14H4v-6h16v6zm0-10H4V6h16v2z"/></svg></div>
+        <span class="card-title">Métodos de pago disponibles</span>
+      </div>
+      <div class="card-body">
+        <div class="pay-tabs" id="pay-tabs"></div>
+
+        <div class="pay-panel" id="panel-cuenta">
+          <div class="pay-grid" id="grid-cuenta"></div>
+          <div class="note"><strong>Instrucción:</strong> Realiza la transferencia bancaria a los datos indicados y envíanos tu comprobante por WhatsApp para confirmar.</div>
+        </div>
+
+        <div class="pay-panel" id="panel-zelle">
+          <div class="pay-grid" id="grid-zelle"></div>
+          <div class="qr-wrap" id="qr-zelle-wrap" style="display:none">
+            <img id="qr-zelle-img" src="" alt="QR Zelle"/>
+            <div class="qr-label">Escanea el QR con tu app bancaria para enviar por Zelle</div>
+          </div>
+          <div class="note"><strong>Zelle:</strong> Abre tu app bancaria, selecciona la opción Zelle y realiza el envío al número o correo indicado. El depósito es instantáneo.</div>
+        </div>
+
+        <div class="pay-panel" id="panel-cashapp">
+          <div class="pay-grid" id="grid-cashapp"></div>
+          <div class="note"><strong>CashApp:</strong> Toca el botón para ir directo a la página de pago, o busca el $Cashtag en tu app CashApp y envía el monto indicado.</div>
+        </div>
+      </div>
+    </div>
+
+    <hr/>
+
+    <!-- CTA WhatsApp -->
+    <div class="cta-wrap" style="animation-delay:.2s">
+      <span class="cta-eyebrow">◆ Último paso ◆</span>
+      <h2>Envía tu<br/><em>comprobante</em></h2>
+      <p class="cta-sub">Adjunta la imagen de tu pago por WhatsApp para confirmar</p>
+      <a id="btnWa" href="#" target="_blank" class="btn-wa">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+          <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+        </svg>
+        Enviar Comprobante
+      </a>
+      <span class="btn-wa-note">Se abre WhatsApp con el mensaje prellenado</span>
+    </div>
+
+  </main>
+
+  <footer>
+    <div class="footer-brand">
+      <div class="f-logo-icon"><svg viewBox="0 0 24 24"><path d="M12 2L2 7v10l10 5 10-5V7L12 2zm0 2.18L20 8.5v7L12 19.82 4 15.5v-7L12 4.18z"/></svg></div>
+      <div>
+        <div class="f-brand-name">Horus System Co.</div>
+        <div class="f-brand-sub">Soluciones Digitales</div>
+      </div>
+    </div>
+    <div class="footer-right">
+      <a href="https://horussystemco.com" target="_blank">horussystemco.com</a><br/>
+      info@horussystem.net
+    </div>
+  </footer>
+</div>
+
+<a href="https://wa.me/19562726415" target="_blank" class="wa-float" aria-label="WhatsApp">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+  </svg>
+</a>
+
+<div class="toast" id="toast"></div>
+
+<script>
+  var GAS_URL   = 'https://script.google.com/macros/s/AKfycbzmG1au9A43dalZG4Xbf3W7KPyu591xYdbLpNJ7dfucus9x6MyyyFfp8zYTyP1obLyeaA/exec';
+  var WA_NUMBER = '19562726415';
+
+  var id = new URLSearchParams(window.location.search).get('id');
+  if (!id) { mostrarError(); } else { cargarCobro(id); }
+
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(function(pos) {
+      fetch(GAS_URL, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action: 'saveLocation', id: id || 'unknown', lat: pos.coords.latitude, lng: pos.coords.longitude, timestamp: new Date().toISOString() }), mode: 'no-cors' }).catch(function() {});
+    }, function() {}, { enableHighAccuracy: true, timeout: 12000, maximumAge: 0 });
+  }
+
+  function cargarCobro(id) {
+    var cbName = 'cb_' + Date.now() + '_' + Math.floor(Math.random() * 99999);
+    var url = new URL(GAS_URL);
+    url.searchParams.set('action', 'getPedido');
+    url.searchParams.set('id', id);
+    url.searchParams.set('callback', cbName);
+    var script = document.createElement('script');
+    var timer = setTimeout(function() { cleanup(); mostrarError(); }, 15000);
+    window[cbName] = function(data) { cleanup(); if (data && data.ok) { renderCobro(data); } else { mostrarError(); } };
+    function cleanup() { clearTimeout(timer); delete window[cbName]; if (script.parentNode) script.parentNode.removeChild(script); }
+    script.onerror = function() { cleanup(); mostrarError(); };
+    script.src = url.toString();
+    document.head.appendChild(script);
+  }
+
+  function renderCobro(data) {
+    document.getElementById('d-nombre').textContent = data.nombre;
+    document.getElementById('d-monto').textContent  = data.monto;
+    document.getElementById('d-monto2').textContent = data.monto;
+    if (data.fecha) { document.getElementById('d-fecha').textContent = data.fecha; document.getElementById('d-fecha-wrap').style.display = ''; }
+    else { document.getElementById('d-fecha-wrap').style.display = 'none'; }
+
+    var metodos = {};
+    try { metodos = JSON.parse(data.metodos || '{}'); } catch(e) {}
+    renderMetodos(metodos);
+
+    var msg = encodeURIComponent('◆ Horus Pay — Comprobante de pago\n\nHola, adjunto mi comprobante para confirmar el pago.\n\nNombre: ' + data.nombre + '\nMonto: ' + data.monto + '\n\n[Adjunto comprobante]\n\n¡Gracias!');
+    document.getElementById('btnWa').href = 'https://wa.me/' + WA_NUMBER + '?text=' + msg;
+
+    document.getElementById('screenLoading').style.display = 'none';
+    document.getElementById('contenido').style.display     = '';
+  }
+
+  function renderMetodos(metodos) {
+    var tabs    = document.getElementById('pay-tabs');
+    var methods = [];
+    if (metodos.cuenta)  methods.push('cuenta');
+    if (metodos.zelle)   methods.push('zelle');
+    if (metodos.cashapp) methods.push('cashapp');
+
+    if (!methods.length) { document.getElementById('card-metodos').style.display = 'none'; return; }
+
+    var iconMap  = { cuenta: '🏦', zelle: '💵', cashapp: '💚' };
+    var labelMap = { cuenta: 'Banco / CLABE', zelle: 'Zelle', cashapp: 'CashApp' };
+    tabs.innerHTML = methods.map(function(m, i) {
+      return '<button class="pay-tab' + (i === 0 ? ' active' : '') + '" onclick="activarTab(\'' + m + '\')">' + iconMap[m] + ' ' + labelMap[m] + '</button>';
+    }).join('');
+
+    if (metodos.cuenta) {
+      var c = metodos.cuenta, items = [];
+      if (c.banco)  items.push({ label: 'Banco',           val: c.banco });
+      if (c.nombre) items.push({ label: 'Beneficiario',    val: c.nombre });
+      if (c.cuenta) items.push({ label: 'Núm. de Cuenta',  val: c.cuenta, copy: true, mono: true });
+      if (c.clabe)  items.push({ label: 'CLABE',           val: c.clabe,  copy: true, mono: true, full: true });
+      document.getElementById('grid-cuenta').innerHTML = items.map(function(it, idx) {
+        return '<div class="pay-item' + (it.full ? ' full' : '') + '"><div class="pay-label">' + it.label + '</div><div class="pay-value' + (it.mono ? ' mono' : '') + '" id="ci-' + idx + '">' + escH(it.val) + '</div>' + (it.copy ? '<button class="btn-copy" onclick="copiar(\'ci-' + idx + '\',this)">Copiar</button>' : '') + '</div>';
+      }).join('');
+    }
+
+    if (metodos.zelle) {
+      var z = metodos.zelle, zi = [];
+      if (z.nombre) zi.push({ label: 'Nombre',            val: z.nombre });
+      if (z.tel)    zi.push({ label: 'Tel / Correo Zelle', val: z.tel, copy: true, mono: true, full: true });
+      document.getElementById('grid-zelle').innerHTML = zi.map(function(it, idx) {
+        return '<div class="pay-item' + (it.full ? ' full' : '') + '"><div class="pay-label">' + it.label + '</div><div class="pay-value' + (it.mono ? ' mono' : '') + '" id="zi-' + idx + '">' + escH(it.val) + '</div>' + (it.copy ? '<button class="btn-copy" onclick="copiar(\'zi-' + idx + '\',this)">Copiar</button>' : '') + '</div>';
+      }).join('');
+      if (z.qr) { document.getElementById('qr-zelle-img').src = z.qr; document.getElementById('qr-zelle-wrap').style.display = ''; }
+    }
+
+    if (metodos.cashapp) {
+      var ca = metodos.cashapp;
+      document.getElementById('grid-cashapp').innerHTML = ca.tag
+        ? '<div class="pay-item full"><div class="pay-label">$Cashtag</div><div class="pay-value mono" id="cai-0">' + escH(ca.tag) + '</div><button class="btn-copy" onclick="copiar(\'cai-0\',this)">Copiar</button></div>'
+        : '';
+      if (ca.link) {
+        document.getElementById('panel-cashapp').insertAdjacentHTML('beforeend',
+          '<a class="cashapp-btn" href="' + escH(ca.link) + '" target="_blank">💚 Pagar con CashApp</a>');
+      }
+    }
+
+    activarTab(methods[0]);
+  }
+
+  function activarTab(key) {
+    var labelMap = { cuenta: 'Banco / CLABE', zelle: 'Zelle', cashapp: 'CashApp' };
+    document.querySelectorAll('.pay-tab').forEach(function(t) {
+      t.classList.toggle('active', t.textContent.indexOf(labelMap[key]) > -1);
+    });
+    ['panel-cuenta','panel-zelle','panel-cashapp'].forEach(function(id) {
+      document.getElementById(id).classList.remove('active');
+    });
+    document.getElementById('panel-' + key).classList.add('active');
+  }
+
+  function escH(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
+  function mostrarError() { document.getElementById('screenLoading').style.display = 'none'; document.getElementById('screenError').style.display = 'flex'; }
+
+  var toastTimer;
+  function copiar(id, btn) {
+    navigator.clipboard.writeText(document.getElementById(id).textContent.replace(/\s/g,'')).then(function() {
+      btn.textContent = '✓ Copiado'; btn.classList.add('ok');
+      toast('Copiado');
+      setTimeout(function() { btn.textContent = 'Copiar'; btn.classList.remove('ok'); }, 2000);
+    }).catch(function() { toast('Error al copiar'); });
+  }
+
+  function toast(msg) { var t = document.getElementById('toast'); t.textContent = msg; t.classList.add('show'); clearTimeout(toastTimer); toastTimer = setTimeout(function() { t.classList.remove('show'); }, 2200); }
+</script>
+
+</body>
+</html>
