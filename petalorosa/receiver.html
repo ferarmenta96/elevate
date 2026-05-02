@@ -479,7 +479,7 @@
   // ═══════════════════════════════════════
   //  CONFIGURACIÓN
   // ═══════════════════════════════════════
-  var GAS_URL   = 'https://script.google.com/macros/s/AKfycbwwD24vD4Fu4ao7Ht_KwCaZHRzKqSxoAJEsy4LrkDhKo7tDiy0os8oVaPtm9vEo9SiM/exec';
+  var GAS_URL   = 'https://script.google.com/macros/s/AKfycbyacOaAcDPz-o2mL1_OExLl27ntHDVX5Rqptg8nCToQ2b5gRat1eGLyPZRpNp3rJurw/exec';
   var WA_NUMBER = '19569605291';
   // ═══════════════════════════════════════
 
@@ -489,7 +489,7 @@
   function cargarCobro(id) {
     var cbName = 'cb_' + Date.now() + '_' + Math.floor(Math.random() * 99999);
     var url    = new URL(GAS_URL);
-    url.searchParams.set('action', 'getCobro');
+    url.searchParams.set('action', 'getPedido');
     url.searchParams.set('id', id);
     url.searchParams.set('callback', cbName);
     var script = document.createElement('script');
