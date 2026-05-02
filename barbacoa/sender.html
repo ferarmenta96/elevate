@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Don Barbacoa — Panel de Pedidos</title>
+  <title>Don Barbacoa — Panel</title>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Oswald:wght@300;400;600&family=Lora:ital,wght@0,400;1,400&display=swap" rel="stylesheet"/>
@@ -12,79 +12,140 @@
     :root {
       --rojo:  #B71C1C; --rojo2: #8B0000;
       --oro:   #C8922A; --oro2:  #F5C842;
+      --verde: #1B5E20; --verde2: #25D366;
       --crema: #FDF3E3; --humo:  #1A0A00; --humo2: #100500;
       --dim:   rgba(253,243,227,0.55);
     }
     html { scroll-behavior: smooth; }
-    body { font-family: 'Oswald', sans-serif; background: var(--humo2); color: var(--crema); min-height: 100vh; overflow-x: hidden; }
-    body::before {
-      content: ''; position: fixed; inset: 0;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
-      pointer-events: none; z-index: 9999; opacity: 0.5;
+    body { font-family: 'Oswald', sans-serif; background: var(--humo2); color: var(--crema); min-height: 100vh; }
+    body::before { content:''; position:fixed; inset:0; background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E"); pointer-events:none; z-index:9999; opacity:.5; }
+
+    /* HEADER */
+    header { background:rgba(16,5,0,.97); border-bottom:1px solid rgba(200,146,42,.2); padding:16px 40px; display:flex; align-items:center; justify-content:space-between; position:sticky; top:0; z-index:100; backdrop-filter:blur(8px); }
+    .logo { font-family:'Playfair Display',serif; font-size:1.3rem; font-weight:900; color:var(--oro); letter-spacing:2px; }
+    .header-tag { font-size:.58rem; letter-spacing:4px; text-transform:uppercase; color:rgba(200,146,42,.5); background:rgba(200,146,42,.07); border:1px solid rgba(200,146,42,.2); padding:4px 14px; }
+
+    /* TABS */
+    .tabs { display:flex; border-bottom:1px solid rgba(200,146,42,.15); background:rgba(0,0,0,.2); }
+    .tab { flex:1; padding:16px; text-align:center; font-size:.65rem; letter-spacing:4px; text-transform:uppercase; color:rgba(253,243,227,.35); cursor:pointer; border-bottom:2px solid transparent; transition:all .2s; }
+    .tab:hover { color:var(--oro); }
+    .tab.active { color:var(--oro); border-bottom-color:var(--oro); background:rgba(200,146,42,.05); }
+
+    /* PANELS */
+    .panel { display:none; }
+    .panel.active { display:block; }
+
+    main { max-width:700px; margin:0 auto; padding:44px 24px 80px; }
+
+    /* PAGE TITLE */
+    .page-title { margin-bottom:36px; }
+    .eyebrow { font-size:.6rem; letter-spacing:5px; text-transform:uppercase; color:var(--oro); border-top:1px solid rgba(200,146,42,.4); padding-top:7px; margin-bottom:10px; display:inline-block; }
+    .page-title h2 { font-family:'Playfair Display',serif; font-size:clamp(1.8rem,4vw,2.4rem); font-weight:900; color:var(--crema); line-height:1.05; }
+    .page-title h2 em { color:var(--oro); font-style:italic; }
+    .page-title p { font-family:'Lora',serif; font-style:italic; font-size:.88rem; color:var(--dim); margin-top:8px; }
+
+    /* CARD */
+    .card { background:rgba(255,255,255,.025); border:1px solid rgba(200,146,42,.18); margin-bottom:20px; position:relative; }
+    .card::before { content:''; position:absolute; top:0; left:0; width:3px; height:100%; background:var(--oro); }
+    .card-header { padding:12px 22px; border-bottom:1px solid rgba(200,146,42,.12); display:flex; align-items:center; gap:10px; }
+    .card-title { font-size:.62rem; letter-spacing:4px; text-transform:uppercase; color:var(--oro); font-weight:600; }
+    .card-body { padding:22px 22px; }
+
+    /* FIELDS */
+    .field { margin-bottom:18px; }
+    .field:last-child { margin-bottom:0; }
+    .field label { display:block; font-size:.58rem; letter-spacing:4px; text-transform:uppercase; color:var(--oro); margin-bottom:7px; }
+    .field input, .field textarea { width:100%; background:rgba(0,0,0,.35); border:1px solid rgba(200,146,42,.22); border-radius:0; padding:12px 15px; font-family:'Lora',serif; font-size:1rem; color:var(--crema); outline:none; transition:border-color .2s, background .2s; -webkit-appearance:none; }
+    .field input::placeholder, .field textarea::placeholder { color:rgba(253,243,227,.2); font-style:italic; }
+    .field input:focus, .field textarea:focus { border-color:var(--oro); background:rgba(200,146,42,.05); box-shadow:0 0 0 3px rgba(200,146,42,.08); }
+    .field textarea { resize:vertical; min-height:80px; }
+    .field-hint { font-family:'Lora',serif; font-style:italic; font-size:.76rem; color:rgba(200,146,42,.4); margin-top:5px; }
+
+    /* PREVIEW */
+    .preview-box { background:rgba(200,146,42,.04); border:1px dashed rgba(200,146,42,.25); padding:18px 22px; font-family:'Lora',serif; font-size:.93rem; line-height:2; color:var(--crema); }
+    .preview-box .lbl { font-family:'Oswald',sans-serif; font-size:.55rem; letter-spacing:4px; text-transform:uppercase; color:rgba(200,146,42,.5); display:block; margin-bottom:10px; }
+    .pv { color:var(--oro2); }
+    .ps { color:var(--dim); font-style:italic; }
+
+    /* BUTTONS */
+    .btn-generate { width:100%; padding:17px; background:var(--rojo2); border:1px solid rgba(200,146,42,.3); color:var(--crema); font-family:'Oswald',sans-serif; font-size:.85rem; letter-spacing:4px; text-transform:uppercase; font-weight:600; cursor:pointer; transition:background .25s, transform .15s; margin-top:4px; }
+    .btn-generate:hover { background:#6B0000; }
+    .btn-generate:active { transform:scale(.98); }
+    .btn-generate:disabled { opacity:.45; cursor:not-allowed; }
+    .spinner { display:none; width:18px; height:18px; border:2px solid rgba(253,243,227,.3); border-top-color:var(--crema); border-radius:50%; animation:spin .7s linear infinite; margin:0 auto; }
+    @keyframes spin { to { transform:rotate(360deg); } }
+
+    /* RESULT */
+    .result-box { display:none; border:1px solid rgba(200,146,42,.35); background:rgba(200,146,42,.05); padding:20px; margin-top:20px; }
+    .result-box.visible { display:block; }
+    .result-box .rlabel { font-size:.58rem; letter-spacing:4px; text-transform:uppercase; color:var(--oro); margin-bottom:8px; font-family:'Oswald',sans-serif; }
+    .result-url { font-family:'Lora',serif; font-size:.83rem; color:var(--crema); word-break:break-all; line-height:1.6; background:rgba(0,0,0,.3); border:1px solid rgba(200,146,42,.15); padding:10px 14px; margin-bottom:12px; }
+    .result-actions { display:flex; gap:8px; flex-wrap:wrap; }
+    .btn-sm { flex:1; min-width:110px; padding:11px 14px; border:1px solid rgba(200,146,42,.3); background:transparent; color:var(--oro); font-family:'Oswald',sans-serif; font-size:.65rem; letter-spacing:3px; text-transform:uppercase; font-weight:600; cursor:pointer; transition:all .2s; text-decoration:none; text-align:center; display:inline-block; }
+    .btn-sm:hover { background:rgba(200,146,42,.12); border-color:var(--oro); }
+    .btn-sm.wa { background:#25D366; border-color:#25D366; color:#fff; }
+    .btn-sm.wa:hover { background:#1da851; }
+    .btn-sm.copied { border-color:#25D366; color:#25D366; }
+
+    /* ERROR */
+    .error-msg { display:none; background:rgba(183,28,28,.12); border:1px solid rgba(183,28,28,.4); border-left:3px solid var(--rojo); padding:12px 16px; font-family:'Lora',serif; font-size:.86rem; color:rgba(253,243,227,.8); margin-top:14px; white-space:pre-line; }
+    .error-msg.visible { display:block; }
+
+    /* PEDIDOS LIST */
+    .pedidos-list { display:flex; flex-direction:column; gap:14px; margin-top:4px; }
+
+    .pedido-card {
+      background:rgba(255,255,255,.02);
+      border:1px solid rgba(200,146,42,.15);
+      padding:18px 20px;
+      display:grid;
+      grid-template-columns:1fr auto;
+      gap:12px;
+      align-items:start;
+      position:relative;
     }
-    header {
-      background: rgba(16,5,0,0.97); border-bottom: 1px solid rgba(200,146,42,0.2);
-      padding: 16px 40px; display: flex; align-items: center; justify-content: space-between;
-      position: sticky; top: 0; z-index: 100; backdrop-filter: blur(8px);
+
+    .pedido-card::before { content:''; position:absolute; top:0; left:0; width:3px; height:100%; background:rgba(200,146,42,.3); }
+    .pedido-card.en_camino::before { background:var(--verde2); }
+
+    .pedido-nombre { font-family:'Playfair Display',serif; font-size:1.1rem; font-weight:700; color:var(--crema); margin-bottom:4px; }
+    .pedido-detalle { font-family:'Lora',serif; font-size:.85rem; color:var(--dim); font-style:italic; line-height:1.5; }
+    .pedido-monto { font-family:'Oswald',sans-serif; font-size:.8rem; color:var(--oro); letter-spacing:2px; margin-top:6px; }
+    .pedido-fecha { font-size:.6rem; letter-spacing:2px; text-transform:uppercase; color:rgba(253,243,227,.25); margin-top:4px; font-family:'Oswald',sans-serif; }
+
+    .pedido-actions { display:flex; flex-direction:column; gap:8px; align-items:flex-end; }
+
+    .badge { display:inline-block; font-size:.55rem; letter-spacing:3px; text-transform:uppercase; padding:4px 10px; font-family:'Oswald',sans-serif; font-weight:600; }
+    .badge.pendiente { background:rgba(183,28,28,.2); color:rgba(253,100,100,.9); border:1px solid rgba(183,28,28,.4); }
+    .badge.en_camino { background:rgba(37,211,102,.12); color:#25D366; border:1px solid rgba(37,211,102,.3); }
+
+    .btn-camino { padding:9px 16px; background:rgba(37,211,102,.12); border:1px solid rgba(37,211,102,.3); color:#25D366; font-family:'Oswald',sans-serif; font-size:.6rem; letter-spacing:2px; text-transform:uppercase; font-weight:600; cursor:pointer; transition:all .2s; white-space:nowrap; }
+    .btn-camino:hover { background:rgba(37,211,102,.22); }
+    .btn-camino:disabled { opacity:.4; cursor:not-allowed; }
+
+    .btn-copiar-link { padding:9px 16px; background:transparent; border:1px solid rgba(200,146,42,.25); color:rgba(200,146,42,.6); font-family:'Oswald',sans-serif; font-size:.6rem; letter-spacing:2px; text-transform:uppercase; font-weight:600; cursor:pointer; transition:all .2s; white-space:nowrap; }
+    .btn-copiar-link:hover { border-color:var(--oro); color:var(--oro); }
+
+    .empty-state { text-align:center; padding:50px 20px; }
+    .empty-state p { font-family:'Lora',serif; font-style:italic; font-size:.95rem; color:rgba(253,243,227,.3); }
+
+    .refresh-btn { display:flex; align-items:center; gap:8px; background:transparent; border:1px solid rgba(200,146,42,.2); color:rgba(200,146,42,.5); font-family:'Oswald',sans-serif; font-size:.6rem; letter-spacing:3px; text-transform:uppercase; padding:8px 16px; cursor:pointer; transition:all .2s; margin-left:auto; margin-bottom:16px; }
+    .refresh-btn:hover { border-color:var(--oro); color:var(--oro); }
+    .refresh-btn.spinning svg { animation:spin .7s linear infinite; }
+
+    /* TOAST */
+    .toast { position:fixed; bottom:28px; left:50%; transform:translateX(-50%) translateY(16px); background:rgba(16,5,0,.97); border:1px solid rgba(200,146,42,.4); color:var(--oro2); font-family:'Oswald',sans-serif; font-size:.68rem; letter-spacing:3px; text-transform:uppercase; padding:12px 28px; opacity:0; pointer-events:none; transition:opacity .3s, transform .3s; z-index:9998; white-space:nowrap; }
+    .toast.show { opacity:1; transform:translateX(-50%) translateY(0); }
+
+    footer { border-top:1px solid rgba(200,146,42,.1); padding:24px 40px; text-align:center; }
+    footer p { font-size:.6rem; letter-spacing:3px; text-transform:uppercase; color:rgba(253,243,227,.2); }
+
+    @media (max-width:600px) {
+      header { padding:14px 16px; }
+      main { padding:32px 14px 60px; }
+      .pedido-card { grid-template-columns:1fr; }
+      .pedido-actions { flex-direction:row; align-items:center; flex-wrap:wrap; }
     }
-    .logo { font-family: 'Playfair Display', serif; font-size: 1.3rem; font-weight: 900; color: var(--oro); letter-spacing: 2px; }
-    .header-tag { font-size: .58rem; letter-spacing: 4px; text-transform: uppercase; color: rgba(200,146,42,0.5); background: rgba(200,146,42,0.07); border: 1px solid rgba(200,146,42,0.2); padding: 4px 14px; }
-    main { max-width: 640px; margin: 0 auto; padding: 52px 24px 80px; }
-    .page-title { margin-bottom: 40px; animation: fadeUp .6s ease both; }
-    @keyframes fadeUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
-    .page-title .eyebrow { font-size: .6rem; letter-spacing: 5px; text-transform: uppercase; color: var(--oro); border-top: 1px solid rgba(200,146,42,0.4); padding-top: 7px; margin-bottom: 12px; display: inline-block; }
-    .page-title h1 { font-family: 'Playfair Display', serif; font-size: clamp(2rem,5vw,2.8rem); font-weight: 900; color: var(--crema); line-height: 1.05; }
-    .page-title h1 em { color: var(--oro); font-style: italic; }
-    .page-title p { font-family: 'Lora', serif; font-style: italic; font-size: .9rem; color: var(--dim); margin-top: 10px; }
-    .card { background: rgba(255,255,255,0.025); border: 1px solid rgba(200,146,42,0.18); margin-bottom: 24px; position: relative; animation: fadeUp .6s ease both; }
-    .card::before { content: ''; position: absolute; top: 0; left: 0; width: 3px; height: 100%; background: var(--oro); }
-    .card-header { padding: 13px 22px; border-bottom: 1px solid rgba(200,146,42,0.12); display: flex; align-items: center; gap: 10px; }
-    .card-title { font-size: .62rem; letter-spacing: 4px; text-transform: uppercase; color: var(--oro); font-weight: 600; }
-    .card-body { padding: 24px 22px; }
-    .field { margin-bottom: 22px; }
-    .field:last-child { margin-bottom: 0; }
-    .field label { display: block; font-size: .58rem; letter-spacing: 4px; text-transform: uppercase; color: var(--oro); margin-bottom: 8px; font-weight: 400; }
-    .field input, .field textarea {
-      width: 100%; background: rgba(0,0,0,0.35); border: 1px solid rgba(200,146,42,0.22);
-      border-radius: 0; padding: 13px 16px; font-family: 'Lora', serif; font-size: 1rem;
-      color: var(--crema); outline: none; transition: border-color .2s, box-shadow .2s, background .2s; -webkit-appearance: none;
-    }
-    .field input::placeholder, .field textarea::placeholder { color: rgba(253,243,227,0.2); font-style: italic; }
-    .field input:focus, .field textarea:focus { border-color: var(--oro); background: rgba(200,146,42,0.05); box-shadow: 0 0 0 3px rgba(200,146,42,0.08); }
-    .field textarea { resize: vertical; min-height: 90px; }
-    .field-hint { font-family: 'Lora', serif; font-style: italic; font-size: .78rem; color: rgba(200,146,42,0.45); margin-top: 6px; }
-    .preview-box { background: rgba(200,146,42,0.04); border: 1px dashed rgba(200,146,42,0.25); padding: 22px 24px; font-family: 'Lora', serif; font-size: .95rem; line-height: 2; color: var(--crema); }
-    .preview-box .lbl { font-family: 'Oswald', sans-serif; font-size: .55rem; letter-spacing: 4px; text-transform: uppercase; color: rgba(200,146,42,0.5); display: block; margin-bottom: 12px; }
-    .preview-val { color: var(--oro2); }
-    .preview-static { color: var(--dim); font-style: italic; }
-    .btn-generate {
-      width: 100%; padding: 18px; background: var(--rojo2); border: 1px solid rgba(200,146,42,0.3);
-      color: var(--crema); font-family: 'Oswald', sans-serif; font-size: .85rem; letter-spacing: 4px;
-      text-transform: uppercase; font-weight: 600; cursor: pointer;
-      transition: background .25s, transform .15s, box-shadow .25s; position: relative; overflow: hidden; margin-top: 4px;
-    }
-    .btn-generate:hover { background: #6B0000; box-shadow: 0 6px 28px rgba(183,28,28,0.35); }
-    .btn-generate:active { transform: scale(0.98); }
-    .btn-generate:disabled { opacity: .45; cursor: not-allowed; }
-    .spinner { display: none; width: 18px; height: 18px; border: 2px solid rgba(253,243,227,0.3); border-top-color: var(--crema); border-radius: 50%; animation: spin .7s linear infinite; margin: 0 auto; }
-    @keyframes spin { to { transform: rotate(360deg); } }
-    .result-box { display: none; border: 1px solid rgba(200,146,42,0.35); background: rgba(200,146,42,0.05); padding: 24px; margin-top: 24px; animation: fadeUp .4s ease both; }
-    .result-box.visible { display: block; }
-    .result-box .rlabel { font-size: .58rem; letter-spacing: 4px; text-transform: uppercase; color: var(--oro); margin-bottom: 10px; font-family: 'Oswald', sans-serif; }
-    .result-url { font-family: 'Lora', serif; font-size: .85rem; color: var(--crema); word-break: break-all; line-height: 1.6; background: rgba(0,0,0,0.3); border: 1px solid rgba(200,146,42,0.15); padding: 12px 16px; margin-bottom: 14px; }
-    .result-actions { display: flex; gap: 10px; flex-wrap: wrap; }
-    .btn-action { flex: 1; min-width: 120px; padding: 12px 16px; border: 1px solid rgba(200,146,42,0.3); background: transparent; color: var(--oro); font-family: 'Oswald', sans-serif; font-size: .7rem; letter-spacing: 3px; text-transform: uppercase; font-weight: 600; cursor: pointer; transition: background .2s, color .2s, border-color .2s; text-decoration: none; text-align: center; }
-    .btn-action:hover { background: rgba(200,146,42,0.12); border-color: var(--oro); }
-    .btn-action.wa { background: #25D366; border-color: #25D366; color: #fff; }
-    .btn-action.wa:hover { background: #1da851; border-color: #1da851; }
-    .btn-action.copied { border-color: #25D366; color: #25D366; }
-    .error-msg { display: none; background: rgba(183,28,28,0.12); border: 1px solid rgba(183,28,28,0.4); border-left: 3px solid var(--rojo); padding: 14px 18px; font-family: 'Lora', serif; font-size: .88rem; color: rgba(253,243,227,0.8); margin-top: 16px; white-space: pre-line; }
-    .error-msg.visible { display: block; }
-    .toast { position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%) translateY(16px); background: rgba(16,5,0,0.97); border: 1px solid rgba(200,146,42,0.4); color: var(--oro2); font-family: 'Oswald', sans-serif; font-size: .68rem; letter-spacing: 3px; text-transform: uppercase; padding: 12px 28px; opacity: 0; pointer-events: none; transition: opacity .3s, transform .3s; z-index: 9998; white-space: nowrap; }
-    .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
-    footer { border-top: 1px solid rgba(200,146,42,0.1); padding: 24px 40px; text-align: center; }
-    footer p { font-size: .6rem; letter-spacing: 3px; text-transform: uppercase; color: rgba(253,243,227,0.2); }
-    @media (max-width: 600px) { header { padding: 14px 16px; } main { padding: 36px 16px 60px; } footer { padding: 20px; } }
   </style>
 </head>
 <body>
@@ -94,25 +155,30 @@
   <span class="header-tag">Panel de Pedidos</span>
 </header>
 
+<!-- TABS -->
+<div class="tabs">
+  <div class="tab active" onclick="switchTab('nuevo')">➕ Nuevo Pedido</div>
+  <div class="tab" onclick="switchTab('pedidos')">📋 Pedidos Activos</div>
+</div>
+
+<!-- PANEL: NUEVO PEDIDO -->
+<div id="panel-nuevo" class="panel active">
 <main>
   <div class="page-title">
     <span class="eyebrow">Nuevo Pedido</span>
-    <h1>Genera el link<br/><em>de confirmación</em></h1>
-    <p>Llena los datos del pedido y comparte el link único con tu cliente.</p>
+    <h2>Genera el link<br/><em>de confirmación</em></h2>
+    <p>Llena los datos y comparte el link con tu cliente.</p>
   </div>
 
-  <div class="card" style="animation-delay:.05s">
-    <div class="card-header">
-      <span style="font-size:1rem">📋</span>
-      <span class="card-title">Datos del pedido</span>
-    </div>
+  <div class="card">
+    <div class="card-header"><span>📋</span><span class="card-title">Datos del pedido</span></div>
     <div class="card-body">
       <div class="field">
         <label for="inp-nombre">Nombre del cliente</label>
         <input id="inp-nombre" type="text" placeholder="Ej. María González" autocomplete="off" spellcheck="false"/>
       </div>
       <div class="field">
-        <label for="inp-pedido">Orden / Detalle del pedido</label>
+        <label for="inp-pedido">Detalle del pedido</label>
         <textarea id="inp-pedido" placeholder="Ej. 2 kg de barbacoa, con tortillas y limones"></textarea>
       </div>
       <div class="field">
@@ -121,38 +187,30 @@
         <div class="field-hint">Incluye el símbolo $ si gustas</div>
       </div>
       <div class="field">
-        <label for="inp-fecha">Fecha / Hora de entrega <span style="color:rgba(200,146,42,0.4)">(opcional)</span></label>
+        <label for="inp-fecha">Fecha / Hora de entrega <span style="color:rgba(200,146,42,.4)">(opcional)</span></label>
         <input id="inp-fecha" type="text" placeholder="Ej. Sábado 3 de mayo a las 9:00 AM" autocomplete="off"/>
       </div>
     </div>
   </div>
 
-  <div class="card" style="animation-delay:.1s">
-    <div class="card-header">
-      <span style="font-size:1rem">👁</span>
-      <span class="card-title">Vista previa</span>
-    </div>
+  <div class="card">
+    <div class="card-header"><span>👁</span><span class="card-title">Vista previa</span></div>
     <div class="card-body">
       <div class="preview-box">
         <span class="lbl">Así verá el cliente su página</span>
-        <span class="preview-static">Hola </span><span class="preview-val" id="prev-nombre">__________</span>
-        <span class="preview-static">, su orden de </span><span class="preview-val" id="prev-pedido">__________</span>
-        <span class="preview-static"> estará lista</span>
-        <span id="prev-fecha-wrap"><span class="preview-static"> el </span><span class="preview-val" id="prev-fecha">__________</span></span>
-        <span class="preview-static">.<br/>Continue con la transferencia de </span>
-        <span class="preview-val" id="prev-monto">__________</span>
-        <span class="preview-static"> para confirmar su pedido.<br/><br/>Al finalizar, </span>
-        <strong style="color:var(--crema)">envíe su comprobante por WhatsApp</strong>
-        <span class="preview-static"> y agendaremos su pedido. 🤝</span>
+        <span class="ps">Hola </span><span class="pv" id="prev-nombre">__________</span>
+        <span class="ps">, su orden de </span><span class="pv" id="prev-pedido">__________</span>
+        <span class="ps"> estará lista</span>
+        <span id="prev-fecha-wrap"><span class="ps"> el </span><span class="pv" id="prev-fecha">__________</span></span>
+        <span class="ps">.<br/>Continue con la transferencia de </span>
+        <span class="pv" id="prev-monto">__________</span>
+        <span class="ps"> para confirmar su pedido.</span>
       </div>
     </div>
   </div>
 
-  <div class="card" style="animation-delay:.15s">
-    <div class="card-header">
-      <span style="font-size:1rem">🔗</span>
-      <span class="card-title">Generar link único</span>
-    </div>
+  <div class="card">
+    <div class="card-header"><span>🔗</span><span class="card-title">Generar link</span></div>
     <div class="card-body">
       <button class="btn-generate" id="btnGenerar" onclick="generarLink()">
         <span id="btn-text">Generar Link del Pedido</span>
@@ -163,13 +221,34 @@
         <div class="rlabel">✓ Link generado — comparte con tu cliente</div>
         <div class="result-url" id="resultUrl"></div>
         <div class="result-actions">
-          <button class="btn-action" id="btnCopiar" onclick="copiarLink()">Copiar Link</button>
-          <a class="btn-action wa" id="btnCompartir" href="#" target="_blank">Compartir por WhatsApp</a>
+          <button class="btn-sm" id="btnCopiar" onclick="copiarLink()">Copiar Link</button>
+          <a class="btn-sm wa" id="btnCompartir" href="#" target="_blank">Compartir por WhatsApp</a>
         </div>
       </div>
     </div>
   </div>
 </main>
+</div>
+
+<!-- PANEL: PEDIDOS ACTIVOS -->
+<div id="panel-pedidos" class="panel">
+<main>
+  <div class="page-title">
+    <span class="eyebrow">Gestión</span>
+    <h2>Pedidos<br/><em>Activos</em></h2>
+    <p>Marca un pedido como "en camino" para notificar al cliente.</p>
+  </div>
+
+  <button class="refresh-btn" id="refreshBtn" onclick="cargarPedidos()">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"></polyline><polyline points="1 20 1 14 7 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path></svg>
+    Actualizar
+  </button>
+
+  <div id="pedidos-container">
+    <div class="empty-state"><p>Cargando pedidos...</p></div>
+  </div>
+</main>
+</div>
 
 <footer><p>Don Barbacoa · Panel Interno · Reynosa, Tamaulipas</p></footer>
 <div class="toast" id="toast"></div>
@@ -178,13 +257,23 @@
   // ══════════════════════════════════════════════
   //  CONFIGURACIÓN
   // ══════════════════════════════════════════════
-  var GAS_URL      = 'https://script.google.com/macros/s/AKfycbz0x0BUr-jacuB-SRiWRYzTA1nxowz0lfghvRB6N6rBRWu0RBIYSp9gBSkCe3vklagtiQ/exec';
+  var GAS_URL      = 'https://script.google.com/macros/s/AKfycbzt1OO8jiuPEkmF1Vn5SYoeDndIqaXg2uMHhuokZ9JRztMYDnUYKE6OKwkP9PDvT5nzoA/exec';
   var RECEIVER_URL = 'https://horussystemco.com/barbacoa/receiver.html';
   // ══════════════════════════════════════════════
 
   var WA_NUMBER = '528991346597';
 
-  // Live preview
+  // ── TABS ──────────────────────────────────────
+  function switchTab(tab) {
+    document.querySelectorAll('.tab').forEach(function(t, i) {
+      t.classList.toggle('active', (i === 0 && tab === 'nuevo') || (i === 1 && tab === 'pedidos'));
+    });
+    document.getElementById('panel-nuevo').classList.toggle('active', tab === 'nuevo');
+    document.getElementById('panel-pedidos').classList.toggle('active', tab === 'pedidos');
+    if (tab === 'pedidos') cargarPedidos();
+  }
+
+  // ── LIVE PREVIEW ──────────────────────────────
   ['inp-nombre','inp-pedido','inp-monto','inp-fecha'].forEach(function(id) {
     document.getElementById(id).addEventListener('input', actualizarPreview);
   });
@@ -202,7 +291,7 @@
   }
   actualizarPreview();
 
-  // JSONP helper
+  // ── JSONP ─────────────────────────────────────
   function callGAS(params) {
     return new Promise(function(resolve, reject) {
       var cbName = 'cb_' + Date.now() + '_' + Math.floor(Math.random() * 99999);
@@ -211,7 +300,7 @@
       url.searchParams.set('callback', cbName);
 
       var script = document.createElement('script');
-      var timer  = setTimeout(function() { cleanup(); reject(new Error('Timeout — revisa la URL del script')); }, 15000);
+      var timer  = setTimeout(function() { cleanup(); reject(new Error('Timeout')); }, 15000);
 
       window[cbName] = function(data) { cleanup(); resolve(data); };
 
@@ -221,43 +310,42 @@
         if (script.parentNode) script.parentNode.removeChild(script);
       }
 
-      script.onerror = function() { cleanup(); reject(new Error('No se pudo conectar con el servidor')); };
+      script.onerror = function() { cleanup(); reject(new Error('No se pudo conectar')); };
       script.src = url.toString();
       document.head.appendChild(script);
     });
   }
 
-  // Generar link
+  // ── GENERAR LINK ──────────────────────────────
   async function generarLink() {
     var nombre = document.getElementById('inp-nombre').value.trim();
     var pedido = document.getElementById('inp-pedido').value.trim();
     var monto  = document.getElementById('inp-monto').value.trim();
     var fecha  = document.getElementById('inp-fecha').value.trim();
 
-    if (!nombre) { mostrarError('Por favor escribe el nombre del cliente.'); document.getElementById('inp-nombre').focus(); return; }
-    if (!pedido) { mostrarError('Por favor describe el pedido.'); document.getElementById('inp-pedido').focus(); return; }
-    if (!monto)  { mostrarError('Por favor escribe el monto.'); document.getElementById('inp-monto').focus(); return; }
+    if (!nombre) { mostrarError('Escribe el nombre del cliente.'); document.getElementById('inp-nombre').focus(); return; }
+    if (!pedido) { mostrarError('Describe el pedido.'); document.getElementById('inp-pedido').focus(); return; }
+    if (!monto)  { mostrarError('Escribe el monto.'); document.getElementById('inp-monto').focus(); return; }
 
     ocultarError();
     setLoading(true);
 
     try {
-      var data = await callGAS({
-        action: 'createPedido',
-        nombre: nombre,
-        pedido: pedido,
-        monto:  monto,
-        fecha:  fecha
-      });
-
-      if (!data.ok) throw new Error(data.error || 'Error al guardar el pedido');
+      var data = await callGAS({ action:'createPedido', nombre:nombre, pedido:pedido, monto:monto, fecha:fecha });
+      if (!data.ok) throw new Error(data.error || 'Error al guardar');
 
       var link = RECEIVER_URL + '?id=' + encodeURIComponent(data.id);
       mostrarResultado(link);
-      toast('✓ Link generado correctamente');
+      toast('✓ Link generado');
 
-    } catch (err) {
-      mostrarError('Error: ' + err.message + '\n\nVerifica que la URL del script esté correcta y que el despliegue sea público.');
+      // Limpiar form
+      ['inp-nombre','inp-pedido','inp-monto','inp-fecha'].forEach(function(id) {
+        document.getElementById(id).value = '';
+      });
+      actualizarPreview();
+
+    } catch(err) {
+      mostrarError('Error: ' + err.message + '\n\nVerifica la URL del script y que el despliegue sea público.');
     } finally {
       setLoading(false);
     }
@@ -266,45 +354,125 @@
   function mostrarResultado(link) {
     document.getElementById('resultUrl').textContent = link;
     document.getElementById('resultBox').classList.add('visible');
-    var msg = encodeURIComponent('🍖 *Don Barbacoa*\n\nHola! Aquí está el link con los datos de tu pedido:\n\n' + link + '\n\nRealiza tu transferencia y envíanos el comprobante. Cualquier duda escríbenos 🤙');
+    var msg = encodeURIComponent('🍖 *Don Barbacoa*\n\nHola! Aquí está el link con los datos de tu pedido:\n\n' + link + '\n\nRealiza tu transferencia y envíanos el comprobante. 🤙');
     document.getElementById('btnCompartir').href = 'https://wa.me/' + WA_NUMBER + '?text=' + msg;
-    document.getElementById('resultBox').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    document.getElementById('resultBox').scrollIntoView({ behavior:'smooth', block:'start' });
   }
 
   function copiarLink() {
     var link = document.getElementById('resultUrl').textContent;
     navigator.clipboard.writeText(link).then(function() {
       var btn = document.getElementById('btnCopiar');
-      btn.textContent = '✓ Copiado';
-      btn.classList.add('copied');
-      toast('Link copiado al portapapeles');
+      btn.textContent = '✓ Copiado'; btn.classList.add('copied');
+      toast('Link copiado');
       setTimeout(function() { btn.textContent = 'Copiar Link'; btn.classList.remove('copied'); }, 2200);
-    }).catch(function() { toast('Error al copiar'); });
+    });
   }
 
   function setLoading(state) {
-    var btn  = document.getElementById('btnGenerar');
-    var txt  = document.getElementById('btn-text');
-    var spin = document.getElementById('btn-spinner');
-    btn.disabled = state;
-    txt.style.display  = state ? 'none' : '';
-    spin.style.display = state ? 'block' : 'none';
+    document.getElementById('btnGenerar').disabled = state;
+    document.getElementById('btn-text').style.display  = state ? 'none' : '';
+    document.getElementById('btn-spinner').style.display = state ? 'block' : 'none';
   }
 
   function mostrarError(msg) {
     var el = document.getElementById('errorMsg');
-    el.textContent = msg;
-    el.classList.add('visible');
-    el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    el.textContent = msg; el.classList.add('visible');
   }
-
   function ocultarError() { document.getElementById('errorMsg').classList.remove('visible'); }
 
+  // ── LISTAR PEDIDOS ────────────────────────────
+  async function cargarPedidos() {
+    var btn = document.getElementById('refreshBtn');
+    btn.classList.add('spinning');
+    document.getElementById('pedidos-container').innerHTML = '<div class="empty-state"><p>Cargando...</p></div>';
+
+    try {
+      var data = await callGAS({ action: 'listarPedidos' });
+      if (!data.ok) throw new Error(data.error);
+      renderPedidos(data.pedidos);
+    } catch(err) {
+      document.getElementById('pedidos-container').innerHTML = '<div class="empty-state"><p>Error al cargar pedidos.<br/>' + err.message + '</p></div>';
+    } finally {
+      btn.classList.remove('spinning');
+    }
+  }
+
+  function renderPedidos(pedidos) {
+    var container = document.getElementById('pedidos-container');
+
+    if (!pedidos || pedidos.length === 0) {
+      container.innerHTML = '<div class="empty-state"><p>No hay pedidos aún.<br/>Genera el primero desde "Nuevo Pedido".</p></div>';
+      return;
+    }
+
+    var html = '<div class="pedidos-list">';
+
+    pedidos.forEach(function(p) {
+      var estado   = p.estado || 'pendiente';
+      var enCamino = estado === 'en_camino';
+      var fecha    = p.timestamp ? new Date(p.timestamp).toLocaleDateString('es-MX', { day:'2-digit', month:'short', hour:'2-digit', minute:'2-digit' }) : '';
+      var link     = RECEIVER_URL + '?id=' + encodeURIComponent(p.id);
+
+      html += '<div class="pedido-card ' + estado + '" id="card-' + p.id + '">';
+      html += '<div>';
+      html += '<div class="pedido-nombre">' + esc(p.nombre) + '</div>';
+      html += '<div class="pedido-detalle">' + esc(p.pedido) + '</div>';
+      html += '<div class="pedido-monto">' + esc(p.monto) + '</div>';
+      if (fecha) html += '<div class="pedido-fecha">' + fecha + '</div>';
+      html += '</div>';
+
+      html += '<div class="pedido-actions">';
+      html += '<span class="badge ' + estado + '">' + (enCamino ? '🛵 En camino' : '⏳ Pendiente') + '</span>';
+
+      if (!enCamino) {
+        html += '<button class="btn-camino" onclick="marcarEnCamino(\'' + p.id + '\')">🛵 Marcar en camino</button>';
+      }
+
+      html += '<button class="btn-copiar-link" onclick="copiarLinkPedido(\'' + encodeURIComponent(link) + '\', this)">Copiar link</button>';
+      html += '</div>';
+      html += '</div>';
+    });
+
+    html += '</div>';
+    container.innerHTML = html;
+  }
+
+  async function marcarEnCamino(id) {
+    var btn = document.querySelector('#card-' + id + ' .btn-camino');
+    if (btn) { btn.disabled = true; btn.textContent = 'Actualizando...'; }
+
+    try {
+      var data = await callGAS({ action:'updateEstado', id:id, estado:'en_camino' });
+      if (!data.ok) throw new Error(data.error);
+      toast('✓ Pedido marcado en camino');
+      cargarPedidos();
+    } catch(err) {
+      toast('Error: ' + err.message);
+      if (btn) { btn.disabled = false; btn.textContent = '🛵 Marcar en camino'; }
+    }
+  }
+
+  function copiarLinkPedido(encodedLink, btn) {
+    var link = decodeURIComponent(encodedLink);
+    navigator.clipboard.writeText(link).then(function() {
+      var orig = btn.textContent;
+      btn.textContent = '✓ Copiado';
+      btn.classList.add('copied');
+      toast('Link copiado');
+      setTimeout(function() { btn.textContent = orig; btn.classList.remove('copied'); }, 2000);
+    });
+  }
+
+  function esc(str) {
+    return String(str || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+
+  // TOAST
   var toastTimer;
   function toast(msg) {
     var t = document.getElementById('toast');
-    t.textContent = msg;
-    t.classList.add('show');
+    t.textContent = msg; t.classList.add('show');
     clearTimeout(toastTimer);
     toastTimer = setTimeout(function() { t.classList.remove('show'); }, 2500);
   }
