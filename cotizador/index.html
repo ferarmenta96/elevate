@@ -1659,6 +1659,14 @@ async function generatePDF() {
   previewPanel.classList.remove('tab-hidden');
   if (window.innerWidth <= 768) formPanel.classList.add('tab-hidden');
 
+  // Hide fixed UI elements so they don't appear in the capture
+  const tabBar      = document.getElementById('tab-bar');
+  const shareOverlay = document.getElementById('share-overlay');
+  const tabBarPrev   = tabBar      ? tabBar.style.display      : null;
+  const overlayPrev  = shareOverlay ? shareOverlay.style.display : null;
+  if (tabBar)       tabBar.style.display       = 'none';
+  if (shareOverlay) shareOverlay.style.display  = 'none';
+
   await new Promise(r => setTimeout(r, 220));
 
   const node = document.getElementById('quote-preview');
@@ -1666,8 +1674,13 @@ async function generatePDF() {
     scale: 2,
     useCORS: true,
     backgroundColor: '#ffffff',
-    logging: false
+    logging: false,
+    ignoreElements: el => el.classList.contains('tab-bar') || el.id === 'share-overlay'
   });
+
+  // Restore fixed UI elements
+  if (tabBar)       tabBar.style.display       = tabBarPrev      ?? '';
+  if (shareOverlay) shareOverlay.style.display  = overlayPrev     ?? '';
 
   const { jsPDF } = window.jspdf;
   const imgData = canvas.toDataURL('image/jpeg', 0.92);
