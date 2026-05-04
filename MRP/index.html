@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Horus MRP — Intelligent Planning for Any Business</title>
+<title>Paquetes / Packages — Horus System</title>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Barlow+Condensed:wght@300;400;500;600;700&family=Barlow:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
   :root {
@@ -177,6 +177,11 @@
     gap: 20px;
     margin-bottom: 48px;
   }
+  .tier-grid-4 {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    margin-bottom: 48px;
+  }
   .tier-card {
     background: var(--bg-card);
     border: 1px solid var(--border);
@@ -235,6 +240,80 @@
     content: '';
     position: absolute; top: 0; left: 0; right: 0; height: 3px;
     background: linear-gradient(90deg, var(--gold), var(--gold-light), var(--gold));
+  }
+
+  /* ── MODULE INTRO CARD (MRP / CRM) ── */
+  .module-intro {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow);
+    display: grid; grid-template-columns: 1fr 1fr;
+    margin-bottom: 32px;
+    overflow: hidden;
+    position: relative;
+  }
+  .module-intro::after {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0; height: 3px;
+    background: linear-gradient(90deg, var(--navy) 0%, var(--gold) 100%);
+  }
+  .module-intro-left { padding: 44px 52px; border-right: 1px solid var(--border); }
+  .module-intro-right {
+    padding: 44px 52px;
+    background: var(--bg-warm);
+    display: flex; flex-direction: column; gap: 0; justify-content: center;
+  }
+  .module-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 300; font-size: clamp(26px, 2.2vw, 36px);
+    line-height: 1.1; color: var(--navy); margin-bottom: 14px;
+  }
+  .module-title em { font-style: italic; color: var(--gold); }
+  .module-body {
+    font-size: 13px; color: var(--ink-soft); line-height: 1.75; font-weight: 300;
+  }
+  .module-row {
+    display: flex; align-items: flex-start; gap: 16px;
+    padding: 16px 0; border-bottom: 1px solid var(--border);
+  }
+  .module-row:last-child { border-bottom: none; padding-bottom: 0; }
+  .module-row:first-child { padding-top: 0; }
+  .module-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 20px; color: var(--gold); line-height: 1;
+    flex-shrink: 0; width: 26px; padding-top: 2px;
+  }
+  .module-text-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 11px; font-weight: 700; letter-spacing: 0.12em;
+    text-transform: uppercase; color: var(--navy); margin-bottom: 3px;
+  }
+  .module-text-desc { font-size: 12px; color: var(--ink-soft); line-height: 1.5; font-weight: 300; }
+
+  /* ── MODULE STATS ── */
+  .module-stats {
+    display: flex; gap: 0;
+    border: 1px solid var(--border);
+    background: var(--bg-card);
+    box-shadow: var(--shadow);
+    margin-bottom: 24px;
+    overflow: hidden;
+  }
+  .module-stat {
+    flex: 1; padding: 24px 28px;
+    border-right: 1px solid var(--border);
+    text-align: center;
+  }
+  .module-stat:last-child { border-right: none; }
+  .module-stat-val {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 32px; font-weight: 400; color: var(--gold); line-height: 1;
+    margin-bottom: 6px;
+  }
+  .module-stat-lbl {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--ink-soft);
   }
 
   /* ── ADDONS ── */
@@ -393,6 +472,12 @@
   }
   .btn-outline-gold:hover { border-color: var(--gold-light); color: #fff; transform: translateY(-1px); }
 
+  /* ── SECTION DIVIDER ── */
+  .sec-divider {
+    border: none; border-top: 1px solid var(--border);
+    margin: 16px 0 56px;
+  }
+
   /* ── FOOTER ── */
   footer {
     background: var(--navy);
@@ -415,21 +500,22 @@
     to   { opacity: 1; transform: translateY(0); }
   }
 
-  /* ── HIDDEN LAYERS ── */
-    /* EN is default — hide all ES */
-  [data-lang="es"] { display: none !important; }
-  /* When lang-es is active — swap */
-  body.lang-es [data-lang="es"] { display: block !important; }
-  body.lang-es [data-lang="en"] { display: none !important; }
-  /* Inline elements need inline not block */
-  body.lang-es span[data-lang="es"],
-  body.lang-es a[data-lang="es"],
-  body.lang-es small[data-lang="es"] { display: inline !important; }
-  span[data-lang="en"],
-  a[data-lang="en"],
-  small[data-lang="en"] { display: inline; }
+  /* ── LANGUAGE VISIBILITY ── */
+  [data-lang="es"] { display: none; }
+  .hero-eyebrow[data-lang="en"] { display: flex; }
+  body.lang-es [data-lang="en"] { display: none; }
+  body.lang-es [data-lang="es"] { display: revert; }
+  body.lang-es .hero-eyebrow[data-lang="es"] { display: flex; }
 
-  /* Fix display for specific elements */
+  .feat-list li[data-lang="es"],
+  .feat-2col li[data-lang="es"] { display: none; }
+  .feat-list li[data-lang="en"],
+  .feat-2col li[data-lang="en"] { display: flex; }
+  body.lang-es .feat-list li[data-lang="en"],
+  body.lang-es .feat-2col li[data-lang="en"] { display: none; }
+  body.lang-es .feat-list li[data-lang="es"],
+  body.lang-es .feat-2col li[data-lang="es"] { display: flex; }
+
   body.lang-es .pack-name[data-lang="es"],
   body.lang-es .pack-sub[data-lang="es"],
   body.lang-es .hero h1[data-lang="es"],
@@ -444,10 +530,19 @@
   body.lang-es .popular-badge[data-lang="es"],
   body.lang-es .addon-name[data-lang="es"],
   body.lang-es .addon-desc[data-lang="es"],
-  body.lang-es .hero-eyebrow[data-lang="es"]
+  body.lang-es .hero-eyebrow[data-lang="es"],
+  body.lang-es .module-title[data-lang="es"],
+  body.lang-es .module-body[data-lang="es"],
+  body.lang-es .module-text-title[data-lang="es"],
+  body.lang-es .module-text-desc[data-lang="es"],
+  body.lang-es .module-stat-lbl[data-lang="es"],
+  body.lang-es .mrr-l[data-lang="es"]
   { display: revert; }
 
   /* ── RESPONSIVE ── */
+  @media (max-width: 1100px) {
+    .tier-grid-4 { grid-template-columns: repeat(2, 1fr); }
+  }
   @media (max-width: 960px) {
     .lang-bar { padding: 0 20px; }
     .hero { padding: 56px 24px 52px; }
@@ -456,115 +551,19 @@
     .entry-left { border-right: none; border-bottom: 1px solid var(--border); padding: 40px 32px; }
     .entry-right { padding: 36px 32px; background: var(--bg-warm); }
     .tier-grid { grid-template-columns: 1fr; gap: 16px; }
+    .tier-grid-4 { grid-template-columns: 1fr; }
     .enterprise-grid { grid-template-columns: 1fr; }
     .addons-grid { grid-template-columns: 1fr 1fr; }
     .addon-item { border-right: none; border-bottom: 1px solid var(--border); }
     .addon-item:last-child { border-bottom: none; }
     .feat-2col { grid-template-columns: 1fr; }
+    .module-intro { grid-template-columns: 1fr; }
+    .module-intro-left { border-right: none; border-bottom: 1px solid var(--border); padding: 36px 32px; }
+    .module-intro-right { padding: 32px 32px; }
+    .module-stats { flex-direction: column; }
+    .module-stat { border-right: none; border-bottom: 1px solid var(--border); }
+    .module-stat:last-child { border-bottom: none; }
     footer { flex-direction: column; padding: 28px 20px; text-align: center; }
-  }
-</style>
-<style>
-  /* ── MRP EXTRAS ── */
-  .brand-sep { width:1px; height:20px; background:var(--border); margin:0 4px; }
-  .brand-module {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: 11px; letter-spacing: 0.22em;
-    color: var(--ink-soft); text-transform: uppercase; font-weight: 400;
-  }
-  .back-bar-right {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: 10px; letter-spacing: 0.2em;
-    color: rgba(255,255,255,0.25); text-transform: uppercase;
-  }
-  .hero-stats {
-    display: flex; justify-content: center; gap: 56px; flex-wrap: wrap;
-    border-top: 1px solid rgba(255,255,255,0.08);
-    padding-top: 36px; margin-top: 36px;
-  }
-  .hero-stat-val {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 38px; font-weight: 400; color: var(--gold-light); line-height: 1;
-    margin-bottom: 6px;
-  }
-  .hero-stat-lbl {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase;
-    color: rgba(255,255,255,0.35);
-  }
-  .intro-card {
-    background: var(--bg-card); border: 1px solid var(--border);
-    box-shadow: var(--shadow);
-    display: grid; grid-template-columns: 1fr 1fr;
-    margin-bottom: 48px; overflow: hidden;
-    animation: fadeUp 0.5s ease both; position: relative;
-  }
-  .intro-card::after {
-    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
-    background: linear-gradient(90deg, var(--navy) 0%, var(--gold) 100%);
-  }
-  .intro-left { padding: 52px 56px; border-right: 1px solid var(--border); }
-  .intro-right { padding: 52px 56px; background: var(--bg-warm); display: flex; flex-direction: column; gap: 0; justify-content: center; }
-  .intro-title {
-    font-family: 'Cormorant Garamond', serif;
-    font-weight: 300; font-size: clamp(28px, 2.5vw, 40px);
-    line-height: 1.1; color: var(--navy); margin-bottom: 16px;
-  }
-  .intro-title em { font-style: italic; color: var(--gold); }
-  .intro-body { font-size: 14px; color: var(--ink-soft); line-height: 1.75; font-weight: 300; }
-  .module-row {
-    display: flex; align-items: flex-start; gap: 16px;
-    padding: 18px 0; border-bottom: 1px solid var(--border);
-  }
-  .module-row:last-child { border-bottom: none; padding-bottom: 0; }
-  .module-row:first-child { padding-top: 0; }
-  .module-num {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 22px; color: var(--gold); line-height: 1;
-    flex-shrink: 0; width: 28px; padding-top: 2px;
-  }
-  .module-text-title {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: 12px; font-weight: 700; letter-spacing: 0.12em;
-    text-transform: uppercase; color: var(--navy); margin-bottom: 4px;
-  }
-  .module-text-desc { font-size: 12px; color: var(--ink-soft); line-height: 1.5; font-weight: 300; }
-  .comp-wrap {
-    background: var(--bg-card); border: 1px solid var(--border);
-    box-shadow: var(--shadow); overflow-x: auto; margin-bottom: 48px;
-  }
-  .comp-table { width: 100%; border-collapse: collapse; min-width: 640px; }
-  .comp-table thead tr { border-bottom: 1.5px solid var(--border); }
-  .comp-table th {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase;
-    color: var(--ink-soft); font-weight: 600; text-align: left; padding: 18px 24px 16px;
-  }
-  .comp-table th:not(:first-child) { text-align: center; }
-  .comp-table td { padding: 13px 24px; border-bottom: 1px solid var(--border); font-size: 13px; color: var(--ink-mid); font-weight: 300; }
-  .comp-table td:not(:first-child) { text-align: center; }
-  .comp-table tbody tr:last-child td { border-bottom: none; }
-  .comp-table tbody tr:hover td { background: var(--bg-warm); }
-  .comp-table .col-horus { background: rgba(184,144,46,0.04); }
-  .comp-yes { color: var(--gold); font-weight: 600; font-size: 15px; }
-  .comp-no { color: var(--border); font-size: 15px; }
-  .comp-partial { font-family: 'Barlow Condensed', sans-serif; font-size: 10px; letter-spacing: 0.1em; color: var(--ink-soft); text-transform: uppercase; }
-  .comp-col-h { font-family: 'Barlow Condensed', sans-serif; font-size: 11px; letter-spacing: 0.1em; font-weight: 700; text-transform: uppercase; color: var(--navy); }
-  .comp-col-h.gold { color: var(--gold); }
-  .faq-wrap { background: var(--bg-card); border: 1px solid var(--border); box-shadow: var(--shadow); margin-bottom: 48px; overflow: hidden; }
-  .faq-item { border-bottom: 1px solid var(--border); }
-  .faq-item:last-child { border-bottom: none; }
-  .faq-q { padding: 22px 32px; display: flex; align-items: center; justify-content: space-between; cursor: pointer; font-size: 14px; font-weight: 400; color: var(--ink); gap: 16px; user-select: none; transition: background 0.15s; }
-  .faq-q:hover { background: var(--bg-warm); }
-  .faq-toggle { font-family: 'Barlow Condensed', sans-serif; font-size: 22px; color: var(--gold); flex-shrink: 0; line-height: 1; transition: transform 0.2s; font-weight: 300; }
-  .faq-item.open .faq-toggle { transform: rotate(45deg); }
-  .faq-a { display: none; padding: 0 32px 22px; font-size: 13px; color: var(--ink-soft); line-height: 1.75; font-weight: 300; max-width: 680px; }
-  .faq-item.open .faq-a { display: block; }
-  @media (max-width: 960px) {
-    .intro-card { grid-template-columns: 1fr; }
-    .intro-left { border-right: none; border-bottom: 1px solid var(--border); padding: 40px 32px; }
-    .intro-right { padding: 36px 32px; }
-    .hero-stats { gap: 28px; }
   }
 </style>
 </head>
@@ -576,26 +575,21 @@
     <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M10 3L5 8l5 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
     Back to Main Site
   </a>
-  <a href="../index.html" class="back-link" id="back-es" style="display:none">
+  <a href="../ES/index.html" class="back-link" id="back-es" style="display:none">
     <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M10 3L5 8l5 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
     Volver al Sitio Principal
   </a>
-  <div class="back-bar-right">Horus System Co.</div>
 </div>
 
 <!-- STICKY NAV -->
 <div class="lang-bar">
   <div class="lang-bar-brand">
     <div class="logo-sq">
-      <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <polygon points="12,2 22,7 22,17 12,22 2,17 2,7" stroke="#D4A843" stroke-width="1.4" fill="none"/>
-        <polygon points="12,7 18,10 18,14 12,17 6,14 6,10" stroke="#D4A843" stroke-width="0.8" fill="rgba(212,168,67,0.07)"/>
-        <circle cx="12" cy="12" r="2" fill="#D4A843"/>
+      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path d="M12 2L4 7v5c0 5.25 3.4 10.15 8 11.35C16.6 22.15 20 17.25 20 12V7L12 2z"/>
       </svg>
     </div>
     <div class="brand-name">Horus <span>System</span></div>
-    <div class="brand-sep"></div>
-    <div class="brand-module">MRP</div>
   </div>
   <div class="lang-toggle">
     <button class="lang-btn" onclick="setLang('es')">ES</button>
@@ -606,54 +600,371 @@
 <!-- HERO -->
 <div class="hero">
   <div class="hero-inner">
-    <div class="hero-eyebrow" data-lang="es">Horus MRP · Cualquier Industria, Cualquier Escala</div>
-    <div class="hero-eyebrow" data-lang="en">Horus MRP · Any Industry, Any Scale</div>
-    <h1 data-lang="es">Planificación inteligente<br><em>para cualquier negocio</em></h1>
-    <h1 data-lang="en">Intelligent planning<br><em>for any business</em></h1>
-    <p data-lang="es">Deja de adivinar cuándo comprar y qué producir. Horus MRP calcula requerimientos, genera órdenes y alerta faltantes — para cualquier tipo de negocio, en tiempo real.</p>
-    <p data-lang="en">Stop guessing when to buy and what to produce. Horus MRP calculates requirements, generates orders, and alerts shortages — for any type of business, in real time.</p>
-    <div class="hero-stats">
-      <div>
-        <div class="hero-stat-val">80%</div>
-        <div class="hero-stat-lbl" data-lang="es">Menos tiempo en planeación</div>
-        <div class="hero-stat-lbl" data-lang="en">Less planning time</div>
-      </div>
-      <div>
-        <div class="hero-stat-val">0</div>
-        <div class="hero-stat-lbl" data-lang="es">Paros por falta de material</div>
-        <div class="hero-stat-lbl" data-lang="en">Production stops</div>
-      </div>
-      <div>
-        <div class="hero-stat-val">24/7</div>
-        <div class="hero-stat-lbl" data-lang="es">Monitoreo automático</div>
-        <div class="hero-stat-lbl" data-lang="en">Automatic monitoring</div>
-      </div>
-      <div>
-        <div class="hero-stat-val">1 day</div>
-        <div class="hero-stat-lbl" data-lang="es">Implementación express</div>
-        <div class="hero-stat-lbl" data-lang="en">Express implementation</div>
-      </div>
-    </div>
+    <div class="hero-eyebrow" data-lang="es">Planes &amp; Paquetes</div>
+    <div class="hero-eyebrow" data-lang="en">Plans &amp; Packages</div>
+
+    <h1 data-lang="es">Soluciones digitales<br><em>a tu medida</em></h1>
+    <h1 data-lang="en">Digital solutions<br><em>built for you</em></h1>
+
+    <p data-lang="es">Desde una landing page de entrada hasta sistemas de automatización empresarial. Crece cuando tú quieras.</p>
+    <p data-lang="en">From a starter landing page to full enterprise automation systems. Scale on your terms.</p>
   </div>
 </div>
 
+<!-- PAGE BODY -->
 <div class="page-body">
 
-  <!-- THE SYSTEM -->
+  <!-- ══════════════════════════════════════════
+       SECCIÓN 1 — LANDING PAGE ENTRY
+  ══════════════════════════════════════════ -->
   <div class="sec-header">
-    <div class="sec-label" data-lang="es">El sistema — escalable</div>
-    <div class="sec-label" data-lang="en">The system — scalable</div>
+    <div class="sec-label" data-lang="es">Punto de entrada</div>
+    <div class="sec-label" data-lang="en">Entry point</div>
     <div class="sec-line"></div>
   </div>
 
-  <div class="intro-card">
-    <div class="intro-left">
-      <div class="intro-title" data-lang="es">De la demanda a la orden<br><em>en minutos — cualquier industria</em></div>
-      <div class="intro-title" data-lang="en">From demand to order<br><em>in minutes — any industry</em></div>
-      <p class="intro-body" data-lang="es">Horus MRP es un sistema de planificación para cualquier operación que gestione materiales, inventario y producción. Manufactura, alimentos, retail, construcción, impresión, electrónica — si compras insumos y produces salidas, Horus MRP funciona para ti. Un solo panel. Sin hojas de cálculo. Sin sorpresas.</p>
-      <p class="intro-body" data-lang="en">Horus MRP is a planning system built for any operation that manages materials, inventory, and production. Manufacturing, food, retail, construction, printing, electronics — if you buy inputs and produce outputs, Horus MRP works for you. One panel. No spreadsheets. No surprises.</p>
+  <div class="entry-card">
+    <div class="entry-left">
+      <div class="pack-tag" data-lang="es">Starter</div>
+      <div class="pack-tag" data-lang="en">Starter</div>
+      <div class="pack-name" data-lang="es">Landing Page<br><em>Esencial</em></div>
+      <div class="pack-name" data-lang="en">Landing Page<br><em>Essential</em></div>
+      <div class="pack-sub" data-lang="es">Una página de alta conversión, diseño profesional, lista en 5–7 días. Perfecta para validar tu negocio o lanzar una oferta rápida.</div>
+      <div class="pack-sub" data-lang="en">A high-converting single page with professional design, delivered in 5–7 days. Perfect for validating your business or launching a quick offer.</div>
+      <div class="price-block">
+        <div class="price-from" data-lang="es">Desde</div>
+        <div class="price-from" data-lang="en">Starting at</div>
+        <div class="price-row">
+          <span class="c">$</span>
+          <span class="v">35</span>
+          <span class="s" data-lang="es">USD · pago único</span>
+          <span class="s" data-lang="en">USD · one-time</span>
+        </div>
+        <div style="font-size:11px;color:var(--ink-soft);margin-top:6px;font-style:italic" data-lang="es">Sin mensualidad obligatoria</div>
+        <div style="font-size:11px;color:var(--ink-soft);margin-top:6px;font-style:italic" data-lang="en">No recurring fee required</div>
+      </div>
+      <a href="mailto:info@horussystem.net" class="btn-navy" data-lang="es">
+        Quiero esta landing
+        <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+      <a href="mailto:info@horussystem.net" class="btn-navy" data-lang="en">
+        Get this landing page
+        <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
     </div>
-    <div class="intro-right">
+    <div class="entry-right">
+      <ul class="feat-list feat-2col">
+        <li data-lang="es">Diseño personalizado a tu marca</li>
+        <li data-lang="en">Custom branding &amp; design</li>
+        <li data-lang="es">Hero section con CTA principal</li>
+        <li data-lang="en">Hero section with main CTA</li>
+        <li data-lang="es">Sección de servicios / beneficios</li>
+        <li data-lang="en">Services / benefits section</li>
+        <li data-lang="es">Galería o portafolio básico</li>
+        <li data-lang="en">Basic gallery or portfolio</li>
+        <li data-lang="es">Formulario de contacto</li>
+        <li data-lang="en">Contact form</li>
+        <li data-lang="es">Sección de testimonios</li>
+        <li data-lang="en">Testimonials section</li>
+        <li data-lang="es">Optimización móvil (responsive)</li>
+        <li data-lang="en">Mobile-responsive layout</li>
+        <li data-lang="es">SEO on-page básico</li>
+        <li data-lang="en">Basic on-page SEO</li>
+        <li data-lang="es">Velocidad de carga optimizada</li>
+        <li data-lang="en">Optimized load speed</li>
+        <li data-lang="es">1 ronda de revisiones</li>
+        <li data-lang="en">1 revision round included</li>
+        <li class="dim" data-lang="es">CRM / Automatización</li>
+        <li class="dim" data-lang="en">CRM / Automation</li>
+        <li class="dim" data-lang="es">Chatbot con IA</li>
+        <li class="dim" data-lang="en">AI chatbot</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       SECCIÓN 2 — SITIOS WEB
+  ══════════════════════════════════════════ -->
+  <div class="sec-header">
+    <div class="sec-label" data-lang="es">Sitios web profesionales</div>
+    <div class="sec-label" data-lang="en">Professional websites</div>
+    <div class="sec-line"></div>
+  </div>
+
+  <div class="tier-grid">
+
+    <!-- BÁSICO -->
+    <div class="tier-card">
+      <div class="pack-tag" data-lang="es">Básico</div>
+      <div class="pack-tag" data-lang="en">Basic</div>
+      <div class="pack-name" data-lang="es">Presencia<br><em>Profesional</em></div>
+      <div class="pack-name" data-lang="en">Professional<br><em>Presence</em></div>
+      <div class="pack-sub" data-lang="es">Para negocios que necesitan presencia digital sólida y resultados rápidos.</div>
+      <div class="pack-sub" data-lang="en">For businesses that need a strong digital presence fast.</div>
+      <div class="price-block">
+        <div class="price-from" data-lang="es">Desde</div>
+        <div class="price-from" data-lang="en">Starting at</div>
+        <div class="price-row">
+          <span class="c">$</span><span class="v">350</span>
+          <span class="s" data-lang="es">USD única vez</span>
+          <span class="s" data-lang="en">USD one-time</span>
+        </div>
+      </div>
+      <ul class="feat-list">
+        <li data-lang="es">Hasta 5 páginas / secciones</li>
+        <li data-lang="en">Up to 5 pages / sections</li>
+        <li data-lang="es">Diseño custom a tu marca</li>
+        <li data-lang="en">Custom brand design</li>
+        <li data-lang="es">Formularios de contacto</li>
+        <li data-lang="en">Contact forms</li>
+        <li data-lang="es">Integración WhatsApp</li>
+        <li data-lang="en">WhatsApp integration</li>
+        <li data-lang="es">Galería / portafolio</li>
+        <li data-lang="en">Gallery / portfolio</li>
+        <li data-lang="es">SEO básico + velocidad</li>
+        <li data-lang="en">Basic SEO + speed</li>
+        <li data-lang="es">2 rondas de revisiones</li>
+        <li data-lang="en">2 revision rounds</li>
+        <li class="dim" data-lang="es">CRM incluido</li>
+        <li class="dim" data-lang="en">CRM included</li>
+        <li class="dim" data-lang="es">Chatbot con IA</li>
+        <li class="dim" data-lang="en">AI chatbot</li>
+      </ul>
+      <a href="mailto:info@horussystem.net" class="btn-outline-navy" data-lang="es">Cotizar</a>
+      <a href="mailto:info@horussystem.net" class="btn-outline-navy" data-lang="en">Get a quote</a>
+    </div>
+
+    <!-- PRO — FEATURED -->
+    <div class="tier-card featured">
+      <div class="popular-badge" data-lang="es">Más popular</div>
+      <div class="popular-badge" data-lang="en">Most popular</div>
+      <div class="pack-tag" data-lang="es">Pro</div>
+      <div class="pack-tag" data-lang="en">Pro</div>
+      <div class="pack-name" data-lang="es">Sitio Web<br><em>+ Automatización</em></div>
+      <div class="pack-name" data-lang="en">Website<br><em>+ Automation</em></div>
+      <div class="pack-sub" data-lang="es">Sitio completo con CRM, chatbot y seguimiento automático de leads. Todo conectado.</div>
+      <div class="pack-sub" data-lang="en">Full site with CRM, chatbot and automatic lead follow-up. Everything connected.</div>
+      <div class="price-block">
+        <div class="price-from" data-lang="es">Setup desde</div>
+        <div class="price-from" data-lang="en">Setup starting at</div>
+        <div class="price-row">
+          <span class="c">$</span><span class="v">1,500</span>
+          <span class="s" data-lang="es">USD</span>
+          <span class="s" data-lang="en">USD</span>
+        </div>
+        <div class="mrr-row">
+          <span class="mrr-v">+ $299</span>
+          <span class="mrr-l" data-lang="es">/ mes</span>
+          <span class="mrr-l" data-lang="en">/ month</span>
+        </div>
+      </div>
+      <ul class="feat-list">
+        <li data-lang="es">Sitio web multi-página completo</li>
+        <li data-lang="en">Full multi-page website</li>
+        <li data-lang="es">CRM con pipeline de ventas</li>
+        <li data-lang="en">CRM with sales pipeline</li>
+        <li data-lang="es">Chatbot IA (WhatsApp + Web)</li>
+        <li data-lang="en">AI chatbot (WhatsApp + Web)</li>
+        <li data-lang="es">Automatización de seguimiento</li>
+        <li data-lang="en">Automated lead follow-up</li>
+        <li data-lang="es">Captura de leads 24/7</li>
+        <li data-lang="en">24/7 lead capture</li>
+        <li data-lang="es">Formularios inteligentes</li>
+        <li data-lang="en">Smart forms</li>
+        <li data-lang="es">Reportes mensuales</li>
+        <li data-lang="en">Monthly reports</li>
+        <li data-lang="es">Soporte prioritario</li>
+        <li data-lang="en">Priority support</li>
+        <li data-lang="es">3 rondas de revisiones</li>
+        <li data-lang="en">3 revision rounds</li>
+        <li data-lang="es">Optimización continua</li>
+        <li data-lang="en">Ongoing optimization</li>
+      </ul>
+      <a href="mailto:info@horussystem.net" class="btn-navy" data-lang="es">Lo quiero</a>
+      <a href="mailto:info@horussystem.net" class="btn-navy" data-lang="en">I want this</a>
+    </div>
+
+    <!-- PREMIUM -->
+    <div class="tier-card">
+      <div class="pack-tag" data-lang="es">Premium</div>
+      <div class="pack-tag" data-lang="en">Premium</div>
+      <div class="pack-name" data-lang="es">Sistema<br><em>Horus Completo</em></div>
+      <div class="pack-name" data-lang="en">Full<br><em>Horus System</em></div>
+      <div class="pack-sub" data-lang="es">Plataforma Horus al 100%. Automatización de adquisición, respuestas y procesos clave del negocio.</div>
+      <div class="pack-sub" data-lang="en">Full Horus platform. Automate acquisition, responses, and core business processes.</div>
+      <div class="price-block">
+        <div class="price-from" data-lang="es">Setup desde</div>
+        <div class="price-from" data-lang="en">Setup starting at</div>
+        <div class="price-row">
+          <span class="c">$</span><span class="v">3,500</span>
+          <span class="s" data-lang="es">USD</span>
+          <span class="s" data-lang="en">USD</span>
+        </div>
+        <div class="mrr-row">
+          <span class="mrr-v">+ $599</span>
+          <span class="mrr-l" data-lang="es">/ mes</span>
+          <span class="mrr-l" data-lang="en">/ month</span>
+        </div>
+      </div>
+      <ul class="feat-list">
+        <li data-lang="es">Todo lo del plan Pro</li>
+        <li data-lang="en">Everything in Pro</li>
+        <li data-lang="es">Sistema SaaS / app a medida</li>
+        <li data-lang="en">Custom SaaS / app system</li>
+        <li data-lang="es">Múltiples canales (WA, FB, web)</li>
+        <li data-lang="en">Multi-channel (WA, FB, web)</li>
+        <li data-lang="es">IA para respuestas automáticas</li>
+        <li data-lang="en">AI-powered auto-responses</li>
+        <li data-lang="es">Integraciones con terceros</li>
+        <li data-lang="en">Third-party integrations</li>
+        <li data-lang="es">Panel de analíticas avanzado</li>
+        <li data-lang="en">Advanced analytics dashboard</li>
+        <li data-lang="es">Funnel completo de ventas</li>
+        <li data-lang="en">Full sales funnel</li>
+        <li data-lang="es">Onboarding + capacitación</li>
+        <li data-lang="en">Onboarding + training</li>
+        <li data-lang="es">Revisiones ilimitadas (1er mes)</li>
+        <li data-lang="en">Unlimited revisions (1st month)</li>
+      </ul>
+      <a href="mailto:info@horussystem.net" class="btn-outline-navy" data-lang="es">Cotizar</a>
+      <a href="mailto:info@horussystem.net" class="btn-outline-navy" data-lang="en">Get a quote</a>
+    </div>
+
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       SECCIÓN 3 — ENTERPRISE
+  ══════════════════════════════════════════ -->
+  <div class="sec-header">
+    <div class="sec-label" data-lang="es">Soluciones enterprise</div>
+    <div class="sec-label" data-lang="en">Enterprise solutions</div>
+    <div class="sec-line"></div>
+  </div>
+
+  <div class="enterprise-grid">
+
+    <div class="ent-card">
+      <div class="pack-tag" data-lang="es">Enterprise</div>
+      <div class="pack-tag" data-lang="en">Enterprise</div>
+      <div class="pack-name" data-lang="es">Plataforma<br><em>Personalizada</em></div>
+      <div class="pack-name" data-lang="en">Custom<br><em>Platform</em></div>
+      <div class="pack-sub" data-lang="es">Para empresas que necesitan un sistema digital robusto con integraciones específicas y flujos complejos.</div>
+      <div class="pack-sub" data-lang="en">For companies that need a robust digital system with specific integrations and complex workflows.</div>
+      <div class="price-block">
+        <div class="price-from" data-lang="es">Setup desde</div>
+        <div class="price-from" data-lang="en">Setup starting at</div>
+        <div class="price-row">
+          <span class="c">$</span><span class="v">7,500</span>
+          <span class="s" data-lang="es">USD</span>
+          <span class="s" data-lang="en">USD</span>
+        </div>
+        <div class="mrr-row">
+          <span class="mrr-v">+ $1,200</span>
+          <span class="mrr-l" data-lang="es">/ mes</span>
+          <span class="mrr-l" data-lang="en">/ month</span>
+        </div>
+      </div>
+      <ul class="feat-list">
+        <li data-lang="es">Desarrollo SaaS / CRM a medida</li>
+        <li data-lang="en">Custom SaaS / CRM development</li>
+        <li data-lang="es">Arquitectura multi-usuario escalable</li>
+        <li data-lang="en">Scalable multi-user architecture</li>
+        <li data-lang="es">Integraciones API (ERP, pagos, etc.)</li>
+        <li data-lang="en">API integrations (ERP, payments, etc.)</li>
+        <li data-lang="es">Automatización de procesos internos</li>
+        <li data-lang="en">Internal process automation</li>
+        <li data-lang="es">Reportes y BI personalizados</li>
+        <li data-lang="en">Custom BI &amp; reporting</li>
+        <li data-lang="es">Soporte dedicado + SLA garantizado</li>
+        <li data-lang="en">Dedicated support + guaranteed SLA</li>
+      </ul>
+      <a href="mailto:info@horussystem.net" class="btn-outline-navy" data-lang="es">Agendar reunión</a>
+      <a href="mailto:info@horussystem.net" class="btn-outline-navy" data-lang="en">Schedule a call</a>
+    </div>
+
+    <div class="ent-card navy-card">
+      <div class="pack-tag" style="color:var(--gold-light)" data-lang="es">Horus AI 24/7</div>
+      <div class="pack-tag" style="color:var(--gold-light)" data-lang="en">Horus AI 24/7</div>
+      <div class="pack-name light" data-lang="es">Adquisición<br><em>Automatizada</em></div>
+      <div class="pack-name light" data-lang="en">Automated<br><em>Acquisition</em></div>
+      <div class="pack-sub light" data-lang="es">La plataforma Horus operando por ti: captación, seguimiento, respuesta y conversión — sin intervención manual continua.</div>
+      <div class="pack-sub light" data-lang="en">The Horus platform working for you: capture, follow-up, response and conversion — with minimal manual input.</div>
+      <div class="price-block">
+        <div class="price-from light" data-lang="es">Setup desde</div>
+        <div class="price-from light" data-lang="en">Setup starting at</div>
+        <div class="price-row" style="color:var(--gold-light)">
+          <span class="c">$</span><span class="v">5,000</span>
+          <span class="s light" data-lang="es">USD</span>
+          <span class="s light" data-lang="en">USD</span>
+        </div>
+        <div class="mrr-row">
+          <span class="mrr-v light">+ $999</span>
+          <span class="mrr-l light" data-lang="es">/ mes</span>
+          <span class="mrr-l light" data-lang="en">/ month</span>
+        </div>
+      </div>
+      <ul class="feat-list">
+        <li class="light" data-lang="es">Funnel de adquisición IA end-to-end</li>
+        <li class="light" data-lang="en">AI end-to-end acquisition funnel</li>
+        <li class="light" data-lang="es">Chatbot IA avanzado (multi-canal)</li>
+        <li class="light" data-lang="en">Advanced AI chatbot (multi-channel)</li>
+        <li class="light" data-lang="es">Seguimiento automático de prospectos</li>
+        <li class="light" data-lang="en">Automated prospect follow-up</li>
+        <li class="light" data-lang="es">Scoring de leads + priorización</li>
+        <li class="light" data-lang="en">Lead scoring + prioritization</li>
+        <li class="light" data-lang="es">Notificaciones en tiempo real</li>
+        <li class="light" data-lang="en">Real-time notifications</li>
+        <li class="light" data-lang="es">Dashboard de ventas en vivo</li>
+        <li class="light" data-lang="en">Live sales dashboard</li>
+      </ul>
+      <a href="mailto:info@horussystem.net" class="btn-gold-fill" data-lang="es">Quiero escalar</a>
+      <a href="mailto:info@horussystem.net" class="btn-gold-fill" data-lang="en">Scale my business</a>
+    </div>
+
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       SECCIÓN 4 — HORUS MRP (NUEVA)
+  ══════════════════════════════════════════ -->
+  <div class="sec-header" style="margin-top: 24px;">
+    <div class="sec-label" data-lang="es">Horus MRP — Planificación inteligente</div>
+    <div class="sec-label" data-lang="en">Horus MRP — Intelligent planning</div>
+    <div class="sec-line"></div>
+  </div>
+
+  <!-- Stats bar -->
+  <div class="module-stats">
+    <div class="module-stat">
+      <div class="module-stat-val">80%</div>
+      <div class="module-stat-lbl" data-lang="es">Menos tiempo en planeación</div>
+      <div class="module-stat-lbl" data-lang="en">Less planning time</div>
+    </div>
+    <div class="module-stat">
+      <div class="module-stat-val">0</div>
+      <div class="module-stat-lbl" data-lang="es">Paros por falta de material</div>
+      <div class="module-stat-lbl" data-lang="en">Production stops</div>
+    </div>
+    <div class="module-stat">
+      <div class="module-stat-val">24/7</div>
+      <div class="module-stat-lbl" data-lang="es">Monitoreo automático</div>
+      <div class="module-stat-lbl" data-lang="en">Automatic monitoring</div>
+    </div>
+    <div class="module-stat">
+      <div class="module-stat-val">1 day</div>
+      <div class="module-stat-lbl" data-lang="es">Implementación express</div>
+      <div class="module-stat-lbl" data-lang="en">Express implementation</div>
+    </div>
+  </div>
+
+  <!-- Intro card -->
+  <div class="module-intro">
+    <div class="module-intro-left">
+      <div class="module-title" data-lang="es">De la demanda a la orden<br><em>en minutos — cualquier industria</em></div>
+      <div class="module-title" data-lang="en">From demand to order<br><em>in minutes — any industry</em></div>
+      <p class="module-body" data-lang="es">Horus MRP es un sistema de planificación para cualquier operación que gestione materiales, inventario y producción. Manufactura, alimentos, retail, construcción — si compras insumos y produces salidas, Horus MRP funciona para ti. Un solo panel. Sin hojas de cálculo. Sin sorpresas.</p>
+      <p class="module-body" data-lang="en">Horus MRP is a planning system built for any operation that manages materials, inventory, and production. Manufacturing, food, retail, construction — if you buy inputs and produce outputs, Horus MRP works for you. One panel. No spreadsheets. No surprises.</p>
+    </div>
+    <div class="module-intro-right">
       <div class="module-row">
         <div class="module-num">01</div>
         <div>
@@ -693,18 +1004,13 @@
     </div>
   </div>
 
-  <!-- PLANS -->
-  <div class="sec-header">
-    <div class="sec-label" data-lang="es">Paquetes y precios</div>
-    <div class="sec-label" data-lang="en">Plans and pricing</div>
-    <div class="sec-line"></div>
-  </div>
+  <!-- MRP Tiers -->
+  <div class="tier-grid-4" style="margin-bottom: 48px;">
 
-  <div class="tier-grid">
-
+    <!-- MRP ESENCIAL -->
     <div class="tier-card">
-      <div class="pack-tag" data-lang="es">Esencial</div>
-      <div class="pack-tag" data-lang="en">Essential</div>
+      <div class="pack-tag" data-lang="es">MRP Esencial</div>
+      <div class="pack-tag" data-lang="en">MRP Essential</div>
       <div class="pack-name" data-lang="es">Sistema<br><em>Base</em></div>
       <div class="pack-name" data-lang="en">Base<br><em>System</em></div>
       <div class="pack-sub" data-lang="es">Para operaciones pequeñas que quieren planificar con datos reales y dejar el Excel manual.</div>
@@ -713,21 +1019,25 @@
         <div class="price-from" data-lang="es">Setup único</div>
         <div class="price-from" data-lang="en">One-time setup</div>
         <div class="price-row"><span class="c">$</span><span class="v">499</span><span class="s">USD</span></div>
-        <div class="mrr-row"><span class="mrr-v">+ $99</span><span class="mrr-l" data-lang="es">/ mes</span><span class="mrr-l" data-lang="en">/ month</span></div>
+        <div class="mrr-row">
+          <span class="mrr-v">+ $99</span>
+          <span class="mrr-l" data-lang="es">/ mes</span>
+          <span class="mrr-l" data-lang="en">/ month</span>
+        </div>
       </div>
       <ul class="feat-list">
-        <li data-lang="es">Dashboard con KPIs en tiempo real</li>
-        <li data-lang="en">Dashboard with real-time KPIs</li>
-        <li data-lang="es">Semáforo de inventario por material</li>
-        <li data-lang="en">Inventory traffic light per material</li>
-        <li data-lang="es">BOM y cálculo MRP completo</li>
-        <li data-lang="en">BOM and full MRP calculation</li>
-        <li data-lang="es">Gestión de demanda y proveedores</li>
-        <li data-lang="en">Demand and supplier management</li>
+        <li data-lang="es">Dashboard KPIs en tiempo real</li>
+        <li data-lang="en">Real-time KPI dashboard</li>
+        <li data-lang="es">Semáforo de inventario</li>
+        <li data-lang="en">Inventory traffic light</li>
+        <li data-lang="es">BOM + cálculo MRP completo</li>
+        <li data-lang="en">BOM + full MRP calculation</li>
+        <li data-lang="es">Gestión de proveedores</li>
+        <li data-lang="en">Supplier management</li>
         <li data-lang="es">Hasta 5 productos activos</li>
         <li data-lang="en">Up to 5 active products</li>
         <li data-lang="es">Órdenes de compra y producción</li>
-        <li data-lang="en">Purchase and production orders</li>
+        <li data-lang="en">Purchase &amp; production orders</li>
         <li class="dim" data-lang="es">Motor de decisiones</li>
         <li class="dim" data-lang="en">Decision engine</li>
         <li class="dim" data-lang="es">Simulador de escenarios</li>
@@ -737,20 +1047,25 @@
       <a href="mailto:info@horussystem.net" class="btn-outline-navy" data-lang="en">Get started</a>
     </div>
 
+    <!-- MRP PRO — FEATURED -->
     <div class="tier-card featured">
-      <div class="popular-badge" data-lang="es">Mas popular</div>
+      <div class="popular-badge" data-lang="es">Más popular</div>
       <div class="popular-badge" data-lang="en">Most popular</div>
-      <div class="pack-tag" data-lang="es">Pro</div>
-      <div class="pack-tag" data-lang="en">Pro</div>
+      <div class="pack-tag" data-lang="es">MRP Pro</div>
+      <div class="pack-tag" data-lang="en">MRP Pro</div>
       <div class="pack-name" data-lang="es">Sistema<br><em>Inteligente</em></div>
       <div class="pack-name" data-lang="en">Intelligent<br><em>System</em></div>
-      <div class="pack-sub" data-lang="es">Para negocios en crecimiento que necesitan no solo calcular, sino tomar mejores decisiones de compra y producción.</div>
-      <div class="pack-sub" data-lang="en">For growing businesses that need not just calculation, but smarter purchasing and production decisions.</div>
+      <div class="pack-sub" data-lang="es">Para negocios en crecimiento que necesitan no solo calcular, sino tomar mejores decisiones.</div>
+      <div class="pack-sub" data-lang="en">For growing businesses that need smarter purchasing and production decisions.</div>
       <div class="price-block">
         <div class="price-from" data-lang="es">Setup único</div>
         <div class="price-from" data-lang="en">One-time setup</div>
         <div class="price-row"><span class="c">$</span><span class="v">1,500</span><span class="s">USD</span></div>
-        <div class="mrr-row"><span class="mrr-v">+ $299</span><span class="mrr-l" data-lang="es">/ mes</span><span class="mrr-l" data-lang="en">/ month</span></div>
+        <div class="mrr-row">
+          <span class="mrr-v">+ $299</span>
+          <span class="mrr-l" data-lang="es">/ mes</span>
+          <span class="mrr-l" data-lang="en">/ month</span>
+        </div>
       </div>
       <ul class="feat-list">
         <li data-lang="es">Todo lo del plan Esencial</li>
@@ -774,24 +1089,29 @@
       <a href="mailto:info@horussystem.net" class="btn-navy" data-lang="en">Choose Pro</a>
     </div>
 
+    <!-- MRP PREMIUM -->
     <div class="tier-card">
-      <div class="pack-tag" data-lang="es">Premium</div>
-      <div class="pack-tag" data-lang="en">Premium</div>
+      <div class="pack-tag" data-lang="es">MRP Premium</div>
+      <div class="pack-tag" data-lang="en">MRP Premium</div>
       <div class="pack-name" data-lang="es">Sistema<br><em>Conectado</em></div>
       <div class="pack-name" data-lang="en">Connected<br><em>System</em></div>
-      <div class="pack-sub" data-lang="es">Para empresas que requieren datos en tiempo real desde Google Sheets, acceso multi-usuario y reportes automáticos.</div>
-      <div class="pack-sub" data-lang="en">For companies requiring live data from Google Sheets, multi-user access and automated reporting.</div>
+      <div class="pack-sub" data-lang="es">Datos en tiempo real desde Google Sheets, acceso multi-usuario y reportes automáticos.</div>
+      <div class="pack-sub" data-lang="en">Live data from Google Sheets, multi-user access and automated reporting.</div>
       <div class="price-block">
         <div class="price-from" data-lang="es">Setup único</div>
         <div class="price-from" data-lang="en">One-time setup</div>
         <div class="price-row"><span class="c">$</span><span class="v">3,500</span><span class="s">USD</span></div>
-        <div class="mrr-row"><span class="mrr-v">+ $599</span><span class="mrr-l" data-lang="es">/ mes</span><span class="mrr-l" data-lang="en">/ month</span></div>
+        <div class="mrr-row">
+          <span class="mrr-v">+ $599</span>
+          <span class="mrr-l" data-lang="es">/ mes</span>
+          <span class="mrr-l" data-lang="en">/ month</span>
+        </div>
       </div>
       <ul class="feat-list">
         <li data-lang="es">Todo lo del plan Pro</li>
         <li data-lang="en">Everything in Pro</li>
-        <li data-lang="es">Integración Google Sheets en tiempo real</li>
-        <li data-lang="en">Real-time Google Sheets integration</li>
+        <li data-lang="es">Integración Google Sheets en vivo</li>
+        <li data-lang="en">Live Google Sheets integration</li>
         <li data-lang="es">Backend Google Apps Script</li>
         <li data-lang="en">Google Apps Script backend</li>
         <li data-lang="es">Multi-usuario hasta 5 personas</li>
@@ -807,18 +1127,23 @@
       <a href="mailto:info@horussystem.net" class="btn-outline-navy" data-lang="en">Choose Premium</a>
     </div>
 
+    <!-- MRP ENTERPRISE -->
     <div class="tier-card">
-      <div class="pack-tag" data-lang="es">Enterprise</div>
-      <div class="pack-tag" data-lang="en">Enterprise</div>
+      <div class="pack-tag" data-lang="es">MRP Enterprise</div>
+      <div class="pack-tag" data-lang="en">MRP Enterprise</div>
       <div class="pack-name" data-lang="es">Sistema<br><em>a Medida</em></div>
       <div class="pack-name" data-lang="en">Custom<br><em>System</em></div>
-      <div class="pack-sub" data-lang="es">Para operaciones grandes de cualquier industria con flujos complejos, integraciones ERP y equipos grandes.</div>
-      <div class="pack-sub" data-lang="en">For large operations across any industry with complex workflows, ERP integrations, and large teams.</div>
+      <div class="pack-sub" data-lang="es">Para operaciones grandes con flujos complejos, integraciones ERP y equipos grandes.</div>
+      <div class="pack-sub" data-lang="en">For large operations with complex workflows, ERP integrations, and large teams.</div>
       <div class="price-block">
         <div class="price-from" data-lang="es">Setup desde</div>
         <div class="price-from" data-lang="en">Setup from</div>
         <div class="price-row"><span class="c">$</span><span class="v">7,500</span><span class="s">USD</span></div>
-        <div class="mrr-row"><span class="mrr-v">+ $1,200</span><span class="mrr-l" data-lang="es">/ mes</span><span class="mrr-l" data-lang="en">/ month</span></div>
+        <div class="mrr-row">
+          <span class="mrr-v">+ $1,200</span>
+          <span class="mrr-l" data-lang="es">/ mes</span>
+          <span class="mrr-l" data-lang="en">/ month</span>
+        </div>
       </div>
       <ul class="feat-list">
         <li data-lang="es">Todo lo del plan Premium</li>
@@ -842,7 +1167,219 @@
 
   </div>
 
-  <!-- ADD-ONS -->
+  <!-- ══════════════════════════════════════════
+       SECCIÓN 5 — HORUS CRM (NUEVA)
+  ══════════════════════════════════════════ -->
+  <div class="sec-header">
+    <div class="sec-label" data-lang="es">Horus CRM — Gestión de clientes y ventas</div>
+    <div class="sec-label" data-lang="en">Horus CRM — Client &amp; sales management</div>
+    <div class="sec-line"></div>
+  </div>
+
+  <!-- CRM Stats bar -->
+  <div class="module-stats">
+    <div class="module-stat">
+      <div class="module-stat-val">3×</div>
+      <div class="module-stat-lbl" data-lang="es">Más cierres de venta</div>
+      <div class="module-stat-lbl" data-lang="en">More deals closed</div>
+    </div>
+    <div class="module-stat">
+      <div class="module-stat-val">0</div>
+      <div class="module-stat-lbl" data-lang="es">Leads perdidos por olvido</div>
+      <div class="module-stat-lbl" data-lang="en">Lost leads from follow-up gaps</div>
+    </div>
+    <div class="module-stat">
+      <div class="module-stat-val">24/7</div>
+      <div class="module-stat-lbl" data-lang="es">Seguimiento automático</div>
+      <div class="module-stat-lbl" data-lang="en">Automated follow-up</div>
+    </div>
+    <div class="module-stat">
+      <div class="module-stat-val">1 día</div>
+      <div class="module-stat-lbl" data-lang="es">Para empezar</div>
+      <div class="module-stat-lbl" data-lang="en">To get started</div>
+    </div>
+  </div>
+
+  <!-- CRM Intro card -->
+  <div class="module-intro">
+    <div class="module-intro-left">
+      <div class="module-title" data-lang="es">Tu pipeline de ventas<br><em>siempre en movimiento</em></div>
+      <div class="module-title" data-lang="en">Your sales pipeline<br><em>always in motion</em></div>
+      <p class="module-body" data-lang="es">Horus CRM centraliza contactos, prospectos y oportunidades en un solo lugar. Automatiza el seguimiento, califica leads con IA y mantiene a tu equipo enfocado en cerrar — no en administrar. Integrado con WhatsApp, correo y formularios web desde el primer día.</p>
+      <p class="module-body" data-lang="en">Horus CRM centralizes contacts, prospects, and opportunities in one place. Automate follow-up, qualify leads with AI, and keep your team focused on closing — not managing. Integrated with WhatsApp, email, and web forms from day one.</p>
+    </div>
+    <div class="module-intro-right">
+      <div class="module-row">
+        <div class="module-num">01</div>
+        <div>
+          <div class="module-text-title" data-lang="es">Pipeline visual de ventas</div>
+          <div class="module-text-title" data-lang="en">Visual sales pipeline</div>
+          <div class="module-text-desc" data-lang="es">Arrastra oportunidades entre etapas. Ve en qué fase está cada prospecto y cuánto vale el pipeline total.</div>
+          <div class="module-text-desc" data-lang="en">Drag opportunities between stages. See each prospect's stage and total pipeline value at a glance.</div>
+        </div>
+      </div>
+      <div class="module-row">
+        <div class="module-num">02</div>
+        <div>
+          <div class="module-text-title" data-lang="es">Seguimiento automático</div>
+          <div class="module-text-title" data-lang="en">Automated follow-up</div>
+          <div class="module-text-desc" data-lang="es">Mensajes programados por WhatsApp o correo según la etapa del prospecto. Sin intervención manual.</div>
+          <div class="module-text-desc" data-lang="en">Scheduled WhatsApp or email messages based on prospect stage. No manual intervention needed.</div>
+        </div>
+      </div>
+      <div class="module-row">
+        <div class="module-num">03</div>
+        <div>
+          <div class="module-text-title" data-lang="es">Scoring de leads con IA</div>
+          <div class="module-text-title" data-lang="en">AI-powered lead scoring</div>
+          <div class="module-text-desc" data-lang="es">Calificación automática por comportamiento e interés. Prioriza a los prospectos con mayor probabilidad de cierre.</div>
+          <div class="module-text-desc" data-lang="en">Automatic qualification by behavior and intent. Prioritize prospects with the highest close probability.</div>
+        </div>
+      </div>
+      <div class="module-row">
+        <div class="module-num">04</div>
+        <div>
+          <div class="module-text-title" data-lang="es">Reportes de ventas en vivo</div>
+          <div class="module-text-title" data-lang="en">Live sales reports</div>
+          <div class="module-text-desc" data-lang="es">Conversión por canal, rendimiento del equipo, tiempo promedio de cierre y valor del pipeline en tiempo real.</div>
+          <div class="module-text-desc" data-lang="en">Conversion by channel, team performance, average close time, and pipeline value — all in real time.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CRM Tiers -->
+  <div class="tier-grid" style="margin-bottom:48px;">
+
+    <!-- CRM BÁSICO -->
+    <div class="tier-card">
+      <div class="pack-tag" data-lang="es">CRM Básico</div>
+      <div class="pack-tag" data-lang="en">CRM Basic</div>
+      <div class="pack-name" data-lang="es">Gestión<br><em>Esencial</em></div>
+      <div class="pack-name" data-lang="en">Essential<br><em>Management</em></div>
+      <div class="pack-sub" data-lang="es">Para equipos pequeños que necesitan orden en sus contactos y seguimiento sin perder un lead.</div>
+      <div class="pack-sub" data-lang="en">For small teams that need contact order and follow-up without losing a single lead.</div>
+      <div class="price-block">
+        <div class="price-from" data-lang="es">Setup único</div>
+        <div class="price-from" data-lang="en">One-time setup</div>
+        <div class="price-row"><span class="c">$</span><span class="v">300</span><span class="s">USD</span></div>
+        <div class="mrr-row">
+          <span class="mrr-v">+ $79</span>
+          <span class="mrr-l" data-lang="es">/ mes</span>
+          <span class="mrr-l" data-lang="en">/ month</span>
+        </div>
+      </div>
+      <ul class="feat-list">
+        <li data-lang="es">Pipeline de ventas visual</li>
+        <li data-lang="en">Visual sales pipeline</li>
+        <li data-lang="es">Gestión de contactos y empresas</li>
+        <li data-lang="en">Contact &amp; company management</li>
+        <li data-lang="es">Registro de actividades e historial</li>
+        <li data-lang="en">Activity log &amp; history</li>
+        <li data-lang="es">Recordatorios y tareas</li>
+        <li data-lang="en">Reminders &amp; tasks</li>
+        <li data-lang="es">Hasta 3 usuarios</li>
+        <li data-lang="en">Up to 3 users</li>
+        <li data-lang="es">Integración WhatsApp básica</li>
+        <li data-lang="en">Basic WhatsApp integration</li>
+        <li class="dim" data-lang="es">Automatización de seguimiento</li>
+        <li class="dim" data-lang="en">Follow-up automation</li>
+        <li class="dim" data-lang="es">Scoring de leads con IA</li>
+        <li class="dim" data-lang="en">AI lead scoring</li>
+      </ul>
+      <a href="mailto:info@horussystem.net" class="btn-outline-navy" data-lang="es">Cotizar</a>
+      <a href="mailto:info@horussystem.net" class="btn-outline-navy" data-lang="en">Get a quote</a>
+    </div>
+
+    <!-- CRM PRO — FEATURED -->
+    <div class="tier-card featured">
+      <div class="popular-badge" data-lang="es">Más popular</div>
+      <div class="popular-badge" data-lang="en">Most popular</div>
+      <div class="pack-tag" data-lang="es">CRM Pro</div>
+      <div class="pack-tag" data-lang="en">CRM Pro</div>
+      <div class="pack-name" data-lang="es">Ventas<br><em>Automatizadas</em></div>
+      <div class="pack-name" data-lang="en">Automated<br><em>Sales</em></div>
+      <div class="pack-sub" data-lang="es">El CRM completo con seguimiento automático, chatbot IA y scoring de leads. Cierra más sin trabajar más.</div>
+      <div class="pack-sub" data-lang="en">Full CRM with automated follow-up, AI chatbot, and lead scoring. Close more without working more.</div>
+      <div class="price-block">
+        <div class="price-from" data-lang="es">Setup desde</div>
+        <div class="price-from" data-lang="en">Setup starting at</div>
+        <div class="price-row"><span class="c">$</span><span class="v">800</span><span class="s">USD</span></div>
+        <div class="mrr-row">
+          <span class="mrr-v">+ $199</span>
+          <span class="mrr-l" data-lang="es">/ mes</span>
+          <span class="mrr-l" data-lang="en">/ month</span>
+        </div>
+      </div>
+      <ul class="feat-list">
+        <li data-lang="es">Todo lo del CRM Básico</li>
+        <li data-lang="en">Everything in CRM Basic</li>
+        <li data-lang="es">Usuarios ilimitados</li>
+        <li data-lang="en">Unlimited users</li>
+        <li data-lang="es">Automatización de seguimiento</li>
+        <li data-lang="en">Automated follow-up sequences</li>
+        <li data-lang="es">Chatbot IA (WhatsApp + web)</li>
+        <li data-lang="en">AI chatbot (WhatsApp + web)</li>
+        <li data-lang="es">Scoring de leads con IA</li>
+        <li data-lang="en">AI lead scoring</li>
+        <li data-lang="es">Captura de leads desde formularios</li>
+        <li data-lang="en">Lead capture from web forms</li>
+        <li data-lang="es">Reportes de conversión y pipeline</li>
+        <li data-lang="en">Conversion &amp; pipeline reports</li>
+        <li data-lang="es">Notificaciones en tiempo real</li>
+        <li data-lang="en">Real-time notifications</li>
+        <li data-lang="es">Soporte prioritario</li>
+        <li data-lang="en">Priority support</li>
+      </ul>
+      <a href="mailto:info@horussystem.net" class="btn-navy" data-lang="es">Lo quiero</a>
+      <a href="mailto:info@horussystem.net" class="btn-navy" data-lang="en">I want this</a>
+    </div>
+
+    <!-- CRM ENTERPRISE -->
+    <div class="tier-card">
+      <div class="pack-tag" data-lang="es">CRM Enterprise</div>
+      <div class="pack-tag" data-lang="en">CRM Enterprise</div>
+      <div class="pack-name" data-lang="es">CRM<br><em>a Medida</em></div>
+      <div class="pack-name" data-lang="en">Custom<br><em>CRM</em></div>
+      <div class="pack-sub" data-lang="es">Para empresas con procesos de venta complejos, múltiples equipos y necesidad de integraciones específicas.</div>
+      <div class="pack-sub" data-lang="en">For companies with complex sales processes, multiple teams, and specific integration needs.</div>
+      <div class="price-block">
+        <div class="price-from" data-lang="es">Setup desde</div>
+        <div class="price-from" data-lang="en">Setup from</div>
+        <div class="price-row"><span class="c">$</span><span class="v">2,500</span><span class="s">USD</span></div>
+        <div class="mrr-row">
+          <span class="mrr-v">+ $499</span>
+          <span class="mrr-l" data-lang="es">/ mes</span>
+          <span class="mrr-l" data-lang="en">/ month</span>
+        </div>
+      </div>
+      <ul class="feat-list">
+        <li data-lang="es">Todo lo del CRM Pro</li>
+        <li data-lang="en">Everything in CRM Pro</li>
+        <li data-lang="es">Flujos de ventas personalizados</li>
+        <li data-lang="en">Custom sales workflows</li>
+        <li data-lang="es">Integraciones API (ERP, pagos, etc.)</li>
+        <li data-lang="en">API integrations (ERP, payments, etc.)</li>
+        <li data-lang="es">Roles y permisos por equipo</li>
+        <li data-lang="en">Team-level roles &amp; permissions</li>
+        <li data-lang="es">BI y analíticas avanzadas</li>
+        <li data-lang="en">Advanced BI &amp; analytics</li>
+        <li data-lang="es">Multi-canal (WA, FB, correo, web)</li>
+        <li data-lang="en">Multi-channel (WA, FB, email, web)</li>
+        <li data-lang="es">Gerente de cuenta dedicado</li>
+        <li data-lang="en">Dedicated account manager</li>
+        <li data-lang="es">SLA garantizado</li>
+        <li data-lang="en">Guaranteed SLA</li>
+      </ul>
+      <a href="mailto:info@horussystem.net" class="btn-outline-navy" data-lang="es">Agendar llamada</a>
+      <a href="mailto:info@horussystem.net" class="btn-outline-navy" data-lang="en">Schedule a call</a>
+    </div>
+
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       SECCIÓN 6 — ADD-ONS
+  ══════════════════════════════════════════ -->
   <div class="sec-header">
     <div class="sec-label" data-lang="es">Servicios adicionales</div>
     <div class="sec-label" data-lang="en">Add-on services</div>
@@ -851,236 +1388,46 @@
 
   <div class="addons-grid">
     <div class="addon-item">
+      <div class="addon-name" data-lang="es">Chatbot IA</div>
+      <div class="addon-name" data-lang="en">AI Chatbot</div>
+      <div class="addon-desc" data-lang="es">Asistente con IA para WhatsApp, web o Facebook. Responde, califica y agenda citas automáticamente.</div>
+      <div class="addon-desc" data-lang="en">AI assistant for WhatsApp, web or Facebook. Responds, qualifies leads and books appointments automatically.</div>
+      <div class="addon-price">$300 <small data-lang="es">setup + $99/mes</small><small data-lang="en">setup + $99/mo</small></div>
+    </div>
+    <div class="addon-item">
       <div class="addon-name" data-lang="es">Alertas WhatsApp</div>
       <div class="addon-name" data-lang="en">WhatsApp Alerts</div>
       <div class="addon-desc" data-lang="es">Notificaciones automáticas de faltantes, órdenes y alertas críticas al WhatsApp del equipo.</div>
-      <div class="addon-desc" data-lang="en">Automatic shortage, order, and critical alert notifications to your team WhatsApp.</div>
+      <div class="addon-desc" data-lang="en">Automatic shortage, order, and critical alert notifications sent to your team WhatsApp.</div>
       <div class="addon-price">$49 <small data-lang="es">/ mes</small><small data-lang="en">/ month</small></div>
     </div>
     <div class="addon-item">
-      <div class="addon-name" data-lang="es">Reportes Ejecutivos PDF</div>
-      <div class="addon-name" data-lang="en">Executive PDF Reports</div>
-      <div class="addon-desc" data-lang="es">Reporte semanal automático con KPIs, alertas y recomendaciones enviado por correo.</div>
-      <div class="addon-desc" data-lang="en">Automatic weekly report with KPIs, alerts and recommendations sent by email.</div>
+      <div class="addon-name" data-lang="es">Mantenimiento</div>
+      <div class="addon-name" data-lang="en">Maintenance</div>
+      <div class="addon-desc" data-lang="es">Actualizaciones, correcciones, mejoras de contenido y monitoreo mensual del sitio.</div>
+      <div class="addon-desc" data-lang="en">Updates, fixes, content improvements and monthly site monitoring.</div>
       <div class="addon-price">$79 <small data-lang="es">/ mes</small><small data-lang="en">/ month</small></div>
     </div>
     <div class="addon-item">
-      <div class="addon-name" data-lang="es">Chatbot MRP</div>
-      <div class="addon-name" data-lang="en">MRP Chatbot</div>
-      <div class="addon-desc" data-lang="es">Consulta el MRP desde WhatsApp o web. Respuestas inmediatas sobre inventario y órdenes.</div>
-      <div class="addon-desc" data-lang="en">Query MRP from WhatsApp or web. Instant answers about inventory and orders.</div>
-      <div class="addon-price">$149 <small data-lang="es">/ mes</small><small data-lang="en">/ month</small></div>
+      <div class="addon-name" data-lang="es">Página Adicional</div>
+      <div class="addon-name" data-lang="en">Extra Page</div>
+      <div class="addon-desc" data-lang="es">Agregar una página más (servicios, blog, equipo, tienda) a un sitio existente.</div>
+      <div class="addon-desc" data-lang="en">Add an extra page (services, blog, team, store) to an existing site.</div>
+      <div class="addon-price">$80 <small data-lang="es">única vez</small><small data-lang="en">one-time</small></div>
     </div>
-    <div class="addon-item">
-      <div class="addon-name" data-lang="es">App Móvil</div>
-      <div class="addon-name" data-lang="en">Mobile App</div>
-      <div class="addon-desc" data-lang="es">Dashboard nativo iOS y Android. Monitorea tu operación desde cualquier lugar.</div>
-      <div class="addon-desc" data-lang="en">Native iOS and Android dashboard. Monitor your operation from anywhere.</div>
-      <div class="addon-price">$800 <small data-lang="es">setup + $99/mes</small><small data-lang="en">setup + $99/mo</small></div>
-    </div>
-  </div>
-
-  <!-- COMPARISON -->
-  <div class="sec-header">
-    <div class="sec-label" data-lang="es">Comparativa</div>
-    <div class="sec-label" data-lang="en">Comparison</div>
-    <div class="sec-line"></div>
-  </div>
-
-  <div class="comp-wrap">
-    <table class="comp-table">
-      <thead>
-        <tr>
-          <th data-lang="es">Característica</th>
-          <th data-lang="en">Feature</th>
-          <th class="col-horus"><div class="comp-col-h gold">Horus MRP</div></th>
-          <th><div class="comp-col-h">SAP</div></th>
-          <th><div class="comp-col-h">Excel</div></th>
-          <th><div class="comp-col-h">Odoo</div></th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td data-lang="es">Implementación en menos de 1 semana</td>
-          <td data-lang="en">Implementation in under 1 week</td>
-          <td class="col-horus"><span class="comp-yes">&#10003;</span></td><td><span class="comp-no">&#8212;</span></td><td><span class="comp-yes">&#10003;</span></td><td><span class="comp-no">&#8212;</span></td>
-        </tr>
-        <tr>
-          <td data-lang="es">Precio accesible desde $499</td>
-          <td data-lang="en">Accessible price from $499</td>
-          <td class="col-horus"><span class="comp-yes">&#10003;</span></td><td><span class="comp-no">&#8212;</span></td><td><span class="comp-yes">&#10003;</span></td><td><span class="comp-partial">Parcial</span></td>
-        </tr>
-        <tr>
-          <td data-lang="es">Motor de decisiones automatizado</td>
-          <td data-lang="en">Automated decision engine</td>
-          <td class="col-horus"><span class="comp-yes">&#10003;</span></td><td><span class="comp-partial">Limitado</span></td><td><span class="comp-no">&#8212;</span></td><td><span class="comp-no">&#8212;</span></td>
-        </tr>
-        <tr>
-          <td data-lang="es">Simulador de escenarios</td>
-          <td data-lang="en">Scenario simulator</td>
-          <td class="col-horus"><span class="comp-yes">&#10003;</span></td><td><span class="comp-partial">Extra</span></td><td><span class="comp-no">&#8212;</span></td><td><span class="comp-no">&#8212;</span></td>
-        </tr>
-        <tr>
-          <td data-lang="es">Semáforo visual de inventario</td>
-          <td data-lang="en">Visual inventory traffic light</td>
-          <td class="col-horus"><span class="comp-yes">&#10003;</span></td><td><span class="comp-partial">Complejo</span></td><td><span class="comp-no">&#8212;</span></td><td><span class="comp-partial">Básico</span></td>
-        </tr>
-        <tr>
-          <td data-lang="es">Alertas por WhatsApp</td>
-          <td data-lang="en">WhatsApp alerts</td>
-          <td class="col-horus"><span class="comp-yes">&#10003;</span></td><td><span class="comp-no">&#8212;</span></td><td><span class="comp-no">&#8212;</span></td><td><span class="comp-no">&#8212;</span></td>
-        </tr>
-        <tr>
-          <td data-lang="es">Análisis de rentabilidad integrado</td>
-          <td data-lang="en">Integrated profitability analysis</td>
-          <td class="col-horus"><span class="comp-yes">&#10003;</span></td><td><span class="comp-partial">Extra</span></td><td><span class="comp-no">&#8212;</span></td><td><span class="comp-partial">Básico</span></td>
-        </tr>
-        <tr>
-          <td data-lang="es">Sin contratos anuales obligatorios</td>
-          <td data-lang="en">No mandatory annual contracts</td>
-          <td class="col-horus"><span class="comp-yes">&#10003;</span></td><td><span class="comp-no">&#8212;</span></td><td><span class="comp-yes">&#10003;</span></td><td><span class="comp-no">&#8212;</span></td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-
-  <!-- FAQ -->
-  <div class="sec-header">
-    <div class="sec-label" data-lang="es">Preguntas frecuentes</div>
-    <div class="sec-label" data-lang="en">Frequently asked questions</div>
-    <div class="sec-line"></div>
-  </div>
-
-  <div class="faq-wrap">
-    <div class="faq-item">
-      <div class="faq-q" onclick="toggleFaq(this)">
-        <span data-lang="es">¿En cuánto tiempo se implementa?</span>
-        <span data-lang="en">How long does implementation take?</span>
-        <span class="faq-toggle">+</span>
-      </div>
-      <div class="faq-a" data-lang="es">El plan Esencial y Pro se implementan en 1 día hábil para el demo funcional, y en 3-5 días para el despliegue completo con tus datos reales. Premium toma 1-2 semanas incluyendo integración con Google Sheets.</div>
-      <div class="faq-a" data-lang="en">Essential and Pro can be implemented in 1 business day for a functional demo, and 3-5 days for full deployment with your real data. Premium takes 1-2 weeks including Google Sheets integration.</div>
-    </div>
-    <div class="faq-item">
-      <div class="faq-q" onclick="toggleFaq(this)">
-        <span data-lang="es">¿Necesito conocimientos técnicos?</span>
-        <span data-lang="en">Do I need technical knowledge?</span>
-        <span class="faq-toggle">+</span>
-      </div>
-      <div class="faq-a" data-lang="es">No. Si sabes usar Excel básico, puedes usar Horus MRP. Está diseñado para que cualquier persona en producción, compras o dirección lo opere sin capacitación técnica.</div>
-      <div class="faq-a" data-lang="en">No. If you can use basic Excel, you can use Horus MRP. It is designed for anyone in production, purchasing, or management to operate without technical training.</div>
-    </div>
-    <div class="faq-item">
-      <div class="faq-q" onclick="toggleFaq(this)">
-        <span data-lang="es">¿Dónde viven mis datos?</span>
-        <span data-lang="en">Where does my data live?</span>
-        <span class="faq-toggle">+</span>
-      </div>
-      <div class="faq-a" data-lang="es">En planes Premium y Enterprise, los datos viven en tu propio Google Drive — tú eres el dueño total. En Esencial y Pro, los datos residen en tu dispositivo sin nube obligatoria.</div>
-      <div class="faq-a" data-lang="en">In Premium and Enterprise plans, data lives in your own Google Drive — you own it completely. In Essential and Pro, data resides on your device with no mandatory cloud storage.</div>
-    </div>
-    <div class="faq-item">
-      <div class="faq-q" onclick="toggleFaq(this)">
-        <span data-lang="es">¿Hay contrato de permanencia?</span>
-        <span data-lang="en">Is there a lock-in contract?</span>
-        <span class="faq-toggle">+</span>
-      </div>
-      <div class="faq-a" data-lang="es">No. La mensualidad es mes a mes. Puedes cancelar en cualquier momento sin penalización. El setup es un pago único no reembolsable.</div>
-      <div class="faq-a" data-lang="en">No. Monthly billing is month-to-month. Cancel anytime without penalty. The setup is a one-time non-refundable payment.</div>
-    </div>
-    <div class="faq-item">
-      <div class="faq-q" onclick="toggleFaq(this)">
-        <span data-lang="es">¿Qué tipos de negocio pueden usarlo?</span>
-        <span data-lang="en">What types of businesses can use it?</span>
-        <span class="faq-toggle">+</span>
-      </div>
-      <div class="faq-a" data-lang="es">Cualquier negocio que gestione materiales, inventario y producción: manufactura (CNC, metal, plástico, electrónica), alimentos, construcción, impresión, distribución, farmacias, textil, muebles. Si compras insumos y necesitas saber cuándo reordenar, Horus MRP es para ti.</div>
-      <div class="faq-a" data-lang="en">Any business that manages materials, inventory, and production: manufacturing (CNC, metal, plastic, electronics), food production, construction, printing, retail distribution, pharmacies, textile, furniture. If you buy inputs and need to know when to reorder, Horus MRP is for you.</div>
-    </div>
-  </div>
-
-  <!-- CTA -->
-  <div class="sec-header">
-    <div class="sec-label" data-lang="es">Siguiente paso</div>
-    <div class="sec-label" data-lang="en">Next step</div>
-    <div class="sec-line"></div>
-  </div>
-
-  <div class="enterprise-grid">
-
-    <div class="ent-card">
-      <div class="pack-tag" data-lang="es">Garantía 30 días</div>
-      <div class="pack-tag" data-lang="en">30-day guarantee</div>
-      <div class="pack-name" data-lang="es">Primer mes<br><em>sin riesgo</em></div>
-      <div class="pack-name" data-lang="en">First month<br><em>risk-free</em></div>
-      <div class="pack-sub" data-lang="es">Implementamos el sistema con tus datos reales. Si en 30 días no ves un beneficio concreto en tu operación, te devolvemos el setup completo.</div>
-      <div class="pack-sub" data-lang="en">We implement the system with your real data. If within 30 days you do not see a concrete benefit to your operation, we fully refund your setup.</div>
-      <ul class="feat-list">
-        <li data-lang="es">Implementación guiada por nuestro equipo</li>
-        <li data-lang="en">Guided implementation by our team</li>
-        <li data-lang="es">Carga de productos, BOM y proveedores</li>
-        <li data-lang="en">Loading of products, BOM, and suppliers</li>
-        <li data-lang="es">Primera corrida del MRP con datos reales</li>
-        <li data-lang="en">First MRP run with your real data</li>
-        <li data-lang="es">Capacitación a tu equipo incluida</li>
-        <li data-lang="en">Team training included</li>
-      </ul>
-      <a href="https://wa.me/528991234567" target="_blank" class="btn-navy" data-lang="en">Schedule a free demo</a>
-      <a href="https://wa.me/528991234567" target="_blank" class="btn-navy" data-lang="es">Agendar demo gratis</a>
-    </div>
-
-    <div class="ent-card navy-card">
-      <div class="pack-tag" style="color:var(--gold-light)" data-lang="es">Mas popular</div>
-      <div class="pack-tag" style="color:var(--gold-light)" data-lang="en">Most popular</div>
-      <div class="pack-name light" data-lang="es">Horus MRP<br><em>Pro</em></div>
-      <div class="pack-name light" data-lang="en">Horus MRP<br><em>Pro</em></div>
-      <div class="pack-sub light" data-lang="es">El plan más completo para cualquier operación que quiera eliminar decisiones manuales y operar con inteligencia de datos desde el primer día.</div>
-      <div class="pack-sub light" data-lang="en">The most complete plan for any operation that wants to eliminate manual decisions and operate with data intelligence from day one.</div>
-      <div class="price-block">
-        <div class="price-from light" data-lang="es">Setup único</div>
-        <div class="price-from light" data-lang="en">One-time setup</div>
-        <div class="price-row" style="color:var(--gold-light)">
-          <span class="c">$</span><span class="v">1,500</span>
-          <span class="s light" data-lang="es">USD</span>
-          <span class="s light" data-lang="en">USD</span>
-        </div>
-        <div class="mrr-row">
-          <span class="mrr-v light">+ $299</span>
-          <span class="mrr-l light" data-lang="es">/ mes</span>
-          <span class="mrr-l light" data-lang="en">/ month</span>
-        </div>
-      </div>
-      <ul class="feat-list">
-        <li class="light" data-lang="es">Dashboard semáforo en tiempo real</li>
-        <li class="light" data-lang="en">Real-time traffic light dashboard</li>
-        <li class="light" data-lang="es">Motor de decisiones automatizado</li>
-        <li class="light" data-lang="en">Automated decision engine</li>
-        <li class="light" data-lang="es">Análisis de rentabilidad por producto</li>
-        <li class="light" data-lang="en">Profitability analysis per product</li>
-        <li class="light" data-lang="es">Simulador de escenarios what-if</li>
-        <li class="light" data-lang="en">What-if scenario simulator</li>
-        <li class="light" data-lang="es">Alertas por WhatsApp</li>
-        <li class="light" data-lang="en">WhatsApp alerts</li>
-        <li class="light" data-lang="es">Productos ilimitados</li>
-        <li class="light" data-lang="en">Unlimited products</li>
-      </ul>
-      <a href="mailto:info@horussystem.net" class="btn-gold-fill" data-lang="es">Elegir Pro ahora</a>
-      <a href="mailto:info@horussystem.net" class="btn-gold-fill" data-lang="en">Choose Pro now</a>
-    </div>
-
   </div>
 
 </div>
 
 <!-- FOOTER -->
 <footer>
-  <div class="footer-l"><strong>Horus System</strong> Co. &mdash; Reynosa, Tamaulipas &nbsp;&middot;&nbsp; Horus MRP</div>
+  <div class="footer-l"><strong>Horus System</strong> Co. — Reynosa, Tamaulipas</div>
   <div style="display:flex;align-items:center;gap:8px;">
     <a href="../index.html" id="footer-back-en" class="back-link" style="color:rgba(255,255,255,0.4)">
       <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M10 3L5 8l5 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
       Back to Main Site
     </a>
-    <a href="../index.html" id="footer-back-es" class="back-link" style="display:none;color:rgba(255,255,255,0.4)">
+    <a href="../ES/index.html" id="footer-back-es" class="back-link" style="display:none;color:rgba(255,255,255,0.4)">
       <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M10 3L5 8l5 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
       Volver al Sitio Principal
     </a>
@@ -1099,13 +1446,6 @@
     document.getElementById('back-es').style.display        = isEs ? 'inline-flex' : 'none';
     document.getElementById('footer-back-en').style.display = isEs ? 'none' : 'inline-flex';
     document.getElementById('footer-back-es').style.display = isEs ? 'inline-flex' : 'none';
-  }
-
-  function toggleFaq(el) {
-    const item = el.parentElement;
-    const wasOpen = item.classList.contains('open');
-    document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
-    if (!wasOpen) item.classList.add('open');
   }
 </script>
 
