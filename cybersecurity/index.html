@@ -40,6 +40,9 @@
   .nav-links a:hover { color: var(--gold); }
   .nav-cta { color: var(--navy-deep) !important; background: var(--gold) !important; padding: 0.5rem 1.2rem !important; border-radius: 2px !important; font-weight: 600 !important; }
   .nav-cta:hover { background: var(--gold-light) !important; }
+  .nav-back { font-family: 'Barlow Condensed', sans-serif; font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--grey) !important; border: 1px solid rgba(201,168,76,0.3) !important; padding: 0.4rem 1rem !important; border-radius: 2px !important; text-decoration: none !important; transition: all 0.2s !important; display: inline-flex; align-items: center; gap: 0.4rem; }
+  .nav-back::before { content: '←'; font-size: 0.8rem; }
+  .nav-back:hover { color: var(--gold) !important; border-color: var(--gold) !important; background: rgba(201,168,76,0.06) !important; }
 
   /* HERO */
   .hero { position: relative; min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 10rem 5vw 7rem; text-align: center; overflow: hidden; z-index: 1; }
@@ -231,6 +234,7 @@
   </a>
   <div class="nav-right">
     <ul class="nav-links">
+      <li><a href="../index.html" class="nav-back"><span data-lang="en">HORUS Main</span><span data-lang="es">HORUS Principal</span></a></li>
       <li><a href="#services"><span data-lang="en">Services</span><span data-lang="es">Servicios</span></a></li>
       <li><a href="#plans"><span data-lang="en">Plans</span><span data-lang="es">Planes</span></a></li>
       <li><a href="#consulting"><span data-lang="en">Consulting</span><span data-lang="es">Consultoría</span></a></li>
