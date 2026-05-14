@@ -44,36 +44,38 @@ nav {
 .nav-logo { display: flex; align-items: center; gap: 0.75rem; text-decoration: none; }
 .nav-logo-mark { width: 34px; height: 34px; flex-shrink: 0; }
 .nav-logo-text { font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 1rem; letter-spacing: 0.14em; color: var(--white); text-transform: uppercase; }
-.nav-logo-text span { color: var(--gold); }
+.nav-logo-text span { color: #C9A84C; }
 .nav-links { display: flex; align-items: center; gap: 1.75rem; list-style: none; }
-.nav-links a { font-family: 'Barlow Condensed', sans-serif; font-size: 0.75rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--grey); text-decoration: none; transition: color 0.2s; }
-.nav-links a:hover { color: var(--gold); }
-.nav-cta { background: var(--gold) !important; color: var(--navy-deep) !important; padding: 0.45rem 1.1rem !important; border-radius: 2px; font-weight: 600 !important; }
-.nav-cta:hover { background: var(--gold-light) !important; }
-.nav-back { border: 1px solid rgba(201,168,76,0.3) !important; padding: 0.35rem 0.9rem !important; border-radius: 2px; display: inline-flex !important; align-items: center; gap: 0.35rem; }
+.nav-links a { font-family: 'Barlow Condensed', sans-serif; font-size: 0.75rem; letter-spacing: 0.12em; text-transform: uppercase; color: #8a9ab0; text-decoration: none; transition: color 0.2s; }
+.nav-links a:hover { color: #C9A84C; }
+.nav-cta { background: #C9A84C !important; color: #061528 !important; padding: 0.45rem 1.1rem !important; border-radius: 2px; font-weight: 700 !important; text-decoration: none !important; }
+.nav-cta:hover { background: #e0c06a !important; color: #061528 !important; }
+.nav-back { border: 1px solid rgba(201,168,76,0.35) !important; padding: 0.35rem 0.9rem !important; border-radius: 2px; display: inline-flex !important; align-items: center; gap: 0.35rem; color: #8a9ab0 !important; text-decoration: none !important; }
 .nav-back::before { content: '←'; }
-.nav-back:hover { border-color: var(--gold) !important; color: var(--gold) !important; }
+.nav-back:hover { border-color: #C9A84C !important; color: #C9A84C !important; }
 
 /* ── BUTTONS ── */
 .btn-primary {
-  font-family: 'Barlow Condensed', sans-serif; font-size: 0.8rem; font-weight: 600;
+  font-family: 'Barlow Condensed', Arial, sans-serif; font-size: 0.8rem; font-weight: 600;
   letter-spacing: 0.14em; text-transform: uppercase;
-  background: var(--gold); color: var(--navy-deep);
+  background: #C9A84C !important; color: #061528 !important;
   border: none; padding: 0.9rem 2.4rem; cursor: pointer;
   border-radius: 2px; transition: background 0.2s, transform 0.2s;
-  text-decoration: none; display: inline-block;
+  text-decoration: none !important; display: inline-block;
+  line-height: 1.2;
 }
-.btn-primary:hover { background: var(--gold-light); transform: translateY(-1px); }
+.btn-primary:hover { background: #e0c06a !important; transform: translateY(-1px); }
 .btn-ghost {
-  font-family: 'Barlow Condensed', sans-serif; font-size: 0.8rem; font-weight: 500;
+  font-family: 'Barlow Condensed', Arial, sans-serif; font-size: 0.8rem; font-weight: 500;
   letter-spacing: 0.12em; text-transform: uppercase;
-  background: transparent; color: var(--white);
-  border: 1px solid rgba(255,255,255,0.2);
+  background: transparent !important; color: #F5F3EE !important;
+  border: 1px solid rgba(255,255,255,0.25) !important;
   padding: 0.9rem 2.4rem; cursor: pointer; border-radius: 2px;
   transition: border-color 0.2s, color 0.2s;
-  text-decoration: none; display: inline-block;
+  text-decoration: none !important; display: inline-block;
+  line-height: 1.2;
 }
-.btn-ghost:hover { border-color: var(--gold); color: var(--gold); }
+.btn-ghost:hover { border-color: #C9A84C !important; color: #C9A84C !important; }
 
 /* ── HERO ── */
 .hero {
@@ -193,11 +195,11 @@ nav {
 .plan-features li { font-size: 0.82rem; color: var(--grey); display: flex; align-items: flex-start; gap: 0.5rem; line-height: 1.45; }
 .plan-features li::before { content: '—'; color: var(--gold); flex-shrink: 0; }
 .plan-features li.inc { color: var(--white); }
-.plan-btn { display: block; width: 100%; font-family: 'Barlow Condensed', sans-serif; font-size: 0.75rem; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; text-align: center; padding: 0.8rem; border-radius: 2px; cursor: pointer; text-decoration: none; transition: all 0.2s; border: none; }
-.plan-btn-o { background: transparent; color: var(--gold); border: 1px solid rgba(201,168,76,0.35); }
-.plan-btn-o:hover { background: var(--gold-dim); border-color: var(--gold); }
-.plan-btn-s { background: var(--gold); color: var(--navy-deep); }
-.plan-btn-s:hover { background: var(--gold-light); }
+.plan-btn { display: block; width: 100%; font-family: 'Barlow Condensed', Arial, sans-serif; font-size: 0.75rem; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; text-align: center; padding: 0.8rem; border-radius: 2px; cursor: pointer; text-decoration: none !important; transition: all 0.2s; line-height: 1.2; }
+.plan-btn-o { background: transparent !important; color: #C9A84C !important; border: 1px solid rgba(201,168,76,0.4) !important; }
+.plan-btn-o:hover { background: rgba(201,168,76,0.12) !important; border-color: #C9A84C !important; }
+.plan-btn-s { background: #C9A84C !important; color: #061528 !important; border: none; }
+.plan-btn-s:hover { background: #e0c06a !important; }
 
 /* ── CONSULTING ── */
 .consulting-section { padding: 5rem 5vw; }
@@ -371,8 +373,8 @@ footer { background: var(--navy-deep); border-top: 1px solid rgba(201,168,76,0.1
   <h1 class="hero-title">Protección <em>inteligente</em><br>para su empresa</h1>
   <p class="hero-sub">Blindamos su infraestructura digital con monitoreo continuo, respuesta a incidentes y estrategias de defensa adaptadas al tamaño y sector de su negocio.</p>
   <div class="hero-actions">
-    <a href="#contact" class="btn-primary">Diagnóstico gratuito</a>
-    <a href="#plans" class="btn-ghost">Ver planes</a>
+    <a href="#contact" class="btn-primary" style="background:#C9A84C;color:#061528;padding:0.9rem 2.4rem;font-family:'Barlow Condensed',Arial,sans-serif;font-size:0.8rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;text-decoration:none;display:inline-block;border-radius:2px;border:none;">Diagnóstico gratuito</a>
+    <a href="#plans" class="btn-ghost" style="background:transparent;color:#F5F3EE;border:1px solid rgba(255,255,255,0.25);padding:0.9rem 2.4rem;font-family:'Barlow Condensed',Arial,sans-serif;font-size:0.8rem;font-weight:500;letter-spacing:0.12em;text-transform:uppercase;text-decoration:none;display:inline-block;border-radius:2px;">Ver planes</a>
   </div>
   <div class="ticker">
     <div class="ticker-item"><span class="ticker-val">24/7</span><span class="ticker-label">Monitoreo activo</span></div>
