@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -17,210 +18,261 @@
   body::before { content: ''; position: fixed; inset: 0; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='400' height='400' filter='url(%23n)' opacity='0.025'/%3E%3C/svg%3E"); pointer-events: none; z-index: 0; opacity: 0.4; }
   body::after { content: ''; position: fixed; inset: 0; background: repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(10,34,64,0.08) 2px,rgba(10,34,64,0.08) 4px); pointer-events: none; z-index: 0; }
 
-  /* LANG */
-  [data-lang] { display: none !important; }
-  .lang-en [data-lang="en"], .lang-es [data-lang="es"] { display: inline !important; }
-  p[data-lang], h1[data-lang], h2[data-lang], h3[data-lang], h4[data-lang], li[data-lang] { display: none !important; }
-  .lang-en p[data-lang="en"],.lang-en h1[data-lang="en"],.lang-en h2[data-lang="en"],.lang-en h3[data-lang="en"],.lang-en h4[data-lang="en"],.lang-en li[data-lang="en"] { display: block !important; }
-  .lang-es p[data-lang="es"],.lang-es h1[data-lang="es"],.lang-es h2[data-lang="es"],.lang-es h3[data-lang="es"],.lang-es h4[data-lang="es"],.lang-es li[data-lang="es"] { display: block !important; }
+/* LANG */
+[data-lang] { display: none !important; }
+.lang-en [data-lang=“en”], .lang-es [data-lang=“es”] { display: inline !important; }
+p[data-lang], h1[data-lang], h2[data-lang], h3[data-lang], h4[data-lang], li[data-lang] { display: none !important; }
+.lang-en p[data-lang=“en”],.lang-en h1[data-lang=“en”],.lang-en h2[data-lang=“en”],.lang-en h3[data-lang=“en”],.lang-en h4[data-lang=“en”],.lang-en li[data-lang=“en”] { display: block !important; }
+.lang-es p[data-lang=“es”],.lang-es h1[data-lang=“es”],.lang-es h2[data-lang=“es”],.lang-es h3[data-lang=“es”],.lang-es h4[data-lang=“es”],.lang-es li[data-lang=“es”] { display: block !important; }
 
-  .lang-toggle { display: flex; background: rgba(201,168,76,0.08); border: 1px solid rgba(201,168,76,0.2); border-radius: 2px; overflow: hidden; }
-  .lang-btn { font-family: 'Barlow Condensed', sans-serif; font-size: 0.7rem; font-weight: 700; letter-spacing: 0.14em; padding: 0.35rem 0.85rem; cursor: pointer; border: none; background: transparent; color: var(--grey); transition: all 0.2s; }
-  .lang-btn.active { background: var(--gold); color: var(--navy-deep); }
+.lang-toggle { display: flex; background: rgba(201,168,76,0.08); border: 1px solid rgba(201,168,76,0.2); border-radius: 2px; overflow: hidden; }
+.lang-btn { font-family: ‘Barlow Condensed’, sans-serif; font-size: 0.7rem; font-weight: 700; letter-spacing: 0.14em; padding: 0.35rem 0.85rem; cursor: pointer; border: none; background: transparent; color: var(–grey); transition: all 0.2s; }
+.lang-btn.active { background: var(–gold); color: var(–navy-deep); }
 
-  /* NAV */
-  nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; display: flex; align-items: center; justify-content: space-between; padding: 1.2rem 5vw; background: rgba(6,21,40,0.88); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(201,168,76,0.12); }
-  .nav-logo { display: flex; align-items: center; gap: 0.75rem; text-decoration: none; }
-  .nav-logo-mark { width: 36px; height: 36px; }
-  .nav-logo-text { font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 1.1rem; letter-spacing: 0.14em; color: var(--white); text-transform: uppercase; }
-  .nav-logo-text span { color: var(--gold); }
-  .nav-right { display: flex; align-items: center; gap: 1.75rem; }
-  .nav-links { display: flex; gap: 2rem; list-style: none; }
-  .nav-links a { font-family: 'Barlow Condensed', sans-serif; font-size: 0.78rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--grey); text-decoration: none; transition: color 0.2s; }
-  .nav-links a:hover { color: var(--gold); }
-  .nav-cta { color: var(--navy-deep) !important; background: var(--gold) !important; padding: 0.5rem 1.2rem !important; border-radius: 2px !important; font-weight: 600 !important; }
-  .nav-cta:hover { background: var(--gold-light) !important; }
-  .nav-back { font-family: 'Barlow Condensed', sans-serif; font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--grey) !important; border: 1px solid rgba(201,168,76,0.3) !important; padding: 0.4rem 1rem !important; border-radius: 2px !important; text-decoration: none !important; transition: all 0.2s !important; display: inline-flex; align-items: center; gap: 0.4rem; }
-  .nav-back::before { content: '←'; font-size: 0.8rem; }
-  .nav-back:hover { color: var(--gold) !important; border-color: var(--gold) !important; background: rgba(201,168,76,0.06) !important; }
+/* NAV */
+nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; display: flex; align-items: center; justify-content: space-between; padding: 1.2rem 5vw; background: rgba(6,21,40,0.88); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(201,168,76,0.12); }
+.nav-logo { display: flex; align-items: center; gap: 0.75rem; text-decoration: none; }
+.nav-logo-mark { width: 36px; height: 36px; }
+.nav-logo-text { font-family: ‘Barlow Condensed’, sans-serif; font-weight: 700; font-size: 1.1rem; letter-spacing: 0.14em; color: var(–white); text-transform: uppercase; }
+.nav-logo-text span { color: var(–gold); }
+.nav-right { display: flex; align-items: center; gap: 1.75rem; }
+.nav-links { display: flex; gap: 2rem; list-style: none; }
+.nav-links a { font-family: ‘Barlow Condensed’, sans-serif; font-size: 0.78rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(–grey); text-decoration: none; transition: color 0.2s; }
+.nav-links a:hover { color: var(–gold); }
+.nav-cta { color: var(–navy-deep) !important; background: var(–gold) !important; padding: 0.5rem 1.2rem !important; border-radius: 2px !important; font-weight: 600 !important; }
+.nav-cta:hover { background: var(–gold-light) !important; }
+.nav-back { font-family: ‘Barlow Condensed’, sans-serif; font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(–grey) !important; border: 1px solid rgba(201,168,76,0.3) !important; padding: 0.4rem 1rem !important; border-radius: 2px !important; text-decoration: none !important; transition: all 0.2s !important; display: inline-flex; align-items: center; gap: 0.4rem; }
+.nav-back::before { content: ‘←’; font-size: 0.8rem; }
+.nav-back:hover { color: var(–gold) !important; border-color: var(–gold) !important; background: rgba(201,168,76,0.06) !important; }
 
-  /* HERO */
-  .hero { position: relative; min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 10rem 5vw 7rem; text-align: center; overflow: hidden; z-index: 1; }
-  .hero-bg { position: absolute; inset: 0; background: radial-gradient(ellipse 80% 60% at 50% 30%,rgba(201,168,76,0.05) 0%,transparent 70%); z-index: -1; }
-  .hero-hex { position: absolute; inset: 0; z-index: -1; opacity: 0.07; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='70'%3E%3Cpolygon points='30,2 58,17 58,53 30,68 2,53 2,17' fill='none' stroke='%23C9A84C' stroke-width='1'/%3E%3C/svg%3E"); background-size: 60px 70px; }
-  .scan-ring { position: absolute; border-radius: 50%; border: 1px solid rgba(201,168,76,0.08); top: 50%; left: 50%; transform: translate(-50%,-50%); animation: pulse-ring 4s ease-in-out infinite; }
-  .scan-ring:nth-child(1){width:600px;height:600px} .scan-ring:nth-child(2){width:900px;height:900px;animation-delay:1.5s} .scan-ring:nth-child(3){width:1200px;height:1200px;animation-delay:3s}
-  @keyframes pulse-ring{0%,100%{opacity:.08;transform:translate(-50%,-50%) scale(1)}50%{opacity:.18;transform:translate(-50%,-50%) scale(1.02)}}
-  .hero-eyebrow { font-family:'Barlow Condensed',sans-serif; font-size:0.72rem; font-weight:600; letter-spacing:0.22em; text-transform:uppercase; color:var(--gold); margin-bottom:1.5rem; opacity:0; animation:fadeUp 0.7s 0.2s forwards; }
-  .hero-title { font-family:'Cormorant Garamond',serif; font-size:clamp(3rem,7vw,6.5rem); font-weight:300; line-height:1.0; margin-bottom:1.5rem; opacity:0; animation:fadeUp 0.8s 0.4s forwards; }
-  .hero-title em { font-style:italic; color:var(--gold); }
-  .hero-sub { font-size:1.05rem; font-weight:300; color:var(--grey); max-width:580px; line-height:1.75; margin-bottom:3rem; opacity:0; animation:fadeUp 0.8s 0.6s forwards; }
-  .hero-actions { display:flex; gap:1rem; flex-wrap:wrap; justify-content:center; opacity:0; animation:fadeUp 0.8s 0.8s forwards; }
-  .btn-primary { font-family:'Barlow Condensed',sans-serif; font-size:0.8rem; font-weight:600; letter-spacing:0.14em; text-transform:uppercase; background:var(--gold); color:var(--navy-deep); border:none; padding:0.9rem 2.4rem; cursor:pointer; border-radius:2px; transition:all 0.2s; text-decoration:none; display:inline-block; }
-  .btn-primary:hover { background:var(--gold-light); transform:translateY(-1px); }
-  .btn-ghost { font-family:'Barlow Condensed',sans-serif; font-size:0.8rem; font-weight:500; letter-spacing:0.12em; text-transform:uppercase; background:transparent; color:var(--white); border:1px solid rgba(255,255,255,0.2); padding:0.9rem 2.4rem; cursor:pointer; border-radius:2px; transition:all 0.2s; text-decoration:none; display:inline-block; }
-  .btn-ghost:hover { border-color:var(--gold); color:var(--gold); }
-  .ticker { position:absolute; bottom:2.5rem; left:0; right:0; display:flex; align-items:center; justify-content:center; gap:2.5rem; opacity:0; animation:fadeUp 0.8s 1.2s forwards; }
-  .ticker-item { display:flex; flex-direction:column; align-items:center; gap:0.25rem; }
-  .ticker-val { font-family:'Barlow Condensed',sans-serif; font-size:2rem; font-weight:700; color:var(--gold); line-height:1; }
-  .ticker-label { font-family:'Barlow Condensed',sans-serif; font-size:0.65rem; letter-spacing:0.12em; text-transform:uppercase; color:var(--grey); }
-  .ticker-sep { width:1px; height:40px; background:rgba(201,168,76,0.2); }
+/* HERO */
+.hero { position: relative; min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 10rem 5vw 7rem; text-align: center; overflow: hidden; z-index: 1; }
+.hero-bg { position: absolute; inset: 0; background: radial-gradient(ellipse 80% 60% at 50% 30%,rgba(201,168,76,0.05) 0%,transparent 70%); z-index: -1; }
+.hero-hex { position: absolute; inset: 0; z-index: -1; opacity: 0.07; background-image: url(“data:image/svg+xml,%3Csvg xmlns=‘http://www.w3.org/2000/svg’ width=‘60’ height=‘70’%3E%3Cpolygon points=‘30,2 58,17 58,53 30,68 2,53 2,17’ fill=‘none’ stroke=’%23C9A84C’ stroke-width=‘1’/%3E%3C/svg%3E”); background-size: 60px 70px; }
+.scan-ring { position: absolute; border-radius: 50%; border: 1px solid rgba(201,168,76,0.08); top: 50%; left: 50%; transform: translate(-50%,-50%); animation: pulse-ring 4s ease-in-out infinite; }
+.scan-ring:nth-child(1){width:600px;height:600px} .scan-ring:nth-child(2){width:900px;height:900px;animation-delay:1.5s} .scan-ring:nth-child(3){width:1200px;height:1200px;animation-delay:3s}
+@keyframes pulse-ring{0%,100%{opacity:.08;transform:translate(-50%,-50%) scale(1)}50%{opacity:.18;transform:translate(-50%,-50%) scale(1.02)}}
+.hero-eyebrow { font-family:‘Barlow Condensed’,sans-serif; font-size:0.72rem; font-weight:600; letter-spacing:0.22em; text-transform:uppercase; color:var(–gold); margin-bottom:1.5rem; opacity:0; animation:fadeUp 0.7s 0.2s forwards; }
+.hero-title { font-family:‘Cormorant Garamond’,serif; font-size:clamp(3rem,7vw,6.5rem); font-weight:300; line-height:1.0; margin-bottom:1.5rem; opacity:0; animation:fadeUp 0.8s 0.4s forwards; }
+.hero-title em { font-style:italic; color:var(–gold); }
+.hero-sub { font-size:1.05rem; font-weight:300; color:var(–grey); max-width:580px; line-height:1.75; margin-bottom:3rem; opacity:0; animation:fadeUp 0.8s 0.6s forwards; }
+.hero-actions { display:flex; gap:1rem; flex-wrap:wrap; justify-content:center; opacity:0; animation:fadeUp 0.8s 0.8s forwards; }
+.btn-primary { font-family:‘Barlow Condensed’,sans-serif; font-size:0.8rem; font-weight:600; letter-spacing:0.14em; text-transform:uppercase; background:var(–gold); color:var(–navy-deep); border:none; padding:0.9rem 2.4rem; cursor:pointer; border-radius:2px; transition:all 0.2s; text-decoration:none; display:inline-block; }
+.btn-primary:hover { background:var(–gold-light); transform:translateY(-1px); }
+.btn-ghost { font-family:‘Barlow Condensed’,sans-serif; font-size:0.8rem; font-weight:500; letter-spacing:0.12em; text-transform:uppercase; background:transparent; color:var(–white); border:1px solid rgba(255,255,255,0.2); padding:0.9rem 2.4rem; cursor:pointer; border-radius:2px; transition:all 0.2s; text-decoration:none; display:inline-block; }
+.btn-ghost:hover { border-color:var(–gold); color:var(–gold); }
+.ticker { position:absolute; bottom:2.5rem; left:0; right:0; display:flex; align-items:center; justify-content:center; gap:2.5rem; opacity:0; animation:fadeUp 0.8s 1.2s forwards; }
+.ticker-item { display:flex; flex-direction:column; align-items:center; gap:0.25rem; }
+.ticker-val { font-family:‘Barlow Condensed’,sans-serif; font-size:2rem; font-weight:700; color:var(–gold); line-height:1; }
+.ticker-label { font-family:‘Barlow Condensed’,sans-serif; font-size:0.65rem; letter-spacing:0.12em; text-transform:uppercase; color:var(–grey); }
+.ticker-sep { width:1px; height:40px; background:rgba(201,168,76,0.2); }
 
-  /* SECTIONS */
-  section { position:relative; z-index:1; padding:7rem 5vw; }
-  .section-label { font-family:'Barlow Condensed',sans-serif; font-size:0.7rem; font-weight:600; letter-spacing:0.22em; text-transform:uppercase; color:var(--gold); margin-bottom:1rem; }
-  .section-title { font-family:'Cormorant Garamond',serif; font-size:clamp(2rem,4vw,3.5rem); font-weight:300; line-height:1.1; margin-bottom:1.25rem; }
-  .section-title em { font-style:italic; color:var(--gold); }
-  .section-body { font-size:1rem; color:var(--grey); line-height:1.8; max-width:560px; }
+/* SECTIONS */
+section { position:relative; z-index:1; padding:7rem 5vw; }
+.section-label { font-family:‘Barlow Condensed’,sans-serif; font-size:0.7rem; font-weight:600; letter-spacing:0.22em; text-transform:uppercase; color:var(–gold); margin-bottom:1rem; }
+.section-title { font-family:‘Cormorant Garamond’,serif; font-size:clamp(2rem,4vw,3.5rem); font-weight:300; line-height:1.1; margin-bottom:1.25rem; }
+.section-title em { font-style:italic; color:var(–gold); }
+.section-body { font-size:1rem; color:var(–grey); line-height:1.8; max-width:560px; }
 
-  /* THREATS */
-  .threats { background:var(--navy); border-top:1px solid rgba(201,168,76,0.1); border-bottom:1px solid rgba(201,168,76,0.1); }
-  .threats-inner { max-width:1200px; margin:0 auto; display:grid; grid-template-columns:1fr 1fr; gap:5rem; align-items:center; }
-  .threat-grid { display:grid; grid-template-columns:1fr 1fr; gap:1px; background:rgba(201,168,76,0.1); border:1px solid rgba(201,168,76,0.1); }
-  .threat-card { background:var(--navy-deep); padding:1.8rem; position:relative; overflow:hidden; transition:background 0.3s; }
-  .threat-card:hover { background:var(--navy-mid); }
-  .threat-card::before { content:''; position:absolute; top:0; left:0; width:3px; height:0; background:var(--gold); transition:height 0.4s; }
-  .threat-card:hover::before { height:100%; }
-  .threat-icon { width:40px; height:40px; margin-bottom:1rem; color:var(--gold); opacity:0.9; }
-  .threat-name { font-family:'Barlow Condensed',sans-serif; font-size:0.9rem; font-weight:600; letter-spacing:0.08em; text-transform:uppercase; margin-bottom:0.4rem; }
-  .threat-desc { font-size:0.82rem; color:var(--grey); line-height:1.6; }
+/* THREATS */
+.threats { background:var(–navy); border-top:1px solid rgba(201,168,76,0.1); border-bottom:1px solid rgba(201,168,76,0.1); }
+.threats-inner { max-width:1200px; margin:0 auto; display:grid; grid-template-columns:1fr 1fr; gap:5rem; align-items:center; }
+.threat-grid { display:grid; grid-template-columns:1fr 1fr; gap:1px; background:rgba(201,168,76,0.1); border:1px solid rgba(201,168,76,0.1); }
+.threat-card { background:var(–navy-deep); padding:1.8rem; position:relative; overflow:hidden; transition:background 0.3s; }
+.threat-card:hover { background:var(–navy-mid); }
+.threat-card::before { content:’’; position:absolute; top:0; left:0; width:3px; height:0; background:var(–gold); transition:height 0.4s; }
+.threat-card:hover::before { height:100%; }
+.threat-icon { width:40px; height:40px; margin-bottom:1rem; color:var(–gold); opacity:0.9; }
+.threat-name { font-family:‘Barlow Condensed’,sans-serif; font-size:0.9rem; font-weight:600; letter-spacing:0.08em; text-transform:uppercase; margin-bottom:0.4rem; }
+.threat-desc { font-size:0.82rem; color:var(–grey); line-height:1.6; }
 
-  /* SERVICES */
-  .services-inner { max-width:1200px; margin:0 auto; }
-  .services-head { display:flex; justify-content:space-between; align-items:flex-end; margin-bottom:4rem; flex-wrap:wrap; gap:2rem; }
-  .services-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:1.5rem; }
-  .service-card { background:rgba(13,45,82,0.4); border:1px solid rgba(201,168,76,0.1); padding:2.5rem 2rem; border-radius:2px; transition:all 0.3s; position:relative; overflow:hidden; }
-  .service-card::after { content:''; position:absolute; inset:0; background:linear-gradient(135deg,rgba(201,168,76,0.04) 0%,transparent 60%); opacity:0; transition:opacity 0.3s; }
-  .service-card:hover { border-color:rgba(201,168,76,0.35); transform:translateY(-3px); box-shadow:0 20px 60px rgba(0,0,0,0.3); }
-  .service-card:hover::after { opacity:1; }
-  .service-num { font-family:'Barlow Condensed',sans-serif; font-size:0.65rem; letter-spacing:0.2em; color:var(--gold); margin-bottom:1.25rem; opacity:0.6; }
-  .service-icon-wrap { width:52px; height:52px; border:1px solid rgba(201,168,76,0.2); display:flex; align-items:center; justify-content:center; margin-bottom:1.5rem; transition:border-color 0.3s; padding:12px; }
-  .service-icon-wrap svg { width:100%; height:100%; color:var(--gold); }
-  .service-card:hover .service-icon-wrap { border-color:var(--gold); }
-  .service-name { font-family:'Cormorant Garamond',serif; font-size:1.35rem; font-weight:600; margin-bottom:0.75rem; }
-  .service-desc { font-size:0.88rem; color:var(--grey); line-height:1.7; margin-bottom:1.5rem; }
-  .service-tags { display:flex; flex-wrap:wrap; gap:0.4rem; }
-  .tag { font-family:'Barlow Condensed',sans-serif; font-size:0.65rem; letter-spacing:0.1em; text-transform:uppercase; color:var(--gold); border:1px solid rgba(201,168,76,0.25); padding:0.2rem 0.6rem; border-radius:1px; }
+/* SERVICES */
+.services-inner { max-width:1200px; margin:0 auto; }
+.services-head { display:flex; justify-content:space-between; align-items:flex-end; margin-bottom:4rem; flex-wrap:wrap; gap:2rem; }
+.services-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:1.5rem; }
+.service-card { background:rgba(13,45,82,0.4); border:1px solid rgba(201,168,76,0.1); padding:2.5rem 2rem; border-radius:2px; transition:all 0.3s; position:relative; overflow:hidden; }
+.service-card::after { content:’’; position:absolute; inset:0; background:linear-gradient(135deg,rgba(201,168,76,0.04) 0%,transparent 60%); opacity:0; transition:opacity 0.3s; }
+.service-card:hover { border-color:rgba(201,168,76,0.35); transform:translateY(-3px); box-shadow:0 20px 60px rgba(0,0,0,0.3); }
+.service-card:hover::after { opacity:1; }
+.service-num { font-family:‘Barlow Condensed’,sans-serif; font-size:0.65rem; letter-spacing:0.2em; color:var(–gold); margin-bottom:1.25rem; opacity:0.6; }
+.service-icon-wrap { width:52px; height:52px; border:1px solid rgba(201,168,76,0.2); display:flex; align-items:center; justify-content:center; margin-bottom:1.5rem; transition:border-color 0.3s; padding:12px; }
+.service-icon-wrap svg { width:100%; height:100%; color:var(–gold); }
+.service-card:hover .service-icon-wrap { border-color:var(–gold); }
+.service-name { font-family:‘Cormorant Garamond’,serif; font-size:1.35rem; font-weight:600; margin-bottom:0.75rem; }
+.service-desc { font-size:0.88rem; color:var(–grey); line-height:1.7; margin-bottom:1.5rem; }
+.service-tags { display:flex; flex-wrap:wrap; gap:0.4rem; }
+.tag { font-family:‘Barlow Condensed’,sans-serif; font-size:0.65rem; letter-spacing:0.1em; text-transform:uppercase; color:var(–gold); border:1px solid rgba(201,168,76,0.25); padding:0.2rem 0.6rem; border-radius:1px; }
 
-  /* PRICING */
-  .pricing { background:var(--navy); border-top:1px solid rgba(201,168,76,0.1); }
-  .pricing-inner { max-width:1200px; margin:0 auto; }
-  .pricing-head { text-align:center; margin-bottom:4rem; }
-  .pricing-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:1px; background:rgba(201,168,76,0.08); border:1px solid rgba(201,168,76,0.08); border-radius:2px; overflow:hidden; }
-  .plan { background:var(--navy-deep); padding:2.5rem 1.75rem; position:relative; transition:background 0.3s; }
-  .plan:hover { background:#0c1e33; }
-  .plan.featured { background:linear-gradient(160deg,#0e2848 0%,#0a1f3a 100%); border-top:2px solid var(--gold); }
-  .plan.featured::before { position:absolute; top:-1px; left:50%; transform:translateX(-50%) translateY(-50%); background:var(--gold); color:var(--navy-deep); font-family:'Barlow Condensed',sans-serif; font-size:0.6rem; font-weight:700; letter-spacing:0.15em; padding:0.25rem 0.8rem; border-radius:1px; white-space:nowrap; }
-  .lang-en .plan.featured::before { content:'MOST POPULAR'; }
-  .lang-es .plan.featured::before { content:'MÁS POPULAR'; }
-  .plan-name { font-family:'Barlow Condensed',sans-serif; font-size:0.72rem; font-weight:700; letter-spacing:0.2em; text-transform:uppercase; color:var(--gold); margin-bottom:0.5rem; }
-  .plan-tagline { font-size:0.8rem; color:var(--grey); margin-bottom:2rem; line-height:1.5; min-height:2.4em; }
-  .plan-setup-label { font-family:'Barlow Condensed',sans-serif; font-size:0.65rem; letter-spacing:0.12em; text-transform:uppercase; color:var(--grey); }
-  .plan-setup-price { font-family:'Cormorant Garamond',serif; font-size:2.2rem; font-weight:600; color:var(--white); line-height:1.1; }
-  .plan-setup-price sup { font-size:1rem; vertical-align:super; color:var(--grey); }
-  .plan-monthly { font-family:'Barlow Condensed',sans-serif; font-size:0.78rem; color:var(--gold); letter-spacing:0.06em; margin:0.25rem 0 2rem; padding-bottom:2rem; border-bottom:1px solid rgba(201,168,76,0.1); }
-  .plan-features { list-style:none; display:flex; flex-direction:column; gap:0.75rem; margin-bottom:2rem; }
-  .plan-features li { font-size:0.84rem; color:var(--grey); display:flex; align-items:flex-start; gap:0.6rem; line-height:1.45; }
-  .plan-features li::before { content:'—'; color:var(--gold); flex-shrink:0; margin-top:0.05em; }
-  .plan-features li.inc { color:var(--white); }
-  .plan-btn { display:block; width:100%; font-family:'Barlow Condensed',sans-serif; font-size:0.78rem; font-weight:600; letter-spacing:0.14em; text-transform:uppercase; text-align:center; padding:0.85rem; border-radius:2px; cursor:pointer; text-decoration:none; transition:all 0.2s; border:none; }
-  .plan-btn-o { background:transparent; color:var(--gold); border:1px solid rgba(201,168,76,0.35); }
-  .plan-btn-o:hover { background:var(--gold-dim); border-color:var(--gold); }
-  .plan-btn-s { background:var(--gold); color:var(--navy-deep); }
-  .plan-btn-s:hover { background:var(--gold-light); }
+/* PRICING */
+.pricing { background:var(–navy); border-top:1px solid rgba(201,168,76,0.1); }
+.pricing-inner { max-width:1200px; margin:0 auto; }
+.pricing-head { text-align:center; margin-bottom:4rem; }
+.pricing-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:1px; background:rgba(201,168,76,0.08); border:1px solid rgba(201,168,76,0.08); border-radius:2px; overflow:hidden; }
+.plan { background:var(–navy-deep); padding:2.5rem 1.75rem; position:relative; transition:background 0.3s; }
+.plan:hover { background:#0c1e33; }
+.plan.featured { background:linear-gradient(160deg,#0e2848 0%,#0a1f3a 100%); border-top:2px solid var(–gold); }
+.plan.featured::before { position:absolute; top:-1px; left:50%; transform:translateX(-50%) translateY(-50%); background:var(–gold); color:var(–navy-deep); font-family:‘Barlow Condensed’,sans-serif; font-size:0.6rem; font-weight:700; letter-spacing:0.15em; padding:0.25rem 0.8rem; border-radius:1px; white-space:nowrap; }
+.lang-en .plan.featured::before { content:‘MOST POPULAR’; }
+.lang-es .plan.featured::before { content:‘MÁS POPULAR’; }
+.plan-name { font-family:‘Barlow Condensed’,sans-serif; font-size:0.72rem; font-weight:700; letter-spacing:0.2em; text-transform:uppercase; color:var(–gold); margin-bottom:0.5rem; }
+.plan-tagline { font-size:0.8rem; color:var(–grey); margin-bottom:2rem; line-height:1.5; min-height:2.4em; }
+.plan-setup-label { font-family:‘Barlow Condensed’,sans-serif; font-size:0.65rem; letter-spacing:0.12em; text-transform:uppercase; color:var(–grey); }
+.plan-setup-price { font-family:‘Cormorant Garamond’,serif; font-size:2.2rem; font-weight:600; color:var(–white); line-height:1.1; }
+.plan-setup-price sup { font-size:1rem; vertical-align:super; color:var(–grey); }
+.plan-monthly { font-family:‘Barlow Condensed’,sans-serif; font-size:0.78rem; color:var(–gold); letter-spacing:0.06em; margin:0.25rem 0 2rem; padding-bottom:2rem; border-bottom:1px solid rgba(201,168,76,0.1); }
+.plan-features { list-style:none; display:flex; flex-direction:column; gap:0.75rem; margin-bottom:2rem; }
+.plan-features li { font-size:0.84rem; color:var(–grey); display:flex; align-items:flex-start; gap:0.6rem; line-height:1.45; }
+.plan-features li::before { content:’—’; color:var(–gold); flex-shrink:0; margin-top:0.05em; }
+.plan-features li.inc { color:var(–white); }
+.plan-btn { display:block; width:100%; font-family:‘Barlow Condensed’,sans-serif; font-size:0.78rem; font-weight:600; letter-spacing:0.14em; text-transform:uppercase; text-align:center; padding:0.85rem; border-radius:2px; cursor:pointer; text-decoration:none; transition:all 0.2s; border:none; }
+.plan-btn-o { background:transparent; color:var(–gold); border:1px solid rgba(201,168,76,0.35); }
+.plan-btn-o:hover { background:var(–gold-dim); border-color:var(–gold); }
+.plan-btn-s { background:var(–gold); color:var(–navy-deep); }
+.plan-btn-s:hover { background:var(–gold-light); }
 
-  /* PROJECT */
-  .proj-inner { max-width:1200px; margin:0 auto; }
-  .proj-head { display:flex; justify-content:space-between; align-items:flex-end; margin-bottom:3.5rem; flex-wrap:wrap; gap:2rem; }
-  .proj-badge { font-family:'Barlow Condensed',sans-serif; font-size:0.72rem; letter-spacing:0.1em; color:var(--gold); border:1px solid rgba(201,168,76,0.2); padding:0.5rem 1rem; border-radius:2px; align-self:flex-start; margin-top:0.5rem; white-space:nowrap; }
-  .proj-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:rgba(201,168,76,0.08); border:1px solid rgba(201,168,76,0.08); margin-bottom:2rem; }
-  .proj-card { background:var(--navy-deep); padding:2.2rem 2rem; transition:background 0.3s; position:relative; }
-  .proj-card:hover { background:#0b1e32; }
-  .proj-card::after { content:''; position:absolute; bottom:0; left:0; right:0; height:2px; background:linear-gradient(90deg,var(--gold),transparent); transform:scaleX(0); transform-origin:left; transition:transform 0.4s; }
-  .proj-card:hover::after { transform:scaleX(1); }
-  .proj-icon-wrap { width:44px; height:44px; margin-bottom:1.25rem; color:var(--gold); opacity:0.85; }
-  .proj-icon-wrap svg { width:100%; height:100%; }
-  .proj-name { font-family:'Cormorant Garamond',serif; font-size:1.2rem; font-weight:600; margin-bottom:0.5rem; }
-  .proj-desc { font-size:0.84rem; color:var(--grey); line-height:1.65; margin-bottom:1.5rem; }
-  .proj-price { display:flex; align-items:baseline; gap:0.4rem; }
-  .proj-price-val { font-family:'Cormorant Garamond',serif; font-size:1.6rem; font-weight:600; color:var(--white); }
-  .proj-price-label { font-family:'Barlow Condensed',sans-serif; font-size:0.7rem; letter-spacing:0.1em; color:var(--gold); text-transform:uppercase; }
-  .proj-footer { display:flex; align-items:center; justify-content:space-between; padding:1.5rem 2rem; border:1px solid rgba(201,168,76,0.1); background:rgba(201,168,76,0.03); flex-wrap:wrap; gap:1rem; }
-  .proj-footer p { font-size:0.88rem; color:var(--grey); line-height:1.6; }
-  .proj-footer p strong { color:var(--white); font-weight:400; }
+/* PROJECT */
+.proj-inner { max-width:1200px; margin:0 auto; }
+.proj-head { display:flex; justify-content:space-between; align-items:flex-end; margin-bottom:3.5rem; flex-wrap:wrap; gap:2rem; }
+.proj-badge { font-family:‘Barlow Condensed’,sans-serif; font-size:0.72rem; letter-spacing:0.1em; color:var(–gold); border:1px solid rgba(201,168,76,0.2); padding:0.5rem 1rem; border-radius:2px; align-self:flex-start; margin-top:0.5rem; white-space:nowrap; }
+.proj-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:rgba(201,168,76,0.08); border:1px solid rgba(201,168,76,0.08); margin-bottom:2rem; }
+.proj-card { background:var(–navy-deep); padding:2.2rem 2rem; transition:background 0.3s; position:relative; }
+.proj-card:hover { background:#0b1e32; }
+.proj-card::after { content:’’; position:absolute; bottom:0; left:0; right:0; height:2px; background:linear-gradient(90deg,var(–gold),transparent); transform:scaleX(0); transform-origin:left; transition:transform 0.4s; }
+.proj-card:hover::after { transform:scaleX(1); }
+.proj-icon-wrap { width:44px; height:44px; margin-bottom:1.25rem; color:var(–gold); opacity:0.85; }
+.proj-icon-wrap svg { width:100%; height:100%; }
+.proj-name { font-family:‘Cormorant Garamond’,serif; font-size:1.2rem; font-weight:600; margin-bottom:0.5rem; }
+.proj-desc { font-size:0.84rem; color:var(–grey); line-height:1.65; margin-bottom:1.5rem; }
+.proj-price { display:flex; align-items:baseline; gap:0.4rem; }
+.proj-price-val { font-family:‘Cormorant Garamond’,serif; font-size:1.6rem; font-weight:600; color:var(–white); }
+.proj-price-label { font-family:‘Barlow Condensed’,sans-serif; font-size:0.7rem; letter-spacing:0.1em; color:var(–gold); text-transform:uppercase; }
+.proj-footer { display:flex; align-items:center; justify-content:space-between; padding:1.5rem 2rem; border:1px solid rgba(201,168,76,0.1); background:rgba(201,168,76,0.03); flex-wrap:wrap; gap:1rem; }
+.proj-footer p { font-size:0.88rem; color:var(–grey); line-height:1.6; }
+.proj-footer p strong { color:var(–white); font-weight:400; }
 
-  /* WHY */
-  .why-inner { max-width:1200px; margin:0 auto; display:grid; grid-template-columns:1fr 1.4fr; gap:6rem; align-items:center; }
-  .why-list { display:flex; flex-direction:column; gap:1.75rem; }
-  .why-item { display:grid; grid-template-columns:44px 1fr; gap:1.25rem; align-items:start; }
-  .why-num { font-family:'Cormorant Garamond',serif; font-size:2rem; font-weight:300; color:rgba(201,168,76,0.25); line-height:1; }
-  .why-content h4 { font-family:'Barlow Condensed',sans-serif; font-size:1rem; font-weight:600; letter-spacing:0.06em; margin-bottom:0.35rem; }
-  .why-content p { font-size:0.88rem; color:var(--grey); line-height:1.65; }
+/* WHY */
+.why-inner { max-width:1200px; margin:0 auto; display:grid; grid-template-columns:1fr 1.4fr; gap:6rem; align-items:center; }
+.why-list { display:flex; flex-direction:column; gap:1.75rem; }
+.why-item { display:grid; grid-template-columns:44px 1fr; gap:1.25rem; align-items:start; }
+.why-num { font-family:‘Cormorant Garamond’,serif; font-size:2rem; font-weight:300; color:rgba(201,168,76,0.25); line-height:1; }
+.why-content h4 { font-family:‘Barlow Condensed’,sans-serif; font-size:1rem; font-weight:600; letter-spacing:0.06em; margin-bottom:0.35rem; }
+.why-content p { font-size:0.88rem; color:var(–grey); line-height:1.65; }
 
-  /* TERMINAL */
-  .terminal { background:#030d18; border:1px solid rgba(201,168,76,0.15); border-radius:4px; overflow:hidden; font-family:'Courier New',monospace; }
-  .terminal-bar { background:rgba(201,168,76,0.06); padding:0.6rem 1rem; display:flex; align-items:center; gap:0.5rem; border-bottom:1px solid rgba(201,168,76,0.08); }
-  .dot { width:10px; height:10px; border-radius:50%; }
-  .dot-r{background:#c94c4c} .dot-y{background:#c9a84c} .dot-g{background:#4cc98a}
-  .t-title { font-family:'Barlow Condensed',sans-serif; font-size:0.65rem; letter-spacing:0.12em; color:var(--grey); margin-left:0.5rem; }
-  .terminal-body { padding:1.5rem; font-size:0.78rem; line-height:2; }
-  .t-p{color:var(--gold)} .t-ok{color:#4cc98a} .t-w{color:#c9a84c} .t-bad{color:#c94c4c} .t-g{color:#506070}
-  .t-cursor { display:inline-block; width:8px; height:1em; background:var(--gold); animation:blink 1.2s step-end infinite; vertical-align:text-bottom; margin-left:2px; }
-  @keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+/* TERMINAL */
+.terminal { background:#030d18; border:1px solid rgba(201,168,76,0.15); border-radius:4px; overflow:hidden; font-family:‘Courier New’,monospace; }
+.terminal-bar { background:rgba(201,168,76,0.06); padding:0.6rem 1rem; display:flex; align-items:center; gap:0.5rem; border-bottom:1px solid rgba(201,168,76,0.08); }
+.dot { width:10px; height:10px; border-radius:50%; }
+.dot-r{background:#c94c4c} .dot-y{background:#c9a84c} .dot-g{background:#4cc98a}
+.t-title { font-family:‘Barlow Condensed’,sans-serif; font-size:0.65rem; letter-spacing:0.12em; color:var(–grey); margin-left:0.5rem; }
+.terminal-body { padding:1.5rem; font-size:0.78rem; line-height:2; }
+.t-p{color:var(–gold)} .t-ok{color:#4cc98a} .t-w{color:#c9a84c} .t-bad{color:#c94c4c} .t-g{color:#506070}
+.t-cursor { display:inline-block; width:8px; height:1em; background:var(–gold); animation:blink 1.2s step-end infinite; vertical-align:text-bottom; margin-left:2px; }
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
 
-  /* PROCESS */
-  .process { background:var(--navy); border-top:1px solid rgba(201,168,76,0.1); }
-  .process-inner { max-width:1100px; margin:0 auto; }
-  .process-head { text-align:center; margin-bottom:4.5rem; }
-  .process-steps { display:grid; grid-template-columns:repeat(5,1fr); position:relative; }
-  .process-steps::before { content:''; position:absolute; top:28px; left:10%; right:10%; height:1px; background:linear-gradient(90deg,transparent,rgba(201,168,76,0.3),transparent); }
-  .step { display:flex; flex-direction:column; align-items:center; text-align:center; padding:0 1rem; }
-  .step-circle { width:56px; height:56px; border:1px solid rgba(201,168,76,0.3); border-radius:50%; display:flex; align-items:center; justify-content:center; margin-bottom:1.25rem; background:var(--navy); position:relative; z-index:1; transition:all 0.3s; padding:14px; }
-  .step-circle svg { width:100%; height:100%; color:var(--gold); }
-  .step:hover .step-circle { background:var(--gold); border-color:var(--gold); }
-  .step:hover .step-circle svg { color:var(--navy-deep); }
-  .step-name { font-family:'Barlow Condensed',sans-serif; font-size:0.88rem; font-weight:600; letter-spacing:0.06em; margin-bottom:0.5rem; }
-  .step-desc { font-size:0.78rem; color:var(--grey); line-height:1.6; }
+/* PROCESS */
+.process { background:var(–navy); border-top:1px solid rgba(201,168,76,0.1); }
+.process-inner { max-width:1100px; margin:0 auto; }
+.process-head { text-align:center; margin-bottom:4.5rem; }
+.process-steps { display:grid; grid-template-columns:repeat(5,1fr); position:relative; }
+.process-steps::before { content:’’; position:absolute; top:28px; left:10%; right:10%; height:1px; background:linear-gradient(90deg,transparent,rgba(201,168,76,0.3),transparent); }
+.step { display:flex; flex-direction:column; align-items:center; text-align:center; padding:0 1rem; }
+.step-circle { width:56px; height:56px; border:1px solid rgba(201,168,76,0.3); border-radius:50%; display:flex; align-items:center; justify-content:center; margin-bottom:1.25rem; background:var(–navy); position:relative; z-index:1; transition:all 0.3s; padding:14px; }
+.step-circle svg { width:100%; height:100%; color:var(–gold); }
+.step:hover .step-circle { background:var(–gold); border-color:var(–gold); }
+.step:hover .step-circle svg { color:var(–navy-deep); }
+.step-name { font-family:‘Barlow Condensed’,sans-serif; font-size:0.88rem; font-weight:600; letter-spacing:0.06em; margin-bottom:0.5rem; }
+.step-desc { font-size:0.78rem; color:var(–grey); line-height:1.6; }
 
-  /* CTA */
-  .cta-section { position:relative; overflow:hidden; text-align:center; padding:8rem 5vw; }
-  .cta-bg { position:absolute; inset:0; background:radial-gradient(ellipse 70% 100% at 50% 100%,rgba(201,168,76,0.07) 0%,transparent 70%); }
-  .cta-section .section-title { font-size:clamp(2.5rem,5vw,4.5rem); margin-bottom:1.5rem; }
-  .cta-section .section-body { margin:0 auto 3rem; text-align:center; }
+/* ── AUDIT FLOW (NEW) ── */
+.audit-flow { border-top:1px solid rgba(201,168,76,0.1); }
+.audit-inner { max-width:1100px; margin:0 auto; }
+.audit-head { margin-bottom:5rem; }
+.audit-steps { display:flex; flex-direction:column; }
+.audit-step { display:grid; grid-template-columns:72px 1fr; gap:0 48px; opacity:0; transform:translateX(-20px); transition:opacity 0.6s,transform 0.6s; }
+.audit-step.visible { opacity:1; transform:translateX(0); }
+.astep-left { display:flex; flex-direction:column; align-items:center; }
+.astep-num { font-family:‘Cormorant Garamond’,serif; font-size:52px; font-weight:300; color:var(–gold); line-height:1; width:72px; text-align:center; flex-shrink:0; }
+.astep-line { width:1px; flex:1; background:linear-gradient(to bottom,rgba(201,168,76,0.3),transparent); min-height:64px; margin-top:8px; }
+.audit-step:last-child .astep-line { display:none; }
+.astep-content { padding:0 0 60px; }
+.astep-tag { font-family:‘Barlow Condensed’,sans-serif; font-size:0.65rem; font-weight:600; letter-spacing:0.25em; text-transform:uppercase; color:var(–gold); margin-bottom:0.6rem; opacity:0.7; }
+.astep-title { font-family:‘Cormorant Garamond’,serif; font-size:1.75rem; font-weight:400; color:var(–white); margin-bottom:1rem; line-height:1.2; }
+.astep-desc { font-size:0.92rem; line-height:1.8; color:var(–grey); margin-bottom:1.25rem; max-width:620px; }
+.astep-items { display:flex; flex-wrap:wrap; gap:0.4rem; margin-bottom:1.25rem; }
+.astep-item { font-family:‘Barlow Condensed’,sans-serif; font-size:0.65rem; letter-spacing:0.1em; text-transform:uppercase; color:var(–gold); border:1px solid rgba(201,168,76,0.25); padding:0.2rem 0.6rem; border-radius:1px; }
+.astep-deliverable { display:flex; align-items:flex-start; gap:1rem; background:rgba(201,168,76,0.06); border-left:2px solid var(–gold); padding:0.9rem 1.25rem; max-width:560px; }
+.astep-deliverable .d-label { font-family:‘Barlow Condensed’,sans-serif; font-size:0.6rem; letter-spacing:0.25em; text-transform:uppercase; color:var(–gold); flex-shrink:0; padding-top:2px; }
+.astep-deliverable .d-text { font-size:0.84rem; line-height:1.6; color:var(–grey); }
+.risk-alert { display:flex; align-items:flex-start; gap:0.75rem; background:rgba(192,57,43,0.1); border:1px solid rgba(192,57,43,0.25); border-left:3px solid #C0392B; padding:0.9rem 1.1rem; max-width:560px; margin-bottom:1.25rem; }
+.risk-alert .r-text { font-size:0.84rem; line-height:1.6; color:var(–grey); }
+.risk-alert .r-text strong { color:#E07070; font-weight:500; }
 
-  /* FOOTER */
-  footer { background:var(--navy-deep); border-top:1px solid rgba(201,168,76,0.1); padding:3rem 5vw; z-index:1; position:relative; }
-  .footer-inner { max-width:1200px; margin:0 auto; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:1.5rem; }
-  .footer-copy { font-size:0.78rem; color:var(--grey); }
-  .footer-copy strong { color:var(--gold); font-weight:400; }
-  .footer-links { display:flex; gap:2rem; list-style:none; }
-  .footer-links a { font-family:'Barlow Condensed',sans-serif; font-size:0.7rem; letter-spacing:0.12em; text-transform:uppercase; color:var(--grey); text-decoration:none; transition:color 0.2s; }
-  .footer-links a:hover { color:var(--gold); }
+/* ── TIMELINE (NEW) ── */
+.timeline-section { background:var(–navy); border-top:1px solid rgba(201,168,76,0.1); border-bottom:1px solid rgba(201,168,76,0.1); }
+.timeline-inner { max-width:1100px; margin:0 auto; }
+.timeline-head { text-align:center; margin-bottom:4rem; }
+.timeline-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:1px; background:rgba(201,168,76,0.08); border:1px solid rgba(201,168,76,0.08); }
+.tl-item { background:var(–navy-deep); padding:2rem 1.75rem; transition:background 0.3s; }
+.tl-item:hover { background:#0c1e33; }
+.tl-day { font-family:‘Cormorant Garamond’,serif; font-size:2.4rem; font-weight:300; color:var(–gold); line-height:1; margin-bottom:0.25rem; }
+.tl-label { font-family:‘Barlow Condensed’,sans-serif; font-size:0.6rem; letter-spacing:0.2em; text-transform:uppercase; color:var(–grey); margin-bottom:1rem; }
+.tl-title { font-family:‘Barlow Condensed’,sans-serif; font-size:0.9rem; font-weight:600; color:var(–white); margin-bottom:0.5rem; }
+.tl-desc { font-size:0.8rem; color:var(–grey); line-height:1.6; }
 
-  @keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
-  .reveal { opacity:0; transform:translateY(30px); transition:opacity 0.7s,transform 0.7s; }
-  .reveal.visible { opacity:1; transform:translateY(0); }
+/* ── LEGAL (NEW) ── */
+.legal-band { padding:3.5rem 5vw; border-top:1px solid rgba(201,168,76,0.1); position:relative; z-index:1; }
+.legal-band-inner { max-width:1100px; margin:0 auto; display:grid; grid-template-columns:56px 1fr; gap:2rem; align-items:start; }
+.legal-icon { width:56px; height:56px; border:1px solid rgba(201,168,76,0.2); display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+.legal-icon svg { width:24px; height:24px; stroke:var(–gold); fill:none; }
+.legal-band h3 { font-family:‘Barlow Condensed’,sans-serif; font-size:0.65rem; letter-spacing:0.25em; text-transform:uppercase; color:var(–gold); margin-bottom:0.75rem; }
+.legal-band p { font-size:0.88rem; line-height:1.8; color:var(–grey); max-width:700px; }
 
-  @media(max-width:1024px){
-    .services-grid{grid-template-columns:repeat(2,1fr)}
-    .pricing-grid{grid-template-columns:repeat(2,1fr)}
-    .proj-grid{grid-template-columns:repeat(2,1fr)}
-    .why-inner{grid-template-columns:1fr;gap:3.5rem}
-    .process-steps{grid-template-columns:repeat(3,1fr);gap:2rem}
-    .process-steps::before{display:none}
-    .threats-inner{grid-template-columns:1fr}
-  }
-  @media(max-width:768px){
-    .nav-links{display:none}
-    .services-grid,.pricing-grid,.proj-grid,.threat-grid{grid-template-columns:1fr}
-    .process-steps{grid-template-columns:repeat(2,1fr)}
-    .ticker{gap:1.25rem} .ticker-val{font-size:1.4rem}
-  }
+/* CTA */
+.cta-section { position:relative; overflow:hidden; text-align:center; padding:8rem 5vw; }
+.cta-bg { position:absolute; inset:0; background:radial-gradient(ellipse 70% 100% at 50% 100%,rgba(201,168,76,0.07) 0%,transparent 70%); }
+.cta-section .section-title { font-size:clamp(2.5rem,5vw,4.5rem); margin-bottom:1.5rem; }
+.cta-section .section-body { margin:0 auto 3rem; text-align:center; }
+
+/* FOOTER */
+footer { background:var(–navy-deep); border-top:1px solid rgba(201,168,76,0.1); padding:3rem 5vw; z-index:1; position:relative; }
+.footer-inner { max-width:1200px; margin:0 auto; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:1.5rem; }
+.footer-copy { font-size:0.78rem; color:var(–grey); }
+.footer-copy strong { color:var(–gold); font-weight:400; }
+.footer-links { display:flex; gap:2rem; list-style:none; }
+.footer-links a { font-family:‘Barlow Condensed’,sans-serif; font-size:0.7rem; letter-spacing:0.12em; text-transform:uppercase; color:var(–grey); text-decoration:none; transition:color 0.2s; }
+.footer-links a:hover { color:var(–gold); }
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+.reveal { opacity:0; transform:translateY(30px); transition:opacity 0.7s,transform 0.7s; }
+.reveal.visible { opacity:1; transform:translateY(0); }
+
+@media(max-width:1024px){
+.services-grid{grid-template-columns:repeat(2,1fr)}
+.pricing-grid{grid-template-columns:repeat(2,1fr)}
+.proj-grid{grid-template-columns:repeat(2,1fr)}
+.why-inner{grid-template-columns:1fr;gap:3.5rem}
+.process-steps{grid-template-columns:repeat(3,1fr);gap:2rem}
+.process-steps::before{display:none}
+.threats-inner{grid-template-columns:1fr}
+.timeline-grid{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:768px){
+.nav-links{display:none}
+.services-grid,.pricing-grid,.proj-grid,.threat-grid{grid-template-columns:1fr}
+.process-steps{grid-template-columns:repeat(2,1fr)}
+.timeline-grid{grid-template-columns:1fr}
+.ticker{gap:1.25rem} .ticker-val{font-size:1.4rem}
+.audit-step{grid-template-columns:48px 1fr;gap:0 20px}
+.astep-num{font-size:36px;width:48px}
+.legal-band-inner{grid-template-columns:1fr}
+}
 </style>
+
 </head>
 <body class="lang-en">
 
-<!-- NAV -->
+<!-- NAV — original intacto -->
+
 <nav>
   <a href="#" class="nav-logo">
     <svg class="nav-logo-mark" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -239,6 +291,7 @@
       <li><a href="#plans"><span data-lang="en">Plans</span><span data-lang="es">Planes</span></a></li>
       <li><a href="#consulting"><span data-lang="en">Consulting</span><span data-lang="es">Consultoría</span></a></li>
       <li><a href="#process"><span data-lang="en">Process</span><span data-lang="es">Proceso</span></a></li>
+      <li><a href="#audit"><span data-lang="en">Audit</span><span data-lang="es">Auditoría</span></a></li>
       <li><a href="#contact" class="nav-cta"><span data-lang="en">Free Assessment</span><span data-lang="es">Diagnóstico Gratis</span></a></li>
     </ul>
     <div class="lang-toggle">
@@ -248,7 +301,8 @@
   </div>
 </nav>
 
-<!-- HERO -->
+<!-- HERO — original intacto -->
+
 <section class="hero">
   <div class="hero-bg"></div><div class="hero-hex"></div>
   <div class="scan-ring"></div><div class="scan-ring"></div><div class="scan-ring"></div>
@@ -276,7 +330,8 @@
   </div>
 </section>
 
-<!-- THREATS -->
+<!-- THREATS — original intacto -->
+
 <section class="threats reveal">
   <div class="threats-inner">
     <div>
@@ -292,50 +347,22 @@
     </div>
     <div class="threat-grid">
       <div class="threat-card">
-        <!-- Phishing icon: hook -->
-        <svg class="threat-icon" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M24 6C24 6 14 10 14 20C14 26.627 18.373 32 24 32" stroke="#C9A84C" stroke-width="1.8" stroke-linecap="round"/>
-          <path d="M24 32C29.627 32 34 26.627 34 20" stroke="#C9A84C" stroke-width="1.8" stroke-linecap="round" stroke-dasharray="3 3"/>
-          <circle cx="34" cy="20" r="3" stroke="#C9A84C" stroke-width="1.8"/>
-          <path d="M24 32V42" stroke="#C9A84C" stroke-width="1.8" stroke-linecap="round"/>
-          <path d="M20 38L24 42L28 38" stroke="#C9A84C" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-          <circle cx="24" cy="14" r="2" fill="#C9A84C" opacity="0.5"/>
-        </svg>
+        <svg class="threat-icon" viewBox="0 0 48 48" fill="none"><path d="M24 6C24 6 14 10 14 20C14 26.627 18.373 32 24 32" stroke="#C9A84C" stroke-width="1.8" stroke-linecap="round"/><path d="M24 32C29.627 32 34 26.627 34 20" stroke="#C9A84C" stroke-width="1.8" stroke-linecap="round" stroke-dasharray="3 3"/><circle cx="34" cy="20" r="3" stroke="#C9A84C" stroke-width="1.8"/><path d="M24 32V42" stroke="#C9A84C" stroke-width="1.8" stroke-linecap="round"/><path d="M20 38L24 42L28 38" stroke="#C9A84C" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><circle cx="24" cy="14" r="2" fill="#C9A84C" opacity="0.5"/></svg>
         <div class="threat-name"><span data-lang="en">Phishing &amp; Social Engineering</span><span data-lang="es">Phishing &amp; Ingeniería Social</span></div>
         <p class="threat-desc"><span data-lang="en">Identity spoofing targeting employees and executives to steal credentials and access.</span><span data-lang="es">Suplantación de identidad dirigida a empleados y directivos para robo de credenciales.</span></p>
       </div>
       <div class="threat-card">
-        <!-- Ransomware icon: lock with warning -->
-        <svg class="threat-icon" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <rect x="10" y="22" width="28" height="20" rx="2" stroke="#C9A84C" stroke-width="1.8"/>
-          <path d="M16 22V16C16 10.477 20.477 6 26 6C28.5 6 30.8 6.9 32.5 8.4" stroke="#C9A84C" stroke-width="1.8" stroke-linecap="round"/>
-          <circle cx="24" cy="32" r="3" stroke="#C9A84C" stroke-width="1.8"/>
-          <line x1="24" y1="35" x2="24" y2="38" stroke="#C9A84C" stroke-width="1.8" stroke-linecap="round"/>
-          <path d="M36 6L36 14M36 16.5V18" stroke="#C9A84C" stroke-width="2" stroke-linecap="round"/>
-        </svg>
+        <svg class="threat-icon" viewBox="0 0 48 48" fill="none"><rect x="10" y="22" width="28" height="20" rx="2" stroke="#C9A84C" stroke-width="1.8"/><path d="M16 22V16C16 10.477 20.477 6 26 6C28.5 6 30.8 6.9 32.5 8.4" stroke="#C9A84C" stroke-width="1.8" stroke-linecap="round"/><circle cx="24" cy="32" r="3" stroke="#C9A84C" stroke-width="1.8"/><line x1="24" y1="35" x2="24" y2="38" stroke="#C9A84C" stroke-width="1.8" stroke-linecap="round"/><path d="M36 6L36 14M36 16.5V18" stroke="#C9A84C" stroke-width="2" stroke-linecap="round"/></svg>
         <div class="threat-name">Ransomware</div>
         <p class="threat-desc"><span data-lang="en">Critical data held hostage with ransom demands. Average recovery time: 22 days.</span><span data-lang="es">Secuestro de datos críticos con exigencia de rescate. Tiempo promedio de recuperación: 22 días.</span></p>
       </div>
       <div class="threat-card">
-        <!-- Unauthorized access: eye -->
-        <svg class="threat-icon" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M6 24C6 24 12 10 24 10C36 10 42 24 42 24C42 24 36 38 24 38C12 38 6 24 6 24Z" stroke="#C9A84C" stroke-width="1.8"/>
-          <circle cx="24" cy="24" r="6" stroke="#C9A84C" stroke-width="1.8"/>
-          <circle cx="24" cy="24" r="2.5" fill="#C9A84C" opacity="0.5"/>
-          <line x1="6" y1="6" x2="42" y2="42" stroke="#C9A84C" stroke-width="1.5" stroke-linecap="round" opacity="0.4"/>
-        </svg>
+        <svg class="threat-icon" viewBox="0 0 48 48" fill="none"><path d="M6 24C6 24 12 10 24 10C36 10 42 24 42 24C42 24 36 38 24 38C12 38 6 24 6 24Z" stroke="#C9A84C" stroke-width="1.8"/><circle cx="24" cy="24" r="6" stroke="#C9A84C" stroke-width="1.8"/><circle cx="24" cy="24" r="2.5" fill="#C9A84C" opacity="0.5"/><line x1="6" y1="6" x2="42" y2="42" stroke="#C9A84C" stroke-width="1.5" stroke-linecap="round" opacity="0.4"/></svg>
         <div class="threat-name"><span data-lang="en">Unauthorized Access</span><span data-lang="es">Accesos no autorizados</span></div>
         <p class="threat-desc"><span data-lang="en">Silent intrusions that remain active for months without being detected.</span><span data-lang="es">Intrusiones silenciosas que permanecen activas durante meses sin ser detectadas.</span></p>
       </div>
       <div class="threat-card">
-        <!-- Data leak: database with arrow out -->
-        <svg class="threat-icon" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <ellipse cx="20" cy="12" rx="12" ry="5" stroke="#C9A84C" stroke-width="1.8"/>
-          <path d="M8 12V28C8 30.761 13.373 33 20 33" stroke="#C9A84C" stroke-width="1.8"/>
-          <path d="M32 12V21" stroke="#C9A84C" stroke-width="1.8" stroke-linecap="round"/>
-          <path d="M8 20C8 22.761 13.373 25 20 25" stroke="#C9A84C" stroke-width="1.8" stroke-linecap="round"/>
-          <path d="M30 26L42 38M42 26L30 38" stroke="#C9A84C" stroke-width="1.8" stroke-linecap="round"/>
-        </svg>
+        <svg class="threat-icon" viewBox="0 0 48 48" fill="none"><ellipse cx="20" cy="12" rx="12" ry="5" stroke="#C9A84C" stroke-width="1.8"/><path d="M8 12V28C8 30.761 13.373 33 20 33" stroke="#C9A84C" stroke-width="1.8"/><path d="M32 12V21" stroke="#C9A84C" stroke-width="1.8" stroke-linecap="round"/><path d="M8 20C8 22.761 13.373 25 20 25" stroke="#C9A84C" stroke-width="1.8" stroke-linecap="round"/><path d="M30 26L42 38M42 26L30 38" stroke="#C9A84C" stroke-width="1.8" stroke-linecap="round"/></svg>
         <div class="threat-name"><span data-lang="en">Data Leaks</span><span data-lang="es">Fuga de datos</span></div>
         <p class="threat-desc"><span data-lang="en">Exposure of client data, contracts, and intellectual property with legal consequences.</span><span data-lang="es">Exposición de información de clientes, contratos y propiedad intelectual con consecuencias legales.</span></p>
       </div>
@@ -343,7 +370,8 @@
   </div>
 </section>
 
-<!-- SERVICES -->
+<!-- SERVICES — original intacto -->
+
 <section id="services">
   <div class="services-inner">
     <div class="services-head reveal">
@@ -354,98 +382,54 @@
       <p class="section-body"><span data-lang="en">Each service integrates with the others, creating a cohesive security posture with no blind spots.</span><span data-lang="es">Cada servicio está diseñado para integrarse con los demás, creando una postura de seguridad cohesiva y sin puntos ciegos.</span></p>
     </div>
     <div class="services-grid">
-      <!-- 01 Audit -->
       <div class="service-card reveal">
         <div class="service-num">01</div>
-        <div class="service-icon-wrap">
-          <svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M14 3L4 7V14C4 19.5 8.5 24.5 14 26C19.5 24.5 24 19.5 24 14V7L14 3Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
-            <path d="M9 14L12 17L19 10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-        </div>
+        <div class="service-icon-wrap"><svg viewBox="0 0 28 28" fill="none"><path d="M14 3L4 7V14C4 19.5 8.5 24.5 14 26C19.5 24.5 24 19.5 24 14V7L14 3Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="M9 14L12 17L19 10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
         <h3 class="service-name"><span data-lang="en">Audit &amp; Assessment</span><span data-lang="es">Auditoría &amp; Diagnóstico</span></h3>
-        <p class="service-desc"><span data-lang="en">Comprehensive evaluation of your infrastructure, applications, and processes. We find vulnerabilities before attackers do.</span><span data-lang="es">Evaluación exhaustiva de su infraestructura, aplicaciones y procesos internos. Identificamos vulnerabilidades antes que los atacantes.</span></p>
+        <p class="service-desc"><span data-lang="en">Comprehensive evaluation of your infrastructure, applications, and processes. We find vulnerabilities before attackers do — open ports, outdated services, exposed systems. Delivered as an executive report with exactly what to fix.</span><span data-lang="es">Evaluación exhaustiva de su infraestructura, aplicaciones y procesos internos. Detectamos vulnerabilidades en su red y sistemas antes que los atacantes, con un reporte ejecutivo de exactamente qué arreglar.</span></p>
         <div class="service-tags"><span class="tag">Pentest</span><span class="tag"><span data-lang="en">Risk Analysis</span><span data-lang="es">Análisis de riesgos</span></span></div>
       </div>
-      <!-- 02 SOC -->
       <div class="service-card reveal">
         <div class="service-num">02</div>
-        <div class="service-icon-wrap">
-          <svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <circle cx="14" cy="14" r="10" stroke="currentColor" stroke-width="1.5"/>
-            <circle cx="14" cy="14" r="4" stroke="currentColor" stroke-width="1.5"/>
-            <circle cx="14" cy="14" r="1.5" fill="currentColor"/>
-            <line x1="14" y1="4" x2="14" y2="8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-            <line x1="14" y1="20" x2="14" y2="24" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-            <line x1="4" y1="14" x2="8" y2="14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-            <line x1="20" y1="14" x2="24" y2="14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-          </svg>
-        </div>
+        <div class="service-icon-wrap"><svg viewBox="0 0 28 28" fill="none"><circle cx="14" cy="14" r="10" stroke="currentColor" stroke-width="1.5"/><circle cx="14" cy="14" r="4" stroke="currentColor" stroke-width="1.5"/><circle cx="14" cy="14" r="1.5" fill="currentColor"/><line x1="14" y1="4" x2="14" y2="8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><line x1="14" y1="20" x2="14" y2="24" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><line x1="4" y1="14" x2="8" y2="14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><line x1="20" y1="14" x2="24" y2="14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></div>
         <h3 class="service-name"><span data-lang="en">Continuous Monitoring (SOC)</span><span data-lang="es">Monitoreo Continuo (SOC)</span></h3>
         <p class="service-desc"><span data-lang="en">Security operations center active 24/7. Real-time anomaly detection with instant alerts and immediate response.</span><span data-lang="es">Centro de operaciones de seguridad activo 24/7. Detección de anomalías en tiempo real con alertas y respuesta inmediata.</span></p>
         <div class="service-tags"><span class="tag">SIEM</span><span class="tag"><span data-lang="en">Intrusion Detection</span><span data-lang="es">Detección de intrusiones</span></span><span class="tag">24/7</span></div>
       </div>
-      <!-- 03 Identity -->
       <div class="service-card reveal">
         <div class="service-num">03</div>
-        <div class="service-icon-wrap">
-          <svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <rect x="8" y="13" width="12" height="10" rx="1.5" stroke="currentColor" stroke-width="1.5"/>
-            <path d="M10 13V10C10 7.791 11.791 6 14 6C16.209 6 18 7.791 18 10V13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-            <circle cx="14" cy="18" r="1.5" fill="currentColor" opacity="0.7"/>
-          </svg>
-        </div>
+        <div class="service-icon-wrap"><svg viewBox="0 0 28 28" fill="none"><rect x="8" y="13" width="12" height="10" rx="1.5" stroke="currentColor" stroke-width="1.5"/><path d="M10 13V10C10 7.791 11.791 6 14 6C16.209 6 18 7.791 18 10V13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><circle cx="14" cy="18" r="1.5" fill="currentColor" opacity="0.7"/></svg></div>
         <h3 class="service-name"><span data-lang="en">Identity Management</span><span data-lang="es">Gestión de Identidades</span></h3>
-        <p class="service-desc"><span data-lang="en">Access control, multi-factor authentication, and least-privilege policies. Nobody accesses what they don't need.</span><span data-lang="es">Control de accesos, autenticación multifactor y políticas de privilegio mínimo. Nadie accede a lo que no necesita.</span></p>
+        <p class="service-desc"><span data-lang="en">Access control, multi-factor authentication, and least-privilege policies. We review passwords, access, and compromised emails — nobody accesses what they don't need.</span><span data-lang="es">Control de accesos, autenticación multifactor y políticas de privilegio mínimo. Revisamos contraseñas, accesos y correos comprometidos.</span></p>
         <div class="service-tags"><span class="tag">MFA</span><span class="tag">IAM</span><span class="tag">Zero Trust</span></div>
       </div>
-      <!-- 04 Cloud -->
       <div class="service-card reveal">
         <div class="service-num">04</div>
-        <div class="service-icon-wrap">
-          <svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M20 20H8C5.791 20 4 18.209 4 16C4 13.93 5.591 12.232 7.617 12.026C7.537 11.693 7.5 11.351 7.5 11C7.5 8.515 9.515 6.5 12 6.5C13.312 6.5 14.491 7.05 15.33 7.934C15.866 7.345 16.638 7 17.5 7C19.157 7 20.5 8.343 20.5 10C20.5 10.09 20.497 10.179 20.49 10.268C22.468 10.748 24 12.524 24 14.667C24 17.512 22.512 20 20 20Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
-            <line x1="14" y1="20" x2="14" y2="24" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-            <line x1="11" y1="24" x2="17" y2="24" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-          </svg>
-        </div>
+        <div class="service-icon-wrap"><svg viewBox="0 0 28 28" fill="none"><path d="M20 20H8C5.791 20 4 18.209 4 16C4 13.93 5.591 12.232 7.617 12.026C7.537 11.693 7.5 11.351 7.5 11C7.5 8.515 9.515 6.5 12 6.5C13.312 6.5 14.491 7.05 15.33 7.934C15.866 7.345 16.638 7 17.5 7C19.157 7 20.5 8.343 20.5 10C20.5 10.09 20.497 10.179 20.49 10.268C22.468 10.748 24 12.524 24 14.667C24 17.512 22.512 20 20 20Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><line x1="14" y1="20" x2="14" y2="24" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><line x1="11" y1="24" x2="17" y2="24" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></div>
         <h3 class="service-name"><span data-lang="en">Cloud Security</span><span data-lang="es">Seguridad en la Nube</span></h3>
         <p class="service-desc"><span data-lang="en">Hardening and monitoring of AWS, GCP, Azure, and SaaS environments. Secure configurations from day one.</span><span data-lang="es">Hardening y monitoreo de entornos AWS, GCP, Azure y servicios SaaS. Configuraciones seguras desde el inicio.</span></p>
         <div class="service-tags"><span class="tag">Cloud Hardening</span><span class="tag">CSPM</span><span class="tag"><span data-lang="en">Encrypted Backup</span><span data-lang="es">Backup cifrado</span></span></div>
       </div>
-      <!-- 05 Incident -->
       <div class="service-card reveal">
         <div class="service-num">05</div>
-        <div class="service-icon-wrap">
-          <svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M14 4L25 22H3L14 4Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
-            <line x1="14" y1="12" x2="14" y2="17" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
-            <circle cx="14" cy="20" r="1" fill="currentColor"/>
-          </svg>
-        </div>
+        <div class="service-icon-wrap"><svg viewBox="0 0 28 28" fill="none"><path d="M14 4L25 22H3L14 4Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><line x1="14" y1="12" x2="14" y2="17" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><circle cx="14" cy="20" r="1" fill="currentColor"/></svg></div>
         <h3 class="service-name"><span data-lang="en">Incident Response</span><span data-lang="es">Respuesta a Incidentes</span></h3>
-        <p class="service-desc"><span data-lang="en">Containment, digital forensics, and recovery from breaches. We minimize operational and reputational impact.</span><span data-lang="es">Contención, análisis forense y recuperación ante brechas de seguridad. Minimizamos el impacto operativo y reputacional.</span></p>
+        <p class="service-desc"><span data-lang="en">Containment, digital forensics, and recovery from breaches. If you already have a problem, we remediate it fast — minimizing operational and reputational impact.</span><span data-lang="es">Contención, análisis forense y recuperación ante brechas de seguridad. Si ya tiene un problema, lo remediamos rápido — minimizamos el impacto operativo y reputacional.</span></p>
         <div class="service-tags"><span class="tag"><span data-lang="en">Digital Forensics</span><span data-lang="es">Forense digital</span></span><span class="tag"><span data-lang="en">Containment</span><span data-lang="es">Contención</span></span></div>
       </div>
-      <!-- 06 Training -->
       <div class="service-card reveal">
         <div class="service-num">06</div>
-        <div class="service-icon-wrap">
-          <svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M14 5L26 11L14 17L2 11L14 5Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
-            <path d="M6 14V20C6 20 9 23 14 23C19 23 22 20 22 20V14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-            <line x1="26" y1="11" x2="26" y2="17" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-          </svg>
-        </div>
+        <div class="service-icon-wrap"><svg viewBox="0 0 28 28" fill="none"><path d="M14 5L26 11L14 17L2 11L14 5Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="M6 14V20C6 20 9 23 14 23C19 23 22 20 22 20V14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><line x1="26" y1="11" x2="26" y2="17" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></div>
         <h3 class="service-name"><span data-lang="en">Training &amp; Culture</span><span data-lang="es">Capacitación &amp; Cultura</span></h3>
-        <p class="service-desc"><span data-lang="en">95% of incidents involve human error. We train your team to recognize and avoid social engineering attacks.</span><span data-lang="es">El 95% de los incidentes involucran error humano. Entrenamos a su equipo para reconocer y evitar ataques de ingeniería social.</span></p>
+        <p class="service-desc"><span data-lang="en">95% of incidents involve human error. We simulate phishing attacks to measure exactly how exposed your team is, then train them to recognize and avoid social engineering.</span><span data-lang="es">El 95% de los incidentes involucran error humano. Simulamos ataques de phishing para ver qué tan expuesto está su equipo y los entrenamos para reconocer y evitar la ingeniería social.</span></p>
         <div class="service-tags"><span class="tag"><span data-lang="en">Phishing Simulation</span><span data-lang="es">Sim. phishing</span></span><span class="tag"><span data-lang="en">Workshops</span><span data-lang="es">Talleres</span></span></div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- PRICING -->
+<!-- PRICING — original intacto -->
+
 <section class="pricing" id="plans">
   <div class="pricing-inner">
     <div class="pricing-head reveal">
@@ -526,7 +510,8 @@
   </div>
 </section>
 
-<!-- CONSULTING -->
+<!-- CONSULTING — original intacto -->
+
 <section id="consulting" style="padding-top:5rem;padding-bottom:5rem;">
   <div class="proj-inner">
     <div class="proj-head reveal">
@@ -538,101 +523,81 @@
       <span class="proj-badge"><span data-lang="en">One-time fee &nbsp;·&nbsp; No monthly &nbsp;·&nbsp; Defined deliverable</span><span data-lang="es">Pago único &nbsp;·&nbsp; Sin mensualidad &nbsp;·&nbsp; Entregable definido</span></span>
     </div>
     <div class="proj-grid reveal">
-      <!-- Express -->
-      <div class="proj-card">
-        <div class="proj-icon-wrap">
-          <svg viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <circle cx="20" cy="20" r="12" stroke="currentColor" stroke-width="1.8"/>
-            <line x1="29" y1="29" x2="38" y2="38" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-            <line x1="20" y1="15" x2="20" y2="25" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
-            <line x1="15" y1="20" x2="25" y2="20" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
-          </svg>
-        </div>
-        <h3 class="proj-name"><span data-lang="en">Express Assessment</span><span data-lang="es">Diagnóstico Express</span></h3>
-        <p class="proj-desc"><span data-lang="en">Quick review of exposed ports, expired certificates, accounts without MFA, and critical misconfigurations. Executive report delivered within 48 hrs.</span><span data-lang="es">Revisión rápida de puertos expuestos, certificados vencidos, cuentas sin MFA y configuraciones críticas. Reporte ejecutivo en 48 hrs.</span></p>
-        <div class="proj-price"><span class="proj-price-val">$300 – $500</span><span class="proj-price-label">USD &nbsp;·&nbsp; <span data-lang="en">one-time</span><span data-lang="es">pago único</span></span></div>
-      </div>
-      <!-- Full Audit -->
-      <div class="proj-card">
-        <div class="proj-icon-wrap">
-          <svg viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <rect x="8" y="6" width="28" height="34" rx="2" stroke="currentColor" stroke-width="1.8"/>
-            <line x1="14" y1="15" x2="30" y2="15" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-            <line x1="14" y1="21" x2="30" y2="21" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-            <line x1="14" y1="27" x2="24" y2="27" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-            <circle cx="32" cy="34" r="6" fill="var(--navy-deep)" stroke="currentColor" stroke-width="1.5"/>
-            <path d="M29.5 34L31.5 36L35 32" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-        </div>
-        <h3 class="proj-name"><span data-lang="en">Full Security Audit</span><span data-lang="es">Auditoría Completa</span></h3>
-        <p class="proj-desc"><span data-lang="en">In-depth analysis of network, web apps, internal access, and security policies. Includes a prioritized roadmap with remediation estimates.</span><span data-lang="es">Análisis profundo de red, aplicaciones web, accesos internos y políticas. Incluye hoja de ruta priorizada con estimados de remediación.</span></p>
-        <div class="proj-price"><span class="proj-price-val">$800 – $1,500</span><span class="proj-price-label">USD &nbsp;·&nbsp; <span data-lang="en">one-time</span><span data-lang="es">pago único</span></span></div>
-      </div>
-      <!-- Pentest -->
-      <div class="proj-card">
-        <div class="proj-icon-wrap">
-          <svg viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M8 36L18 26M18 26L22 30L36 10M18 26L14 22L36 10L18 26Z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-            <circle cx="36" cy="10" r="3" stroke="currentColor" stroke-width="1.5"/>
-          </svg>
-        </div>
-        <h3 class="proj-name"><span data-lang="en">Penetration Testing</span><span data-lang="es">Prueba de Penetración</span></h3>
-        <p class="proj-desc"><span data-lang="en">Controlled attack simulation to identify real intrusion vectors. Technical + executive report with evidence and remediation recommendations.</span><span data-lang="es">Simulación de ataque controlado para identificar vectores de intrusión reales. Reporte técnico + ejecutivo con evidencias y recomendaciones.</span></p>
-        <div class="proj-price"><span class="proj-price-val">$1,000 – $2,500</span><span class="proj-price-label">USD &nbsp;·&nbsp; <span data-lang="en">per scope</span><span data-lang="es">por alcance</span></span></div>
-      </div>
-      <!-- CISO -->
-      <div class="proj-card">
-        <div class="proj-icon-wrap">
-          <svg viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <circle cx="22" cy="14" r="7" stroke="currentColor" stroke-width="1.8"/>
-            <path d="M8 38C8 31.373 14.268 26 22 26C29.732 26 36 31.373 36 38" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
-            <path d="M28 10L30 8M16 10L14 8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-            <circle cx="36" cy="16" r="5" fill="var(--navy-deep)" stroke="currentColor" stroke-width="1.5"/>
-            <line x1="36" y1="13.5" x2="36" y2="17" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-            <circle cx="36" cy="19" r="0.8" fill="currentColor"/>
-          </svg>
-        </div>
-        <h3 class="proj-name"><span data-lang="en">Virtual CISO (Project)</span><span data-lang="es">CISO Virtual por Proyecto</span></h3>
-        <p class="proj-desc"><span data-lang="en">High-level strategic consulting: policy review, compliance design, security architecture, or preparation for external audits.</span><span data-lang="es">Consultoría estratégica de alto nivel: revisión de políticas, diseño de cumplimiento, arquitectura o preparación para auditorías externas.</span></p>
-        <div class="proj-price"><span class="proj-price-val">$150 – $250</span><span class="proj-price-label">USD / <span data-lang="en">hour</span><span data-lang="es">hora</span></span></div>
-      </div>
-      <!-- Workshop -->
-      <div class="proj-card">
-        <div class="proj-icon-wrap">
-          <svg viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <rect x="6" y="10" width="32" height="22" rx="2" stroke="currentColor" stroke-width="1.8"/>
-            <line x1="22" y1="32" x2="22" y2="38" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
-            <line x1="15" y1="38" x2="29" y2="38" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
-            <line x1="12" y1="18" x2="20" y2="18" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-            <line x1="12" y1="22" x2="18" y2="22" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-            <path d="M26 16L32 21L26 26" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-        </div>
-        <h3 class="proj-name"><span data-lang="en">Security Awareness Workshop</span><span data-lang="es">Taller de Concienciación</span></h3>
-        <p class="proj-desc"><span data-lang="en">In-person or remote training: phishing recognition, best practices, password hygiene, and incident response basics. Up to 20 people.</span><span data-lang="es">Capacitación presencial o remota: reconocimiento de phishing, buenas prácticas, contraseñas e incidentes. Hasta 20 personas.</span></p>
-        <div class="proj-price"><span class="proj-price-val">$400 – $800</span><span class="proj-price-label">USD &nbsp;·&nbsp; <span data-lang="en">per session</span><span data-lang="es">por sesión</span></span></div>
-      </div>
-      <!-- Compliance -->
-      <div class="proj-card">
-        <div class="proj-icon-wrap">
-          <svg viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M22 4L6 10V22C6 30.837 13.163 38.5 22 40C30.837 38.5 38 30.837 38 22V10L22 4Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
-            <path d="M15 22L20 27L29 17" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-        </div>
-        <h3 class="proj-name"><span data-lang="en">Policies &amp; Compliance</span><span data-lang="es">Políticas &amp; Cumplimiento</span></h3>
-        <p class="proj-desc"><span data-lang="en">Writing and implementation of security policies aligned to ISO 27001, LFPDPPP, or PCI-DSS depending on your industry.</span><span data-lang="es">Redacción e implementación de políticas de seguridad alineadas a ISO 27001, LFPDPPP o PCI-DSS según su industria.</span></p>
-        <div class="proj-price"><span class="proj-price-val">$600 – $1,200</span><span class="proj-price-label">USD &nbsp;·&nbsp; <span data-lang="en">one-time</span><span data-lang="es">pago único</span></span></div>
-      </div>
-    </div>
-    <div class="proj-footer reveal">
-      <p><span data-lang="en"><strong>Not sure where to start?</strong> The Express Assessment is the ideal entry point — many clients use it to understand their real risk before deciding on a managed plan.</span><span data-lang="es"><strong>¿No sabe por dónde empezar?</strong> El Diagnóstico Express es el punto de entrada ideal — muchos clientes lo usan para entender su riesgo real antes de decidir sobre un plan gestionado.</span></p>
-      <a href="https://wa.me/19562726415?text=Hi%2C%20I%27m%20interested%20in%20a%20cybersecurity%20consultation%20with%20Horus%20Cyber" class="btn-primary" target="_blank" style="white-space:nowrap"><span data-lang="en">Request a Quote</span><span data-lang="es">Solicitar cotización</span></a>
-    </div>
+
+```
+  <!-- AUDITORÍA DE RED -->
+  <div class="proj-card">
+    <div class="proj-icon-wrap"><svg viewBox="0 0 44 44" fill="none"><rect x="6" y="6" width="32" height="32" rx="2" stroke="currentColor" stroke-width="1.8"/><circle cx="22" cy="22" r="8" stroke="currentColor" stroke-width="1.5"/><line x1="6" y1="22" x2="14" y2="22" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><line x1="30" y1="22" x2="38" y2="22" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><line x1="22" y1="6" x2="22" y2="14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><line x1="22" y1="30" x2="22" y2="38" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><circle cx="22" cy="22" r="2.5" fill="currentColor" opacity="0.6"/></svg></div>
+    <h3 class="proj-name"><span data-lang="en">Network Vulnerability Scan</span><span data-lang="es">Auditoría de Red</span></h3>
+    <p class="proj-desc"><span data-lang="en">Full scan of open ports, exposed services, outdated versions, and active CVEs. Includes risk classification and executive report.</span><span data-lang="es">Escaneo completo de puertos abiertos, servicios expuestos, versiones desactualizadas y CVEs activos. Incluye clasificación de riesgo y reporte ejecutivo.</span></p>
+    <div class="proj-price"><span class="proj-price-val">$300 – $600</span><span class="proj-price-label">USD &nbsp;·&nbsp; <span data-lang="en">one-time</span><span data-lang="es">pago único</span></span></div>
+  </div>
+
+  <!-- REVISIÓN DE CREDENCIALES -->
+  <div class="proj-card">
+    <div class="proj-icon-wrap"><svg viewBox="0 0 44 44" fill="none"><rect x="12" y="20" width="20" height="16" rx="2" stroke="currentColor" stroke-width="1.8"/><path d="M16 20V15C16 11.686 18.686 9 22 9C25.314 9 28 11.686 28 15V20" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><circle cx="22" cy="28" r="2.5" fill="currentColor" opacity="0.7"/><line x1="22" y1="30.5" x2="22" y2="33" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M6 10L10 14M38 10L34 14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" opacity="0.5"/></svg></div>
+    <h3 class="proj-name"><span data-lang="en">Credential &amp; Email Review</span><span data-lang="es">Revisión de Credenciales y Correos</span></h3>
+    <p class="proj-desc"><span data-lang="en">We cross your corporate emails against public breach databases, review MFA adoption, shared accounts, and access policies. Report per user.</span><span data-lang="es">Cruzamos los correos corporativos contra bases de brechas públicas, revisamos MFA, cuentas compartidas y políticas de acceso. Reporte por usuario.</span></p>
+    <div class="proj-price"><span class="proj-price-val">$200 – $400</span><span class="proj-price-label">USD &nbsp;·&nbsp; <span data-lang="en">one-time</span><span data-lang="es">pago único</span></span></div>
+  </div>
+
+  <!-- PHISHING SIMULADO -->
+  <div class="proj-card">
+    <div class="proj-icon-wrap"><svg viewBox="0 0 44 44" fill="none"><path d="M6 12h32v20a2 2 0 01-2 2H8a2 2 0 01-2-2V12z" stroke="currentColor" stroke-width="1.8"/><path d="M6 12l16 13L38 12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><line x1="6" y1="12" x2="38" y2="12" stroke="currentColor" stroke-width="1.8"/><circle cx="34" cy="34" r="6" fill="var(--navy-deep)" stroke="currentColor" stroke-width="1.5"/><path d="M31.5 34l2 2 3.5-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    <h3 class="proj-name"><span data-lang="en">Phishing Simulation</span><span data-lang="es">Phishing Simulado</span></h3>
+    <p class="proj-desc"><span data-lang="en">Controlled phishing campaign targeting your team. We measure click rate, credential submission, and awareness by department. Full report included.</span><span data-lang="es">Campaña de phishing controlada dirigida a tu equipo. Medimos tasa de clics, entrega de credenciales y consciencia por departamento. Incluye reporte completo.</span></p>
+    <div class="proj-price"><span class="proj-price-val">$300 – $700</span><span class="proj-price-label">USD &nbsp;·&nbsp; <span data-lang="en">per campaign</span><span data-lang="es">por campaña</span></span></div>
+  </div>
+
+  <!-- DIAGNÓSTICO EXPRESS (original) -->
+  <div class="proj-card">
+    <div class="proj-icon-wrap"><svg viewBox="0 0 44 44" fill="none"><circle cx="20" cy="20" r="12" stroke="currentColor" stroke-width="1.8"/><line x1="29" y1="29" x2="38" y2="38" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><line x1="20" y1="15" x2="20" y2="25" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><line x1="15" y1="20" x2="25" y2="20" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></div>
+    <h3 class="proj-name"><span data-lang="en">Express Assessment</span><span data-lang="es">Diagnóstico Express</span></h3>
+    <p class="proj-desc"><span data-lang="en">Quick review of exposed ports, expired certificates, accounts without MFA, and critical misconfigurations. Executive report delivered within 48 hrs.</span><span data-lang="es">Revisión rápida de puertos expuestos, certificados vencidos, cuentas sin MFA y configuraciones críticas. Reporte ejecutivo en 48 hrs.</span></p>
+    <div class="proj-price"><span class="proj-price-val">$300 – $500</span><span class="proj-price-label">USD &nbsp;·&nbsp; <span data-lang="en">one-time</span><span data-lang="es">pago único</span></span></div>
+  </div>
+  <div class="proj-card">
+    <div class="proj-icon-wrap"><svg viewBox="0 0 44 44" fill="none"><rect x="8" y="6" width="28" height="34" rx="2" stroke="currentColor" stroke-width="1.8"/><line x1="14" y1="15" x2="30" y2="15" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><line x1="14" y1="21" x2="30" y2="21" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><line x1="14" y1="27" x2="24" y2="27" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><circle cx="32" cy="34" r="6" fill="var(--navy-deep)" stroke="currentColor" stroke-width="1.5"/><path d="M29.5 34L31.5 36L35 32" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    <h3 class="proj-name"><span data-lang="en">Full Security Audit</span><span data-lang="es">Auditoría Completa</span></h3>
+    <p class="proj-desc"><span data-lang="en">In-depth analysis of network, web apps, internal access, and security policies. Includes a prioritized roadmap with remediation estimates.</span><span data-lang="es">Análisis profundo de red, aplicaciones web, accesos internos y políticas. Incluye hoja de ruta priorizada con estimados de remediación.</span></p>
+    <div class="proj-price"><span class="proj-price-val">$800 – $1,500</span><span class="proj-price-label">USD &nbsp;·&nbsp; <span data-lang="en">one-time</span><span data-lang="es">pago único</span></span></div>
+  </div>
+  <div class="proj-card">
+    <div class="proj-icon-wrap"><svg viewBox="0 0 44 44" fill="none"><path d="M8 36L18 26M18 26L22 30L36 10M18 26L14 22L36 10L18 26Z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><circle cx="36" cy="10" r="3" stroke="currentColor" stroke-width="1.5"/></svg></div>
+    <h3 class="proj-name"><span data-lang="en">Penetration Testing</span><span data-lang="es">Prueba de Penetración</span></h3>
+    <p class="proj-desc"><span data-lang="en">Controlled attack simulation to identify real intrusion vectors. Technical + executive report with evidence and remediation recommendations.</span><span data-lang="es">Simulación de ataque controlado para identificar vectores de intrusión reales. Reporte técnico + ejecutivo con evidencias y recomendaciones.</span></p>
+    <div class="proj-price"><span class="proj-price-val">$1,000 – $2,500</span><span class="proj-price-label">USD &nbsp;·&nbsp; <span data-lang="en">per scope</span><span data-lang="es">por alcance</span></span></div>
+  </div>
+  <div class="proj-card">
+    <div class="proj-icon-wrap"><svg viewBox="0 0 44 44" fill="none"><circle cx="22" cy="14" r="7" stroke="currentColor" stroke-width="1.8"/><path d="M8 38C8 31.373 14.268 26 22 26C29.732 26 36 31.373 36 38" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><circle cx="36" cy="16" r="5" fill="var(--navy-deep)" stroke="currentColor" stroke-width="1.5"/><line x1="36" y1="13.5" x2="36" y2="17" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><circle cx="36" cy="19" r="0.8" fill="currentColor"/></svg></div>
+    <h3 class="proj-name"><span data-lang="en">Virtual CISO (Project)</span><span data-lang="es">CISO Virtual por Proyecto</span></h3>
+    <p class="proj-desc"><span data-lang="en">High-level strategic consulting: policy review, compliance design, security architecture, or preparation for external audits.</span><span data-lang="es">Consultoría estratégica de alto nivel: revisión de políticas, diseño de cumplimiento, arquitectura o preparación para auditorías externas.</span></p>
+    <div class="proj-price"><span class="proj-price-val">$150 – $250</span><span class="proj-price-label">USD / <span data-lang="en">hour</span><span data-lang="es">hora</span></span></div>
+  </div>
+  <div class="proj-card">
+    <div class="proj-icon-wrap"><svg viewBox="0 0 44 44" fill="none"><rect x="6" y="10" width="32" height="22" rx="2" stroke="currentColor" stroke-width="1.8"/><line x1="22" y1="32" x2="22" y2="38" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><line x1="15" y1="38" x2="29" y2="38" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><line x1="12" y1="18" x2="20" y2="18" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><line x1="12" y1="22" x2="18" y2="22" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M26 16L32 21L26 26" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    <h3 class="proj-name"><span data-lang="en">Security Awareness Workshop</span><span data-lang="es">Taller de Concienciación</span></h3>
+    <p class="proj-desc"><span data-lang="en">In-person or remote training: phishing recognition, best practices, password hygiene, and incident response basics. Up to 20 people.</span><span data-lang="es">Capacitación presencial o remota: reconocimiento de phishing, buenas prácticas, contraseñas e incidentes. Hasta 20 personas.</span></p>
+    <div class="proj-price"><span class="proj-price-val">$400 – $800</span><span class="proj-price-label">USD &nbsp;·&nbsp; <span data-lang="en">per session</span><span data-lang="es">por sesión</span></span></div>
+  </div>
+  <div class="proj-card">
+    <div class="proj-icon-wrap"><svg viewBox="0 0 44 44" fill="none"><path d="M22 4L6 10V22C6 30.837 13.163 38.5 22 40C30.837 38.5 38 30.837 38 22V10L22 4Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M15 22L20 27L29 17" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    <h3 class="proj-name"><span data-lang="en">Policies &amp; Compliance</span><span data-lang="es">Políticas &amp; Cumplimiento</span></h3>
+    <p class="proj-desc"><span data-lang="en">Writing and implementation of security policies aligned to ISO 27001, LFPDPPP, or PCI-DSS depending on your industry.</span><span data-lang="es">Redacción e implementación de políticas de seguridad alineadas a ISO 27001, LFPDPPP o PCI-DSS según su industria.</span></p>
+    <div class="proj-price"><span class="proj-price-val">$600 – $1,200</span><span class="proj-price-label">USD &nbsp;·&nbsp; <span data-lang="en">one-time</span><span data-lang="es">pago único</span></span></div>
+  </div>
+</div>
+<div class="proj-footer reveal">
+  <p><span data-lang="en"><strong>Not sure where to start?</strong> The Express Assessment is the ideal entry point — many clients use it to understand their real risk before deciding on a managed plan.</span><span data-lang="es"><strong>¿No sabe por dónde empezar?</strong> El Diagnóstico Express es el punto de entrada ideal — muchos clientes lo usan para entender su riesgo real antes de decidir sobre un plan gestionado.</span></p>
+  <a href="https://wa.me/19562726415?text=Hi%2C%20I%27m%20interested%20in%20a%20cybersecurity%20consultation%20with%20Horus%20Cyber" class="btn-primary" target="_blank" style="white-space:nowrap"><span data-lang="en">Request a Quote</span><span data-lang="es">Solicitar cotización</span></a>
+</div>
+```
+
   </div>
 </section>
 
-<!-- WHY HORUS -->
+<!-- WHY — original intacto -->
+
 <section id="why">
   <div class="why-inner">
     <div class="reveal">
@@ -666,7 +631,8 @@
   </div>
 </section>
 
-<!-- PROCESS -->
+<!-- PROCESS — original intacto -->
+
 <section class="process" id="process">
   <div class="process-inner">
     <div class="process-head reveal">
@@ -674,46 +640,188 @@
       <h2 class="section-title"><span data-lang="en">From zero to protected<br>in <em>weeks, not months</em></span><span data-lang="es">De cero a protegido<br>en <em>semanas, no meses</em></span></h2>
     </div>
     <div class="process-steps reveal">
-      <div class="step">
-        <div class="step-circle">
-          <svg viewBox="0 0 28 28" fill="none"><circle cx="14" cy="14" r="10" stroke="currentColor" stroke-width="1.5"/><line x1="14" y1="4" x2="14" y2="8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><line x1="14" y1="20" x2="14" y2="24" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><line x1="4" y1="14" x2="8" y2="14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><line x1="20" y1="14" x2="24" y2="14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><circle cx="14" cy="14" r="3" fill="currentColor" opacity="0.5"/></svg>
-        </div>
-        <div class="step-name"><span data-lang="en">Assessment</span><span data-lang="es">Diagnóstico</span></div>
-        <div class="step-desc"><span data-lang="en">Evaluation of your infrastructure, assets, and current security posture.</span><span data-lang="es">Evaluación de su infraestructura, activos y postura de seguridad actual.</span></div>
+      <div class="step"><div class="step-circle"><svg viewBox="0 0 28 28" fill="none"><circle cx="14" cy="14" r="10" stroke="currentColor" stroke-width="1.5"/><line x1="14" y1="4" x2="14" y2="8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><line x1="14" y1="20" x2="14" y2="24" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><line x1="4" y1="14" x2="8" y2="14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><line x1="20" y1="14" x2="24" y2="14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><circle cx="14" cy="14" r="3" fill="currentColor" opacity="0.5"/></svg></div><div class="step-name"><span data-lang="en">Assessment</span><span data-lang="es">Diagnóstico</span></div><div class="step-desc"><span data-lang="en">Evaluation of your infrastructure, assets, and current security posture.</span><span data-lang="es">Evaluación de su infraestructura, activos y postura de seguridad actual.</span></div></div>
+      <div class="step"><div class="step-circle"><svg viewBox="0 0 28 28" fill="none"><path d="M6 22L12 10L18 17L21 13L26 22H6Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><circle cx="20" cy="8" r="3" stroke="currentColor" stroke-width="1.5"/></svg></div><div class="step-name"><span data-lang="en">Design</span><span data-lang="es">Diseño</span></div><div class="step-desc"><span data-lang="en">Custom security plan with clear priorities and a defined roadmap.</span><span data-lang="es">Plan de seguridad personalizado con prioridades claras y hoja de ruta definida.</span></div></div>
+      <div class="step"><div class="step-circle"><svg viewBox="0 0 28 28" fill="none"><rect x="5" y="5" width="18" height="18" rx="2" stroke="currentColor" stroke-width="1.5"/><path d="M9 14L12 17L19 10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="step-name"><span data-lang="en">Implementation</span><span data-lang="es">Implementación</span></div><div class="step-desc"><span data-lang="en">Deployment of controls, tools, and policies with zero operational disruption.</span><span data-lang="es">Despliegue de controles, herramientas y políticas. Sin interrupciones operativas.</span></div></div>
+      <div class="step"><div class="step-circle"><svg viewBox="0 0 28 28" fill="none"><path d="M14 4C14 4 4 8 4 16C4 21.523 8.477 26 14 26C19.523 26 24 21.523 24 16C24 8 14 4 14 4Z" stroke="currentColor" stroke-width="1.5"/><circle cx="14" cy="16" r="4" stroke="currentColor" stroke-width="1.5"/><circle cx="14" cy="16" r="1.5" fill="currentColor" opacity="0.6"/></svg></div><div class="step-name"><span data-lang="en">Monitoring</span><span data-lang="es">Monitoreo</span></div><div class="step-desc"><span data-lang="en">Continuous surveillance, real-time alerts, and active threat management.</span><span data-lang="es">Vigilancia continua, alertas en tiempo real y gestión de amenazas activas.</span></div></div>
+      <div class="step"><div class="step-circle"><svg viewBox="0 0 28 28" fill="none"><path d="M14 4L18 12H26L20 17L22 25L14 20L6 25L8 17L2 12H10L14 4Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg></div><div class="step-name"><span data-lang="en">Improvement</span><span data-lang="es">Mejora continua</span></div><div class="step-desc"><span data-lang="en">Periodic reviews, new attack vectors, and ongoing plan adjustments.</span><span data-lang="es">Revisiones periódicas, nuevos vectores de ataque y ajustes al plan.</span></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ NUEVO: FLUJO DE AUDITORÍA ══ -->
+
+<section class="audit-flow" id="audit">
+  <div class="audit-inner">
+    <div class="audit-head reveal">
+      <p class="section-label"><span data-lang="en">Audit Methodology</span><span data-lang="es">Metodología de Auditoría</span></p>
+      <h2 class="section-title"><span data-lang="en">5-phase <em>end-to-end</em> audit</span><span data-lang="es">Auditoría <em>end-to-end</em> en 5 fases</span></h2>
+      <p class="section-body"><span data-lang="en">Each phase has concrete deliverables. From the first scan to active remediation — no ambiguities.</span><span data-lang="es">Cada fase tiene entregables concretos. Desde el primer escaneo hasta la remediación activa.</span></p>
+    </div>
+    <div class="audit-steps">
+
+```
+  <div class="audit-step">
+    <div class="astep-left"><div class="astep-num">01</div><div class="astep-line"></div></div>
+    <div class="astep-content">
+      <div class="astep-tag"><span data-lang="en">Reconnaissance &amp; Scanning</span><span data-lang="es">Reconocimiento y Escaneo</span></div>
+      <h3 class="astep-title"><span data-lang="en">We detect vulnerabilities in your network and systems</span><span data-lang="es">Detectamos vulnerabilidades en tu red y sistemas</span></h3>
+      <p class="astep-desc"><span data-lang="en">Complete infrastructure scan: open ports, exposed services, outdated versions, and known CVEs. A real snapshot of your attack surface.</span><span data-lang="es">Escaneo completo de tu infraestructura: puertos abiertos, servicios expuestos, versiones desactualizadas y CVEs conocidos. Una fotografía real de tu perímetro de ataque.</span></p>
+      <div class="astep-items">
+        <span class="astep-item"><span data-lang="en">Network scanning</span><span data-lang="es">Escaneo de red</span></span>
+        <span class="astep-item"><span data-lang="en">Service analysis</span><span data-lang="es">Análisis de servicios</span></span>
+        <span class="astep-item"><span data-lang="en">Public exposure</span><span data-lang="es">Exposición pública</span></span>
+        <span class="astep-item">CVE Analysis</span>
       </div>
-      <div class="step">
-        <div class="step-circle">
-          <svg viewBox="0 0 28 28" fill="none"><path d="M6 22L12 10L18 17L21 13L26 22H6Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><circle cx="20" cy="8" r="3" stroke="currentColor" stroke-width="1.5"/></svg>
-        </div>
-        <div class="step-name"><span data-lang="en">Design</span><span data-lang="es">Diseño</span></div>
-        <div class="step-desc"><span data-lang="en">Custom security plan with clear priorities and a defined roadmap.</span><span data-lang="es">Plan de seguridad personalizado con prioridades claras y hoja de ruta definida.</span></div>
+      <div class="astep-deliverable">
+        <span class="d-label"><span data-lang="en">Delivery</span><span data-lang="es">Entrega</span></span>
+        <span class="d-text"><span data-lang="en">Port map, services, and vulnerabilities classified by criticality (critical / high / medium / low)</span><span data-lang="es">Mapa de puertos, servicios y vulnerabilidades clasificadas por criticidad (crítica / alta / media / baja)</span></span>
       </div>
-      <div class="step">
-        <div class="step-circle">
-          <svg viewBox="0 0 28 28" fill="none"><rect x="5" y="5" width="18" height="18" rx="2" stroke="currentColor" stroke-width="1.5"/><path d="M9 14L12 17L19 10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </div>
-        <div class="step-name"><span data-lang="en">Implementation</span><span data-lang="es">Implementación</span></div>
-        <div class="step-desc"><span data-lang="en">Deployment of controls, tools, and policies with zero operational disruption.</span><span data-lang="es">Despliegue de controles, herramientas y políticas. Sin interrupciones operativas.</span></div>
+    </div>
+  </div>
+
+  <div class="audit-step">
+    <div class="astep-left"><div class="astep-num">02</div><div class="astep-line"></div></div>
+    <div class="astep-content">
+      <div class="astep-tag"><span data-lang="en">Credential Analysis</span><span data-lang="es">Análisis de Credenciales</span></div>
+      <h3 class="astep-title"><span data-lang="en">We review passwords, access, and compromised emails</span><span data-lang="es">Revisamos contraseñas, accesos y correos comprometidos</span></h3>
+      <p class="astep-desc"><span data-lang="en">We cross corporate emails against public breach databases and evaluate password policies, MFA usage, shared access, and excessive privileges.</span><span data-lang="es">Cruzamos los correos corporativos contra bases de datos de brechas públicas y evaluamos políticas de contraseñas, MFA, accesos compartidos y privilegios excesivos.</span></p>
+      <div class="astep-items">
+        <span class="astep-item"><span data-lang="en">Public breaches</span><span data-lang="es">Brechas públicas</span></span>
+        <span class="astep-item">IAM <span data-lang="en">review</span><span data-lang="es">revisión</span></span>
+        <span class="astep-item">MFA <span data-lang="en">audit</span><span data-lang="es">auditoría</span></span>
+        <span class="astep-item"><span data-lang="en">Access policies</span><span data-lang="es">Políticas de acceso</span></span>
       </div>
-      <div class="step">
-        <div class="step-circle">
-          <svg viewBox="0 0 28 28" fill="none"><path d="M14 4C14 4 4 8 4 16C4 21.523 8.477 26 14 26C19.523 26 24 21.523 24 16C24 8 14 4 14 4Z" stroke="currentColor" stroke-width="1.5"/><circle cx="14" cy="16" r="4" stroke="currentColor" stroke-width="1.5"/><circle cx="14" cy="16" r="1.5" fill="currentColor" opacity="0.6"/></svg>
-        </div>
-        <div class="step-name"><span data-lang="en">Monitoring</span><span data-lang="es">Monitoreo</span></div>
-        <div class="step-desc"><span data-lang="en">Continuous surveillance, real-time alerts, and active threat management.</span><span data-lang="es">Vigilancia continua, alertas en tiempo real y gestión de amenazas activas.</span></div>
+      <div class="risk-alert">
+        <span style="font-size:1rem;flex-shrink:0">⚑</span>
+        <span class="r-text"><span data-lang="en"><strong>81% of breaches</strong> involve weak or stolen passwords. This step is usually the most critical finding.</span><span data-lang="es">El <strong>81% de las brechas</strong> involucran contraseñas débiles o robadas. Este paso suele ser el hallazgo más crítico.</span></span>
       </div>
-      <div class="step">
-        <div class="step-circle">
-          <svg viewBox="0 0 28 28" fill="none"><path d="M14 4L18 12H26L20 17L22 25L14 20L6 25L8 17L2 12H10L14 4Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>
-        </div>
-        <div class="step-name"><span data-lang="en">Improvement</span><span data-lang="es">Mejora continua</span></div>
-        <div class="step-desc"><span data-lang="en">Periodic reviews, new attack vectors, and ongoing plan adjustments.</span><span data-lang="es">Revisiones periódicas, nuevos vectores de ataque y ajustes al plan.</span></div>
+      <div class="astep-deliverable">
+        <span class="d-label"><span data-lang="en">Delivery</span><span data-lang="es">Entrega</span></span>
+        <span class="d-text"><span data-lang="en">List of compromised accounts, risk level per user, and access policy recommendations</span><span data-lang="es">Lista de cuentas comprometidas, nivel de riesgo por usuario y recomendaciones de política de acceso</span></span>
+      </div>
+    </div>
+  </div>
+
+  <div class="audit-step">
+    <div class="astep-left"><div class="astep-num">03</div><div class="astep-line"></div></div>
+    <div class="astep-content">
+      <div class="astep-tag"><span data-lang="en">Social Engineering</span><span data-lang="es">Ingeniería Social</span></div>
+      <h3 class="astep-title"><span data-lang="en">We simulate phishing attacks to measure your real exposure</span><span data-lang="es">Simulamos ataques de phishing para medir tu exposición real</span></h3>
+      <p class="astep-desc"><span data-lang="en">We design and run a simulated phishing campaign targeting your team. We measure who clicks, who submits credentials, and which departments are most vulnerable — without causing real damage.</span><span data-lang="es">Diseñamos y ejecutamos una campaña de phishing simulado dirigida a tu equipo. Medimos quién hace clic, quién entrega credenciales y qué departamentos son más vulnerables — sin causar daño real.</span></p>
+      <div class="astep-items">
+        <span class="astep-item"><span data-lang="en">Simulated phishing</span><span data-lang="es">Phishing simulado</span></span>
+        <span class="astep-item"><span data-lang="en">Custom emails</span><span data-lang="es">Correos personalizados</span></span>
+        <span class="astep-item"><span data-lang="en">Decoy landing</span><span data-lang="es">Landing señuelo</span></span>
+        <span class="astep-item"><span data-lang="en">Dept. analysis</span><span data-lang="es">Análisis por área</span></span>
+      </div>
+      <div class="astep-deliverable">
+        <span class="d-label"><span data-lang="en">Delivery</span><span data-lang="es">Entrega</span></span>
+        <span class="d-text"><span data-lang="en">Click rate, users who submitted credentials, department breakdown, and security awareness level</span><span data-lang="es">Tasa de clics, usuarios que entregaron credenciales, análisis por departamento y nivel de consciencia de seguridad</span></span>
+      </div>
+    </div>
+  </div>
+
+  <div class="audit-step">
+    <div class="astep-left"><div class="astep-num">04</div><div class="astep-line"></div></div>
+    <div class="astep-content">
+      <div class="astep-tag"><span data-lang="en">Executive Report</span><span data-lang="es">Reporte Ejecutivo</span></div>
+      <h3 class="astep-title"><span data-lang="en">We tell you exactly what to fix and in what order</span><span data-lang="es">Te damos un reporte con exactamente qué arreglar</span></h3>
+      <p class="astep-desc"><span data-lang="en">All findings consolidated in a jargon-free executive report: what risks you have, how critical each one is, and a prioritized action plan.</span><span data-lang="es">Todos los hallazgos consolidados en un reporte ejecutivo sin tecnicismos: qué riesgos tienes, qué tan grave es cada uno, y un plan de acción priorizado.</span></p>
+      <div class="astep-items">
+        <span class="astep-item"><span data-lang="en">Executive summary</span><span data-lang="es">Resumen ejecutivo</span></span>
+        <span class="astep-item"><span data-lang="en">Findings by criticality</span><span data-lang="es">Hallazgos por criticidad</span></span>
+        <span class="astep-item"><span data-lang="en">Documented evidence</span><span data-lang="es">Evidencia documentada</span></span>
+        <span class="astep-item"><span data-lang="en">Remediation plan</span><span data-lang="es">Plan de remediación</span></span>
+      </div>
+      <div class="astep-deliverable">
+        <span class="d-label"><span data-lang="en">Delivery</span><span data-lang="es">Entrega</span></span>
+        <span class="d-text"><span data-lang="en">Executive PDF report + results presentation meeting with leadership</span><span data-lang="es">Reporte PDF ejecutivo + presentación de resultados en reunión con dirección</span></span>
+      </div>
+    </div>
+  </div>
+
+  <div class="audit-step">
+    <div class="astep-left"><div class="astep-num">05</div><div class="astep-line"></div></div>
+    <div class="astep-content">
+      <div class="astep-tag"><span data-lang="en">Response &amp; Remediation</span><span data-lang="es">Respuesta y Remediación</span></div>
+      <h3 class="astep-title"><span data-lang="en">If you already have a problem, we fix it fast</span><span data-lang="es">Y si ya tienes un problema, lo remediamos rápido</span></h3>
+      <p class="astep-desc"><span data-lang="en">We apply fixes directly: credential resets, closing exposed ports, security patches, email filter configuration, and team training. Active response in under 24 hours.</span><span data-lang="es">Aplicamos correcciones directamente: reset de credenciales, cierre de puertos expuestos, parches de seguridad, filtros de correo y capacitación. Respuesta activa en menos de 24 horas.</span></p>
+      <div class="astep-items">
+        <span class="astep-item"><span data-lang="en">Reset + forced MFA</span><span data-lang="es">Reset + MFA forzado</span></span>
+        <span class="astep-item">Firewall hardening</span>
+        <span class="astep-item">SPF/DKIM/DMARC</span>
+        <span class="astep-item"><span data-lang="en">Patches</span><span data-lang="es">Parches</span></span>
+        <span class="astep-item"><span data-lang="en">Team training</span><span data-lang="es">Capacitación</span></span>
+      </div>
+      <div class="astep-deliverable">
+        <span class="d-label"><span data-lang="en">Delivery</span><span data-lang="es">Entrega</span></span>
+        <span class="d-text"><span data-lang="en">Confirmation of applied fixes + verification scan confirming risks were eliminated</span><span data-lang="es">Confirmación de correcciones aplicadas + escaneo de verificación que los riesgos fueron eliminados</span></span>
+      </div>
+    </div>
+  </div>
+
+</div>
+```
+
+  </div>
+</section>
+
+<!-- ══ NUEVO: CRONOGRAMA ══ -->
+
+<section class="timeline-section">
+  <div class="timeline-inner">
+    <div class="timeline-head reveal">
+      <p class="section-label"><span data-lang="en">Delivery Timeline</span><span data-lang="es">Cronograma de entrega</span></p>
+      <h2 class="section-title"><span data-lang="en">From zero to protected<br>in <em>10 days</em></span><span data-lang="es">De cero a protegido<br>en <em>10 días</em></span></h2>
+    </div>
+    <div class="timeline-grid reveal">
+      <div class="tl-item">
+        <div class="tl-day">D1–2</div>
+        <div class="tl-label"><span data-lang="en">Days 1 to 2</span><span data-lang="es">Días 1 a 2</span></div>
+        <div class="tl-title"><span data-lang="en">Onboarding &amp; Scope</span><span data-lang="es">Onboarding y Alcance</span></div>
+        <div class="tl-desc"><span data-lang="en">Signing the authorization contract, defining IPs, domains, and in-scope users</span><span data-lang="es">Firma del contrato de autorización, definición de IPs, dominios y usuarios en scope</span></div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-day">D3–5</div>
+        <div class="tl-label"><span data-lang="en">Days 3 to 5</span><span data-lang="es">Días 3 a 5</span></div>
+        <div class="tl-title"><span data-lang="en">Scanning &amp; Reconnaissance</span><span data-lang="es">Escaneo y Reconocimiento</span></div>
+        <div class="tl-desc"><span data-lang="en">Network scan, compromised credential review, and public exposure analysis</span><span data-lang="es">Escaneo de red, revisión de credenciales comprometidas y análisis de exposición pública</span></div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-day">D6–8</div>
+        <div class="tl-label"><span data-lang="en">Days 6 to 8</span><span data-lang="es">Días 6 a 8</span></div>
+        <div class="tl-title"><span data-lang="en">Phishing &amp; Analysis</span><span data-lang="es">Phishing y Análisis</span></div>
+        <div class="tl-desc"><span data-lang="en">Simulated phishing campaign and consolidation of all findings</span><span data-lang="es">Ejecución de campaña de phishing simulado y consolidación de todos los hallazgos</span></div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-day">D9–10</div>
+        <div class="tl-label"><span data-lang="en">Days 9 to 10</span><span data-lang="es">Días 9 a 10</span></div>
+        <div class="tl-title"><span data-lang="en">Report &amp; Remediation</span><span data-lang="es">Reporte y Remediación</span></div>
+        <div class="tl-desc"><span data-lang="en">Executive report delivery, results presentation, and start of correction plan</span><span data-lang="es">Entrega del reporte ejecutivo, presentación de resultados e inicio del plan de corrección</span></div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- CTA -->
+<!-- ══ NUEVO: LEGAL ══ -->
+
+<div class="legal-band reveal">
+  <div class="legal-band-inner">
+    <div class="legal-icon">
+      <svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+      </svg>
+    </div>
+    <div>
+      <h3><span data-lang="en">Legal &amp; Ethical Commitment</span><span data-lang="es">Compromiso Legal y Ético</span></h3>
+      <p><span data-lang="en">Every audit service requires prior signing of a <strong style="color:var(--white);font-weight:400">Scope and Authorization Agreement</strong> that defines exactly which systems, networks, and users are included. Horus System Co. operates under strict ethical standards: no action is taken outside the authorized scope, and all findings are treated with absolute confidentiality.</span><span data-lang="es">Todo servicio de auditoría requiere la firma previa de un <strong style="color:var(--white);font-weight:400">Acuerdo de Alcance y Autorización</strong> que delimita exactamente los sistemas, redes y usuarios incluidos. Horus System Co. opera bajo estrictos estándares éticos: ninguna acción se ejecuta fuera del alcance autorizado y todos los hallazgos son tratados con absoluta confidencialidad.</span></p>
+    </div>
+  </div>
+</div>
+
+<!-- CTA — original intacto -->
+
 <section class="cta-section" id="contact">
   <div class="cta-bg"></div>
   <p class="section-label reveal"><span data-lang="en">Next Step</span><span data-lang="es">Próximo paso</span></p>
@@ -725,7 +833,8 @@
   </div>
 </section>
 
-<!-- FOOTER -->
+<!-- FOOTER — original intacto -->
+
 <footer>
   <div class="footer-inner">
     <p class="footer-copy">© 2025 <strong>Horus System Co.</strong> — Reynosa, Tam. &amp; RGV &nbsp;|&nbsp; (956) 272-6415 &nbsp;|&nbsp; <span data-lang="en">All rights reserved.</span><span data-lang="es">Todos los derechos reservados.</span></p>
@@ -751,6 +860,11 @@
   document.querySelectorAll('.services-grid,.threat-grid,.why-list,.proj-grid').forEach(g => {
     Array.from(g.children).forEach((c, i) => { c.style.transitionDelay = i * 0.07 + 's'; });
   });
+  const stepObs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); stepObs.unobserve(e.target); } });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.audit-step').forEach(s => stepObs.observe(s));
 </script>
+
 </body>
 </html>
