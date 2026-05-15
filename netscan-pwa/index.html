@@ -8,8 +8,8 @@
 <meta name="apple-mobile-web-app-title" content="NetScan">
 <meta name="theme-color" content="#0A2240">
 <title>NetScan Pro</title>
-<link rel="manifest" href="manifest.json">
-<link rel="apple-touch-icon" href="icon-192.png">
+<link rel="manifest" href="/pwa/manifest.json">
+<link rel="apple-touch-icon" href="/pwa/icon-192.png">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Barlow+Condensed:wght@300;400;500;600&family=Barlow:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
 :root {
@@ -698,7 +698,7 @@ var scanRunning = false;
 // ── INIT ──
 document.getElementById('server-input').value = SERVER;
 if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('sw.js').catch(function(){});
+  navigator.serviceWorker.register('/pwa/sw.js').catch(function(){});
 }
 checkServer();
 loadHistory();
