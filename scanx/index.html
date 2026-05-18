@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#0A0A0A" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="ScanX" />
+  <title>ScanX — Barcode System</title>
+  <link rel="manifest" href="manifest.json" />
+  <link rel="apple-touch-icon" href="icons/icon-192.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;800&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --bg:#0A0A0A; --surface:#111111; --surface2:#1A1A1A; --surface3:#222222;
+      --border:#2A2A2A; --accent:#C9A84C; --accent2:#E8C96B;
+      --text:#F0EDE8; --muted:#666666; --muted2:#333333;
+      --success:#4ECDC4; --danger:#FF6B6B; --info:#7B9EE0; --radius:12px;
+    }
+    *{box-sizing:border-box;margin:0;padding:0;}
+    html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--text);
+      font-family:'Syne',sans-serif;-webkit-tap-highlight-color:transparent;user-select:none;}
+    #app{display:flex;flex-direction:column;height:100%;height:100dvh;}
+
+    /* HEADER */
+    header{display:flex;align-items:center;justify-content:space-between;
+      padding:13px 18px;padding-top:calc(13px + env(safe-area-inset-top));
+      background:var(--bg);border-bottom:1px solid var(--border);flex-shrink:0;z-index:20;}
+    .logo{font-weight:800;font-size:20px;letter-spacing:-.5px;color:var(--accent);}
+    .logo span{color:var(--text);}
+    .header-actions{display:flex;gap:8px;}
+    .icon-btn{width:38px;height:38px;border:1px solid var(--border);border-radius:9px;
+      background:var(--surface);color:var(--text);display:flex;align-items:center;
+      justify-content:center;cursor:pointer;font-size:16px;transition:all .15s;}
+    .icon-btn:active{transform:scale(.91);}
+    .icon-btn.torch-on{border-color:#FFD700;color:#FFD700;}
+
+    /* TAB BAR */
+    #tab-bar{display:flex;background:var(--surface);border-bottom:1px solid var(--border);flex-shrink:0;}
+    .tab{flex:1;padding:9px 4px;text-align:center;cursor:pointer;border:none;background:none;
+      color:var(--muted);font-family:'Space Mono',monospace;font-size:9px;
+      letter-spacing:1.5px;text-transform:uppercase;transition:all .2s;
+      border-bottom:2px solid transparent;display:flex;flex-direction:column;align-items:center;gap:2px;}
+    .tab .ti{font-size:17px;}
+    .tab.active{color:var(--accent);border-bottom-color:var(--accent);}
+
+    /* PAGES */
+    .page{display:none;flex:1;flex-direction:column;overflow:hidden;}
+    .page.active{display:flex;}
+
+    /* ══ SCAN PAGE ══ */
+    #scanner-wrap{position:relative;overflow:hidden;background:#000;flex:1;min-height:0;}
+    #video{width:100%;height:100%;object-fit:cover;display:block;}
+    .vignette{position:absolute;inset:0;
+      background:radial-gradient(ellipse at center,transparent 35%,rgba(0,0,0,.72) 100%);
+      pointer-events:none;}
+    #overlay{position:absolute;inset:0;display:flex;flex-direction:column;
+      align-items:center;justify-content:center;pointer-events:none;}
+    .scan-frame{position:relative;width:min(70vw,250px);height:min(70vw,250px);}
+    .corner{position:absolute;width:24px;height:24px;border-color:var(--accent);border-style:solid;}
+    .c-tl{top:0;left:0;border-width:3px 0 0 3px;border-radius:4px 0 0 0;}
+    .c-tr{top:0;right:0;border-width:3px 3px 0 0;border-radius:0 4px 0 0;}
+    .c-bl{bottom:0;left:0;border-width:0 0 3px 3px;border-radius:0 0 0 4px;}
+    .c-br{bottom:0;right:0;border-width:0 3px 3px 0;border-radius:0 0 4px 0;}
+    .scan-line{position:absolute;left:3px;right:3px;height:2px;
+      background:linear-gradient(90deg,transparent,rgba(201,168,76,.8) 20%,var(--accent2) 50%,rgba(201,168,76,.8) 80%,transparent);
+      box-shadow:0 0 10px 2px rgba(201,168,76,.4);
+      animation:scanMove 2.2s ease-in-out infinite;top:3px;}
+    @keyframes scanMove{0%{top:3px;opacity:.6}50%{top:calc(100% - 5px);opacity:1}100%{top:3px;opacity:.6}}
+    .scan-hint{margin-top:16px;font-size:11px;color:rgba(240,237,232,.4);
+      font-family:'Space Mono',monospace;}
+    #sbar{position:absolute;top:12px;left:50%;transform:translateX(-50%);
+      padding:5px 13px;border-radius:20px;font-family:'Space Mono',monospace;
+      font-size:10px;letter-spacing:1.5px;font-weight:700;text-transform:uppercase;
+      background:rgba(10,10,10,.88);border:1px solid var(--border);color:var(--muted);
+      transition:all .3s;white-space:nowrap;z-index:8;}
+    #sbar.scanning{border-color:var(--accent);color:var(--accent);}
+    #sbar.found{border-color:var(--success);color:var(--success);}
+    #sbar.error{border-color:var(--danger);color:var(--danger);}
+    #sflash{position:absolute;inset:0;background:rgba(78,205,196,.13);
+      pointer-events:none;opacity:0;transition:opacity .1s;z-index:5;}
+    #sflash.show{opacity:1;}
+
+    #cam-ctrl{display:flex;gap:8px;padding:8px 14px;background:var(--bg);
+      border-top:1px solid var(--border);flex-shrink:0;}
+    .cbtn{flex:1;padding:9px;border-radius:9px;border:1px solid var(--border);
+      background:var(--surface);color:var(--text);font-family:'Space Mono',monospace;
+      font-size:10px;letter-spacing:1px;text-transform:uppercase;cursor:pointer;
+      display:flex;align-items:center;justify-content:center;gap:5px;transition:all .15s;}
+    .cbtn:active{transform:scale(.95);}
+    .cbtn.torch-on{border-color:#FFD700;color:#FFD700;}
+
+    #scan-result{background:var(--surface);border-top:1px solid var(--border);
+      padding:12px 16px;flex-shrink:0;display:none;}
+    #scan-result.show{display:block;}
+    .r-type{font-size:9px;font-family:'Space Mono',monospace;letter-spacing:1.5px;
+      color:var(--accent);text-transform:uppercase;margin-bottom:4px;}
+    .r-val{font-size:13px;font-weight:600;word-break:break-all;line-height:1.4;margin-bottom:9px;}
+    .r-acts{display:flex;gap:7px;}
+    .abtn{flex:1;padding:8px 8px;border-radius:8px;border:1px solid var(--border);
+      background:transparent;color:var(--text);font-family:'Space Mono',monospace;
+      font-size:9px;letter-spacing:.5px;text-transform:uppercase;cursor:pointer;
+      transition:all .15s;display:flex;align-items:center;justify-content:center;gap:4px;}
+    .abtn.primary{background:var(--accent);border-color:var(--accent);color:#000;font-weight:700;}
+    .abtn.ok{border-color:var(--success);color:var(--success);}
+    .abtn:active{transform:scale(.95);}
+
+    #hist-bar{background:var(--surface);border-top:1px solid var(--border);
+      padding:8px 14px;flex-shrink:0;max-height:110px;overflow-y:auto;}
+    .hm{display:flex;align-items:center;gap:9px;padding:5px 0;
+      border-bottom:1px solid var(--border);cursor:pointer;}
+    .hm:last-child{border-bottom:none;}
+    .hm-t{font-size:9px;font-family:'Space Mono',monospace;color:var(--accent);
+      text-transform:uppercase;letter-spacing:1px;min-width:48px;}
+    .hm-v{font-size:11px;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+    .hm-ts{font-size:9px;font-family:'Space Mono',monospace;color:var(--muted);flex-shrink:0;}
+    .no-camera-screen{display:none;flex:1;align-items:center;justify-content:center;
+      flex-direction:column;gap:14px;padding:36px;text-align:center;}
+    .no-camera-screen.show{display:flex;}
+    .nce{font-size:46px;}.nct{font-size:17px;font-weight:700;}
+    .ncs{font-size:12px;color:var(--muted);font-family:'Space Mono',monospace;line-height:1.7;}
+    .retry{padding:11px 26px;background:var(--accent);color:#000;border:none;border-radius:10px;
+      font-family:'Syne',sans-serif;font-weight:700;font-size:14px;cursor:pointer;margin-top:6px;}
+
+    /* ══ LOOKUP PAGE ══ */
+    #page-lookup{overflow-y:auto;}
+    .pscroll{padding:16px;display:flex;flex-direction:column;gap:14px;}
+    .slabel{font-size:9px;font-family:'Space Mono',monospace;letter-spacing:2px;
+      color:var(--muted);text-transform:uppercase;margin-bottom:6px;}
+    .binput{width:100%;padding:12px 13px;background:var(--surface2);
+      border:1px solid var(--border);border-radius:var(--radius);color:var(--text);
+      font-family:'Space Mono',monospace;font-size:13px;letter-spacing:1px;outline:none;
+      transition:border-color .2s;-webkit-user-select:text;user-select:text;}
+    .binput:focus{border-color:var(--accent);}
+    .binput::placeholder{color:#333;}
+    .brow{display:flex;gap:8px;}
+    .btn{flex:1;padding:11px;border-radius:var(--radius);border:1px solid var(--border);
+      background:var(--surface2);color:var(--text);font-family:'Space Mono',monospace;
+      font-size:10px;letter-spacing:1px;text-transform:uppercase;cursor:pointer;
+      transition:all .15s;display:flex;align-items:center;justify-content:center;gap:6px;}
+    .btn:active{transform:scale(.96);}
+    .btn.primary{background:var(--accent);border-color:var(--accent);color:#000;font-weight:700;}
+    .btn.ghost{background:transparent;}
+
+    .rcard{background:var(--surface2);border:1px solid var(--border);
+      border-radius:var(--radius);overflow:hidden;display:none;}
+    .rcard.show{display:block;}
+    .rcard-hd{background:var(--surface3);padding:11px 14px;display:flex;align-items:center;
+      gap:10px;border-bottom:1px solid var(--border);}
+    .rcard-icon{font-size:22px;}.rcard-title{font-size:13px;font-weight:700;}
+    .rcard-sub{font-size:10px;font-family:'Space Mono',monospace;color:var(--muted);margin-top:2px;}
+    .rcard-body{padding:12px 14px;display:flex;flex-direction:column;gap:0;}
+    .frow{display:flex;justify-content:space-between;align-items:flex-start;
+      padding:8px 0;border-bottom:1px solid var(--border);}
+    .frow:last-child{border-bottom:none;}
+    .flabel{font-size:9px;font-family:'Space Mono',monospace;color:var(--muted);
+      text-transform:uppercase;letter-spacing:1px;}
+    .fval{font-size:12px;font-weight:600;text-align:right;max-width:58%;word-break:break-all;line-height:1.4;}
+    .fval.a{color:var(--accent);}
+    .fval.s{color:var(--success);}
+    .fval.i{color:var(--info);}
+    .fval.d{color:var(--danger);}
+    .conf-bar{height:3px;background:var(--border);border-radius:2px;margin-top:2px;}
+    .conf-fill{height:100%;border-radius:2px;background:var(--accent);transition:width .5s;}
+    .rcard-foot{padding:0 14px 12px;display:flex;gap:8px;}
+    .divider{height:1px;background:var(--border);}
+
+    /* ══ GENERATOR PAGE ══ */
+    #page-gen{overflow-y:auto;}
+    .fmt-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px;}
+    .fcard{padding:11px;background:var(--surface2);border:1px solid var(--border);
+      border-radius:var(--radius);cursor:pointer;transition:all .15s;display:flex;flex-direction:column;gap:3px;}
+    .fcard:active{transform:scale(.97);}
+    .fcard.sel{border-color:var(--accent);background:rgba(201,168,76,.07);}
+    .fcard-name{font-size:13px;font-weight:700;}
+    .fcard-desc{font-size:10px;font-family:'Space Mono',monospace;color:var(--muted);}
+    .fcard-len{font-size:9px;font-family:'Space Mono',monospace;color:#333;margin-top:1px;}
+
+    .opts{display:flex;gap:7px;flex-wrap:wrap;}
+    .chip{padding:6px 11px;border-radius:20px;border:1px solid var(--border);
+      background:var(--surface2);font-family:'Space Mono',monospace;font-size:10px;
+      color:var(--muted);cursor:pointer;transition:all .15s;}
+    .chip.on{border-color:var(--accent);color:var(--accent);background:rgba(201,168,76,.07);}
+
+    .gdisplay{background:var(--surface2);border:1px solid var(--border);
+      border-radius:var(--radius);padding:14px;display:none;
+      flex-direction:column;align-items:center;gap:12px;}
+    .gdisplay.show{display:flex;}
+    #bc-wrap{width:100%;display:flex;justify-content:center;background:#fff;
+      border-radius:8px;padding:14px;overflow:auto;}
+    #bc-wrap svg,#bc-wrap canvas{max-width:100%;height:auto;}
+    .gval{font-family:'Space Mono',monospace;font-size:14px;font-weight:700;
+      letter-spacing:2px;text-align:center;word-break:break-all;}
+    .gmeta{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;}
+    .gtag{font-size:9px;font-family:'Space Mono',monospace;letter-spacing:1.5px;
+      padding:3px 9px;border-radius:20px;border:1px solid var(--border);color:var(--muted);
+      text-transform:uppercase;}
+    .gtag.a{border-color:var(--accent);color:var(--accent);}
+    #batch-list{display:flex;flex-direction:column;gap:6px;}
+    .batch-item{display:flex;align-items:center;justify-content:space-between;
+      padding:9px 12px;background:var(--surface2);border:1px solid var(--border);
+      border-radius:9px;animation:fadeUp .25s ease;}
+    @keyframes fadeUp{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+    .batch-val{font-family:'Space Mono',monospace;font-size:12px;flex:1;
+      overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+    .batch-copy{font-size:14px;cursor:pointer;padding:2px 6px;opacity:.6;transition:opacity .15s;}
+    .batch-copy:active{opacity:1;}
+
+    ::-webkit-scrollbar{width:3px;}
+    ::-webkit-scrollbar-track{background:transparent;}
+    ::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px;}
+  </style>
+</head>
+<body>
+<div id="app">
+
+  <header>
+    <div class="logo">Scan<span>X</span></div>
+    <div class="header-actions">
+      <button class="icon-btn" id="h-torch">💡</button>
+      <button class="icon-btn" id="h-flip">🔄</button>
+      <button class="icon-btn" id="h-clear">🗑</button>
+    </div>
+  </header>
+
+  <div id="tab-bar">
+    <button class="tab active" data-page="page-scan"><span class="ti">📷</span>Escanear</button>
+    <button class="tab" data-page="page-lookup"><span class="ti">🔍</span>Identificar</button>
+    <button class="tab" data-page="page-gen"><span class="ti">⚡</span>Generar</button>
+  </div>
+
+  <!-- ── SCAN ── -->
+  <div class="page active" id="page-scan">
+    <div id="scanner-wrap">
+      <video id="video" playsinline autoplay muted></video>
+      <div class="vignette"></div>
+      <div id="overlay">
+        <div class="scan-frame">
+          <div class="corner c-tl"></div><div class="corner c-tr"></div>
+          <div class="corner c-bl"></div><div class="corner c-br"></div>
+          <div class="scan-line"></div>
+        </div>
+        <div class="scan-hint">Apunta al código · auto-detect</div>
+      </div>
+      <div id="sbar">INICIANDO...</div>
+      <div id="sflash"></div>
+    </div>
+    <div class="no-camera-screen" id="no-cam">
+      <div class="nce">📷</div>
+      <div class="nct">Cámara no disponible</div>
+      <div class="ncs">Permite el acceso a la cámara en tu navegador.</div>
+      <button class="retry" onclick="initCamera()">Reintentar</button>
+    </div>
+    <div id="cam-ctrl">
+      <button class="cbtn" id="c-torch">💡 Linterna</button>
+      <button class="cbtn" id="c-flip">🔄 Voltear</button>
+    </div>
+    <div id="scan-result">
+      <div class="r-type" id="sr-type">—</div>
+      <div class="r-val" id="sr-val">—</div>
+      <div class="r-acts">
+        <button class="abtn primary" id="sr-copy">📋 Copiar</button>
+        <button class="abtn" id="sr-identify">🔍 Identificar</button>
+        <button class="abtn ok" id="sr-open" style="display:none">🌐 Abrir</button>
+      </div>
+    </div>
+    <div id="hist-bar"><div style="font-size:11px;font-family:'Space Mono',monospace;color:var(--muted);padding:4px 0;text-align:center">Sin escaneos aún</div></div>
+  </div>
+
+  <!-- ── LOOKUP ── -->
+  <div class="page" id="page-lookup">
+    <div class="pscroll">
+      <div>
+        <div class="slabel">Número de Parte / Código</div>
+        <input class="binput" id="lk-input" type="text"
+          placeholder="7501234567890  ·  CODE128ABC  ·  QR..." autocomplete="off" autocorrect="off" spellcheck="false"/>
+        <div class="brow" style="margin-top:8px">
+          <button class="btn primary" id="lk-btn">🔍 Analizar</button>
+          <button class="btn ghost" id="lk-clr">✕ Limpiar</button>
+        </div>
+      </div>
+      <div class="divider"></div>
+      <div class="rcard" id="lk-card">
+        <div class="rcard-hd">
+          <div class="rcard-icon" id="lk-ico">⊡</div>
+          <div><div class="rcard-title" id="lk-title">—</div>
+               <div class="rcard-sub" id="lk-sub">—</div></div>
+        </div>
+        <div class="rcard-body">
+          <div class="frow"><span class="flabel">Número de Parte</span><span class="fval a" id="lk-pn">—</span></div>
+          <div class="frow"><span class="flabel">Formato</span><span class="fval" id="lk-fmt">—</span></div>
+          <div class="frow"><span class="flabel">Industria</span><span class="fval i" id="lk-ind">—</span></div>
+          <div class="frow"><span class="flabel">País / Región</span><span class="fval" id="lk-country">—</span></div>
+          <div class="frow"><span class="flabel">Prefijo / GS1</span><span class="fval" id="lk-pfx">—</span></div>
+          <div class="frow"><span class="flabel">Longitud</span><span class="fval" id="lk-len">—</span></div>
+          <div class="frow"><span class="flabel">Check digit</span><span class="fval s" id="lk-chk">—</span></div>
+          <div class="frow"><span class="flabel">Confianza</span><span class="fval" id="lk-conf">—</span></div>
+          <div class="conf-bar"><div class="conf-fill" id="lk-cbar" style="width:0"></div></div>
+          <div class="frow" id="lk-notes-row" style="display:none">
+            <span class="flabel">Notas</span><span class="fval" id="lk-notes" style="color:var(--muted)">—</span>
+          </div>
+        </div>
+        <div class="rcard-foot">
+          <button class="btn primary" id="lk-cp">📋 Copiar</button>
+          <button class="btn" id="lk-gosim">⚡ Generar similar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── GENERATOR ── -->
+  <div class="page" id="page-gen">
+    <div class="pscroll">
+      <div>
+        <div class="slabel">Formato de código</div>
+        <div class="fmt-grid" id="fmt-grid"></div>
+      </div>
+      <div>
+        <div class="slabel">Opciones</div>
+        <div class="opts" id="gen-opts">
+          <button class="chip on" data-opt="prefix">Prefijo MX</button>
+          <button class="chip" data-opt="checkdigit">Check digit</button>
+          <button class="chip" data-opt="upper">Mayúsculas</button>
+          <button class="chip" data-opt="dashes">Guiones</button>
+        </div>
+      </div>
+      <div>
+        <div class="slabel">Prefijo personalizado (opcional)</div>
+        <input class="binput" id="g-prefix" type="text"
+          placeholder="Ej: HORUS-  ·  MX-  ·  PTE-" autocomplete="off" autocorrect="off" spellcheck="false"
+          style="-webkit-user-select:text;user-select:text"/>
+      </div>
+      <div>
+        <div class="slabel">Cantidad</div>
+        <div class="opts" id="qty-opts">
+          <button class="chip on" data-qty="1">×1</button>
+          <button class="chip" data-qty="5">×5</button>
+          <button class="chip" data-qty="10">×10</button>
+          <button class="chip" data-qty="25">×25</button>
+        </div>
+      </div>
+      <div class="brow">
+        <button class="btn primary" id="gen-btn">⚡ Generar</button>
+        <button class="btn ghost" id="gen-cpall" style="display:none">📋 Copiar todos</button>
+      </div>
+      <div class="gdisplay" id="gdisplay">
+        <div id="bc-wrap"><canvas id="bc-canvas"></canvas></div>
+        <div class="gval" id="gval">—</div>
+        <div class="gmeta" id="gmeta"></div>
+        <div class="brow" style="width:100%">
+          <button class="btn primary" id="g-cp1">📋 Copiar</button>
+          <button class="btn" id="g-save">💾 Guardar imagen</button>
+        </div>
+      </div>
+      <div style="display:none" id="batch-wrap">
+        <div class="slabel" style="margin-bottom:8px">Lote generado</div>
+        <div id="batch-list"></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.6/dist/JsBarcode.all.min.js"></script>
+<script src="https://unpkg.com/@zxing/library@0.19.1/umd/index.min.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
