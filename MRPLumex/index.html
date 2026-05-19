@@ -711,12 +711,12 @@ function openSupplierModal(s) {
     <div class="ff s2"><label>Nombre *</label><input id="fsn" value="${e?s.name:''}"></div>
     <div class="ff"><label>RFC</label><input id="fsrfc" value="${e?s.rfc||'':''}"></div>
     <div class="ff"><label>Contacto</label><input id="fscn" value="${e?s.contact_name||'':''}"></div>
-    <div class="ff"><label>Telefono</label><input id="fsph" value="${e?s.phone||'':'"}"></div>
-    <div class="ff"><label>Correo</label><input id="fsem" type="email" value="${e?s.email||'':'"}"></div>
+    <div class="ff"><label>Telefono</label><input id="fsph" value="${e?s.phone||'':''}"></div>
+    <div class="ff"><label>Correo</label><input id="fsem" type="email" value="${e?s.email||'':''}"></div>
     <div class="ff"><label>Lead Time (dias)</label><input id="fslt" type="number" value="${e?s.lead_time_days||0:0}"></div>
-    <div class="ff"><label>Condiciones Pago</label><input id="fspt" value="${e?s.payment_terms||'':'"}"></div>
+    <div class="ff"><label>Condiciones Pago</label><input id="fspt" value="${e?s.payment_terms||'':''}"></div>
     <div class="ff"><label>Rating (1-5)</label><input id="fsrt" type="number" min="1" max="5" value="${e?s.rating||5:5}"></div>
-    <div class="ff s2"><label>Direccion</label><input id="fsad" value="${e?s.address||'':'"}"></div>
+    <div class="ff s2"><label>Direccion</label><input id="fsad" value="${e?s.address||'':''}"></div>
   </div>`,
   `<button class="btn btn-outline" onclick="closeModal()">Cancelar</button>
    <button class="btn btn-gold" onclick="saveSupplier(${e?`'${s.supplier_id}'`:'null'})">${e?'Guardar':'Agregar'}</button>`);
