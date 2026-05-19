@@ -1,0 +1,2515 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MRP Luminarias — Horus System Co.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Barlow+Condensed:wght@300;400;500;600;700&family=Barlow:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+/* ================================================
+   DESIGN TOKENS
+   ================================================ */
+:root {
+  --navy:       #0A2240;
+  --navy-mid:   #0E2E52;
+  --navy-light: #163A63;
+  --gold:       #C9A84C;
+  --gold-light: #DFC278;
+  --gold-dim:   #8A6F2E;
+  --white:      #F4F1EC;
+  --off:        #E2DDD3;
+  --muted:      #8A8A8A;
+  --danger:     #C0392B;
+  --success:    #1A7A4A;
+  --warn:       #B8860B;
+  --surface:    #0D2844;
+  --surface2:   #112F54;
+  --border:     rgba(201,168,76,0.18);
+  --border-soft: rgba(255,255,255,0.06);
+  --shadow:     0 4px 24px rgba(0,0,0,0.45);
+  --shadow-sm:  0 2px 8px rgba(0,0,0,0.3);
+  --radius:     3px;
+  --radius-lg:  6px;
+
+  --font-display: 'Cormorant Garamond', Georgia, serif;
+  --font-label:   'Barlow Condensed', sans-serif;
+  --font-body:    'Barlow', sans-serif;
+}
+
+/* ================================================
+   RESET & BASE
+   ================================================ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { font-size: 15px; }
+
+body {
+  font-family: var(--font-body);
+  background: var(--navy);
+  color: var(--white);
+  min-height: 100vh;
+  line-height: 1.5;
+  overflow-x: hidden;
+}
+
+::selection { background: var(--gold); color: var(--navy); }
+
+/* ================================================
+   LOGIN SCREEN
+   ================================================ */
+#login-screen {
+  position: fixed; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+  background: var(--navy);
+  z-index: 9999;
+  transition: opacity 0.4s ease;
+}
+
+#login-screen::before {
+  content: '';
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(ellipse 60% 50% at 20% 80%, rgba(201,168,76,0.06) 0%, transparent 60%),
+    radial-gradient(ellipse 50% 60% at 80% 20%, rgba(10,34,64,0.8) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.login-box {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  padding: 3rem 3.5rem;
+  width: 380px;
+  position: relative;
+  box-shadow: var(--shadow);
+}
+
+.login-box::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+}
+
+.login-wordmark {
+  font-family: var(--font-label);
+  font-size: 0.7rem;
+  letter-spacing: 0.2em;
+  color: var(--gold-dim);
+  text-transform: uppercase;
+  margin-bottom: 0.5rem;
+}
+
+.login-title {
+  font-family: var(--font-display);
+  font-size: 2rem;
+  font-weight: 600;
+  color: var(--white);
+  margin-bottom: 2.5rem;
+  line-height: 1.1;
+}
+
+.login-title span { color: var(--gold); }
+
+.field-group { margin-bottom: 1.25rem; }
+
+.field-group label {
+  display: block;
+  font-family: var(--font-label);
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 0.5rem;
+}
+
+.field-group input {
+  width: 100%;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.1);
+  color: var(--white);
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  padding: 0.65rem 0.9rem;
+  border-radius: var(--radius);
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.field-group input:focus { border-color: var(--gold); }
+
+.btn-primary {
+  width: 100%;
+  background: var(--gold);
+  color: var(--navy);
+  border: none;
+  font-family: var(--font-label);
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  padding: 0.8rem;
+  border-radius: var(--radius);
+  cursor: pointer;
+  margin-top: 0.5rem;
+  transition: background 0.2s, transform 0.1s;
+}
+
+.btn-primary:hover { background: var(--gold-light); }
+.btn-primary:active { transform: scale(0.99); }
+
+.login-error {
+  color: #e87070;
+  font-family: var(--font-label);
+  font-size: 0.78rem;
+  margin-top: 0.75rem;
+  display: none;
+  text-align: center;
+}
+
+/* ================================================
+   APP SHELL
+   ================================================ */
+#app {
+  display: none;
+  min-height: 100vh;
+}
+
+/* ================================================
+   SIDEBAR
+   ================================================ */
+.sidebar {
+  position: fixed; top: 0; left: 0; bottom: 0;
+  width: 220px;
+  background: var(--surface);
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  z-index: 100;
+}
+
+.sidebar-brand {
+  padding: 1.8rem 1.5rem 1.2rem;
+  border-bottom: 1px solid var(--border-soft);
+}
+
+.sidebar-wordmark {
+  font-family: var(--font-label);
+  font-size: 0.6rem;
+  letter-spacing: 0.2em;
+  color: var(--gold-dim);
+  text-transform: uppercase;
+  margin-bottom: 0.3rem;
+}
+
+.sidebar-title {
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: var(--white);
+  line-height: 1.1;
+}
+
+.sidebar-title span { color: var(--gold); }
+
+.sidebar-nav {
+  flex: 1;
+  padding: 1rem 0;
+  overflow-y: auto;
+}
+
+.nav-section-label {
+  font-family: var(--font-label);
+  font-size: 0.6rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--gold-dim);
+  padding: 0.8rem 1.5rem 0.4rem;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  padding: 0.6rem 1.5rem;
+  cursor: pointer;
+  transition: background 0.15s;
+  border-left: 2px solid transparent;
+  font-family: var(--font-label);
+  font-size: 0.9rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  color: rgba(244,241,236,0.6);
+  user-select: none;
+}
+
+.nav-item:hover {
+  background: rgba(255,255,255,0.04);
+  color: var(--white);
+}
+
+.nav-item.active {
+  border-left-color: var(--gold);
+  background: rgba(201,168,76,0.08);
+  color: var(--gold-light);
+}
+
+.nav-icon {
+  width: 16px; height: 16px;
+  flex-shrink: 0;
+  opacity: 0.7;
+}
+
+.nav-item.active .nav-icon { opacity: 1; }
+
+.nav-badge {
+  margin-left: auto;
+  background: var(--danger);
+  color: #fff;
+  font-size: 0.65rem;
+  font-weight: 700;
+  padding: 0.1rem 0.45rem;
+  border-radius: 20px;
+  font-family: var(--font-label);
+}
+
+.sidebar-footer {
+  padding: 1rem 1.5rem;
+  border-top: 1px solid var(--border-soft);
+}
+
+.user-pill {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.user-avatar {
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  background: var(--gold);
+  color: var(--navy);
+  font-family: var(--font-label);
+  font-weight: 700;
+  font-size: 0.8rem;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+
+.user-info { flex: 1; min-width: 0; }
+
+.user-name {
+  font-family: var(--font-label);
+  font-size: 0.82rem;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.user-role {
+  font-family: var(--font-label);
+  font-size: 0.65rem;
+  letter-spacing: 0.08em;
+  color: var(--gold-dim);
+  text-transform: uppercase;
+}
+
+.btn-logout {
+  background: none;
+  border: none;
+  color: rgba(244,241,236,0.4);
+  cursor: pointer;
+  padding: 0.2rem;
+  line-height: 0;
+  transition: color 0.2s;
+}
+
+.btn-logout:hover { color: var(--white); }
+
+/* ================================================
+   MAIN CONTENT
+   ================================================ */
+.main {
+  margin-left: 220px;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.topbar {
+  height: 58px;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border-soft);
+  display: flex;
+  align-items: center;
+  padding: 0 2rem;
+  gap: 1rem;
+  position: sticky; top: 0; z-index: 50;
+}
+
+.topbar-title {
+  font-family: var(--font-display);
+  font-size: 1.35rem;
+  font-weight: 500;
+  color: var(--white);
+  flex: 1;
+}
+
+.topbar-actions { display: flex; gap: 0.75rem; align-items: center; }
+
+.content-area {
+  flex: 1;
+  padding: 2rem;
+}
+
+/* ================================================
+   BUTTONS
+   ================================================ */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-family: var(--font-label);
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 0.55rem 1.1rem;
+  border-radius: var(--radius);
+  border: none;
+  cursor: pointer;
+  transition: all 0.15s;
+  white-space: nowrap;
+  line-height: 1;
+}
+
+.btn-gold {
+  background: var(--gold);
+  color: var(--navy);
+}
+.btn-gold:hover { background: var(--gold-light); }
+
+.btn-outline {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--off);
+}
+.btn-outline:hover {
+  border-color: var(--gold);
+  color: var(--gold-light);
+}
+
+.btn-danger {
+  background: rgba(192,57,43,0.15);
+  border: 1px solid rgba(192,57,43,0.4);
+  color: #e87070;
+}
+.btn-danger:hover { background: rgba(192,57,43,0.28); }
+
+.btn-sm { padding: 0.35rem 0.75rem; font-size: 0.72rem; }
+
+.btn-icon {
+  background: none;
+  border: none;
+  color: rgba(244,241,236,0.45);
+  cursor: pointer;
+  padding: 0.3rem;
+  line-height: 0;
+  border-radius: var(--radius);
+  transition: all 0.15s;
+}
+.btn-icon:hover { color: var(--gold-light); background: rgba(201,168,76,0.1); }
+
+/* ================================================
+   CARDS & PANELS
+   ================================================ */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius-lg);
+  padding: 1.5rem;
+}
+
+.card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.25rem;
+}
+
+.card-title {
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: var(--white);
+}
+
+.card-subtitle {
+  font-family: var(--font-label);
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-top: 0.15rem;
+}
+
+/* Stat cards */
+.stat-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1.75rem;
+}
+
+.stat-card {
+  background: var(--surface);
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius-lg);
+  padding: 1.25rem 1.5rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.stat-card::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 3px; height: 100%;
+  background: var(--gold);
+  opacity: 0.6;
+}
+
+.stat-label {
+  font-family: var(--font-label);
+  font-size: 0.68rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 0.5rem;
+}
+
+.stat-value {
+  font-family: var(--font-display);
+  font-size: 2rem;
+  font-weight: 600;
+  color: var(--white);
+  line-height: 1;
+}
+
+.stat-value.gold { color: var(--gold); }
+.stat-value.danger { color: #e87070; }
+
+.stat-sub {
+  font-family: var(--font-label);
+  font-size: 0.72rem;
+  color: var(--muted);
+  margin-top: 0.35rem;
+}
+
+/* ================================================
+   TABLE
+   ================================================ */
+.table-wrap {
+  overflow-x: auto;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-soft);
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.88rem;
+}
+
+thead tr {
+  background: var(--surface2);
+  border-bottom: 1px solid var(--border);
+}
+
+thead th {
+  font-family: var(--font-label);
+  font-size: 0.68rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--gold-dim);
+  padding: 0.75rem 1rem;
+  text-align: left;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+tbody tr {
+  border-bottom: 1px solid var(--border-soft);
+  transition: background 0.1s;
+}
+
+tbody tr:last-child { border-bottom: none; }
+tbody tr:hover { background: rgba(255,255,255,0.025); }
+
+tbody td {
+  padding: 0.75rem 1rem;
+  color: rgba(244,241,236,0.85);
+  font-family: var(--font-body);
+  vertical-align: middle;
+}
+
+td.mono {
+  font-family: 'Barlow Condensed', monospace;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  color: var(--gold-light);
+}
+
+/* ================================================
+   BADGES
+   ================================================ */
+.badge {
+  display: inline-block;
+  font-family: var(--font-label);
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 0.2rem 0.6rem;
+  border-radius: 20px;
+}
+
+.badge-ok      { background: rgba(26,122,74,0.2);  color: #5dd492; border: 1px solid rgba(26,122,74,0.3);  }
+.badge-warn    { background: rgba(184,134,11,0.2); color: #e6b84a; border: 1px solid rgba(184,134,11,0.3); }
+.badge-danger  { background: rgba(192,57,43,0.2);  color: #e87070; border: 1px solid rgba(192,57,43,0.3);  }
+.badge-muted   { background: rgba(255,255,255,0.05); color: var(--muted); border: 1px solid var(--border-soft); }
+.badge-gold    { background: rgba(201,168,76,0.15); color: var(--gold-light); border: 1px solid rgba(201,168,76,0.3); }
+
+/* ================================================
+   MODAL
+   ================================================ */
+.modal-overlay {
+  position: fixed; inset: 0;
+  background: rgba(5,15,30,0.8);
+  backdrop-filter: blur(4px);
+  z-index: 500;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+
+.modal-overlay.open { display: flex; }
+
+.modal {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  width: 100%;
+  max-width: 560px;
+  max-height: 90vh;
+  overflow-y: auto;
+  position: relative;
+  box-shadow: var(--shadow);
+  animation: modalIn 0.2s ease;
+}
+
+@keyframes modalIn {
+  from { opacity: 0; transform: translateY(-12px) scale(0.98); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.modal-header {
+  padding: 1.5rem 1.75rem 1rem;
+  border-bottom: 1px solid var(--border-soft);
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.modal-title {
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  font-weight: 500;
+}
+
+.modal-body { padding: 1.5rem 1.75rem; }
+
+.modal-footer {
+  padding: 1rem 1.75rem 1.5rem;
+  display: flex;
+  gap: 0.75rem;
+  justify-content: flex-end;
+}
+
+/* ================================================
+   FORM ELEMENTS
+   ================================================ */
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.form-grid .span-2 { grid-column: 1 / -1; }
+
+.form-field { display: flex; flex-direction: column; gap: 0.4rem; }
+
+.form-field label {
+  font-family: var(--font-label);
+  font-size: 0.68rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.form-field input,
+.form-field select,
+.form-field textarea {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.1);
+  color: var(--white);
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  padding: 0.6rem 0.85rem;
+  border-radius: var(--radius);
+  outline: none;
+  transition: border-color 0.2s;
+  width: 100%;
+}
+
+.form-field select option { background: var(--navy-mid); }
+
+.form-field input:focus,
+.form-field select:focus,
+.form-field textarea:focus { border-color: var(--gold); }
+
+.form-field textarea { resize: vertical; min-height: 80px; }
+
+/* ================================================
+   SEARCH / FILTER BAR
+   ================================================ */
+.filter-bar {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+  margin-bottom: 1.25rem;
+  flex-wrap: wrap;
+}
+
+.search-input {
+  background: var(--surface);
+  border: 1px solid var(--border-soft);
+  color: var(--white);
+  font-family: var(--font-body);
+  font-size: 0.88rem;
+  padding: 0.55rem 0.9rem;
+  border-radius: var(--radius);
+  outline: none;
+  width: 260px;
+  transition: border-color 0.2s;
+}
+
+.search-input:focus { border-color: var(--gold); }
+.search-input::placeholder { color: var(--muted); }
+
+/* ================================================
+   ALERT BANNER
+   ================================================ */
+.alert-banner {
+  background: rgba(192,57,43,0.12);
+  border: 1px solid rgba(192,57,43,0.3);
+  border-radius: var(--radius);
+  padding: 0.7rem 1rem;
+  font-family: var(--font-label);
+  font-size: 0.82rem;
+  color: #e87070;
+  margin-bottom: 1rem;
+}
+
+.alert-banner.warn {
+  background: rgba(184,134,11,0.1);
+  border-color: rgba(184,134,11,0.3);
+  color: #e6b84a;
+}
+
+/* ================================================
+   CHART MINI
+   ================================================ */
+.mini-chart {
+  display: flex;
+  align-items: flex-end;
+  gap: 3px;
+  height: 48px;
+}
+
+.chart-bar {
+  flex: 1;
+  background: rgba(201,168,76,0.35);
+  border-radius: 2px 2px 0 0;
+  min-height: 3px;
+  transition: background 0.2s;
+}
+
+.chart-bar:hover { background: var(--gold); }
+
+/* ================================================
+   LOADING
+   ================================================ */
+.loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  padding: 3rem;
+  color: var(--muted);
+  font-family: var(--font-label);
+  font-size: 0.82rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.spinner {
+  width: 20px; height: 20px;
+  border: 2px solid rgba(201,168,76,0.2);
+  border-top-color: var(--gold);
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ================================================
+   EMPTY STATE
+   ================================================ */
+.empty-state {
+  text-align: center;
+  padding: 4rem 2rem;
+  color: var(--muted);
+}
+
+.empty-state .empty-title {
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  color: rgba(244,241,236,0.4);
+  margin-bottom: 0.5rem;
+}
+
+.empty-state p {
+  font-family: var(--font-label);
+  font-size: 0.82rem;
+  letter-spacing: 0.06em;
+}
+
+/* ================================================
+   CONFIG SECTION (first-time setup)
+   ================================================ */
+#config-panel {
+  max-width: 620px;
+  margin: 0 auto;
+}
+
+.config-step {
+  display: flex;
+  gap: 1rem;
+  padding: 1.25rem 0;
+  border-bottom: 1px solid var(--border-soft);
+}
+
+.step-num {
+  font-family: var(--font-display);
+  font-size: 1.8rem;
+  font-weight: 600;
+  color: var(--gold);
+  opacity: 0.5;
+  min-width: 36px;
+  line-height: 1;
+}
+
+.step-content { flex: 1; }
+
+.step-title {
+  font-family: var(--font-label);
+  font-size: 0.9rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  margin-bottom: 0.4rem;
+}
+
+.step-desc {
+  font-size: 0.85rem;
+  color: rgba(244,241,236,0.6);
+  line-height: 1.5;
+}
+
+code {
+  background: rgba(201,168,76,0.1);
+  border: 1px solid rgba(201,168,76,0.2);
+  padding: 0.15rem 0.45rem;
+  border-radius: var(--radius);
+  font-family: monospace;
+  font-size: 0.85em;
+  color: var(--gold-light);
+  word-break: break-all;
+}
+
+/* ================================================
+   TABS
+   ================================================ */
+.tabs {
+  display: flex;
+  gap: 0;
+  border-bottom: 1px solid var(--border-soft);
+  margin-bottom: 1.5rem;
+}
+
+.tab-btn {
+  font-family: var(--font-label);
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 0.75rem 1.25rem;
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  color: var(--muted);
+  cursor: pointer;
+  transition: all 0.15s;
+  margin-bottom: -1px;
+}
+
+.tab-btn:hover { color: var(--white); }
+.tab-btn.active { color: var(--gold-light); border-bottom-color: var(--gold); }
+
+/* ================================================
+   PROJECTIONS
+   ================================================ */
+.proj-row-ok    td { }
+.proj-row-warn  td { background: rgba(184,134,11,0.04); }
+.proj-row-now   td { background: rgba(192,57,43,0.06); }
+.proj-row-out   td { background: rgba(192,57,43,0.1); }
+
+/* ================================================
+   PROGRESS BAR
+   ================================================ */
+.progress-bar {
+  height: 4px;
+  background: rgba(255,255,255,0.08);
+  border-radius: 2px;
+  overflow: hidden;
+  margin-top: 0.4rem;
+}
+
+.progress-fill {
+  height: 100%;
+  border-radius: 2px;
+  transition: width 0.6s ease;
+}
+
+.progress-fill.ok     { background: var(--success); }
+.progress-fill.warn   { background: var(--warn); }
+.progress-fill.danger { background: var(--danger); }
+
+/* ================================================
+   TOAST
+   ================================================ */
+#toast-container {
+  position: fixed;
+  bottom: 1.5rem; right: 1.5rem;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  pointer-events: none;
+}
+
+.toast {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 0.75rem 1.1rem;
+  font-family: var(--font-label);
+  font-size: 0.82rem;
+  letter-spacing: 0.05em;
+  box-shadow: var(--shadow);
+  animation: toastIn 0.25s ease;
+  max-width: 320px;
+}
+
+.toast.success { border-left: 3px solid var(--success); color: #5dd492; }
+.toast.error   { border-left: 3px solid var(--danger);  color: #e87070; }
+.toast.warn    { border-left: 3px solid var(--warn);    color: #e6b84a; }
+
+@keyframes toastIn {
+  from { opacity: 0; transform: translateX(16px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+/* ================================================
+   RESPONSIVE
+   ================================================ */
+@media (max-width: 768px) {
+  .sidebar { width: 100%; height: auto; position: relative; }
+  .main { margin-left: 0; }
+  .form-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- ================================================
+     LOGIN
+     ================================================ -->
+<div id="login-screen">
+  <div class="login-box">
+    <div class="login-wordmark">Horus System Co.</div>
+    <div class="login-title">MRP <span>Luminarias</span></div>
+    <div class="field-group">
+      <label>Usuario</label>
+      <input type="text" id="l-user" placeholder="usuario" autocomplete="username">
+    </div>
+    <div class="field-group">
+      <label>Contrasena</label>
+      <input type="password" id="l-pass" placeholder="••••••••" autocomplete="current-password">
+    </div>
+    <button class="btn-primary" onclick="doLogin()">Acceder</button>
+    <div class="login-error" id="login-err">Credenciales invalidas.</div>
+  </div>
+</div>
+
+<!-- ================================================
+     APP
+     ================================================ -->
+<div id="app">
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sidebar-brand">
+      <div class="sidebar-wordmark">Horus System Co.</div>
+      <div class="sidebar-title">MRP <span>Luminarias</span></div>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="nav-section-label">General</div>
+      <div class="nav-item active" onclick="navigate('dashboard')">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+        Tablero
+      </div>
+      <div class="nav-section-label">Inventario</div>
+      <div class="nav-item" onclick="navigate('parts')">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
+        Catalogo de Partes
+      </div>
+      <div class="nav-item" onclick="navigate('inventory')">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+        Inventario
+        <span class="nav-badge" id="nav-badge-inv" style="display:none">0</span>
+      </div>
+      <div class="nav-section-label">Operaciones</div>
+      <div class="nav-item" onclick="navigate('sales')">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+        Ordenes de Venta
+      </div>
+      <div class="nav-item" onclick="navigate('movements')">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>
+        Movimientos
+      </div>
+      <div class="nav-section-label">Planeacion</div>
+      <div class="nav-item" onclick="navigate('projections')">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+        Proyecciones MRP
+      </div>
+      <div class="nav-item" onclick="navigate('suppliers')">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+        Proveedores
+      </div>
+      <div class="nav-section-label">Sistema</div>
+      <div class="nav-item" onclick="navigate('users')">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        Usuarios
+      </div>
+      <div class="nav-item" onclick="navigate('config')">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93A10 10 0 0 0 4.93 4.93m14.14 14.14A10 10 0 0 1 4.93 19.07"/></svg>
+        Configuracion
+      </div>
+    </nav>
+    <div class="sidebar-footer">
+      <div class="user-pill">
+        <div class="user-avatar" id="user-avatar">A</div>
+        <div class="user-info">
+          <div class="user-name" id="user-name">Admin</div>
+          <div class="user-role" id="user-role">Administrador</div>
+        </div>
+        <button class="btn-logout" onclick="doLogout()" title="Cerrar sesion">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+        </button>
+      </div>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main">
+    <div class="topbar">
+      <div class="topbar-title" id="topbar-title">Tablero</div>
+      <div class="topbar-actions" id="topbar-actions"></div>
+    </div>
+    <div class="content-area" id="content-area">
+      <div class="loading"><div class="spinner"></div>Cargando...</div>
+    </div>
+  </main>
+</div>
+
+<!-- MODALS -->
+<div class="modal-overlay" id="modal-overlay">
+  <div class="modal" id="modal">
+    <div class="modal-header">
+      <div>
+        <div class="modal-title" id="modal-title"></div>
+      </div>
+      <button class="btn-icon" onclick="closeModal()">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <div class="modal-body" id="modal-body"></div>
+    <div class="modal-footer" id="modal-footer"></div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div id="toast-container"></div>
+
+<script>
+// ============================================================
+// CONFIG — Set your Apps Script URL here
+// ============================================================
+const CONFIG = {
+  // Replace with your deployed Apps Script URL
+  GAS_URL: localStorage.getItem('mrp_gas_url') || '',
+  VERSION: '1.0.0'
+};
+
+// ============================================================
+// STATE
+// ============================================================
+let STATE = {
+  user:      null,
+  page:      'dashboard',
+  parts:     [],
+  inventory: [],
+  sales:     [],
+  movements: [],
+  suppliers: [],
+  users:     [],
+  dashboard: null,
+  projections: []
+};
+
+// ============================================================
+// API LAYER — JSONP
+// ============================================================
+function api(params) {
+  return new Promise((resolve, reject) => {
+    if (!CONFIG.GAS_URL) {
+      reject(new Error('URL de Google Apps Script no configurada.'));
+      return;
+    }
+    const cbName = '_cb_' + Date.now() + '_' + Math.random().toString(36).slice(2);
+    const url = CONFIG.GAS_URL +
+      '?callback=' + cbName +
+      Object.entries(params).map(([k,v]) => '&' + encodeURIComponent(k) + '=' + encodeURIComponent(v)).join('');
+
+    let done = false;
+    const timeout = setTimeout(() => {
+      if (done) return;
+      done = true;
+      delete window[cbName];
+      reject(new Error('Timeout al conectar con el servidor.'));
+    }, 20000);
+
+    window[cbName] = (data) => {
+      if (done) return;
+      done = true;
+      clearTimeout(timeout);
+      const el = document.getElementById('script-' + cbName);
+      if (el) el.remove();
+      delete window[cbName];
+      resolve(data);
+    };
+
+    const script = document.createElement('script');
+    script.id = 'script-' + cbName;
+    script.src = url;
+    script.onerror = () => {
+      if (done) return;
+      done = true;
+      clearTimeout(timeout);
+      reject(new Error('Error de red al conectar con Google Apps Script.'));
+    };
+    document.head.appendChild(script);
+  });
+}
+
+// ============================================================
+// AUTH
+// ============================================================
+async function doLogin() {
+  const u = document.getElementById('l-user').value.trim();
+  const p = document.getElementById('l-pass').value;
+  const err = document.getElementById('login-err');
+  err.style.display = 'none';
+
+  if (!CONFIG.GAS_URL) {
+    // Demo mode — allow admin/admin123
+    if (u === 'admin' && p === 'admin123') {
+      loginSuccess({ username: 'admin', full_name: 'Administrador', role: 'admin' });
+    } else {
+      err.textContent = 'Sin URL configurada. Modo demo: admin / admin123';
+      err.style.display = 'block';
+    }
+    return;
+  }
+
+  try {
+    const res = await api({ action: 'validateUser', username: u, password: p });
+    if (res.success) {
+      loginSuccess(res.user);
+    } else {
+      err.textContent = res.error || 'Credenciales invalidas.';
+      err.style.display = 'block';
+    }
+  } catch(e) {
+    err.textContent = e.message;
+    err.style.display = 'block';
+  }
+}
+
+function loginSuccess(user) {
+  STATE.user = user;
+  localStorage.setItem('mrp_user', JSON.stringify(user));
+  document.getElementById('login-screen').style.opacity = '0';
+  setTimeout(() => {
+    document.getElementById('login-screen').style.display = 'none';
+    document.getElementById('app').style.display = 'flex';
+    document.getElementById('user-name').textContent = user.full_name || user.username;
+    document.getElementById('user-role').textContent = user.role;
+    document.getElementById('user-avatar').textContent = (user.full_name || user.username)[0].toUpperCase();
+    navigate('dashboard');
+  }, 350);
+}
+
+function doLogout() {
+  STATE.user = null;
+  localStorage.removeItem('mrp_user');
+  location.reload();
+}
+
+// ============================================================
+// NAVIGATION
+// ============================================================
+function navigate(page) {
+  STATE.page = page;
+  document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+  const titles = {
+    dashboard:   'Tablero de Control',
+    parts:       'Catalogo de Partes',
+    inventory:   'Inventario',
+    sales:       'Ordenes de Venta',
+    movements:   'Historial de Movimientos',
+    projections: 'Proyecciones MRP',
+    suppliers:   'Proveedores',
+    users:       'Gestion de Usuarios',
+    config:      'Configuracion del Sistema'
+  };
+  document.getElementById('topbar-title').textContent = titles[page] || page;
+  document.getElementById('topbar-actions').innerHTML = '';
+
+  // Activate nav item
+  const navMap = {
+    dashboard: 0, parts: 1, inventory: 2, sales: 3,
+    movements: 4, projections: 5, suppliers: 6, users: 7, config: 8
+  };
+
+  const items = document.querySelectorAll('.nav-item');
+  const idx   = navMap[page];
+  if (idx !== undefined && items[idx]) items[idx].classList.add('active');
+
+  const renders = {
+    dashboard:   renderDashboard,
+    parts:       renderParts,
+    inventory:   renderInventory,
+    sales:       renderSales,
+    movements:   renderMovements,
+    projections: renderProjections,
+    suppliers:   renderSuppliers,
+    users:       renderUsers,
+    config:      renderConfig
+  };
+
+  if (renders[page]) renders[page]();
+}
+
+// ============================================================
+// MODAL HELPERS
+// ============================================================
+function openModal(title, bodyHTML, footerHTML) {
+  document.getElementById('modal-title').textContent  = title;
+  document.getElementById('modal-body').innerHTML     = bodyHTML;
+  document.getElementById('modal-footer').innerHTML   = footerHTML;
+  document.getElementById('modal-overlay').classList.add('open');
+}
+
+function closeModal() {
+  document.getElementById('modal-overlay').classList.remove('open');
+}
+
+document.getElementById('modal-overlay').addEventListener('click', function(e) {
+  if (e.target === this) closeModal();
+});
+
+// ============================================================
+// TOAST
+// ============================================================
+function toast(msg, type = 'success') {
+  const el = document.createElement('div');
+  el.className = 'toast ' + type;
+  el.textContent = msg;
+  document.getElementById('toast-container').appendChild(el);
+  setTimeout(() => el.remove(), 3500);
+}
+
+// ============================================================
+// LOADING
+// ============================================================
+function setLoading() {
+  document.getElementById('content-area').innerHTML =
+    '<div class="loading"><div class="spinner"></div>Cargando datos...</div>';
+}
+
+// ============================================================
+// FORMAT HELPERS
+// ============================================================
+function fmtCurrency(n) {
+  return '$' + Number(n || 0).toLocaleString('es-MX', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+}
+
+function fmtDate(d) {
+  if (!d) return '—';
+  return String(d).split('T')[0];
+}
+
+function fmtNum(n) {
+  return Number(n || 0).toLocaleString('es-MX');
+}
+
+// ============================================================
+// DASHBOARD
+// ============================================================
+async function renderDashboard() {
+  setLoading();
+  try {
+    let data;
+    if (!CONFIG.GAS_URL) {
+      data = getDemoData();
+    } else {
+      const res = await api({ action: 'getDashboard' });
+      if (!res.success) throw new Error(res.error);
+      data = res.data;
+    }
+    STATE.dashboard = data;
+    updateAlertBadge(data.alerts_count);
+
+    const days   = Object.keys(data.sales_by_day || {}).sort().slice(-14);
+    const values = days.map(d => data.sales_by_day[d] || 0);
+    const maxV   = Math.max(...values, 1);
+
+    const chartBars = days.map((d, i) => {
+      const pct = Math.max(5, (values[i] / maxV) * 100);
+      return `<div class="chart-bar" style="height:${pct}%" title="${d}: ${fmtCurrency(values[i])}"></div>`;
+    }).join('');
+
+    const alertsHTML = (data.low_stock_parts || []).length > 0
+      ? `<div class="alert-banner">${data.alerts_count} parte(s) por debajo del punto de reorden. Revisa Proyecciones MRP.</div>`
+      : '';
+
+    const topPartsRows = (data.top_parts || []).map(p =>
+      `<tr><td class="mono">${p.part_number}</td><td>${fmtNum(p.qty_sold)} uds</td></tr>`
+    ).join('') || `<tr><td colspan="2" style="color:var(--muted);text-align:center;font-size:0.82rem;padding:1.5rem">Sin datos de ventas</td></tr>`;
+
+    document.getElementById('content-area').innerHTML = `
+      ${alertsHTML}
+      <div class="stat-grid">
+        <div class="stat-card">
+          <div class="stat-label">Partes en Catalogo</div>
+          <div class="stat-value">${fmtNum(data.total_parts)}</div>
+          <div class="stat-sub">Numeros de parte activos</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Valor de Inventario</div>
+          <div class="stat-value gold">${fmtCurrency(data.inventory_value)}</div>
+          <div class="stat-sub">Costo total en almacen</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Ventas — 30 dias</div>
+          <div class="stat-value gold">${fmtCurrency(data.revenue_30d)}</div>
+          <div class="stat-sub">${fmtNum(data.sales_30d_count)} ordenes</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Alertas de Stock</div>
+          <div class="stat-value ${data.alerts_count > 0 ? 'danger' : ''}">${data.alerts_count}</div>
+          <div class="stat-sub">Partes bajo reorden</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Proveedores Activos</div>
+          <div class="stat-value">${fmtNum(data.total_suppliers)}</div>
+          <div class="stat-sub">Registrados en sistema</div>
+        </div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:2fr 1fr;gap:1.25rem;margin-bottom:1.25rem">
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <div class="card-title">Ventas — Ultimos 14 dias</div>
+              <div class="card-subtitle">Ingresos por dia</div>
+            </div>
+          </div>
+          <div class="mini-chart" style="height:80px">${chartBars || '<div style="color:var(--muted);font-size:0.8rem;padding:1rem">Sin datos</div>'}</div>
+        </div>
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <div class="card-title">Top Partes</div>
+              <div class="card-subtitle">Por volumen de venta</div>
+            </div>
+          </div>
+          <table><tbody>${topPartsRows}</tbody></table>
+        </div>
+      </div>
+
+      ${(data.low_stock_parts || []).length > 0 ? `
+      <div class="card">
+        <div class="card-header">
+          <div>
+            <div class="card-title">Alertas de Reabastecimiento</div>
+            <div class="card-subtitle">Partes bajo punto de reorden</div>
+          </div>
+          <button class="btn btn-outline btn-sm" onclick="navigate('projections')">Ver proyecciones</button>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr>
+              <th>No. de Parte</th><th>Descripcion</th>
+              <th>Disponible</th><th>Punto de Reorden</th>
+            </tr></thead>
+            <tbody>
+              ${data.low_stock_parts.map(p => `
+                <tr>
+                  <td class="mono">${p.part_number}</td>
+                  <td>${p.description}</td>
+                  <td><span class="badge badge-danger">${fmtNum(p.qty_available)}</span></td>
+                  <td>${fmtNum(p.reorder_point)}</td>
+                </tr>`).join('')}
+            </tbody>
+          </table>
+        </div>
+      </div>` : ''}
+    `;
+  } catch(e) {
+    document.getElementById('content-area').innerHTML =
+      `<div class="alert-banner">${e.message}</div>` + renderConfigHint();
+  }
+}
+
+function getDemoData() {
+  return {
+    total_parts: 12, total_suppliers: 3, alerts_count: 2,
+    inventory_value: 284500, revenue_30d: 95200, sales_30d_count: 18,
+    sales_by_day: { '2025-01-01': 4500,'2025-01-02': 6200,'2025-01-03': 2100,
+      '2025-01-04': 8900,'2025-01-05': 3400,'2025-01-06': 7800,
+      '2025-01-07': 5100,'2025-01-08': 9200,'2025-01-09': 4800 },
+    top_parts: [
+      { part_number: 'LUM-LED-001', qty_sold: 145 },
+      { part_number: 'LUM-HID-002', qty_sold: 98 },
+      { part_number: 'DRIV-24V-01', qty_sold: 72 }
+    ],
+    low_stock_parts: [
+      { part_number: 'LUM-LED-001', description: 'Luminaria LED Industrial 150W', qty_available: 3, reorder_point: 10 },
+      { part_number: 'DRIV-24V-01', description: 'Driver 24V 350mA', qty_available: 0, reorder_point: 15 }
+    ]
+  };
+}
+
+function updateAlertBadge(n) {
+  const badge = document.getElementById('nav-badge-inv');
+  if (n > 0) {
+    badge.textContent = n;
+    badge.style.display = 'inline-block';
+  } else {
+    badge.style.display = 'none';
+  }
+}
+
+// ============================================================
+// PARTS
+// ============================================================
+async function renderParts() {
+  setLoading();
+  document.getElementById('topbar-actions').innerHTML =
+    `<button class="btn btn-gold" onclick="openPartModal()">+ Nueva Parte</button>`;
+
+  try {
+    let parts;
+    if (!CONFIG.GAS_URL) {
+      parts = getDemoParts();
+    } else {
+      const res = await api({ action: 'getParts' });
+      if (!res.success) throw new Error(res.error);
+      parts = res.data;
+    }
+    STATE.parts = parts;
+
+    const active = parts.filter(p => String(p.active) === 'true');
+    const rows   = active.map(p => `
+      <tr>
+        <td class="mono">${p.part_number || '—'}</td>
+        <td>${p.description || '—'}</td>
+        <td>${p.category || '—'}</td>
+        <td>${p.unit || 'pza'}</td>
+        <td>${fmtCurrency(p.unit_cost)}</td>
+        <td>${fmtNum(p.reorder_point)}</td>
+        <td>${fmtNum(p.reorder_qty)}</td>
+        <td>${p.lead_time_days || 0} dias</td>
+        <td>
+          <div style="display:flex;gap:0.4rem">
+            <button class="btn-icon" onclick="openPartModal(${JSON.stringify(p).split('"').join('&quot;')})" title="Editar">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+            </button>
+            <button class="btn-icon" onclick="confirmDeletePart('${p.part_id}')" title="Eliminar">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/></svg>
+            </button>
+          </div>
+        </td>
+      </tr>`).join('');
+
+    document.getElementById('content-area').innerHTML = `
+      <div class="filter-bar">
+        <input class="search-input" type="text" placeholder="Buscar por numero de parte o descripcion..." oninput="filterTable(this,'tbl-parts',0,1)">
+      </div>
+      <div class="table-wrap">
+        <table id="tbl-parts">
+          <thead><tr>
+            <th>No. de Parte</th><th>Descripcion</th><th>Categoria</th>
+            <th>Unidad</th><th>Costo Unit.</th>
+            <th>Punto Reorden</th><th>Qty Reorden</th>
+            <th>Lead Time</th><th>Acciones</th>
+          </tr></thead>
+          <tbody>${rows || '<tr><td colspan="9"><div class="empty-state"><div class="empty-title">Sin partes registradas</div><p>Agrega tu primer numero de parte.</p></div></td></tr>'}</tbody>
+        </table>
+      </div>
+    `;
+  } catch(e) {
+    document.getElementById('content-area').innerHTML = `<div class="alert-banner">${e.message}</div>`;
+  }
+}
+
+function getDemoParts() {
+  return [
+    { part_id:'PRT-1', part_number:'LUM-LED-001', description:'Luminaria LED Industrial 150W', category:'Luminarias', unit:'pza', unit_cost:1850, reorder_point:10, reorder_qty:30, lead_time_days:7, active:'true' },
+    { part_id:'PRT-2', part_number:'LUM-HID-002', description:'Luminaria HID 400W', category:'Luminarias', unit:'pza', unit_cost:2200, reorder_point:5, reorder_qty:15, lead_time_days:10, active:'true' },
+    { part_id:'PRT-3', part_number:'DRIV-24V-01', description:'Driver 24V 350mA', category:'Drivers', unit:'pza', unit_cost:380, reorder_point:15, reorder_qty:50, lead_time_days:5, active:'true' }
+  ];
+}
+
+function openPartModal(part) {
+  const isEdit = !!part;
+  const suppliers = STATE.suppliers || [];
+
+  const suppOpts = suppliers
+    .filter(s => String(s.active) !== 'false')
+    .map(s => `<option value="${s.supplier_id}" ${isEdit && part.supplier_id === s.supplier_id ? 'selected' : ''}>${s.name}</option>`)
+    .join('');
+
+  const body = `
+    <div class="form-grid">
+      <div class="form-field">
+        <label>Numero de Parte *</label>
+        <input id="f-pn" value="${isEdit ? part.part_number : ''}" placeholder="LUM-LED-001">
+      </div>
+      <div class="form-field">
+        <label>Categoria</label>
+        <input id="f-cat" value="${isEdit ? part.category : ''}" placeholder="Luminarias">
+      </div>
+      <div class="form-field span-2">
+        <label>Descripcion *</label>
+        <input id="f-desc" value="${isEdit ? part.description : ''}" placeholder="Luminaria LED Industrial 150W">
+      </div>
+      <div class="form-field">
+        <label>Unidad de Medida</label>
+        <select id="f-unit">
+          ${['pza','m','ml','kg','lt','caja','rollo'].map(u =>
+            `<option ${(isEdit ? part.unit : 'pza') === u ? 'selected' : ''}>${u}</option>`).join('')}
+        </select>
+      </div>
+      <div class="form-field">
+        <label>Costo Unitario (MXN)</label>
+        <input id="f-cost" type="number" step="0.01" value="${isEdit ? part.unit_cost : ''}" placeholder="0.00">
+      </div>
+      <div class="form-field">
+        <label>Punto de Reorden</label>
+        <input id="f-rp" type="number" value="${isEdit ? part.reorder_point : ''}" placeholder="10">
+      </div>
+      <div class="form-field">
+        <label>Cantidad a Pedir (Reorden)</label>
+        <input id="f-rq" type="number" value="${isEdit ? part.reorder_qty : ''}" placeholder="30">
+      </div>
+      <div class="form-field">
+        <label>Lead Time (dias)</label>
+        <input id="f-lt" type="number" value="${isEdit ? part.lead_time_days : ''}" placeholder="7">
+      </div>
+      <div class="form-field">
+        <label>Proveedor</label>
+        <select id="f-sup"><option value="">-- Sin asignar --</option>${suppOpts}</select>
+      </div>
+    </div>`;
+
+  const footer = `
+    <button class="btn btn-outline" onclick="closeModal()">Cancelar</button>
+    <button class="btn btn-gold" onclick="savePart(${isEdit ? `'${part.part_id}'` : 'null'})">${isEdit ? 'Guardar Cambios' : 'Agregar Parte'}</button>`;
+
+  openModal(isEdit ? 'Editar Parte' : 'Nueva Parte', body, footer);
+}
+
+async function savePart(partId) {
+  const params = {
+    part_number:    document.getElementById('f-pn').value.trim(),
+    description:    document.getElementById('f-desc').value.trim(),
+    category:       document.getElementById('f-cat').value.trim(),
+    unit:           document.getElementById('f-unit').value,
+    unit_cost:      document.getElementById('f-cost').value,
+    reorder_point:  document.getElementById('f-rp').value,
+    reorder_qty:    document.getElementById('f-rq').value,
+    lead_time_days: document.getElementById('f-lt').value,
+    supplier_id:    document.getElementById('f-sup').value,
+  };
+
+  if (!params.part_number || !params.description) {
+    toast('Numero de parte y descripcion son requeridos.', 'error'); return;
+  }
+
+  if (!CONFIG.GAS_URL) {
+    toast(partId ? 'Parte actualizada (demo).' : 'Parte agregada (demo).', 'success');
+    closeModal(); return;
+  }
+
+  try {
+    const action = partId ? 'updatePart' : 'addPart';
+    if (partId) params.part_id = partId;
+    const res = await api({ action, ...params });
+    if (!res.success) throw new Error(res.error);
+    toast(partId ? 'Parte actualizada.' : 'Parte agregada.', 'success');
+    closeModal();
+    renderParts();
+  } catch(e) {
+    toast(e.message, 'error');
+  }
+}
+
+async function confirmDeletePart(partId) {
+  if (!confirm('Desactivar esta parte del catalogo?')) return;
+  if (!CONFIG.GAS_URL) { toast('Eliminado (demo).', 'warn'); renderParts(); return; }
+  try {
+    const res = await api({ action: 'deletePart', part_id: partId });
+    if (!res.success) throw new Error(res.error);
+    toast('Parte desactivada.', 'warn');
+    renderParts();
+  } catch(e) { toast(e.message, 'error'); }
+}
+
+// ============================================================
+// INVENTORY
+// ============================================================
+async function renderInventory() {
+  setLoading();
+  document.getElementById('topbar-actions').innerHTML =
+    `<button class="btn btn-gold" onclick="openAdjustModal()">+ Ajuste de Inventario</button>`;
+
+  try {
+    let inv;
+    if (!CONFIG.GAS_URL) {
+      inv = getDemoInventory();
+    } else {
+      const res = await api({ action: 'getInventory' });
+      if (!res.success) throw new Error(res.error);
+      inv = res.data;
+    }
+    STATE.inventory = inv;
+    updateAlertBadge(inv.filter(i => i.below_reorder).length);
+
+    const rows = inv.map(i => {
+      const pct = i.reorder_point > 0
+        ? Math.min(100, (i.qty_available / (i.reorder_point * 3)) * 100) : 100;
+      const barClass = pct < 20 ? 'danger' : pct < 50 ? 'warn' : 'ok';
+
+      return `<tr>
+        <td class="mono">${i.part_number}</td>
+        <td>${i.description}</td>
+        <td style="text-align:right;font-weight:600">${fmtNum(i.qty_on_hand)}</td>
+        <td style="text-align:right">${fmtNum(i.qty_reserved)}</td>
+        <td style="text-align:right"><strong>${fmtNum(i.qty_available)}</strong></td>
+        <td>
+          <div style="min-width:80px">
+            <div style="font-size:0.75rem;color:var(--muted)">${fmtNum(i.reorder_point)} min</div>
+            <div class="progress-bar"><div class="progress-fill ${barClass}" style="width:${pct}%"></div></div>
+          </div>
+        </td>
+        <td>${fmtCurrency(i.unit_cost)}</td>
+        <td>${fmtCurrency((i.qty_on_hand || 0) * (i.unit_cost || 0))}</td>
+        <td><span class="badge ${i.below_reorder ? 'badge-danger' : 'badge-ok'}">${i.below_reorder ? 'Reordenar' : 'OK'}</span></td>
+        <td>
+          <button class="btn btn-outline btn-sm" onclick="openAdjustModal('${i.part_id}','${i.part_number}')">Ajustar</button>
+        </td>
+      </tr>`;
+    }).join('');
+
+    document.getElementById('content-area').innerHTML = `
+      <div class="filter-bar">
+        <input class="search-input" type="text" placeholder="Buscar numero de parte o descripcion..." oninput="filterTable(this,'tbl-inv',0,1)">
+      </div>
+      <div class="table-wrap">
+        <table id="tbl-inv">
+          <thead><tr>
+            <th>No. de Parte</th><th>Descripcion</th>
+            <th style="text-align:right">En Almacen</th>
+            <th style="text-align:right">Reservado</th>
+            <th style="text-align:right">Disponible</th>
+            <th>Nivel</th>
+            <th>Costo Unit.</th>
+            <th>Valor Total</th>
+            <th>Estado</th>
+            <th>Accion</th>
+          </tr></thead>
+          <tbody>${rows || '<tr><td colspan="10"><div class="empty-state"><div class="empty-title">Inventario vacio</div><p>Agrega partes al catalogo primero.</p></div></td></tr>'}</tbody>
+        </table>
+      </div>
+    `;
+  } catch(e) {
+    document.getElementById('content-area').innerHTML = `<div class="alert-banner">${e.message}</div>`;
+  }
+}
+
+function getDemoInventory() {
+  return [
+    { part_id:'PRT-1', part_number:'LUM-LED-001', description:'Luminaria LED Industrial 150W', qty_on_hand:3, qty_reserved:0, qty_available:3, reorder_point:10, unit_cost:1850, below_reorder:true },
+    { part_id:'PRT-2', part_number:'LUM-HID-002', description:'Luminaria HID 400W', qty_on_hand:22, qty_reserved:0, qty_available:22, reorder_point:5, unit_cost:2200, below_reorder:false },
+    { part_id:'PRT-3', part_number:'DRIV-24V-01', description:'Driver 24V 350mA', qty_on_hand:0, qty_reserved:0, qty_available:0, reorder_point:15, unit_cost:380, below_reorder:true }
+  ];
+}
+
+function openAdjustModal(partId, partNumber) {
+  const parts   = STATE.inventory || [];
+  const partOpts = parts.map(p =>
+    `<option value="${p.part_id}" data-pn="${p.part_number}" ${p.part_id === partId ? 'selected' : ''}>${p.part_number} — ${p.description}</option>`
+  ).join('');
+
+  const body = `
+    <div class="form-grid">
+      <div class="form-field span-2">
+        <label>Parte *</label>
+        <select id="f-aj-part">${partOpts}</select>
+      </div>
+      <div class="form-field">
+        <label>Tipo de Movimiento *</label>
+        <select id="f-aj-type">
+          <option value="ENTRADA">Entrada (compra/recepcion)</option>
+          <option value="SALIDA">Salida (consumo interno)</option>
+          <option value="ADJUSTMENT">Ajuste de inventario fisico</option>
+        </select>
+      </div>
+      <div class="form-field">
+        <label>Cantidad *</label>
+        <input id="f-aj-qty" type="number" step="0.01" min="0.01" placeholder="0">
+      </div>
+      <div class="form-field span-2">
+        <label>Notas</label>
+        <input id="f-aj-notes" placeholder="Descripcion del movimiento">
+      </div>
+    </div>`;
+
+  const footer = `
+    <button class="btn btn-outline" onclick="closeModal()">Cancelar</button>
+    <button class="btn btn-gold" onclick="saveAdjustment()">Registrar Movimiento</button>`;
+
+  openModal('Ajuste de Inventario', body, footer);
+}
+
+async function saveAdjustment() {
+  const partSel = document.getElementById('f-aj-part');
+  const partId  = partSel.value;
+  const partPN  = partSel.options[partSel.selectedIndex]?.dataset.pn || '';
+  const type    = document.getElementById('f-aj-type').value;
+  const qty     = parseFloat(document.getElementById('f-aj-qty').value);
+  const notes   = document.getElementById('f-aj-notes').value;
+
+  if (!partId || !qty || qty <= 0) { toast('Parte y cantidad son requeridos.', 'error'); return; }
+
+  const delta = type === 'SALIDA' ? -qty : qty;
+
+  if (!CONFIG.GAS_URL) {
+    toast('Movimiento registrado (demo).', 'success');
+    closeModal(); return;
+  }
+
+  try {
+    const res = await api({
+      action: 'adjustInventory',
+      part_id: partId, part_number: partPN,
+      qty_delta: delta, type, notes,
+      user: STATE.user?.username || 'admin'
+    });
+    if (!res.success) throw new Error(res.error);
+    toast('Movimiento registrado.', 'success');
+    closeModal();
+    renderInventory();
+  } catch(e) { toast(e.message, 'error'); }
+}
+
+// ============================================================
+// SALES
+// ============================================================
+async function renderSales() {
+  setLoading();
+  document.getElementById('topbar-actions').innerHTML =
+    `<button class="btn btn-gold" onclick="openSaleModal()">+ Nueva Orden de Venta</button>`;
+
+  try {
+    let sales, parts;
+    if (!CONFIG.GAS_URL) {
+      sales = getDemoSales();
+      parts = getDemoInventory();
+    } else {
+      const [sr, pr] = await Promise.all([
+        api({ action: 'getSales' }),
+        api({ action: 'getInventory' })
+      ]);
+      if (!sr.success) throw new Error(sr.error);
+      sales = sr.data;
+      parts = pr.data || [];
+    }
+    STATE.sales     = sales;
+    STATE.inventory = parts;
+
+    const statusBadge = s => {
+      if (s === 'cancelled') return '<span class="badge badge-danger">Cancelada</span>';
+      return '<span class="badge badge-ok">Activa</span>';
+    };
+
+    const rows = [...sales].reverse().map(s => `
+      <tr>
+        <td class="mono" style="font-size:0.75rem">${s.sale_id}</td>
+        <td>${fmtDate(s.sale_date)}</td>
+        <td>${s.customer_name}</td>
+        <td class="mono">${s.part_number}</td>
+        <td style="text-align:right">${fmtNum(s.qty)}</td>
+        <td style="text-align:right">${fmtCurrency(s.unit_price)}</td>
+        <td style="text-align:right"><strong>${fmtCurrency(s.total)}</strong></td>
+        <td>${statusBadge(s.status)}</td>
+        <td>${s.created_by || '—'}</td>
+        <td>
+          ${s.status !== 'cancelled' ? `
+            <button class="btn btn-danger btn-sm" onclick="cancelSale('${s.sale_id}')">Cancelar</button>
+          ` : '—'}
+        </td>
+      </tr>`).join('');
+
+    document.getElementById('content-area').innerHTML = `
+      <div class="filter-bar">
+        <input class="search-input" type="text" placeholder="Buscar por cliente, numero de parte..." oninput="filterTable(this,'tbl-sales',2,3)">
+      </div>
+      <div class="table-wrap">
+        <table id="tbl-sales">
+          <thead><tr>
+            <th>ID Venta</th><th>Fecha</th><th>Cliente</th>
+            <th>No. Parte</th>
+            <th style="text-align:right">Qty</th>
+            <th style="text-align:right">Precio Unit.</th>
+            <th style="text-align:right">Total</th>
+            <th>Estado</th><th>Usuario</th><th>Accion</th>
+          </tr></thead>
+          <tbody>${rows || '<tr><td colspan="10"><div class="empty-state"><div class="empty-title">Sin ordenes</div><p>Registra tu primera venta.</p></div></td></tr>'}</tbody>
+        </table>
+      </div>
+    `;
+  } catch(e) {
+    document.getElementById('content-area').innerHTML = `<div class="alert-banner">${e.message}</div>`;
+  }
+}
+
+function getDemoSales() {
+  return [
+    { sale_id:'SLE-001', sale_date:'2025-01-08', customer_name:'Constructora Norte', part_number:'LUM-LED-001', qty:10, unit_price:2200, total:22000, status:'active', created_by:'admin' },
+    { sale_id:'SLE-002', sale_date:'2025-01-05', customer_name:'Industrial Reynosa S.A.', part_number:'LUM-HID-002', qty:5, unit_price:2700, total:13500, status:'active', created_by:'admin' }
+  ];
+}
+
+function openSaleModal() {
+  const parts = STATE.inventory || [];
+  const partOpts = parts.map(p =>
+    `<option value="${p.part_id}" data-pn="${p.part_number}" data-desc="${p.description}" data-stock="${p.qty_available}">${p.part_number} — ${p.description} (${p.qty_available} disp.)</option>`
+  ).join('');
+
+  const body = `
+    <div class="form-grid">
+      <div class="form-field span-2">
+        <label>Parte *</label>
+        <select id="f-sv-part" onchange="onSalePartChange()">${partOpts}</select>
+      </div>
+      <div class="form-field">
+        <label>Cliente *</label>
+        <input id="f-sv-cust" placeholder="Nombre del cliente">
+      </div>
+      <div class="form-field">
+        <label>Contacto</label>
+        <input id="f-sv-contact" placeholder="Telefono o correo">
+      </div>
+      <div class="form-field">
+        <label>Cantidad *</label>
+        <input id="f-sv-qty" type="number" min="1" step="1" placeholder="0" oninput="updateSaleTotal()">
+      </div>
+      <div class="form-field">
+        <label>Precio Unitario (MXN) *</label>
+        <input id="f-sv-price" type="number" step="0.01" placeholder="0.00" oninput="updateSaleTotal()">
+      </div>
+      <div class="form-field">
+        <label>Fecha</label>
+        <input id="f-sv-date" type="date" value="${new Date().toISOString().split('T')[0]}">
+      </div>
+      <div class="form-field">
+        <label>Total</label>
+        <input id="f-sv-total" readonly placeholder="$0.00" style="color:var(--gold);font-weight:600">
+      </div>
+      <div class="form-field span-2">
+        <label>Notas</label>
+        <input id="f-sv-notes" placeholder="Observaciones opcionales">
+      </div>
+    </div>`;
+
+  const footer = `
+    <button class="btn btn-outline" onclick="closeModal()">Cancelar</button>
+    <button class="btn btn-gold" onclick="saveSale()">Registrar Venta</button>`;
+
+  openModal('Nueva Orden de Venta', body, footer);
+}
+
+function onSalePartChange() {}
+function updateSaleTotal() {
+  const q = parseFloat(document.getElementById('f-sv-qty')?.value) || 0;
+  const p = parseFloat(document.getElementById('f-sv-price')?.value) || 0;
+  const t = document.getElementById('f-sv-total');
+  if (t) t.value = fmtCurrency(q * p);
+}
+
+async function saveSale() {
+  const partSel = document.getElementById('f-sv-part');
+  const partId  = partSel.value;
+  const partPN  = partSel.options[partSel.selectedIndex]?.dataset.pn || '';
+  const desc    = partSel.options[partSel.selectedIndex]?.dataset.desc || '';
+  const cust    = document.getElementById('f-sv-cust').value.trim();
+  const qty     = parseFloat(document.getElementById('f-sv-qty').value);
+  const price   = parseFloat(document.getElementById('f-sv-price').value);
+  const date    = document.getElementById('f-sv-date').value;
+  const notes   = document.getElementById('f-sv-notes').value;
+  const contact = document.getElementById('f-sv-contact').value;
+
+  if (!cust || !qty || !price) { toast('Cliente, cantidad y precio son requeridos.', 'error'); return; }
+
+  if (!CONFIG.GAS_URL) {
+    toast('Venta registrada (demo).', 'success');
+    closeModal(); return;
+  }
+
+  try {
+    const res = await api({
+      action: 'addSale',
+      part_id: partId, part_number: partPN, description: desc,
+      customer_name: cust, customer_contact: contact,
+      qty, unit_price: price, sale_date: date, notes,
+      created_by: STATE.user?.username || 'admin'
+    });
+    if (!res.success) throw new Error(res.error);
+    toast('Venta registrada. Inventario actualizado.', 'success');
+    closeModal();
+    renderSales();
+  } catch(e) { toast(e.message, 'error'); }
+}
+
+async function cancelSale(saleId) {
+  if (!confirm('Cancelar esta orden? El stock sera devuelto al inventario.')) return;
+  if (!CONFIG.GAS_URL) { toast('Cancelada (demo).', 'warn'); renderSales(); return; }
+  try {
+    const res = await api({ action: 'cancelSale', sale_id: saleId, user: STATE.user?.username || 'admin' });
+    if (!res.success) throw new Error(res.error);
+    toast('Orden cancelada. Stock restaurado.', 'warn');
+    renderSales();
+  } catch(e) { toast(e.message, 'error'); }
+}
+
+// ============================================================
+// MOVEMENTS
+// ============================================================
+async function renderMovements() {
+  setLoading();
+  try {
+    let data;
+    if (!CONFIG.GAS_URL) {
+      data = getDemoMovements();
+    } else {
+      const res = await api({ action: 'getMovements', limit: 200 });
+      if (!res.success) throw new Error(res.error);
+      data = res.data;
+    }
+    STATE.movements = data;
+
+    const typeLabel = t => {
+      const m = { SALE:'badge-danger', ENTRADA:'badge-ok', SALIDA:'badge-warn', RETURN:'badge-gold', ADJUSTMENT:'badge-muted' };
+      return `<span class="badge ${m[t] || 'badge-muted'}">${t}</span>`;
+    };
+
+    const rows = data.map(m => `
+      <tr>
+        <td style="font-size:0.75rem;color:var(--muted)">${fmtDate(m.timestamp)}</td>
+        <td>${typeLabel(m.type)}</td>
+        <td class="mono">${m.part_number}</td>
+        <td style="text-align:right;color:${parseFloat(m.qty_delta) > 0 ? '#5dd492' : '#e87070'};font-weight:600">
+          ${parseFloat(m.qty_delta) > 0 ? '+' : ''}${fmtNum(m.qty_delta)}
+        </td>
+        <td style="text-align:right">${fmtNum(m.qty_before)}</td>
+        <td style="text-align:right">${fmtNum(m.qty_after)}</td>
+        <td style="font-size:0.8rem;color:var(--muted)">${m.reference_id || '—'}</td>
+        <td>${m.user || '—'}</td>
+        <td style="font-size:0.82rem;color:rgba(244,241,236,0.6)">${m.notes || '—'}</td>
+      </tr>`).join('');
+
+    document.getElementById('content-area').innerHTML = `
+      <div class="filter-bar">
+        <input class="search-input" type="text" placeholder="Buscar por numero de parte..." oninput="filterTable(this,'tbl-mov',2)">
+      </div>
+      <div class="table-wrap">
+        <table id="tbl-mov">
+          <thead><tr>
+            <th>Fecha/Hora</th><th>Tipo</th><th>No. Parte</th>
+            <th style="text-align:right">Delta</th>
+            <th style="text-align:right">Anterior</th>
+            <th style="text-align:right">Nuevo</th>
+            <th>Referencia</th><th>Usuario</th><th>Notas</th>
+          </tr></thead>
+          <tbody>${rows || '<tr><td colspan="9"><div class="empty-state"><div class="empty-title">Sin movimientos</div><p>Los movimientos apareceran aqui automaticamente.</p></div></td></tr>'}</tbody>
+        </table>
+      </div>
+    `;
+  } catch(e) {
+    document.getElementById('content-area').innerHTML = `<div class="alert-banner">${e.message}</div>`;
+  }
+}
+
+function getDemoMovements() {
+  return [
+    { timestamp:'2025-01-08T14:22:00', type:'SALE', part_number:'LUM-LED-001', qty_delta:-10, qty_before:13, qty_after:3, reference_id:'SLE-001', user:'admin', notes:'Sale to Constructora Norte' },
+    { timestamp:'2025-01-05T10:11:00', type:'SALE', part_number:'LUM-HID-002', qty_delta:-5, qty_before:27, qty_after:22, reference_id:'SLE-002', user:'admin', notes:'Sale to Industrial Reynosa' },
+    { timestamp:'2025-01-02T09:00:00', type:'ENTRADA', part_number:'LUM-LED-001', qty_delta:20, qty_before:0, qty_after:20, reference_id:'', user:'admin', notes:'Recepcion inicial' }
+  ];
+}
+
+// ============================================================
+// PROJECTIONS MRP
+// ============================================================
+async function renderProjections() {
+  setLoading();
+  try {
+    let data;
+    if (!CONFIG.GAS_URL) {
+      data = getDemoProjections();
+    } else {
+      const res = await api({ action: 'getProjections' });
+      if (!res.success) throw new Error(res.error);
+      data = res.data;
+    }
+    STATE.projections = data;
+
+    const statusMap = {
+      'OUT':          { badge: 'badge-danger', label: 'Sin stock' },
+      'REORDER_NOW':  { badge: 'badge-danger', label: 'Ordenar ya' },
+      'REORDER_SOON': { badge: 'badge-warn',   label: 'Ordenar pronto' },
+      'OK':           { badge: 'badge-ok',     label: 'OK' }
+    };
+
+    const rowClass = s => ({
+      OUT: 'proj-row-out', REORDER_NOW: 'proj-row-now', REORDER_SOON: 'proj-row-warn', OK: 'proj-row-ok'
+    })[s] || '';
+
+    const rows = data.map(p => {
+      const st = statusMap[p.status] || { badge: 'badge-muted', label: p.status };
+      return `<tr class="${rowClass(p.status)}">
+        <td class="mono">${p.part_number}</td>
+        <td>${p.description}</td>
+        <td style="text-align:right">${fmtNum(p.qty_available)}</td>
+        <td style="text-align:right">${fmtNum(p.reorder_point)}</td>
+        <td style="text-align:right">${p.velocity_per_day > 0 ? p.velocity_per_day + ' /dia' : '—'}</td>
+        <td style="text-align:right">${p.days_to_reorder !== null ? p.days_to_reorder + ' dias' : '—'}</td>
+        <td>${p.reorder_date || '—'}</td>
+        <td style="text-align:right">${p.days_to_stockout !== null ? p.days_to_stockout + ' dias' : '—'}</td>
+        <td>${p.stockout_date || '—'}</td>
+        <td style="text-align:right">${fmtNum(p.recommended_qty)}</td>
+        <td>${p.lead_time_days} dias</td>
+        <td><span class="badge ${st.badge}">${st.label}</span></td>
+      </tr>`;
+    }).join('');
+
+    const critCount  = data.filter(p => p.status === 'OUT' || p.status === 'REORDER_NOW').length;
+    const warnCount  = data.filter(p => p.status === 'REORDER_SOON').length;
+
+    document.getElementById('content-area').innerHTML = `
+      ${critCount > 0 ? `<div class="alert-banner">${critCount} parte(s) requieren orden inmediata.</div>` : ''}
+      ${warnCount > 0 ? `<div class="alert-banner warn">${warnCount} parte(s) tienen reorden en menos de 7 dias.</div>` : ''}
+
+      <div class="card" style="margin-bottom:1.25rem">
+        <div style="font-family:var(--font-label);font-size:0.75rem;color:var(--muted);line-height:1.7">
+          La velocidad de venta se calcula con los movimientos de los ultimos 30 dias. La fecha de reorden considera el punto de reorden y el lead time del proveedor. Si no hay historial de ventas, las columnas de proyeccion apareceran vacias.
+        </div>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead><tr>
+            <th>No. Parte</th><th>Descripcion</th>
+            <th style="text-align:right">Stock</th>
+            <th style="text-align:right">Min. Reorden</th>
+            <th style="text-align:right">Velocidad</th>
+            <th style="text-align:right">Dias a Reorden</th>
+            <th>Fecha Reorden</th>
+            <th style="text-align:right">Dias a Agotarse</th>
+            <th>Fecha Agotamiento</th>
+            <th style="text-align:right">Qty Sugerida</th>
+            <th>Lead Time</th>
+            <th>Estado</th>
+          </tr></thead>
+          <tbody>${rows || '<tr><td colspan="12"><div class="empty-state"><div class="empty-title">Sin datos</div></div></td></tr>'}</tbody>
+        </table>
+      </div>
+    `;
+  } catch(e) {
+    document.getElementById('content-area').innerHTML = `<div class="alert-banner">${e.message}</div>`;
+  }
+}
+
+function getDemoProjections() {
+  return [
+    { part_number:'LUM-LED-001', description:'Luminaria LED Industrial 150W', qty_available:3, reorder_point:10, velocity_per_day:0.48, days_to_reorder:0, reorder_date:'2025-01-09', days_to_stockout:6, stockout_date:'2025-01-15', recommended_qty:30, lead_time_days:7, status:'REORDER_NOW' },
+    { part_number:'LUM-HID-002', description:'Luminaria HID 400W', qty_available:22, reorder_point:5, velocity_per_day:0.18, days_to_reorder:94, reorder_date:'2025-04-13', days_to_stockout:122, stockout_date:'2025-05-11', recommended_qty:15, lead_time_days:10, status:'OK' },
+    { part_number:'DRIV-24V-01', description:'Driver 24V 350mA', qty_available:0, reorder_point:15, velocity_per_day:0.27, days_to_reorder:0, reorder_date:'2025-01-09', days_to_stockout:0, stockout_date:'2025-01-09', recommended_qty:50, lead_time_days:5, status:'OUT' }
+  ];
+}
+
+// ============================================================
+// SUPPLIERS
+// ============================================================
+async function renderSuppliers() {
+  setLoading();
+  document.getElementById('topbar-actions').innerHTML =
+    `<button class="btn btn-gold" onclick="openSupplierModal()">+ Nuevo Proveedor</button>`;
+
+  try {
+    let data;
+    if (!CONFIG.GAS_URL) {
+      data = getDemoSuppliers();
+    } else {
+      const res = await api({ action: 'getSuppliers' });
+      if (!res.success) throw new Error(res.error);
+      data = res.data;
+    }
+    STATE.suppliers = data;
+
+    const active = data.filter(s => String(s.active) !== 'false');
+    const rows   = active.map(s => `
+      <tr>
+        <td style="font-weight:600">${s.name}</td>
+        <td>${s.contact_name || '—'}</td>
+        <td>${s.phone || '—'}</td>
+        <td>${s.email || '—'}</td>
+        <td style="text-align:right">${s.lead_time_days || 0} dias</td>
+        <td>${s.payment_terms || '—'}</td>
+        <td>
+          <div style="display:flex;gap:0.4rem">
+            <button class="btn-icon" onclick="openSupplierModal(${JSON.stringify(s).split('"').join('&quot;')})" title="Editar">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+            </button>
+            <button class="btn-icon" onclick="confirmDeleteSupplier('${s.supplier_id}')">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg>
+            </button>
+          </div>
+        </td>
+      </tr>`).join('');
+
+    document.getElementById('content-area').innerHTML = `
+      <div class="table-wrap">
+        <table>
+          <thead><tr>
+            <th>Proveedor</th><th>Contacto</th><th>Telefono</th>
+            <th>Correo</th><th style="text-align:right">Lead Time</th>
+            <th>Condiciones</th><th>Acciones</th>
+          </tr></thead>
+          <tbody>${rows || '<tr><td colspan="7"><div class="empty-state"><div class="empty-title">Sin proveedores</div></div></td></tr>'}</tbody>
+        </table>
+      </div>
+    `;
+  } catch(e) {
+    document.getElementById('content-area').innerHTML = `<div class="alert-banner">${e.message}</div>`;
+  }
+}
+
+function getDemoSuppliers() {
+  return [
+    { supplier_id:'SUP-1', name:'Electrico del Norte S.A.', contact_name:'Carlos Vega', phone:'8991234567', email:'ventas@electricodelnorte.mx', lead_time_days:7, payment_terms:'30 dias', active:'true' },
+    { supplier_id:'SUP-2', name:'Philips Lighting Mexico', contact_name:'Ana Reyes', phone:'8008884567', email:'reyes@philips.com', lead_time_days:14, payment_terms:'Contado', active:'true' }
+  ];
+}
+
+function openSupplierModal(s) {
+  const isEdit = !!s;
+  const body = `
+    <div class="form-grid">
+      <div class="form-field span-2">
+        <label>Nombre del Proveedor *</label>
+        <input id="f-sp-name" value="${isEdit ? s.name : ''}" placeholder="Nombre de la empresa">
+      </div>
+      <div class="form-field">
+        <label>Nombre de Contacto</label>
+        <input id="f-sp-cn" value="${isEdit ? s.contact_name : ''}" placeholder="Nombre completo">
+      </div>
+      <div class="form-field">
+        <label>Telefono</label>
+        <input id="f-sp-ph" value="${isEdit ? s.phone : ''}" placeholder="899 000 0000">
+      </div>
+      <div class="form-field">
+        <label>Correo Electronico</label>
+        <input id="f-sp-em" value="${isEdit ? s.email : ''}" type="email" placeholder="contacto@proveedor.com">
+      </div>
+      <div class="form-field">
+        <label>Lead Time (dias) *</label>
+        <input id="f-sp-lt" type="number" value="${isEdit ? s.lead_time_days : ''}" placeholder="7">
+      </div>
+      <div class="form-field span-2">
+        <label>Condiciones de Pago</label>
+        <input id="f-sp-pt" value="${isEdit ? s.payment_terms : ''}" placeholder="30 dias, contado, etc.">
+      </div>
+      <div class="form-field span-2">
+        <label>Notas</label>
+        <textarea id="f-sp-notes">${isEdit ? s.notes || '' : ''}</textarea>
+      </div>
+    </div>`;
+
+  const footer = `
+    <button class="btn btn-outline" onclick="closeModal()">Cancelar</button>
+    <button class="btn btn-gold" onclick="saveSupplier(${isEdit ? `'${s.supplier_id}'` : 'null'})">${isEdit ? 'Guardar' : 'Agregar'}</button>`;
+
+  openModal(isEdit ? 'Editar Proveedor' : 'Nuevo Proveedor', body, footer);
+}
+
+async function saveSupplier(supId) {
+  const params = {
+    name:          document.getElementById('f-sp-name').value.trim(),
+    contact_name:  document.getElementById('f-sp-cn').value.trim(),
+    phone:         document.getElementById('f-sp-ph').value.trim(),
+    email:         document.getElementById('f-sp-em').value.trim(),
+    lead_time_days:document.getElementById('f-sp-lt').value,
+    payment_terms: document.getElementById('f-sp-pt').value.trim(),
+    notes:         document.getElementById('f-sp-notes').value.trim()
+  };
+  if (!params.name) { toast('El nombre es requerido.', 'error'); return; }
+
+  if (!CONFIG.GAS_URL) { toast('Guardado (demo).', 'success'); closeModal(); return; }
+
+  try {
+    const action = supId ? 'updateSupplier' : 'addSupplier';
+    if (supId) params.supplier_id = supId;
+    const res = await api({ action, ...params });
+    if (!res.success) throw new Error(res.error);
+    toast(supId ? 'Proveedor actualizado.' : 'Proveedor agregado.', 'success');
+    closeModal();
+    renderSuppliers();
+  } catch(e) { toast(e.message, 'error'); }
+}
+
+async function confirmDeleteSupplier(id) {
+  if (!confirm('Desactivar este proveedor?')) return;
+  if (!CONFIG.GAS_URL) { toast('Eliminado (demo).', 'warn'); renderSuppliers(); return; }
+  try {
+    const res = await api({ action: 'deleteSupplier', supplier_id: id });
+    if (!res.success) throw new Error(res.error);
+    toast('Proveedor desactivado.', 'warn');
+    renderSuppliers();
+  } catch(e) { toast(e.message, 'error'); }
+}
+
+// ============================================================
+// USERS
+// ============================================================
+async function renderUsers() {
+  if (STATE.user?.role !== 'admin') {
+    document.getElementById('content-area').innerHTML = '<div class="alert-banner">Acceso restringido a administradores.</div>';
+    return;
+  }
+
+  setLoading();
+  document.getElementById('topbar-actions').innerHTML =
+    `<button class="btn btn-gold" onclick="openUserModal()">+ Nuevo Usuario</button>`;
+
+  try {
+    let data;
+    if (!CONFIG.GAS_URL) {
+      data = [{ user_id:'USR-1', username:'admin', full_name:'Administrador', role:'admin', email:'', active:true }];
+    } else {
+      const res = await api({ action: 'getUsers' });
+      if (!res.success) throw new Error(res.error);
+      data = res.data;
+    }
+
+    const roleBadge = r => ({
+      admin:    '<span class="badge badge-gold">Admin</span>',
+      vendedor: '<span class="badge badge-ok">Vendedor</span>',
+      almacen:  '<span class="badge badge-muted">Almacen</span>'
+    }[r] || `<span class="badge badge-muted">${r}</span>`);
+
+    const rows = data.map(u => `
+      <tr>
+        <td><strong>${u.full_name}</strong></td>
+        <td class="mono">${u.username}</td>
+        <td>${roleBadge(u.role)}</td>
+        <td>${u.email || '—'}</td>
+        <td><span class="badge ${String(u.active) !== 'false' ? 'badge-ok' : 'badge-danger'}">${String(u.active) !== 'false' ? 'Activo' : 'Inactivo'}</span></td>
+        <td>
+          <button class="btn btn-outline btn-sm" onclick="openUserModal(${JSON.stringify(u).split('"').join('&quot;')})">Editar</button>
+        </td>
+      </tr>`).join('');
+
+    document.getElementById('content-area').innerHTML = `
+      <div class="table-wrap">
+        <table>
+          <thead><tr>
+            <th>Nombre</th><th>Usuario</th><th>Rol</th>
+            <th>Correo</th><th>Estado</th><th>Acciones</th>
+          </tr></thead>
+          <tbody>${rows}</tbody>
+        </table>
+      </div>
+    `;
+  } catch(e) {
+    document.getElementById('content-area').innerHTML = `<div class="alert-banner">${e.message}</div>`;
+  }
+}
+
+function openUserModal(u) {
+  const isEdit = !!u;
+  const body = `
+    <div class="form-grid">
+      <div class="form-field">
+        <label>Nombre Completo *</label>
+        <input id="f-us-fn" value="${isEdit ? u.full_name : ''}">
+      </div>
+      <div class="form-field">
+        <label>Nombre de Usuario *</label>
+        <input id="f-us-un" value="${isEdit ? u.username : ''}" ${isEdit ? 'readonly' : ''}>
+      </div>
+      <div class="form-field">
+        <label>Contrasena ${isEdit ? '(dejar vacio = sin cambio)' : '*'}</label>
+        <input id="f-us-pw" type="password" placeholder="••••••••">
+      </div>
+      <div class="form-field">
+        <label>Rol *</label>
+        <select id="f-us-role">
+          ${['admin','vendedor','almacen'].map(r =>
+            `<option ${(isEdit ? u.role : '') === r ? 'selected' : ''}>${r}</option>`).join('')}
+        </select>
+      </div>
+      <div class="form-field span-2">
+        <label>Correo Electronico</label>
+        <input id="f-us-em" type="email" value="${isEdit ? u.email || '' : ''}">
+      </div>
+    </div>`;
+
+  const footer = `
+    <button class="btn btn-outline" onclick="closeModal()">Cancelar</button>
+    <button class="btn btn-gold" onclick="saveUser(${isEdit ? `'${u.user_id}'` : 'null'})">${isEdit ? 'Guardar' : 'Crear Usuario'}</button>`;
+
+  openModal(isEdit ? 'Editar Usuario' : 'Nuevo Usuario', body, footer);
+}
+
+async function saveUser(userId) {
+  const params = {
+    full_name: document.getElementById('f-us-fn').value.trim(),
+    username:  document.getElementById('f-us-un').value.trim(),
+    password:  document.getElementById('f-us-pw').value,
+    role:      document.getElementById('f-us-role').value,
+    email:     document.getElementById('f-us-em').value.trim()
+  };
+  if (!params.full_name || !params.username) { toast('Nombre y usuario son requeridos.', 'error'); return; }
+  if (!userId && !params.password) { toast('La contrasena es requerida para nuevos usuarios.', 'error'); return; }
+
+  if (!CONFIG.GAS_URL) { toast('Guardado (demo).', 'success'); closeModal(); return; }
+
+  try {
+    const action = userId ? 'updateUser' : 'addUser';
+    if (userId) params.user_id = userId;
+    const res = await api({ action, ...params });
+    if (!res.success) throw new Error(res.error);
+    toast(userId ? 'Usuario actualizado.' : 'Usuario creado.', 'success');
+    closeModal();
+    renderUsers();
+  } catch(e) { toast(e.message, 'error'); }
+}
+
+// ============================================================
+// CONFIG
+// ============================================================
+function renderConfig() {
+  document.getElementById('content-area').innerHTML = `
+    <div id="config-panel">
+      <div class="card" style="margin-bottom:1.5rem">
+        <div class="card-header">
+          <div>
+            <div class="card-title">Configuracion del Sistema</div>
+            <div class="card-subtitle">Conexion con Google Sheets</div>
+          </div>
+        </div>
+
+        <div class="form-field" style="margin-bottom:1.25rem">
+          <label>URL de Google Apps Script (Deployed Web App)</label>
+          <input id="cfg-url" value="${CONFIG.GAS_URL}" placeholder="https://script.google.com/macros/s/XXXXXX/exec"
+            style="font-family:monospace;font-size:0.82rem">
+        </div>
+        <div style="display:flex;gap:0.75rem">
+          <button class="btn btn-gold" onclick="saveConfig()">Guardar y Conectar</button>
+          <button class="btn btn-outline" onclick="testConnection()">Probar Conexion</button>
+        </div>
+        <div id="cfg-msg" style="margin-top:0.75rem;font-family:var(--font-label);font-size:0.8rem"></div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">Instrucciones de Despliegue</div>
+        </div>
+        <div class="config-step">
+          <div class="step-num">1</div>
+          <div class="step-content">
+            <div class="step-title">Crear Google Sheet</div>
+            <div class="step-desc">Crea una nueva hoja de calculo en Google Drive. Puede estar en blanco — el sistema inicializara las hojas automaticamente.</div>
+          </div>
+        </div>
+        <div class="config-step">
+          <div class="step-num">2</div>
+          <div class="step-content">
+            <div class="step-title">Agregar el Apps Script</div>
+            <div class="step-desc">En la hoja, ve a <strong>Extensiones → Apps Script</strong>. Borra el contenido predeterminado y pega el archivo <code>Code.gs</code> del repositorio.</div>
+          </div>
+        </div>
+        <div class="config-step">
+          <div class="step-num">3</div>
+          <div class="step-content">
+            <div class="step-title">Inicializar las hojas</div>
+            <div class="step-desc">En el editor de Apps Script, selecciona la funcion <code>setupSheets</code> y ejecutala. Esto creara las 6 hojas con sus columnas y el usuario admin inicial.</div>
+          </div>
+        </div>
+        <div class="config-step">
+          <div class="step-num">4</div>
+          <div class="step-content">
+            <div class="step-title">Desplegar como Web App</div>
+            <div class="step-desc">Haz clic en <strong>Implementar → Nueva implementacion → Aplicacion web</strong>. Ejecutar como: <em>Yo mismo</em>. Quienes tienen acceso: <em>Cualquier persona</em>. Copia la URL generada.</div>
+          </div>
+        </div>
+        <div class="config-step" style="border-bottom:none">
+          <div class="step-num">5</div>
+          <div class="step-content">
+            <div class="step-title">Pegar la URL arriba</div>
+            <div class="step-desc">Pega la URL del Web App en el campo de configuracion, guarda y prueba la conexion. Usuario inicial: <code>admin</code> / Contrasena: <code>admin123</code> (cambiar inmediatamente).</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" style="margin-top:1.25rem">
+        <div class="card-header">
+          <div class="card-title">Informacion del Sistema</div>
+        </div>
+        <table>
+          <tbody>
+            <tr><td style="color:var(--muted);width:160px">Version</td><td>${CONFIG.VERSION}</td></tr>
+            <tr><td style="color:var(--muted)">Usuario activo</td><td>${STATE.user?.full_name || '—'} (${STATE.user?.role || '—'})</td></tr>
+            <tr><td style="color:var(--muted)">Modo</td><td>${CONFIG.GAS_URL ? 'Conectado a Google Sheets' : 'Demo (sin backend)'}</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  `;
+}
+
+function saveConfig() {
+  const url = document.getElementById('cfg-url').value.trim();
+  CONFIG.GAS_URL = url;
+  localStorage.setItem('mrp_gas_url', url);
+  toast('Configuracion guardada.', 'success');
+  testConnection();
+}
+
+async function testConnection() {
+  const msg = document.getElementById('cfg-msg');
+  if (!CONFIG.GAS_URL) { msg.style.color = '#e87070'; msg.textContent = 'Sin URL configurada.'; return; }
+  msg.style.color = 'var(--muted)';
+  msg.textContent = 'Probando conexion...';
+  try {
+    const res = await api({ action: 'getDashboard' });
+    if (res.success) {
+      msg.style.color = '#5dd492';
+      msg.textContent = 'Conexion exitosa. Base de datos respondio correctamente.';
+    } else {
+      throw new Error(res.error);
+    }
+  } catch(e) {
+    msg.style.color = '#e87070';
+    msg.textContent = 'Error: ' + e.message;
+  }
+}
+
+function renderConfigHint() {
+  return `<div class="card" style="margin-top:1rem">
+    <div class="card-title" style="margin-bottom:0.5rem">Modo Demo</div>
+    <p style="font-size:0.85rem;color:rgba(244,241,236,0.6)">El sistema esta funcionando en modo demo sin backend. Configura la URL de Google Apps Script en <strong>Configuracion</strong> para activar la persistencia real.</p>
+    <button class="btn btn-outline" style="margin-top:1rem" onclick="navigate('config')">Ir a Configuracion</button>
+  </div>`;
+}
+
+// ============================================================
+// TABLE FILTER
+// ============================================================
+function filterTable(input, tableId, ...cols) {
+  const q    = input.value.toLowerCase();
+  const rows = document.querySelectorAll(`#${tableId} tbody tr`);
+  rows.forEach(row => {
+    const cells = row.querySelectorAll('td');
+    const match = cols.some(c => cells[c]?.textContent.toLowerCase().includes(q));
+    row.style.display = (!q || match) ? '' : 'none';
+  });
+}
+
+// ============================================================
+// INIT
+// ============================================================
+document.getElementById('l-pass').addEventListener('keydown', e => {
+  if (e.key === 'Enter') doLogin();
+});
+
+// Auto-restore session
+const savedUser = localStorage.getItem('mrp_user');
+if (savedUser) {
+  try {
+    const u = JSON.parse(savedUser);
+    loginSuccess(u);
+  } catch(e) { /* start fresh */ }
+}
+</script>
+</body>
+</html>
