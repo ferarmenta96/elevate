@@ -216,6 +216,7 @@ th.r,td.r{text-align:right;}
 .loading{display:flex;align-items:center;justify-content:center;gap:0.55rem;padding:3rem;color:var(--muted);font-family:var(--font-label);font-size:0.8rem;letter-spacing:0.1em;text-transform:uppercase;}
 .spinner{width:18px;height:18px;border:2px solid rgba(201,168,76,0.18);border-top-color:var(--gold);border-radius:50%;animation:spin 0.7s linear infinite;}
 @keyframes spin{to{transform:rotate(360deg);}}
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:0.35;}}
 .empty-state{text-align:center;padding:3.5rem 2rem;color:var(--muted);}
 .empty-title{font-family:var(--font-display);font-size:1.3rem;color:rgba(244,241,236,0.35);margin-bottom:0.4rem;}
 .empty-state p{font-family:var(--font-label);font-size:0.8rem;letter-spacing:0.05em;}
@@ -282,19 +283,36 @@ code{background:rgba(201,168,76,0.09);border:1px solid rgba(201,168,76,0.18);pad
   <div class="login-box">
     <div class="login-wordmark">Horus System Co.</div>
     <div class="login-title">MRP <span>Luminarias</span></div>
+
+    <!-- Estado de conexion -->
+    <div id="conn-status" style="display:flex;align-items:center;gap:0.5rem;margin-bottom:1.5rem;font-family:var(--font-label);font-size:0.68rem;letter-spacing:0.08em;color:var(--muted)">
+      <div id="conn-dot" style="width:7px;height:7px;border-radius:50%;background:var(--warn);flex-shrink:0;animation:pulse 1s infinite"></div>
+      <span id="conn-label">Verificando conexion...</span>
+    </div>
+
     <div class="field-group">
       <label>Usuario</label>
-      <input type="text" id="l-user" placeholder="usuario" autocomplete="username">
+      <input type="text" id="l-user" placeholder="admin" autocomplete="username">
     </div>
     <div class="field-group">
       <label>Contrasena</label>
       <input type="password" id="l-pass" placeholder="••••••••" autocomplete="current-password">
     </div>
-    <button class="btn-primary" onclick="doLogin()">Acceder al Sistema</button>
-    <div class="login-error" id="login-err">Credenciales invalidas.</div>
-    <div id="setup-hint" style="display:none;margin-top:1rem;padding:0.85rem;background:rgba(201,168,76,0.08);border:1px solid rgba(201,168,76,0.2);border-radius:var(--radius)">
-      <div style="font-family:var(--font-label);font-size:0.72rem;color:var(--gold-dim);margin-bottom:0.5rem">PRIMER ACCESO — Las hojas del sistema no estan inicializadas aun.</div>
-      <button id="setup-btn" onclick="runSetup()" style="width:100%;background:transparent;border:1px solid var(--gold);color:var(--gold);font-family:var(--font-label);font-size:0.78rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;padding:0.55rem;border-radius:var(--radius);cursor:pointer;transition:all 0.2s" onmouseover="this.style.background='rgba(201,168,76,0.12)'" onmouseout="this.style.background='transparent'">Inicializar Sistema</button>
+    <button class="btn-primary" id="login-btn" onclick="doLogin()">Acceder al Sistema</button>
+    <div class="login-error" id="login-err" style="display:none"></div>
+
+    <!-- Setup panel — visible cuando hay error o primer acceso -->
+    <div id="setup-panel" style="display:none;margin-top:1rem;border:1px solid rgba(201,168,76,0.25);border-radius:var(--radius);overflow:hidden">
+      <div style="background:rgba(201,168,76,0.08);padding:0.55rem 0.85rem;font-family:var(--font-label);font-size:0.65rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold-dim)">Configuracion inicial del sistema</div>
+      <div style="padding:0.75rem 0.85rem">
+        <p style="font-family:var(--font-label);font-size:0.75rem;color:rgba(244,241,236,0.5);margin-bottom:0.65rem;line-height:1.5">Si es la primera vez o acabas de pegar el Code.gs en el Apps Script, debes inicializar las hojas de Google Sheets.</p>
+        <button id="setup-btn" onclick="runSetup()" style="width:100%;background:transparent;border:1px solid var(--gold);color:var(--gold);font-family:var(--font-label);font-size:0.78rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;padding:0.6rem;border-radius:var(--radius);cursor:pointer;transition:all 0.2s">Inicializar Sistema</button>
+        <div id="setup-msg" style="font-family:var(--font-label);font-size:0.75rem;margin-top:0.5rem;text-align:center;min-height:1rem"></div>
+      </div>
+    </div>
+
+    <div style="margin-top:0.8rem;text-align:center">
+      <button onclick="document.getElementById('setup-panel').style.display=document.getElementById('setup-panel').style.display==='none'?'block':'none'" style="background:none;border:none;color:var(--muted);font-family:var(--font-label);font-size:0.65rem;cursor:pointer;letter-spacing:0.08em;text-decoration:underline;text-underline-offset:3px">Primer acceso / Inicializar sistema</button>
     </div>
   </div>
 </div>
@@ -474,56 +492,84 @@ function api(params) {
 // ================================================================
 // AUTH
 // ================================================================
+// ================================================================
+// VERIFICAR CONEXION AL CARGAR
+// ================================================================
+async function checkConnection() {
+  const dot   = document.getElementById('conn-dot');
+  const label = document.getElementById('conn-label');
+  try {
+    await Promise.race([
+      api({action:'getDashboard'}),
+      new Promise((_,rej)=>setTimeout(()=>rej(new Error('timeout')),8000))
+    ]);
+    dot.style.background='#5dd492'; dot.style.animation='none';
+    label.textContent='Conectado al servidor';
+  } catch(e) {
+    dot.style.background='#e87070'; dot.style.animation='none';
+    label.textContent='Sin conexion — verifica el Apps Script';
+    document.getElementById('setup-panel').style.display='block';
+  }
+}
+
+// ================================================================
+// AUTH
+// ================================================================
 async function doLogin() {
   const u     = document.getElementById('l-user').value.trim();
   const p     = document.getElementById('l-pass').value;
   const errEl = document.getElementById('login-err');
-  const btn   = document.querySelector('.btn-primary');
-  errEl.style.display = 'none';
-  if(!u || !p){ errEl.textContent='Ingresa usuario y contrasena.'; errEl.style.display='block'; return; }
-  btn.textContent = 'Conectando...'; btn.disabled = true;
+  const btn   = document.getElementById('login-btn');
+  errEl.style.display='none'; errEl.textContent='';
+  if(!u||!p){
+    errEl.textContent='Ingresa usuario y contrasena.';
+    errEl.style.display='block'; return;
+  }
+  btn.textContent='Conectando...'; btn.disabled=true;
   try {
-    const res = await api({ action:'validateUser', username:u, password:p });
+    const res = await api({action:'validateUser', username:u, password:p});
     if(res.success) {
       loginSuccess(res.user);
     } else {
-      // Si el error viene del GAS pero las hojas no estan inicializadas
-      // ofrecer hacer el setup automaticamente
       errEl.textContent = res.error || 'Credenciales invalidas.';
-      errEl.style.display = 'block';
-      // Intentar detectar si es problema de setup (hoja Users vacia)
-      if(String(res.error).toLowerCase().includes('invalid') || String(res.error).toLowerCase().includes('credenciales')) {
-        const hint = document.getElementById('setup-hint');
-        if(hint) hint.style.display = 'block';
-      }
+      errEl.style.display='block';
+      // Mostrar setup — puede ser que las hojas no existan aun
+      document.getElementById('setup-panel').style.display='block';
     }
   } catch(e) {
-    errEl.textContent = 'No se pudo conectar al servidor. Verifica que el Apps Script este desplegado correctamente.';
-    errEl.style.display = 'block';
+    errEl.textContent='No se pudo conectar: '+e.message;
+    errEl.style.display='block';
+    document.getElementById('setup-panel').style.display='block';
   } finally {
-    btn.textContent = 'Acceder al Sistema'; btn.disabled = false;
+    btn.textContent='Acceder al Sistema'; btn.disabled=false;
   }
 }
 
 async function runSetup() {
   const btn = document.getElementById('setup-btn');
-  btn.textContent = 'Inicializando...'; btn.disabled = true;
+  const msg = document.getElementById('setup-msg');
+  const dot = document.getElementById('conn-dot');
+  const label = document.getElementById('conn-label');
+  btn.textContent='Inicializando...'; btn.disabled=true;
+  msg.style.color='var(--muted)'; msg.textContent='Creando hojas en Google Sheets...';
   try {
-    const res = await api({ action:'setup' });
+    const res = await api({action:'setup'});
     if(res.success) {
-      document.getElementById('setup-hint').innerHTML =
-        '<span style="color:#5dd492">Sistema inicializado. Ahora ingresa: admin / admin123</span>';
-      document.getElementById('l-user').value = 'admin';
-      document.getElementById('l-pass').value = 'admin123';
+      msg.style.color='#5dd492';
+      msg.textContent='Sistema inicializado. Credenciales: admin / admin123';
+      document.getElementById('l-user').value='admin';
+      document.getElementById('l-pass').value='admin123';
+      dot.style.background='#5dd492'; dot.style.animation='none';
+      label.textContent='Conectado — sistema listo';
     } else {
-      document.getElementById('setup-hint').innerHTML =
-        '<span style="color:#e87070">Error: ' + res.error + '</span>';
+      msg.style.color='#e87070';
+      msg.textContent='Error: '+(res.error||'desconocido');
     }
   } catch(e) {
-    document.getElementById('setup-hint').innerHTML =
-      '<span style="color:#e87070">Error de conexion: ' + e.message + '</span>';
+    msg.style.color='#e87070';
+    msg.textContent='Error de conexion: '+e.message;
   } finally {
-    if(btn){ btn.textContent = 'Inicializar'; btn.disabled = false; }
+    btn.textContent='Inicializar Sistema'; btn.disabled=false;
   }
 }
 function loginSuccess(user) {
@@ -541,8 +587,15 @@ function loginSuccess(user) {
 }
 function doLogout() { ST.user=null; sessionStorage.removeItem('mrp_user'); location.reload(); }
 document.getElementById('l-pass').addEventListener('keydown',e=>{ if(e.key==='Enter') doLogin(); });
+
+// Al cargar: restaurar sesion o verificar conexion
 const _su = sessionStorage.getItem('mrp_user');
-if(_su){ try{ loginSuccess(JSON.parse(_su)); }catch(e){} }
+if(_su){
+  try{ loginSuccess(JSON.parse(_su)); }
+  catch(e){ sessionStorage.removeItem('mrp_user'); checkConnection(); }
+} else {
+  checkConnection();
+}
 
 // ================================================================
 // NAVIGATION
