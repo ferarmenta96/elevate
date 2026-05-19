@@ -446,7 +446,7 @@ code{background:rgba(201,168,76,0.09);border:1px solid rgba(201,168,76,0.18);pad
 // ================================================================
 // *** CONFIGURACION — EDITAR AQUI ***
 // ================================================================
-const GAS_URL = "https://script.google.com/macros/s/AKfycbxoeK0HCwDqmt5ngA1KwktmGfYZ-ad2NXPySZCL5hMVQO3R1-zauh6qFPBPn0baQKeq/exec";
+const GAS_URL = "https://script.google.com/macros/s/AKfycbwZ3INGl-99aYhlE2OpxD4I9XroMknF7l9OX7V3z1W5B2YcduGkRiNwb0O44x0mtVb6IA/exec";
 // *** FIN CONFIGURACION ***
 
 // ================================================================
@@ -468,25 +468,50 @@ let ST = {
 };
 
 // ================================================================
-// API — JSONP
+// API — fetch() igual que Cruce Reynosa
+// GET  para lecturas (parametros simples en URL)
+// POST para escrituras con datos complejos (JSON en body)
 // ================================================================
+
+// Operaciones que van por POST porque llevan arrays u objetos grandes
+const POST_ACTIONS = new Set([
+  'addPart','updatePart','adjustInventory',
+  'addClient','updateClient',
+  'addQuote','addSale','cancelSale',
+  'addPO','receivePO',
+  'addBOM','addProductionOrder',
+  'addSupplier','updateSupplier',
+  'addUser','updateUser',
+  'askAI'
+]);
+
 function api(params) {
-  return new Promise((resolve, reject) => {
-    const cb = '_cb_'+Date.now()+'_'+Math.random().toString(36).slice(2);
-    const url = GAS_URL + '?callback='+cb +
-      Object.entries(params).map(([k,v])=>'&'+encodeURIComponent(k)+'='+encodeURIComponent(String(v))).join('');
-    let done = false;
-    const t = setTimeout(()=>{ if(done)return; done=true; delete window[cb]; reject(new Error('Timeout de conexion')); }, 25000);
-    window[cb] = data => {
-      if(done)return; done=true; clearTimeout(t);
-      const el=document.getElementById('s-'+cb); if(el)el.remove();
-      delete window[cb]; resolve(data);
-    };
-    const s = document.createElement('script');
-    s.id='s-'+cb; s.src=url;
-    s.onerror=()=>{ if(done)return; done=true; clearTimeout(t); reject(new Error('Error de red')); };
-    document.head.appendChild(s);
-  });
+  const action = params.action || '';
+
+  if (POST_ACTIONS.has(action)) {
+    // POST: manda todo como JSON en el body — igual que submitReport en Cruce
+    return fetch(GAS_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(params)
+    })
+    .then(r => {
+      if (!r.ok) throw new Error('HTTP ' + r.status);
+      return r.json();
+    })
+    .catch(e => ({ success: false, error: e.message }));
+  }
+
+  // GET: parametros simples en URL — igual que fetchReports en Cruce
+  const qs = Object.entries(params)
+    .map(([k,v]) => encodeURIComponent(k) + '=' + encodeURIComponent(String(v ?? '')))
+    .join('&');
+  return fetch(GAS_URL + '?' + qs + '&t=' + Date.now())
+    .then(r => {
+      if (!r.ok) throw new Error('HTTP ' + r.status);
+      return r.json();
+    })
+    .catch(e => ({ success: false, error: e.message }));
 }
 
 // ================================================================
