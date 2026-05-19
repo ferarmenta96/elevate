@@ -120,52 +120,177 @@ async function initCamera() {
   $('no-cam').classList.remove('show');
   $('scanner-wrap').style.display = '';
 
+  // Detener decoder y stream previos
+  _stopDecoder();
   if (S.stream) { S.stream.getTracks().forEach(t => t.stop()); S.stream = null; }
-  if (S.reader)  { try { S.reader.reset(); } catch(e){} S.reader = null; }
+
+  // Constraints específicos para Safari iOS
+  // iOS requiere exactamente { video: true } o facingMode simple para el primer intento
+  const constraints = {
+    video: {
+      facingMode: S.facingMode,   // Safari prefiere string simple, no { ideal: }
+      width:  { min: 640, ideal: 1280, max: 1920 },
+      height: { min: 480, ideal: 720,  max: 1080 },
+    },
+    audio: false,
+  };
 
   try {
-    const stream = await navigator.mediaDevices.getUserMedia({
-      video: { facingMode: { ideal: S.facingMode }, width:{ideal:1280}, height:{ideal:720} }
-    });
+    const stream = await navigator.mediaDevices.getUserMedia(constraints);
     S.stream = stream;
-    $('video').srcObject = stream;
-    await $('video').play();
+    const vid = $('video');
+    vid.srcObject = stream;
+    // Safari iOS necesita el atributo playsinline y llamar play() dentro de un evento de usuario
+    // pero desde initCamera (click del usuario) funciona si usamos el promise de play
+    vid.setAttribute('playsinline', true);
+    vid.setAttribute('muted', true);
+    vid.muted = true;
+    await vid.play();
     setSbar('ESCANEANDO', 'scanning');
-    startDecoder();
+    // Esperar un frame antes de iniciar el decoder (Safari necesita que el video tenga dimensiones)
+    requestAnimationFrame(() => requestAnimationFrame(startDecoder));
   } catch(err) {
-    console.error(err);
+    console.error('Camera error:', err.name, err.message);
+    // Segundo intento con constraints mínimos (Safari muy restrictivo a veces)
+    if (err.name === 'OverconstrainedError' || err.name === 'NotReadableError') {
+      try {
+        const stream2 = await navigator.mediaDevices.getUserMedia({ video: true, audio: false });
+        S.stream = stream2;
+        const vid = $('video');
+        vid.srcObject = stream2;
+        vid.muted = true;
+        await vid.play();
+        setSbar('ESCANEANDO', 'scanning');
+        requestAnimationFrame(() => requestAnimationFrame(startDecoder));
+        return;
+      } catch(e2) { console.error('Fallback camera error:', e2); }
+    }
     setSbar('ERROR CÁMARA', 'error');
     $('scanner-wrap').style.display = 'none';
     $('no-cam').classList.add('show');
   }
 }
 
+// ─── DECODER — triple estrategia Safari-compatible ───
+// 1. BarcodeDetector API nativa (iOS 16+, Chrome Android)
+// 2. ZXing frame-by-frame via canvas (fallback universal)
+// 3. Aviso si ninguna funciona
+
+let _scanCanvas = null;
+let _scanCtx    = null;
+let _rafId      = null;
+let _nativeDetector = null;
+
 function startDecoder() {
-  if (!window.ZXing) return;
+  // Canvas oculto para captura de frames
+  if (!_scanCanvas) {
+    _scanCanvas = document.createElement('canvas');
+    _scanCtx    = _scanCanvas.getContext('2d', { willReadFrequently: true });
+  }
+
+  // Intentar BarcodeDetector nativo primero (iOS 16.4+, Chrome 83+)
+  if ('BarcodeDetector' in window) {
+    BarcodeDetector.getSupportedFormats().then(fmts => {
+      _nativeDetector = new BarcodeDetector({ formats: fmts });
+      setSbar('ESCANEANDO', 'scanning');
+      _rafLoop_native();
+    }).catch(() => _startZXing());
+  } else {
+    _startZXing();
+  }
+}
+
+// ── Loop nativo (BarcodeDetector) ────────────────
+function _rafLoop_native() {
+  const video = $('video');
+  if (!S.stream || video.readyState < 2) {
+    _rafId = requestAnimationFrame(_rafLoop_native);
+    return;
+  }
+  _nativeDetector.detect(video).then(results => {
+    if (results.length && !S.cooldown) {
+      const r = results[0];
+      const fmt = (r.format || 'barcode').toUpperCase().replace(/-/g,'_');
+      _handleResult(r.rawValue, fmt);
+    }
+  }).catch(() => {}).finally(() => {
+    if (S.stream) _rafId = requestAnimationFrame(_rafLoop_native);
+  });
+}
+
+// ── ZXing frame-by-frame (Safari fallback) ────────
+function _startZXing() {
+  if (!window.ZXing) {
+    // ZXing aún no cargó — esperar
+    setTimeout(_startZXing, 400);
+    return;
+  }
   const hints = new Map();
   hints.set(ZXing.DecodeHintType.POSSIBLE_FORMATS, [
-    ZXing.BarcodeFormat.QR_CODE, ZXing.BarcodeFormat.EAN_13,
-    ZXing.BarcodeFormat.EAN_8,   ZXing.BarcodeFormat.CODE_128,
-    ZXing.BarcodeFormat.CODE_39, ZXing.BarcodeFormat.UPC_A,
-    ZXing.BarcodeFormat.UPC_E,   ZXing.BarcodeFormat.ITF,
+    ZXing.BarcodeFormat.QR_CODE,  ZXing.BarcodeFormat.EAN_13,
+    ZXing.BarcodeFormat.EAN_8,    ZXing.BarcodeFormat.CODE_128,
+    ZXing.BarcodeFormat.CODE_39,  ZXing.BarcodeFormat.UPC_A,
+    ZXing.BarcodeFormat.UPC_E,    ZXing.BarcodeFormat.ITF,
     ZXing.BarcodeFormat.DATA_MATRIX, ZXing.BarcodeFormat.PDF_417,
-    ZXing.BarcodeFormat.AZTEC,   ZXing.BarcodeFormat.CODABAR,
-    ZXing.BarcodeFormat.RSS_14,
+    ZXing.BarcodeFormat.AZTEC,    ZXing.BarcodeFormat.CODABAR,
   ]);
   hints.set(ZXing.DecodeHintType.TRY_HARDER, true);
 
-  S.reader = new ZXing.BrowserMultiFormatReader(hints);
-  S.reader.decodeFromVideoElement($('video'), (result, err) => {
-    if (result && !S.cooldown) {
-      const text = result.getText();
-      if (text === S.lastScan) return;
-      S.lastScan = text;
-      S.cooldown = true;
-      setTimeout(() => { S.cooldown = false; S.lastScan = null; }, 1800);
-      const fmtKey = Object.keys(ZXing.BarcodeFormat).find(k => ZXing.BarcodeFormat[k] === result.getBarcodeFormat()) || 'BARCODE';
-      onDetected(text, fmtKey);
+  // En Safari usamos MultiFormatReader manual sobre canvas
+  // en lugar de decodeFromVideoElement (que no funciona en iOS)
+  const reader = new ZXing.MultiFormatReader();
+  reader.setHints(hints);
+  S.reader = reader;
+
+  setSbar('ESCANEANDO', 'scanning');
+  _rafLoop_zxing(reader);
+}
+
+function _rafLoop_zxing(reader) {
+  const video = $('video');
+  if (!S.stream) return;
+
+  if (video.readyState >= 2 && video.videoWidth > 0) {
+    const w = video.videoWidth;
+    const h = video.videoHeight;
+    _scanCanvas.width  = w;
+    _scanCanvas.height = h;
+    _scanCtx.drawImage(video, 0, 0, w, h);
+
+    try {
+      const imgData = _scanCtx.getImageData(0, 0, w, h);
+      const luminance = new ZXing.RGBLuminanceSource(imgData.data, w, h);
+      const bitmap    = new ZXing.BinaryBitmap(new ZXing.HybridBinarizer(luminance));
+      const result    = reader.decode(bitmap);
+      if (result && !S.cooldown) {
+        const fmtKey = Object.keys(ZXing.BarcodeFormat)
+          .find(k => ZXing.BarcodeFormat[k] === result.getBarcodeFormat()) || 'CODE_128';
+        _handleResult(result.getText(), fmtKey);
+      }
+    } catch(e) {
+      // NotFoundException es normal cuando no hay código visible — ignorar
     }
-  });
+  }
+
+  // ~15 fps — suficiente para escaneo, no drena batería
+  _rafId = setTimeout(() => {
+    if (S.stream) _rafLoop_zxing(reader);
+  }, 66);
+}
+
+function _handleResult(text, fmtKey) {
+  if (!text || text === S.lastScan) return;
+  S.lastScan  = text;
+  S.cooldown  = true;
+  setTimeout(() => { S.cooldown = false; S.lastScan = null; }, 2000);
+  onDetected(text, fmtKey);
+}
+
+function _stopDecoder() {
+  if (_rafId) { cancelAnimationFrame(_rafId); clearTimeout(_rafId); _rafId = null; }
+  if (S.reader && S.reader.reset) { try { S.reader.reset(); } catch(e){} }
+  S.reader = null;
+  _nativeDetector = null;
 }
 
 function onDetected(value, fmtKey) {
@@ -215,6 +340,7 @@ async function toggleTorch() {
 }
 
 function flipCamera() {
+  _stopDecoder();
   S.facingMode = S.facingMode === 'environment' ? 'user' : 'environment';
   initCamera();
 }
