@@ -292,6 +292,10 @@ code{background:rgba(201,168,76,0.09);border:1px solid rgba(201,168,76,0.18);pad
     </div>
     <button class="btn-primary" onclick="doLogin()">Acceder al Sistema</button>
     <div class="login-error" id="login-err">Credenciales invalidas.</div>
+    <div id="setup-hint" style="display:none;margin-top:1rem;padding:0.85rem;background:rgba(201,168,76,0.08);border:1px solid rgba(201,168,76,0.2);border-radius:var(--radius)">
+      <div style="font-family:var(--font-label);font-size:0.72rem;color:var(--gold-dim);margin-bottom:0.5rem">PRIMER ACCESO — Las hojas del sistema no estan inicializadas aun.</div>
+      <button id="setup-btn" onclick="runSetup()" style="width:100%;background:transparent;border:1px solid var(--gold);color:var(--gold);font-family:var(--font-label);font-size:0.78rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;padding:0.55rem;border-radius:var(--radius);cursor:pointer;transition:all 0.2s" onmouseover="this.style.background='rgba(201,168,76,0.12)'" onmouseout="this.style.background='transparent'">Inicializar Sistema</button>
+    </div>
   </div>
 </div>
 
@@ -424,7 +428,7 @@ code{background:rgba(201,168,76,0.09);border:1px solid rgba(201,168,76,0.18);pad
 // ================================================================
 // *** CONFIGURACION — EDITAR AQUI ***
 // ================================================================
-const GAS_URL = "https://script.google.com/macros/s/AKfycby6_UiXyFf1DlIgy6zBsRBJZhmtEM12jgP1UFHPJ1A4cpYAHDq_1hlG3z9MMIawKPXk/exec";
+const GAS_URL = "https://script.google.com/macros/s/AKfycbzstwXh2hTV9bauFvkafIPL_WA2Xu5NqRtmOuTHvHL2wRrnG1IqvUIYUaebTZ8qxBpo/exec";
 // *** FIN CONFIGURACION ***
 
 // ================================================================
@@ -471,15 +475,56 @@ function api(params) {
 // AUTH
 // ================================================================
 async function doLogin() {
-  const u = document.getElementById('l-user').value.trim();
-  const p = document.getElementById('l-pass').value;
+  const u     = document.getElementById('l-user').value.trim();
+  const p     = document.getElementById('l-pass').value;
   const errEl = document.getElementById('login-err');
-  errEl.style.display='none';
+  const btn   = document.querySelector('.btn-primary');
+  errEl.style.display = 'none';
+  if(!u || !p){ errEl.textContent='Ingresa usuario y contrasena.'; errEl.style.display='block'; return; }
+  btn.textContent = 'Conectando...'; btn.disabled = true;
   try {
     const res = await api({ action:'validateUser', username:u, password:p });
-    if(res.success) loginSuccess(res.user);
-    else { errEl.textContent=res.error||'Credenciales invalidas.'; errEl.style.display='block'; }
-  } catch(e) { errEl.textContent=e.message; errEl.style.display='block'; }
+    if(res.success) {
+      loginSuccess(res.user);
+    } else {
+      // Si el error viene del GAS pero las hojas no estan inicializadas
+      // ofrecer hacer el setup automaticamente
+      errEl.textContent = res.error || 'Credenciales invalidas.';
+      errEl.style.display = 'block';
+      // Intentar detectar si es problema de setup (hoja Users vacia)
+      if(String(res.error).toLowerCase().includes('invalid') || String(res.error).toLowerCase().includes('credenciales')) {
+        const hint = document.getElementById('setup-hint');
+        if(hint) hint.style.display = 'block';
+      }
+    }
+  } catch(e) {
+    errEl.textContent = 'No se pudo conectar al servidor. Verifica que el Apps Script este desplegado correctamente.';
+    errEl.style.display = 'block';
+  } finally {
+    btn.textContent = 'Acceder al Sistema'; btn.disabled = false;
+  }
+}
+
+async function runSetup() {
+  const btn = document.getElementById('setup-btn');
+  btn.textContent = 'Inicializando...'; btn.disabled = true;
+  try {
+    const res = await api({ action:'setup' });
+    if(res.success) {
+      document.getElementById('setup-hint').innerHTML =
+        '<span style="color:#5dd492">Sistema inicializado. Ahora ingresa: admin / admin123</span>';
+      document.getElementById('l-user').value = 'admin';
+      document.getElementById('l-pass').value = 'admin123';
+    } else {
+      document.getElementById('setup-hint').innerHTML =
+        '<span style="color:#e87070">Error: ' + res.error + '</span>';
+    }
+  } catch(e) {
+    document.getElementById('setup-hint').innerHTML =
+      '<span style="color:#e87070">Error de conexion: ' + e.message + '</span>';
+  } finally {
+    if(btn){ btn.textContent = 'Inicializar'; btn.disabled = false; }
+  }
 }
 function loginSuccess(user) {
   ST.user = user;
