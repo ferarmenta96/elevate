@@ -855,7 +855,7 @@ function openClientModal(c) {
       <div class="form-field"><label>Ciudad</label><input id="fc-ci" value="${e?c.city||'':''}"></div>
       <div class="form-field span-2"><label>Direccion</label><input id="fc-ad" value="${e?c.address||'':''}"></div>
       <div class="form-field"><label>Limite de Credito (MXN)</label><input id="fc-cl" type="number" value="${e?c.credit_limit||0:0}"></div>
-      <div class="form-field"><label>Condiciones de Pago</label><input id="fc-pt" value="${e?c.payment_terms||'':'}" placeholder="30 dias, contado..."></div>
+      <div class="form-field"><label>Condiciones de Pago</label><input id="fc-pt" value="${e?c.payment_terms||'':''}" placeholder="30 dias, contado..."></div>
       <div class="form-field"><label>Descuento General (%)</label><input id="fc-dp" type="number" step="0.1" value="${e?c.discount_pct||0:0}"></div>
     </div>`,
     `<button class="btn btn-outline" onclick="closeModal()">Cancelar</button>
