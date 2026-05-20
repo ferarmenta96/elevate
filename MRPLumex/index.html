@@ -374,7 +374,26 @@ code{background:rgba(201,168,76,0.09);border:1px solid rgba(201,168,76,0.18);pad
         <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>Proyecciones MRP
       </div>
       <div class="nav-item" onclick="go('reports')">
-        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><bar-chart/><rect x="18" y="3" width="4" height="18"/><rect x="10" y="8" width="4" height="13"/><rect x="2" y="13" width="4" height="8"/></svg>Reportes
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="18" y="3" width="4" height="18"/><rect x="10" y="8" width="4" height="13"/><rect x="2" y="13" width="4" height="8"/></svg>Reportes
+      </div>
+
+      <div class="nav-section-label">Warehouse</div>
+      <div class="nav-item" onclick="go('receiving')">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 17H3a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11a2 2 0 0 1 2 2v3"/><rect x="9" y="11" width="14" height="10" rx="2"/><path d="M16 11v-4"/></svg>Recepcion
+        <span class="nav-badge" id="nb-recv" style="display:none">!</span>
+      </div>
+      <div class="nav-item" onclick="go('workorders')">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>Ordenes de Trabajo
+      </div>
+      <div class="nav-item" onclick="go('picking')">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>Picking
+        <span class="nav-badge" id="nb-pick" style="display:none">!</span>
+      </div>
+      <div class="nav-item" onclick="go('shipping')">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>Shipping
+      </div>
+      <div class="nav-item" onclick="go('scanner')">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9V6a2 2 0 0 1 2-2h2"/><path d="M15 4h2a2 2 0 0 1 2 2v3"/><path d="M21 15v2a2 2 0 0 1-2 2h-2"/><path d="M9 20H7a2 2 0 0 1-2-2v-2"/><line x1="7" y1="12" x2="7" y2="12"/><line x1="12" y1="12" x2="17" y2="12"/></svg>Scanner / Trazabilidad
       </div>
 
       <div class="nav-section-label">Sistema</div>
@@ -428,7 +447,7 @@ code{background:rgba(201,168,76,0.09);border:1px solid rgba(201,168,76,0.18);pad
 // ================================================================
 // *** CONFIGURACION — EDITAR AQUI ***
 // ================================================================
-const GAS_URL = "https://script.google.com/macros/s/AKfycbwVH77IDOfeL6hnllTPv3m1AMVa5G7KQahTQKT32dVJ4AexPnRjdsVB5YrfRoNMYwJi/exec";
+const GAS_URL = "https://script.google.com/macros/s/AKfycbzeoU9v-eUwfHpzSdfcI-GvGf8oW4ZNBK10sOi92mqkq6NutYV1QbFUomtcb1ZiG-Y8/exec";
 // *** FIN CONFIGURACION ***
 
 // ================================================================
@@ -567,7 +586,10 @@ const PAGE_TITLES = {
   bom:'Lista de Materiales (BOM)', production:'Produccion',
   ar:'Cuentas por Cobrar', ap:'Cuentas por Pagar',
   projections:'Proyecciones MRP', reports:'Reportes y Analisis',
-  users:'Usuarios', audit:'Auditoria del Sistema'
+  users:'Usuarios', audit:'Auditoria del Sistema',
+  receiving:'Recepcion de Mercancia', workorders:'Ordenes de Trabajo',
+  picking:'Picking — Surtido de Pedidos', shipping:'Shipping — Embarques',
+  scanner:'Scanner / Trazabilidad'
 };
 const RENDERS = {
   dashboard, ai:renderAI, parts:renderParts, clients:renderClients,
@@ -575,7 +597,9 @@ const RENDERS = {
   po:renderPO, inventory:renderInventory, movements:renderMovements,
   cycle:renderCycle, bom:renderBOM, production:renderProduction,
   ar:renderAR, ap:renderAP, projections:renderProjections,
-  reports:renderReports, users:renderUsers, audit:renderAudit
+  reports:renderReports, users:renderUsers, audit:renderAudit,
+  receiving:renderReceiving, workorders:renderWorkOrders,
+  picking:renderPicking, shipping:renderShipping, scanner:renderScanner
 };
 function go(page) {
   ST.page = page;
@@ -1812,6 +1836,724 @@ function filterTable(input,tableId,...cols){
     const match=cols.some(c=>cells[c]?.textContent.toLowerCase().includes(q));
     row.style.display=!q||match?'':'none';
   });
+}
+
+// ================================================================
+// WAREHOUSE — RECEPCION
+// Recibir mercancia de proveedor via OC. Listo para scanner BC.
+// ================================================================
+async function renderReceiving() {
+  setLoading();
+  document.getElementById('topbar-actions').innerHTML =
+    `<button class="btn btn-gold" onclick="go('po')">Ver Ordenes de Compra</button>`;
+  try {
+    const [por, ir] = await Promise.all([api({action:'getPOs'}), api({action:'getInventory'})]);
+    ST.pos = por.data||[]; ST.inventory = ir.data||[];
+    const pending = (por.data||[]).filter(p => p.status === 'draft' || p.status === 'sent');
+
+    const rows = pending.map(p => `<tr>
+      <td class="mono" style="font-size:0.73rem">${p.po_id}</td>
+      <td>${fmtDate(p.po_date)}</td>
+      <td><strong>${p.supplier_name}</strong></td>
+      <td class="r">${fmtMXN(p.total)}</td>
+      <td>${fmtDate(p.expected_date)}</td>
+      <td><span class="badge badge-blue">${p.status}</span></td>
+      <td><button class="btn btn-gold btn-sm" onclick="openReceiveModal('${p.po_id}')">
+        Recibir Mercancia
+      </button></td>
+    </tr>`).join('');
+
+    document.getElementById('content-area').innerHTML = `
+      <div class="alert-banner info" style="margin-bottom:1rem">
+        Selecciona una Orden de Compra para registrar la entrada de mercancia al almacen.
+        En el futuro puedes escanear el codigo de barras de la OC para abrirla directamente.
+      </div>
+      ${pending.length === 0 ? '<div class="empty-state"><div class="empty-title">Sin OC pendientes</div><p>Todas las ordenes de compra han sido recibidas.</p></div>' : `
+      <div class="table-wrap"><table><thead><tr>
+        <th>ID OC</th><th>Fecha</th><th>Proveedor</th>
+        <th class="r">Total</th><th>Fecha Esperada</th><th>Estado</th><th>Accion</th>
+      </tr></thead><tbody>${rows}</tbody></table></div>`}`;
+  } catch(e) { document.getElementById('content-area').innerHTML = `<div class="alert-banner">${e.message}</div>`; }
+}
+
+async function openReceiveModal(poId) {
+  const po = ST.pos.find(p => p.po_id === poId);
+  if (!po) { toast('OC no encontrada','error'); return; }
+
+  // Obtener ubicaciones para asignar
+  const locRes = await api({action:'getLocations'});
+  const locs = (locRes.data||[]).filter(l => l.zone !== 'Shipping' && l.zone !== 'Produccion');
+  const locOpts = locs.map(l => `<option value="${l.loc_id}">${l.zone} — ${l.aisle}-${l.shelf}-${l.level} (${l.description})</option>`).join('');
+
+  const rows = (po.items||[]).map(item => `
+    <div style="border:1px solid var(--border-soft);border-radius:var(--radius);padding:0.85rem;margin-bottom:0.65rem">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.65rem">
+        <div>
+          <div class="mono" style="color:var(--gold-light);font-weight:600">${item.part_number}</div>
+          <div style="font-size:0.82rem;color:var(--muted)">${item.description}</div>
+        </div>
+        <div style="text-align:right;font-family:var(--font-label);font-size:0.75rem;color:var(--muted)">
+          Pedido: <strong style="color:var(--white)">${fmtNum(item.qty_ordered)}</strong>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:0.5rem">
+        <div class="form-field">
+          <label>Cantidad Recibida</label>
+          <input type="number" id="rcv-${item.item_id}" min="0"
+            value="${+item.qty_ordered - (+item.qty_received||0)}"
+            style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);color:var(--white);padding:0.42rem 0.65rem;border-radius:var(--radius);font-family:var(--font-body);width:100%">
+        </div>
+        <div class="form-field">
+          <label>Precio Unit. MXN</label>
+          <input type="number" id="prc-${item.item_id}" step="0.01" value="${item.unit_price}"
+            style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);color:var(--white);padding:0.42rem 0.65rem;border-radius:var(--radius);font-family:var(--font-body);width:100%">
+        </div>
+        <div class="form-field">
+          <label>Ubicacion en Almacen</label>
+          <select id="loc-${item.item_id}" style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);color:var(--white);padding:0.42rem 0.65rem;border-radius:var(--radius);font-family:var(--font-body);width:100%">
+            <option value="">-- Sin asignar --</option>${locOpts}
+          </select>
+        </div>
+      </div>
+    </div>`).join('');
+
+  openModal(`Recibir Mercancia — ${po.supplier_name}`,
+    `<div style="margin-bottom:1rem;font-family:var(--font-label);font-size:0.75rem;color:var(--muted)">
+      OC: <span style="color:var(--gold-light)">${po.po_id}</span> &nbsp;|&nbsp;
+      Proveedor: <span style="color:var(--white)">${po.supplier_name}</span>
+    </div>${rows}`,
+    `<button class="btn btn-outline" onclick="closeModal()">Cancelar</button>
+     <button class="btn btn-gold" onclick="saveReceiving('${poId}')">Confirmar Entrada</button>`);
+}
+
+async function saveReceiving(poId) {
+  const po = ST.pos.find(p => p.po_id === poId);
+  const items = (po.items||[]).map(item => ({
+    item_id: item.item_id,
+    qty_received: document.getElementById('rcv-'+item.item_id)?.value || 0,
+    unit_price: document.getElementById('prc-'+item.item_id)?.value || item.unit_price,
+    loc_id: document.getElementById('loc-'+item.item_id)?.value || ''
+  }));
+  try {
+    const r = await api({action:'receivePO', po_id:poId, supplier_id:po.supplier_id,
+      supplier_name:po.supplier_name, items:JSON.stringify(items), user:ST.user?.username});
+    if (!r.success) throw new Error(r.error);
+    toast('Mercancia recibida. Inventario actualizado.');
+    closeModal(); renderReceiving();
+  } catch(e) { toast(e.message,'error'); }
+}
+
+// ================================================================
+// WAREHOUSE — ORDENES DE TRABAJO
+// ================================================================
+async function renderWorkOrders() {
+  setLoading();
+  document.getElementById('topbar-actions').innerHTML =
+    `<button class="btn btn-gold" onclick="openWOModal()">+ Nueva OT</button>`;
+  try {
+    const [wor, ir, br] = await Promise.all([
+      api({action:'getWorkOrders'}), api({action:'getInventory'}), api({action:'getBOMs'})
+    ]);
+    ST.inventory = ir.data||[]; ST.boms = br.data||[];
+    const data = wor.data||[];
+
+    const stBadge = s => ({
+      pending:'badge-muted', in_progress:'badge-blue',
+      completed:'badge-ok', cancelled:'badge-danger'
+    }[s]||'badge-muted');
+    const stLabel = s => ({
+      pending:'Pendiente', in_progress:'En Proceso',
+      completed:'Completada', cancelled:'Cancelada'
+    }[s]||s);
+
+    const rows = data.slice().reverse().map(wo => `<tr>
+      <td class="mono" style="font-size:0.75rem">${wo.wo_number||wo.wo_id}</td>
+      <td>${fmtDate(wo.wo_date)}</td>
+      <td class="mono">${wo.finished_part_number}</td>
+      <td>${wo.finished_description}</td>
+      <td class="r">${fmtNum(wo.qty_planned)}</td>
+      <td class="r">${wo.qty_produced > 0 ? fmtNum(wo.qty_produced) : '—'}</td>
+      <td>${wo.priority === 'high' ? '<span style="color:#e87070;font-weight:600">Alta</span>' : wo.priority === 'normal' ? 'Normal' : 'Baja'}</td>
+      <td>${fmtDate(wo.due_date)}</td>
+      <td><span class="badge ${stBadge(wo.status)}">${stLabel(wo.status)}</span></td>
+      <td>
+        ${wo.status === 'pending' ? `<button class="btn btn-success btn-sm" onclick="startWO('${wo.wo_id}')">Iniciar</button>` : ''}
+        ${wo.status === 'in_progress' ? `<button class="btn btn-gold btn-sm" onclick="openCloseWOModal('${wo.wo_id}',${wo.qty_planned})">Cerrar OT</button>` : ''}
+        ${wo.status === 'completed' ? '—' : ''}
+      </td>
+    </tr>`).join('');
+
+    document.getElementById('content-area').innerHTML = `
+      <div class="filter-bar">
+        <input class="search-input" placeholder="Buscar OT..." oninput="filterTable(this,'tb-wo',0,1,2,3)">
+      </div>
+      <div class="table-wrap"><table id="tb-wo"><thead><tr>
+        <th>No. OT</th><th>Fecha</th><th>Parte</th><th>Descripcion</th>
+        <th class="r">Planeado</th><th class="r">Producido</th>
+        <th>Prioridad</th><th>Fecha Limite</th><th>Estado</th><th>Accion</th>
+      </tr></thead><tbody>${rows||emptyRow(10)}</tbody></table></div>`;
+  } catch(e) { document.getElementById('content-area').innerHTML = `<div class="alert-banner">${e.message}</div>`; }
+}
+
+function openWOModal() {
+  const partOpts = (ST.inventory||[]).map(i =>
+    `<option value="${i.part_id}" data-pn="${i.part_number}" data-desc="${i.description}">${i.part_number} — ${i.description}</option>`
+  ).join('');
+  const bomParts = [...new Set((ST.boms||[]).map(b => b.finished_part_number))];
+  const bomOpts = (ST.inventory||[])
+    .filter(i => bomParts.includes(i.part_number))
+    .map(i => `<option value="${i.part_id}" data-pn="${i.part_number}" data-desc="${i.description}">${i.part_number} — ${i.description} (tiene BOM)</option>`)
+    .join('');
+  const allOpts = bomOpts + (ST.inventory||[])
+    .filter(i => !bomParts.includes(i.part_number))
+    .map(i => `<option value="${i.part_id}" data-pn="${i.part_number}" data-desc="${i.description}">${i.part_number} — ${i.description}</option>`)
+    .join('');
+
+  openModal('Nueva Orden de Trabajo', `
+    <div class="form-grid">
+      <div class="form-field span-2">
+        <label>Producto a Fabricar *</label>
+        <select id="wo-fin" onchange="loadWOComponents()">${allOpts}</select>
+      </div>
+      <div class="form-field"><label>Cantidad a Producir *</label><input id="wo-qty" type="number" min="1" value="1"></div>
+      <div class="form-field"><label>Prioridad</label>
+        <select id="wo-pri"><option value="normal">Normal</option><option value="high">Alta</option><option value="low">Baja</option></select>
+      </div>
+      <div class="form-field"><label>Fecha Limite</label><input id="wo-due" type="date"></div>
+      <div class="form-field span-2"><label>Notas</label><input id="wo-notes" placeholder="Instrucciones especiales..."></div>
+    </div>
+    <div style="margin-top:1rem">
+      <div style="font-family:var(--font-label);font-size:0.68rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);margin-bottom:0.5rem">Componentes</div>
+      <div id="wo-components">
+        <div style="color:var(--muted);font-size:0.82rem;font-style:italic">Selecciona el producto para ver los componentes de su BOM</div>
+      </div>
+    </div>`,
+    `<button class="btn btn-outline" onclick="closeModal()">Cancelar</button>
+     <button class="btn btn-gold" onclick="saveWO()">Crear Orden de Trabajo</button>`, true);
+}
+
+function loadWOComponents() {
+  const sel = document.getElementById('wo-fin');
+  const opt = sel?.options[sel.selectedIndex];
+  const pn  = opt?.dataset.pn || '';
+  const boms = (ST.boms||[]).filter(b => b.finished_part_number === pn);
+  const el  = document.getElementById('wo-components');
+  if (!el) return;
+  if (!boms.length) {
+    el.innerHTML = '<div style="color:var(--warn);font-size:0.82rem">Este producto no tiene BOM definida. Se creara la OT sin componentes.</div>';
+    return;
+  }
+  el.innerHTML = `<div class="table-wrap"><table><thead><tr>
+    <th>Componente</th><th>Descripcion</th><th class="r">Qty Requerida</th><th>Unidad</th>
+  </tr></thead><tbody>${boms.map(b => `<tr>
+    <td class="mono">${b.component_part_number}</td>
+    <td>${b.component_description}</td>
+    <td class="r">${b.qty_required}</td>
+    <td>${b.unit}</td>
+  </tr>`).join('')}</tbody></table></div>`;
+}
+
+async function startWO(woId) {
+  if (!confirm('Iniciar esta orden de trabajo? Se reservaran los componentes del inventario.')) return;
+  try {
+    const r = await api({action:'startWorkOrder', wo_id:woId, user:ST.user?.username});
+    if (!r.success) throw new Error(r.error);
+    toast('OT iniciada. Componentes reservados en inventario.');
+    renderWorkOrders();
+  } catch(e) { toast(e.message,'error'); }
+}
+
+function openCloseWOModal(woId, planned) {
+  openModal('Cerrar Orden de Trabajo', `
+    <div class="form-grid">
+      <div class="form-field"><label>Cantidad Producida *</label><input id="wo-prod" type="number" min="1" value="${planned}"></div>
+      <div class="form-field"><label>Scrap / Merma</label><input id="wo-scrap" type="number" min="0" value="0"></div>
+    </div>`,
+    `<button class="btn btn-outline" onclick="closeModal()">Cancelar</button>
+     <button class="btn btn-gold" onclick="saveCloseWO('${woId}')">Cerrar y Registrar</button>`);
+}
+
+async function saveWO() {
+  const sel = document.getElementById('wo-fin');
+  const opt = sel?.options[sel.selectedIndex];
+  const pn  = opt?.dataset.pn || '';
+  const boms = (ST.boms||[]).filter(b => b.finished_part_number === pn);
+  const components = boms.map(b => ({
+    part_id: b.component_part_id, part_number: b.component_part_number,
+    description: b.component_description, qty_required: b.qty_required, unit: b.unit
+  }));
+  try {
+    const r = await api({action:'addWorkOrder',
+      finished_part_id: sel.value, finished_part_number: pn,
+      finished_description: opt?.dataset.desc||'',
+      qty_planned: v('wo-qty'), priority: v('wo-pri'),
+      due_date: v('wo-due'), notes: v('wo-notes'),
+      components: JSON.stringify(components), user: ST.user?.username});
+    if (!r.success) throw new Error(r.error);
+    toast(`OT creada: ${r.wo_number}`);
+    closeModal(); renderWorkOrders();
+  } catch(e) { toast(e.message,'error'); }
+}
+
+async function saveCloseWO(woId) {
+  try {
+    const r = await api({action:'closeWorkOrder', wo_id:woId,
+      qty_produced: v('wo-prod'), scrap_qty: v('wo-scrap'), user: ST.user?.username});
+    if (!r.success) throw new Error(r.error);
+    toast(`OT cerrada. Eficiencia: ${r.efficiency}%`);
+    closeModal(); renderWorkOrders();
+  } catch(e) { toast(e.message,'error'); }
+}
+
+// ================================================================
+// WAREHOUSE — PICKING
+// ================================================================
+async function renderPicking() {
+  setLoading();
+  document.getElementById('topbar-actions').innerHTML =
+    `<button class="btn btn-gold" onclick="openCreatePickModal()">+ Crear Lista de Surtido</button>`;
+  try {
+    const [pkr, sr] = await Promise.all([api({action:'getPickingList'}), api({action:'getSales'})]);
+    ST.sales = sr.data||[];
+    const data = pkr.data||[];
+
+    updateBadge('nb-pick', data.filter(p => p.status === 'pending' || p.status === 'in_progress').length);
+
+    const stBadge = s => ({pending:'badge-muted',in_progress:'badge-blue',ready:'badge-gold',shipped:'badge-ok'}[s]||'badge-muted');
+    const stLabel = s => ({pending:'Pendiente',in_progress:'En Surtido',ready:'Listo para Embarque',shipped:'Embarcado'}[s]||s);
+
+    const rows = data.slice().reverse().map(pk => `<tr>
+      <td class="mono" style="font-size:0.73rem">${pk.pick_id}</td>
+      <td>${fmtDate(pk.pick_date)}</td>
+      <td>${pk.client_name}</td>
+      <td class="mono" style="font-size:0.73rem">${pk.sale_id}</td>
+      <td>${pk.assigned_to||'—'}</td>
+      <td><span class="badge ${stBadge(pk.status)}">${stLabel(pk.status)}</span></td>
+      <td>
+        ${pk.status === 'pending' || pk.status === 'in_progress'
+          ? `<button class="btn btn-gold btn-sm" onclick="openPickDetail('${pk.pick_id}')">Surtir</button>`
+          : pk.status === 'ready'
+          ? `<button class="btn btn-success btn-sm" onclick="openCreateShipModal('${pk.pick_id}','${pk.sale_id}','${pk.client_name}')">Crear Embarque</button>`
+          : '—'}
+      </td>
+    </tr>`).join('');
+
+    document.getElementById('content-area').innerHTML = `
+      <div class="table-wrap"><table><thead><tr>
+        <th>ID</th><th>Fecha</th><th>Cliente</th><th>ID Venta</th>
+        <th>Asignado</th><th>Estado</th><th>Accion</th>
+      </tr></thead><tbody>${rows||emptyRow(7)}</tbody></table></div>`;
+  } catch(e) { document.getElementById('content-area').innerHTML = `<div class="alert-banner">${e.message}</div>`; }
+}
+
+function openCreatePickModal() {
+  const activeSales = (ST.sales||[]).filter(s => s.status === 'active');
+  const saleOpts = activeSales.map(s =>
+    `<option value="${s.sale_id}">${s.sale_id} — ${s.client_name} — ${s.part_number}</option>`
+  ).join('');
+  openModal('Crear Lista de Surtido', `
+    <div class="form-grid">
+      <div class="form-field span-2">
+        <label>Orden de Venta *</label>
+        <select id="pk-sale">${saleOpts||'<option>No hay ventas activas</option>'}</select>
+      </div>
+      <div class="form-field"><label>Asignar a (almacenista)</label><input id="pk-assign" placeholder="Nombre del almacenista"></div>
+      <div class="form-field span-2"><label>Notas</label><input id="pk-notes"></div>
+    </div>`,
+    `<button class="btn btn-outline" onclick="closeModal()">Cancelar</button>
+     <button class="btn btn-gold" onclick="saveCreatePick()">Crear Lista</button>`);
+}
+
+async function saveCreatePick() {
+  const saleId = v('pk-sale');
+  if (!saleId) { toast('Selecciona una venta','error'); return; }
+  try {
+    const r = await api({action:'createPickingFromSale',
+      sale_id: saleId, assigned_to: v('pk-assign'), notes: v('pk-notes'), user: ST.user?.username});
+    if (!r.success) throw new Error(r.error);
+    toast('Lista de surtido creada.');
+    closeModal(); renderPicking();
+  } catch(e) { toast(e.message,'error'); }
+}
+
+async function openPickDetail(pickId) {
+  const pkRes = await api({action:'getPickingList'});
+  const pk = (pkRes.data||[]).find(p => p.pick_id === pickId);
+  if (!pk) { toast('Picking no encontrado','error'); return; }
+
+  const locRes = await api({action:'getLocations'});
+  const locs = locRes.data||[];
+  const locOpts = locs.map(l => `<option value="${l.loc_id}" data-label="${l.zone} ${l.aisle}-${l.shelf}-${l.level}">${l.zone} — ${l.aisle}-${l.shelf}-${l.level}</option>`).join('');
+
+  const rows = (pk.items||[]).map(item => `
+    <div style="border:1px solid var(--border-soft);border-radius:var(--radius);padding:0.85rem;margin-bottom:0.65rem;background:${item.status==='picked'?'rgba(26,122,74,0.06)':'rgba(255,255,255,0.02)'}">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.65rem">
+        <div>
+          <div class="mono" style="color:var(--gold-light);font-weight:600">${item.part_number}</div>
+          <div style="font-size:0.82rem;color:var(--muted)">${item.description}</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:0.75rem">
+          <div style="text-align:right;font-family:var(--font-label);font-size:0.75rem">
+            <div style="color:var(--muted)">Pedido</div>
+            <div style="color:var(--white);font-size:1rem;font-weight:600">${fmtNum(item.qty_ordered)}</div>
+          </div>
+          <span class="badge ${item.status==='picked'?'badge-ok':'badge-muted'}">${item.status==='picked'?'Surtido':'Pendiente'}</span>
+        </div>
+      </div>
+      ${item.status !== 'picked' ? `
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:0.5rem;align-items:end">
+        <div class="form-field">
+          <label>Cant. Surtida</label>
+          <input type="number" id="pq-${item.item_id}" value="${item.qty_ordered}" min="0"
+            style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);color:var(--white);padding:0.42rem 0.65rem;border-radius:var(--radius);font-family:var(--font-body);width:100%">
+        </div>
+        <div class="form-field">
+          <label>Ubicacion</label>
+          <select id="pl-${item.item_id}"
+            style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);color:var(--white);padding:0.42rem 0.65rem;border-radius:var(--radius);font-family:var(--font-body);width:100%">
+            <option value="">-- Seleccionar --</option>${locOpts}
+          </select>
+        </div>
+        <div>
+          <button class="btn btn-success" style="width:100%" onclick="confirmPickLine('${item.item_id}','${pickId}')">
+            Confirmar
+          </button>
+        </div>
+      </div>` : `<div style="font-family:var(--font-label);font-size:0.72rem;color:#5dd492">
+        Surtido: ${fmtNum(item.qty_picked)} uds desde ${item.location_label||item.loc_id||'—'}
+      </div>`}
+    </div>`).join('');
+
+  openModal(`Surtir Pedido — ${pk.client_name}`,
+    `<div style="margin-bottom:1rem;font-family:var(--font-label);font-size:0.75rem;color:var(--muted)">
+      Pick ID: <span style="color:var(--gold-light)">${pickId}</span> &nbsp;|&nbsp;
+      Venta: <span style="color:var(--white)">${pk.sale_id}</span>
+    </div>${rows}`,
+    `<button class="btn btn-outline" onclick="closeModal()">Cerrar</button>
+     <button class="btn btn-gold" onclick="markPickingComplete('${pickId}')">Marcar Todo Completo</button>`, true);
+}
+
+async function confirmPickLine(itemId, pickId) {
+  const qty  = document.getElementById('pq-'+itemId)?.value || 0;
+  const locSel = document.getElementById('pl-'+itemId);
+  const locId  = locSel?.value || '';
+  const locLabel = locSel?.options[locSel.selectedIndex]?.dataset.label || '';
+  try {
+    const r = await api({action:'confirmPickItem',
+      item_id:itemId, qty_picked:qty, loc_id:locId, location_label:locLabel,
+      user:ST.user?.username});
+    if (!r.success) throw new Error(r.error);
+    toast(r.all_picked ? 'Todo surtido. Listo para embarque.' : 'Linea confirmada.');
+    closeModal(); renderPicking();
+  } catch(e) { toast(e.message,'error'); }
+}
+
+async function markPickingComplete(pickId) {
+  try {
+    const r = await api({action:'confirmPicking', pick_id:pickId, user:ST.user?.username});
+    if (!r.success) throw new Error(r.error);
+    toast('Picking completo. Listo para crear embarque.');
+    closeModal(); renderPicking();
+  } catch(e) { toast(e.message,'error'); }
+}
+
+// ================================================================
+// WAREHOUSE — SHIPPING
+// ================================================================
+async function renderShipping() {
+  setLoading();
+  document.getElementById('topbar-actions').innerHTML = '';
+  try {
+    const [shr, pkr] = await Promise.all([api({action:'getShipments'}), api({action:'getPickingList'})]);
+    const ships = shr.data||[];
+    const readyPicks = (pkr.data||[]).filter(p => p.status === 'ready');
+
+    const stBadge = s => ({ready:'badge-gold',shipped:'badge-ok',cancelled:'badge-danger'}[s]||'badge-muted');
+    const CARRIERS = {UPS:'UPS',FEDEX:'FedEx',DHL:'DHL',ESTAFETA:'Estafeta',REDPACK:'Redpack',PICKUP:'Pickup (cliente recoge)'};
+
+    const pendingRows = readyPicks.map(pk => `<tr>
+      <td class="mono" style="font-size:0.73rem">${pk.pick_id}</td>
+      <td>${pk.client_name}</td>
+      <td class="mono" style="font-size:0.73rem">${pk.sale_id}</td>
+      <td><span class="badge badge-gold">Listo para Embarque</span></td>
+      <td><button class="btn btn-gold btn-sm" onclick="openCreateShipModal('${pk.pick_id}','${pk.sale_id}','${pk.client_name}')">
+        Crear Embarque
+      </button></td>
+    </tr>`).join('');
+
+    const shipRows = ships.slice().reverse().map(sh => `<tr>
+      <td class="mono" style="font-size:0.73rem">${sh.ship_id}</td>
+      <td>${fmtDate(sh.ship_date)}</td>
+      <td>${sh.client_name}</td>
+      <td><strong>${sh.carrier}</strong></td>
+      <td class="mono">${sh.tracking_number||'—'}</td>
+      <td class="r">${sh.packages} caja(s)</td>
+      <td class="r">${sh.weight_kg} kg</td>
+      <td><span class="badge ${stBadge(sh.status)}">${sh.status}</span></td>
+      <td>
+        ${sh.status === 'ready'
+          ? `<button class="btn btn-gold btn-sm" onclick="openConfirmShipModal('${sh.ship_id}','${sh.carrier}')">Confirmar Salida</button>`
+          : sh.status === 'shipped'
+          ? `<span style="font-size:0.75rem;color:#5dd492">${fmtDate(sh.sent_at)}</span>`
+          : '—'}
+      </td>
+    </tr>`).join('');
+
+    document.getElementById('content-area').innerHTML = `
+      ${readyPicks.length > 0 ? `
+      <div class="card" style="margin-bottom:1.25rem">
+        <div class="card-header">
+          <div>
+            <div class="card-title">Pedidos Listos para Embarcar</div>
+            <div class="card-subtitle">${readyPicks.length} picking(s) completados</div>
+          </div>
+        </div>
+        <div class="table-wrap"><table><thead><tr>
+          <th>ID Picking</th><th>Cliente</th><th>ID Venta</th><th>Estado</th><th>Accion</th>
+        </tr></thead><tbody>${pendingRows}</tbody></table></div>
+      </div>` : ''}
+
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">Historial de Embarques</div>
+        </div>
+        <div class="table-wrap"><table><thead><tr>
+          <th>ID</th><th>Fecha</th><th>Cliente</th><th>Carrier</th>
+          <th>Tracking</th><th class="r">Cajas</th><th class="r">Peso</th>
+          <th>Estado</th><th>Accion</th>
+        </tr></thead><tbody>${shipRows||emptyRow(9)}</tbody></table></div>
+      </div>`;
+  } catch(e) { document.getElementById('content-area').innerHTML = `<div class="alert-banner">${e.message}</div>`; }
+}
+
+async function openCreateShipModal(pickId, saleId, clientName) {
+  // Cargar items del picking para el shipment
+  const pkRes = await api({action:'getPickingList'});
+  const pk = (pkRes.data||[]).find(p => p.pick_id === pickId);
+  const items = pk?.items || [];
+
+  // Obtener datos del cliente
+  const cliRes = await api({action:'getClients'});
+  const client  = (cliRes.data||[]).find(c => c.name === clientName) || {};
+
+  const CARRIERS = ['UPS','FedEx','DHL','Estafeta','Redpack','Pickup (cliente recoge)'];
+  const carrierOpts = CARRIERS.map(c => `<option value="${c}">${c}</option>`).join('');
+
+  openModal(`Crear Embarque — ${clientName}`, `
+    <div class="form-grid">
+      <div class="form-field">
+        <label>Carrier *</label>
+        <select id="sh-carrier">${carrierOpts}</select>
+      </div>
+      <div class="form-field">
+        <label>Servicio</label>
+        <input id="sh-service" placeholder="Ground, Express, 2-Day...">
+      </div>
+      <div class="form-field">
+        <label>Numero de Guia / Tracking</label>
+        <input id="sh-tracking" placeholder="1Z999AA10123456784">
+      </div>
+      <div class="form-field">
+        <label>No. de Cajas</label>
+        <input id="sh-pkg" type="number" min="1" value="1">
+      </div>
+      <div class="form-field">
+        <label>Peso Total (kg)</label>
+        <input id="sh-weight" type="number" step="0.1" value="0">
+      </div>
+      <div class="form-field">
+        <label>Costo de Envio (MXN)</label>
+        <input id="sh-cost" type="number" step="0.01" value="0">
+      </div>
+      <div class="form-field span-2">
+        <label>Notas</label>
+        <input id="sh-notes" placeholder="Instrucciones especiales, referencias...">
+      </div>
+    </div>
+    <div style="margin-top:1rem;padding:0.85rem;background:rgba(201,168,76,0.06);border:1px solid var(--border);border-radius:var(--radius)">
+      <div style="font-family:var(--font-label);font-size:0.68rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);margin-bottom:0.5rem">Contenido del embarque</div>
+      ${items.map(i => `<div style="display:flex;justify-content:space-between;padding:0.3rem 0;border-bottom:1px solid var(--border-soft);font-size:0.84rem">
+        <span class="mono" style="color:var(--gold-light)">${i.part_number}</span>
+        <span>${i.description}</span>
+        <span style="font-weight:600">${fmtNum(i.qty_picked||i.qty_ordered)} uds</span>
+      </div>`).join('')}
+    </div>`,
+    `<button class="btn btn-outline" onclick="closeModal()">Cancelar</button>
+     <button class="btn btn-gold" onclick="saveShipment('${pickId}','${saleId}','${clientName}','${client.client_id||''}')">Crear Embarque</button>`, true);
+}
+
+async function saveShipment(pickId, saleId, clientName, clientId) {
+  const pkRes = await api({action:'getPickingList'});
+  const pk = (pkRes.data||[]).find(p => p.pick_id === pickId);
+  const items = (pk?.items||[]).map(i => ({
+    part_id: i.part_id, part_number: i.part_number,
+    description: i.description, qty: i.qty_picked||i.qty_ordered
+  }));
+  try {
+    const r = await api({action:'createShipment',
+      pick_id: pickId, sale_id: saleId, client_id: clientId, client_name: clientName,
+      carrier: v('sh-carrier'), service: v('sh-service'), tracking_number: v('sh-tracking'),
+      packages: v('sh-pkg'), weight_kg: v('sh-weight'), ship_cost: v('sh-cost'),
+      notes: v('sh-notes'), items: JSON.stringify(items), user: ST.user?.username});
+    if (!r.success) throw new Error(r.error);
+    toast('Embarque creado. Confirma la salida cuando el camion recoja.');
+    closeModal(); renderShipping();
+  } catch(e) { toast(e.message,'error'); }
+}
+
+function openConfirmShipModal(shipId, carrier) {
+  openModal('Confirmar Salida a Carrier', `
+    <div style="margin-bottom:1rem;font-family:var(--font-label);font-size:0.82rem;color:rgba(244,241,236,0.7)">
+      Esta accion confirma que el paquete fue entregado a <strong style="color:var(--white)">${carrier}</strong>
+      y descuenta el inventario definitivamente.
+    </div>
+    <div class="form-field">
+      <label>Confirmar / Actualizar Numero de Guia</label>
+      <input id="conf-tracking" placeholder="Numero de tracking del carrier">
+    </div>`,
+    `<button class="btn btn-outline" onclick="closeModal()">Cancelar</button>
+     <button class="btn btn-gold" onclick="confirmShip('${shipId}','${carrier}')">Confirmar Salida</button>`);
+}
+
+async function confirmShip(shipId, carrier) {
+  try {
+    const r = await api({action:'confirmShipment',
+      ship_id: shipId, carrier, tracking_number: v('conf-tracking'), user: ST.user?.username});
+    if (!r.success) throw new Error(r.error);
+    toast('Salida confirmada. Inventario actualizado.');
+    closeModal(); renderShipping();
+  } catch(e) { toast(e.message,'error'); }
+}
+
+// ================================================================
+// WAREHOUSE — SCANNER / TRAZABILIDAD
+// Campo unico que acepta cualquier ID o numero de parte.
+// Listo para scanner USB — el scanner emula teclado y presiona Enter.
+// ================================================================
+async function renderScanner() {
+  document.getElementById('topbar-actions').innerHTML = '';
+  document.getElementById('content-area').innerHTML = `
+    <div style="max-width:680px;margin:0 auto">
+      <div class="card" style="margin-bottom:1.25rem">
+        <div class="card-header">
+          <div>
+            <div class="card-title">Scanner / Trazabilidad</div>
+            <div class="card-subtitle">Escanea o escribe cualquier ID para ver su estado y trazabilidad completa</div>
+          </div>
+        </div>
+
+        <div style="display:flex;gap:0.75rem;align-items:center">
+          <input id="scan-input" type="text"
+            placeholder="Escanea codigo o escribe: PRT-001, SLE-XXX, PO-XXX, SHIP-XXX..."
+            style="flex:1;background:rgba(255,255,255,0.05);border:2px solid var(--gold);color:var(--white);font-family:var(--font-body);font-size:1rem;padding:0.75rem 1rem;border-radius:var(--radius);outline:none;letter-spacing:0.04em"
+            onkeydown="if(event.key==='Enter')doScan()"
+            autofocus>
+          <button class="btn btn-gold" onclick="doScan()" style="padding:0.75rem 1.5rem;font-size:0.85rem">
+            Buscar
+          </button>
+        </div>
+
+        <div style="margin-top:0.75rem;font-family:var(--font-label);font-size:0.7rem;color:var(--muted)">
+          Prefijos: <span style="color:var(--gold-dim)">PRT-</span> Parte &nbsp;|&nbsp;
+          <span style="color:var(--gold-dim)">SLE-</span> Venta &nbsp;|&nbsp;
+          <span style="color:var(--gold-dim)">PO-</span> Orden de Compra &nbsp;|&nbsp;
+          <span style="color:var(--gold-dim)">PICK-</span> Picking &nbsp;|&nbsp;
+          <span style="color:var(--gold-dim)">SHIP-</span> Embarque &nbsp;|&nbsp;
+          <span style="color:var(--gold-dim)">WO-</span> Orden de Trabajo
+        </div>
+      </div>
+
+      <div id="scan-result"></div>
+    </div>`;
+
+  document.getElementById('scan-input')?.focus();
+}
+
+async function doScan() {
+  const code = document.getElementById('scan-input')?.value?.trim();
+  if (!code) return;
+  const resEl = document.getElementById('scan-result');
+  resEl.innerHTML = '<div class="loading"><div class="spinner"></div>Buscando...</div>';
+
+  try {
+    const r = await api({action:'scanLookup', code});
+    if (!r.success) {
+      resEl.innerHTML = `<div class="alert-banner">No encontrado: "${code}"</div>`;
+      return;
+    }
+
+    const d = r.data;
+    const typeLabels = {
+      part:'Parte / Numero de Parte', purchase_order:'Orden de Compra',
+      sale:'Orden de Venta', picking:'Lista de Surtido',
+      shipment:'Embarque', work_order:'Orden de Trabajo', location:'Ubicacion'
+    };
+
+    let detailHTML = '';
+    if (r.type === 'part') {
+      // Mostrar inventario + trazabilidad
+      const trRes = await api({action:'getTraceability', part_id:d.part_id, part_number:d.part_number});
+      const tr = trRes.data||{};
+      const recentMovs = (tr.movements||[]).slice(0,8);
+      detailHTML = `
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:0.75rem;margin-bottom:1rem">
+          <div class="stat-card"><div class="stat-label">En Almacen</div><div class="stat-value">${fmtNum(d.qty_on_hand||0)}</div></div>
+          <div class="stat-card"><div class="stat-label">Disponible</div><div class="stat-value ${d.below_reorder?'danger':''}">${fmtNum(d.qty_available||0)}</div></div>
+          <div class="stat-card"><div class="stat-label">Costo Prom.</div><div class="stat-value gold">${fmtMXN(d.avg_cost||0)}</div></div>
+        </div>
+        <div style="font-family:var(--font-label);font-size:0.68rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);margin-bottom:0.5rem">Ultimos movimientos</div>
+        <div class="table-wrap"><table><thead><tr>
+          <th>Fecha</th><th>Tipo</th><th class="r">Delta</th><th class="r">Stock Resultante</th><th>Referencia</th>
+        </tr></thead><tbody>
+          ${recentMovs.map(m => `<tr>
+            <td style="font-size:0.75rem">${fmtDate(m.timestamp)}</td>
+            <td><span class="badge badge-muted">${m.type}</span></td>
+            <td class="r" style="color:${+m.qty_delta>0?'#5dd492':'#e87070'};font-weight:600">${+m.qty_delta>0?'+':''}${fmtNum(m.qty_delta)}</td>
+            <td class="r">${fmtNum(m.qty_after)}</td>
+            <td style="font-size:0.75rem;color:var(--muted)">${m.reference_id||'—'}</td>
+          </tr>`).join('')||emptyRow(5)}
+        </tbody></table></div>`;
+    } else if (r.type === 'sale') {
+      detailHTML = `<div style="display:grid;grid-template-columns:1fr 1fr;gap:0.75rem">
+        <div><div class="stat-label">Cliente</div><div style="font-weight:600">${d.client_name}</div></div>
+        <div><div class="stat-label">Estado</div><span class="badge ${d.status==='active'?'badge-ok':'badge-danger'}">${d.status}</span></div>
+        <div><div class="stat-label">Parte</div><div class="mono" style="color:var(--gold-light)">${d.part_number}</div></div>
+        <div><div class="stat-label">Total</div><div style="color:var(--gold);font-weight:600">${fmtMXN(d.total)}</div></div>
+        <div><div class="stat-label">Fecha</div><div>${fmtDate(d.sale_date)}</div></div>
+        <div><div class="stat-label">Pago</div><span class="badge ${d.payment_status==='paid'?'badge-ok':'badge-warn'}">${d.payment_status||'pendiente'}</span></div>
+      </div>`;
+    } else if (r.type === 'shipment') {
+      detailHTML = `<div style="display:grid;grid-template-columns:1fr 1fr;gap:0.75rem">
+        <div><div class="stat-label">Cliente</div><div style="font-weight:600">${d.client_name}</div></div>
+        <div><div class="stat-label">Carrier</div><div style="font-weight:600">${d.carrier}</div></div>
+        <div><div class="stat-label">Tracking</div><div class="mono" style="color:var(--gold-light)">${d.tracking_number||'—'}</div></div>
+        <div><div class="stat-label">Estado</div><span class="badge ${d.status==='shipped'?'badge-ok':'badge-gold'}">${d.status}</span></div>
+        <div><div class="stat-label">Cajas</div><div>${d.packages}</div></div>
+        <div><div class="stat-label">Peso</div><div>${d.weight_kg} kg</div></div>
+      </div>`;
+    } else {
+      // Mostrar todos los campos del objeto encontrado
+      detailHTML = `<div style="display:grid;grid-template-columns:1fr 1fr;gap:0.5rem">
+        ${Object.entries(d).filter(([k]) => !k.includes('_hash') && !k.includes('items')).map(([k,val]) =>
+          `<div><div class="stat-label">${k}</div><div style="font-size:0.85rem;word-break:break-all">${val||'—'}</div></div>`
+        ).join('')}
+      </div>`;
+    }
+
+    resEl.innerHTML = `
+      <div class="card">
+        <div class="card-header">
+          <div>
+            <div style="font-family:var(--font-label);font-size:0.65rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--gold-dim);margin-bottom:0.25rem">${typeLabels[r.type]||r.type}</div>
+            <div class="card-title">${d.part_number||d.po_id||d.sale_id||d.ship_id||d.wo_number||d.pick_id||d.loc_id||code}</div>
+            ${d.description||d.supplier_name||d.client_name||d.finished_description ? `<div class="card-subtitle">${d.description||d.supplier_name||d.client_name||d.finished_description||''}</div>` : ''}
+          </div>
+        </div>
+        ${detailHTML}
+      </div>`;
+  } catch(e) {
+    resEl.innerHTML = `<div class="alert-banner">${e.message}</div>`;
+  }
 }
 </script>
 </body>
