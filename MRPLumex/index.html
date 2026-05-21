@@ -59,7 +59,7 @@ body{font-family:var(--fb);background:var(--navy);color:var(--white);min-height:
 .btn-setup{width:100%;background:transparent;border:1px solid var(--gold);color:var(--gold);font-family:var(--fl);font-size:.76rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;padding:.58rem;border-radius:var(--r);cursor:pointer;transition:all .2s;}
 .btn-setup:hover{background:rgba(201,168,76,.1);}
 .setup-msg{font-family:var(--fl);font-size:.72rem;margin-top:.45rem;text-align:center;}
-#app{display:none;min-height:100vh;}
+#app{display:none;min-height:100vh;width:100%;}
 .sidebar{position:fixed;top:0;left:0;bottom:0;width:220px;background:var(--s3);border-right:1px solid var(--border);display:flex;flex-direction:column;z-index:100;overflow-y:auto;}
 .sb-brand{padding:1.6rem 1.35rem 1rem;border-bottom:1px solid var(--bordersoft);}
 .sb-wm{font-family:var(--fl);font-size:.56rem;letter-spacing:.22em;color:var(--gold-d);text-transform:uppercase;margin-bottom:.25rem;}
@@ -82,11 +82,11 @@ body{font-family:var(--fb);background:var(--navy);color:var(--white);min-height:
 .ur{font-family:var(--fl);font-size:.6rem;letter-spacing:.08em;color:var(--gold-d);text-transform:uppercase;}
 .logout-btn{background:none;border:none;color:rgba(244,241,236,.3);cursor:pointer;padding:.2rem;line-height:0;border-radius:var(--r);transition:color .15s;}
 .logout-btn:hover{color:var(--white);}
-.main{margin-left:220px;min-height:100vh;display:flex;flex-direction:column;}
-.topbar{height:52px;background:var(--s3);border-bottom:1px solid var(--bordersoft);display:flex;align-items:center;padding:0 1.6rem;gap:1rem;position:sticky;top:0;z-index:50;}
+.main{margin-left:220px;min-height:100vh;display:flex;flex-direction:column;width:calc(100% - 220px);}
+.topbar{height:52px;background:var(--s3);border-bottom:1px solid var(--bordersoft);display:flex;align-items:center;padding:0 1.6rem;gap:1rem;position:sticky;top:0;z-index:50;width:100%;}
 .topbar-title{font-family:var(--fd);font-size:1.22rem;font-weight:500;flex:1;}
 .topbar-actions{display:flex;gap:.55rem;align-items:center;}
-.content{flex:1;padding:1.5rem;animation:fadeIn .2s ease;}
+.content{flex:1;padding:1.5rem 2rem;animation:fadeIn .2s ease;width:100%;box-sizing:border-box;}
 .btn{display:inline-flex;align-items:center;gap:.35rem;font-family:var(--fl);font-size:.75rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;padding:.48rem .9rem;border-radius:var(--r);border:none;cursor:pointer;transition:all .15s;white-space:nowrap;line-height:1;}
 .btn-gold{background:var(--gold);color:var(--navy);}
 .btn-gold:hover{background:var(--gold-l);}
@@ -98,19 +98,19 @@ body{font-family:var(--fb);background:var(--navy);color:var(--white);min-height:
 .btn-icon{background:none;border:none;color:rgba(244,241,236,.35);cursor:pointer;padding:.24rem;line-height:0;border-radius:var(--r);transition:all .15s;}
 .btn-icon:hover{color:var(--gold-l);background:rgba(201,168,76,.08);}
 .btn:disabled,.btn-setup:disabled{opacity:.55;cursor:not-allowed;}
-.card{background:var(--s1);border:1px solid var(--bordersoft);border-radius:var(--rl);padding:1.25rem;}
+.card{background:var(--s1);border:1px solid var(--bordersoft);border-radius:var(--rl);padding:1.25rem;width:100%;}
 .card-header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:1rem;}
 .card-title{font-family:var(--fd);font-size:1.05rem;font-weight:500;}
 .card-sub{font-family:var(--fl);font-size:.65rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-top:.1rem;}
-.stat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(165px,1fr));gap:.8rem;margin-bottom:1.25rem;}
-.stat{background:var(--s1);border:1px solid var(--bordersoft);border-radius:var(--rl);padding:1rem 1.15rem;position:relative;overflow:hidden;}
+.stat-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:.85rem;margin-bottom:1.25rem;}
+.stat{background:var(--s1);border:1px solid var(--bordersoft);border-radius:var(--rl);padding:1.1rem 1.3rem;position:relative;overflow:hidden;min-width:0;}
 .stat::after{content:'';position:absolute;top:0;left:0;width:3px;height:100%;background:var(--gold);opacity:.5;}
 .stat-label{font-family:var(--fl);font-size:.62rem;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);margin-bottom:.38rem;}
 .stat-value{font-family:var(--fd);font-size:1.75rem;font-weight:600;line-height:1;}
 .stat-value.gold{color:var(--gold);}
 .stat-value.danger{color:var(--danger-l);}
 .stat-sub{font-family:var(--fl);font-size:.64rem;color:var(--muted);margin-top:.25rem;}
-.tw{overflow-x:auto;border-radius:var(--rl);border:1px solid var(--bordersoft);}
+.tw{overflow-x:auto;border-radius:var(--rl);border:1px solid var(--bordersoft);width:100%;}
 table{width:100%;border-collapse:collapse;font-size:.83rem;}
 thead tr{background:var(--s2);border-bottom:1px solid var(--border);}
 thead th{font-family:var(--fl);font-size:.61rem;letter-spacing:.14em;text-transform:uppercase;color:var(--gold-d);padding:.65rem .82rem;text-align:left;font-weight:600;white-space:nowrap;}
@@ -157,7 +157,7 @@ th.r,td.r{text-align:right;}
 .pb{height:4px;background:rgba(255,255,255,.07);border-radius:2px;overflow:hidden;margin-top:.3rem;}
 .pf{height:100%;border-radius:2px;transition:width .6s;}
 .pf.ok{background:var(--ok);}.pf.w{background:var(--warn);}.pf.d{background:var(--danger);}
-.floor-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(145px,1fr));gap:.7rem;margin-bottom:1.25rem;}
+.floor-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:.75rem;margin-bottom:1.25rem;width:100%;}
 .station-card{background:var(--s1);border:1px solid var(--bordersoft);border-radius:var(--rl);padding:.9rem 1rem;position:relative;}
 .station-card.busy{border-color:rgba(201,168,76,.35);}
 .station-card.busy::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--gold);border-radius:var(--rl) var(--rl) 0 0;}
@@ -191,6 +191,85 @@ th.r,td.r{text-align:right;}
 .ai-input-row{display:flex;gap:.6rem;}
 .ai-input{flex:1;background:var(--s1);border:1px solid var(--border);color:var(--white);font-family:var(--fb);font-size:.86rem;padding:.65rem .9rem;border-radius:var(--r);outline:none;}
 .ai-input:focus{border-color:var(--gold);}
+
+/* ── WORK ORDERS ─────────────────── */
+.wo-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:1rem;width:100%;}
+.wo-card{background:var(--s1);border:1px solid var(--bordersoft);border-radius:var(--rl);overflow:hidden;position:relative;transition:border-color .2s;}
+.wo-card:hover{border-color:rgba(201,168,76,.3);}
+.wo-card-accent{height:3px;width:100%;}
+.wo-card-accent.urgent{background:linear-gradient(90deg,#C0392B,#e87070);}
+.wo-card-accent.high{background:linear-gradient(90deg,#B8860B,#e6b84a);}
+.wo-card-accent.normal{background:linear-gradient(90deg,var(--gold-d),var(--gold));}
+.wo-card-accent.low{background:rgba(255,255,255,.1);}
+.wo-card-body{padding:1rem 1.1rem;}
+.wo-card-header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:.65rem;}
+.wo-number{font-family:var(--fl);font-size:.78rem;font-weight:700;color:var(--gold-l);letter-spacing:.06em;}
+.wo-type-badge{font-family:var(--fl);font-size:.58rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:.12rem .45rem;border-radius:20px;background:rgba(255,255,255,.06);color:var(--muted);border:1px solid var(--bordersoft);}
+.wo-station{font-family:var(--fl);font-size:.88rem;font-weight:600;color:var(--white);margin-bottom:.25rem;}
+.wo-operator{font-family:var(--fl);font-size:.72rem;color:var(--muted);margin-bottom:.6rem;}
+.wo-operator span{color:var(--off);}
+.wo-instructions{font-family:var(--fb);font-size:.78rem;color:rgba(244,241,236,.6);line-height:1.5;margin-bottom:.75rem;padding:.5rem .65rem;background:rgba(255,255,255,.025);border-radius:var(--r);border-left:2px solid var(--gold-d);}
+.wo-meta{display:flex;gap:1rem;margin-bottom:.75rem;}
+.wo-meta-item{font-family:var(--fl);font-size:.65rem;}
+.wo-meta-item .lbl{color:var(--muted);text-transform:uppercase;letter-spacing:.1em;display:block;margin-bottom:.1rem;}
+.wo-meta-item .val{color:var(--white);font-weight:600;font-size:.78rem;}
+.wo-actions{display:flex;gap:.4rem;flex-wrap:wrap;}
+.wo-timer{font-family:var(--fl);font-size:1.1rem;font-weight:700;color:var(--gold);letter-spacing:.08em;}
+/* Status colors on card */
+.wo-card.pending .wo-card-body{opacity:.9;}
+.wo-card.in_progress{border-color:rgba(201,168,76,.4);}
+.wo-card.completed{opacity:.65;}
+.wo-card.cancelled{opacity:.4;}
+
+/* ── FLOOR OPERATOR VIEW ──────────── */
+#op-view{display:none;min-height:100vh;background:var(--navy);}
+.op-header{background:var(--s3);border-bottom:1px solid var(--border);padding:1rem 1.5rem;display:flex;align-items:center;justify-content:space-between;}
+.op-station-name{font-family:var(--fd);font-size:1.5rem;font-weight:600;}
+.op-station-name span{color:var(--gold);}
+.op-user-info{font-family:var(--fl);font-size:.75rem;color:var(--muted);text-align:right;}
+.op-user-info strong{color:var(--white);display:block;font-size:.9rem;}
+.op-scan-bar{padding:1rem 1.5rem;background:var(--s2);border-bottom:1px solid var(--bordersoft);display:flex;gap:.65rem;align-items:center;}
+.op-scan-input{flex:1;background:rgba(255,255,255,.06);border:2px solid var(--gold);color:var(--white);font-family:var(--fb);font-size:1rem;padding:.7rem 1rem;border-radius:var(--r);outline:none;letter-spacing:.05em;}
+.op-scan-input::placeholder{color:var(--muted);}
+.op-content{padding:1.25rem 1.5rem;}
+.op-section-title{font-family:var(--fl);font-size:.62rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold-d);margin-bottom:.75rem;padding-bottom:.35rem;border-bottom:1px solid var(--bordersoft);}
+.op-wo-card{background:var(--s1);border:1px solid var(--bordersoft);border-radius:var(--rl);margin-bottom:.85rem;overflow:hidden;}
+.op-wo-accent{height:4px;}
+.op-wo-inner{padding:1.1rem 1.25rem;}
+.op-wo-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:.5rem;}
+.op-wo-num{font-family:var(--fl);font-size:.85rem;font-weight:700;color:var(--gold-l);letter-spacing:.06em;}
+.op-wo-instr{font-family:var(--fb);font-size:.86rem;color:rgba(244,241,236,.75);line-height:1.55;margin-bottom:.85rem;padding:.55rem .7rem;background:rgba(255,255,255,.025);border-radius:var(--r);border-left:2px solid var(--gold-d);}
+.op-wo-stats{display:flex;gap:1.25rem;margin-bottom:.85rem;}
+.op-stat{font-family:var(--fl);}
+.op-stat .lbl{font-size:.6rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);display:block;}
+.op-stat .val{font-size:1rem;font-weight:700;color:var(--white);}
+.op-wo-actions{display:flex;gap:.5rem;flex-wrap:wrap;}
+.op-timer-live{font-family:var(--fl);font-size:1.3rem;font-weight:700;color:var(--gold);letter-spacing:.1em;padding:.4rem .8rem;background:rgba(201,168,76,.08);border-radius:var(--r);border:1px solid rgba(201,168,76,.2);}
+
+/* ── ANALYTICS ───────────────────── */
+.analytics-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem;width:100%;}
+.analytics-grid.full{grid-template-columns:1fr;}
+.chart-bar-row{display:flex;align-items:center;gap:.65rem;margin-bottom:.55rem;}
+.chart-bar-label{font-family:var(--fl);font-size:.73rem;color:var(--off);width:110px;flex-shrink:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.chart-bar-track{flex:1;height:8px;background:rgba(255,255,255,.06);border-radius:4px;overflow:hidden;}
+.chart-bar-fill{height:100%;border-radius:4px;transition:width .6s ease;}
+.chart-bar-val{font-family:var(--fl);font-size:.7rem;color:var(--muted);width:40px;text-align:right;flex-shrink:0;}
+.mini-trend{display:flex;align-items:flex-end;gap:3px;height:48px;}
+.mini-trend-bar{flex:1;border-radius:2px 2px 0 0;background:var(--gold);opacity:.7;min-height:2px;transition:height .4s;}
+.mini-trend-bar.today{opacity:1;background:var(--gold-l);}
+.eff-ring{display:flex;align-items:center;gap:.75rem;}
+.ring-svg{flex-shrink:0;}
+.ring-label{font-family:var(--fl);}
+.ring-label .pct{font-size:1.35rem;font-weight:700;color:var(--white);}
+.ring-label .sub{font-size:.65rem;color:var(--muted);display:block;}
+.period-tabs{display:flex;gap:.3rem;margin-bottom:1rem;}
+.period-tab{font-family:var(--fl);font-size:.7rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;padding:.32rem .75rem;border-radius:20px;border:1px solid var(--bordersoft);background:none;color:var(--muted);cursor:pointer;transition:all .15s;}
+.period-tab.active{background:var(--gold);color:var(--navy);border-color:var(--gold);}
+.period-tab:hover:not(.active){border-color:var(--gold-d);color:var(--white);}
+
+/* ── PDF BUTTON ──────────────────── */
+.btn-pdf{background:rgba(192,57,43,.15);border:1px solid rgba(192,57,43,.4);color:#f08080;font-family:var(--fl);font-size:.68rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;padding:.28rem .65rem;border-radius:var(--r);cursor:pointer;transition:all .15s;display:inline-flex;align-items:center;gap:.3rem;}
+.btn-pdf:hover{background:rgba(192,57,43,.28);}
 </style>
 </head>
 <body>
@@ -238,6 +317,8 @@ th.r,td.r{text-align:right;}
       <div class="nl">Produccion</div>
       <div class="ni" onclick="go('receiving')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 17H3a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11a2 2 0 0 1 2 2v3"/><rect x="9" y="11" width="14" height="10" rx="2"/></svg>Recepcion Raw</div>
       <div class="ni" onclick="go('production')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>Ordenes de Produccion</div>
+      <div class="ni" onclick="go('workorders')" id="ni-wo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>Work Orders<span class="nbadge" id="nb-wo" style="display:none">!</span></div>
+      <div class="ni" onclick="go('analytics')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/><line x1="2" y1="20" x2="22" y2="20"/></svg>Analytics</div>
       <div class="ni" onclick="go('lots')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>Lotes WIP</div>
       <div class="ni" onclick="go('cnc')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93l-1.41 1.41M6.34 17.66l-1.41 1.41M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M12 2v2M12 20v2M2 12h2M20 12h2"/></svg>CNC (Bushings/Pins)</div>
       <div class="nl">Ventas y Despacho</div>
@@ -274,9 +355,46 @@ th.r,td.r{text-align:right;}
   <div class="mf" id="mfoot"></div>
 </div></div>
 <div id="tc"></div>
+
+<!-- OPERATOR FLOOR VIEW (shown instead of app for floor roles) -->
+<div id="op-view">
+  <div class="op-header">
+    <div>
+      <div style="font-family:var(--fl);font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold-d);margin-bottom:.2rem">Horus MRP — Estacion Asignada</div>
+      <div class="op-station-name" id="op-station-title">Estacion <span id="op-station-span">—</span></div>
+    </div>
+    <div style="display:flex;align-items:center;gap:1rem">
+      <div class="op-user-info"><strong id="op-user-name">—</strong><span id="op-user-role">—</span></div>
+      <button class="btn btn-outline btn-sm" onclick="doLogout()">Salir</button>
+    </div>
+  </div>
+  <div class="op-scan-bar">
+    <input class="op-scan-input" id="op-scan-in" placeholder="Escanea lote o escribe ID del lote..." onkeydown="if(event.key==='Enter')opScan()">
+    <button class="btn btn-gold" onclick="opScan()">Buscar Lote</button>
+    <div id="op-scan-result" style="font-family:var(--fl);font-size:.78rem;color:var(--muted);padding:0 .5rem"></div>
+  </div>
+  <div class="op-content">
+    <div class="op-section-title">Work Orders Asignadas a Esta Estacion</div>
+    <div id="op-wo-list"><div class="loading"><div class="spinner"></div>Cargando...</div></div>
+    <div class="op-section-title" style="margin-top:1.5rem">Completadas Recientes</div>
+    <div id="op-wo-done"></div>
+  </div>
+</div>
+
+<!-- Complete WO modal for operators -->
+<div class="mo" id="mo-complete"><div class="modal" id="modal-complete">
+  <div class="mh"><div><div class="mt">Completar Work Order</div></div>
+    <button class="btn-icon" onclick="document.getElementById('mo-complete').classList.remove('open')"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+  </div>
+  <div class="mb" id="mbody-complete"></div>
+  <div class="mf" id="mfoot-complete"></div>
+</div></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <script>
 // *** CAMBIAR GAS_URL CON LA NUEVA IMPLEMENTACION ***
-const GAS_URL = "https://script.google.com/macros/s/AKfycbz1a1scyeK7h4ml9OpupUZIzTY00P2SZW2E3xGo-BkL9VwUJIvF8KKBKCZxaC855EghIA/exec";
+const GAS_URL = "https://script.google.com/macros/s/AKfycbya7d_0E2PeHQinMSgtMDe1ZjNNlu1CpKcyAmmMvGG4sUJIUukNQbAauECNUJREIVPM/exec";
 
 const POST_ACTIONS = new Set([
   'addSKU','updateSKU','addRawPart','updateRawPart','saveBOM','saveRouting',
@@ -330,16 +448,31 @@ async function runSetup(){
   else{ msg.style.color='var(--danger-l)'; msg.textContent='Error: '+(r.error||'?'); }
   btn.disabled=false; btn.textContent='Inicializar Sistema';
 }
+const FLOOR_ROLES = new Set(['wc_tube','wc_bend','wc_laser','wc_weld','wc_sand','wc_coat','wc_oven','wc_assy','wc_pack','wc_cnc','wc_ship','wc_rec','receiving','shipping','floor']);
+function isFloorRole(role){ return FLOOR_ROLES.has((role||'').toLowerCase()); }
+
 function loginSuccess(){
   document.getElementById('login-screen').style.opacity='0';
   setTimeout(()=>{
     document.getElementById('login-screen').style.display='none';
-    document.getElementById('app').style.display='flex';
     const u=ST.user;
-    document.getElementById('un').textContent=u.full_name||u.username;
-    document.getElementById('ur').textContent=u.role||'operador';
-    document.getElementById('uav').textContent=(u.full_name||u.username)[0].toUpperCase();
-    go('dashboard');
+    if(isFloorRole(u.role)){
+      // Operador de piso — vista simplificada
+      document.getElementById('op-view').style.display='block';
+      document.getElementById('op-station-span').textContent=u.wc_id||u.role;
+      document.getElementById('op-user-name').textContent=u.full_name||u.username;
+      document.getElementById('op-user-role').textContent=u.role;
+      startFloorView(u);
+    } else {
+      // Admin / supervisor — vista completa
+      document.getElementById('app').style.display='flex';
+      document.getElementById('un').textContent=u.full_name||u.username;
+      document.getElementById('ur').textContent=u.role||'admin';
+      document.getElementById('uav').textContent=(u.full_name||u.username)[0].toUpperCase();
+      // Ocultar WO badge si no es admin
+      if(u.role==='sales') document.getElementById('ni-wo')?.style.setProperty('display','none');
+      go('dashboard');
+    }
   },320);
 }
 function doLogout(){ sessionStorage.removeItem('mrp_u'); location.reload(); }
@@ -349,6 +482,7 @@ catch(e){ checkConn(); }
 
 const TITLES={
   dashboard:'Tablero de Control',floor:'Planta — Tiempo Real',ai:'Asistente IA',
+  workorders:'Work Orders',analytics:'Analytics — Dashboard',
   skus:'SKUs — Productos',rawparts:'Materias Primas',bom:'BOM — Lista de Materiales',
   clients:'Clientes',suppliers:'Proveedores',
   rawinv:'Inventario Raw Material',fginv:'Inventario FG',
@@ -375,6 +509,7 @@ function go(page){
   document.getElementById('tactions').innerHTML='';
   const PAGES={
     dashboard,floor:renderFloor,ai:renderAI,
+    workorders:renderWorkOrders,analytics:renderAnalytics,
     skus:renderSKUs,rawparts:renderRawParts,bom:renderBOM,
     clients:renderClients,suppliers:renderSuppliers,
     rawinv:renderRawInv,fginv:renderFGInv,
@@ -411,30 +546,48 @@ function stLabel(s){ return {open:'Abierto',in_progress:'En Proceso',completed:'
 async function dashboard(){
   setLoading();
   try {
-    const [dr,fr]=await Promise.all([api({action:'getDashboard'}),api({action:'getFloorStatus'})]);
+    const [dr,fr,wr]=await Promise.all([
+      api({action:'getDashboard'}),
+      api({action:'getFloorStatus'}),
+      api({action:'getWorkOrders2'})
+    ]);
     if(!dr.success)throw new Error(dr.error);
-    const d=dr.data, fl=fr.data||[];
+    const d=dr.data, fl=fr.data||[], wos=wr.data||[];
+    const woPending=wos.filter(w=>w.status==='pending').length;
+    const woActive=wos.filter(w=>['accepted','in_progress'].includes(w.status)).length;
     updateBadge('nb-raw',d.low_stock_count);
     updateBadge('nb-ar',d.overdue_ar);
-    const stCards=fl.filter(s=>s.seq<=11).sort((a,b)=>a.seq-b.seq).map(s=>`
-      <div class="station-card ${s.lot_count>0?'busy':''}">
+    updateBadge('nb-wo',woPending);
+
+    const stCards=fl.filter(s=>s.seq<=11).sort((a,b)=>a.seq-b.seq).map(s=>{
+      const stWOs=wos.filter(w=>w.assigned_wc_id===s.station_id&&['pending','accepted','in_progress'].includes(w.status));
+      return `<div class="station-card ${s.lot_count>0?'busy':''}">
         <div class="sc-dot"></div>
         <div class="sc-name">${s.station_name}</div>
         <div class="sc-count">${s.lot_count}</div>
         <div class="sc-qty">${fmn(s.qty_total)} pzas</div>
-      </div>`).join('');
+        ${stWOs.length?`<div style="font-family:var(--fl);font-size:.6rem;color:var(--warn-l);margin-top:.2rem">${stWOs.length} WO${stWOs.length>1?'s':''}</div>`:''}
+      </div>`;}).join('');
+
     document.getElementById('content').innerHTML=`
-      ${d.low_stock_count>0?`<div class="ab w">${d.low_stock_count} materia(s) prima(s) bajo punto de reorden.</div>`:''}
+      ${d.low_stock_count>0?`<div class="ab w">${d.low_stock_count} materia(s) prima(s) bajo punto de reorden. <button class="btn btn-sm btn-outline" onclick="go('rawinv')" style="margin-left:.5rem">Ver inventario</button></div>`:''}
+      ${woPending>0?`<div class="ab" style="background:rgba(192,57,43,.07);border-color:rgba(192,57,43,.25);">${woPending} Work Order(s) pendiente(s) de aceptacion por operadores. <button class="btn btn-sm btn-outline" onclick="go('workorders')" style="margin-left:.5rem">Ver Work Orders</button></div>`:''}
       <div class="stat-grid">
         <div class="stat"><div class="stat-label">OPs Abiertas</div><div class="stat-value">${d.open_prod_orders}</div></div>
         <div class="stat"><div class="stat-label">Lotes Activos</div><div class="stat-value gold">${d.active_lots}</div><div class="stat-sub">En planta ahora</div></div>
+        <div class="stat"><div class="stat-label">WOs Pendientes</div><div class="stat-value ${woPending>0?'danger':''}">${woPending}</div><div class="stat-sub">${woActive} en proceso</div></div>
         <div class="stat"><div class="stat-label">Inv. FG</div><div class="stat-value gold">${fmx(d.fg_inventory_value)}</div></div>
-        <div class="stat"><div class="stat-label">Inv. Raw</div><div class="stat-value">${fmx(d.raw_inventory_value)}</div></div>
-        <div class="stat"><div class="stat-label">SOs Abiertas</div><div class="stat-value">${d.open_sales_orders}</div></div>
         <div class="stat"><div class="stat-label">Por Cobrar</div><div class="stat-value ${d.ar_pending>0?'danger':''}">${fmx(d.ar_pending)}</div><div class="stat-sub">${d.overdue_ar} vencidas</div></div>
+        <div class="stat"><div class="stat-label">SOs Abiertas</div><div class="stat-value">${d.open_sales_orders}</div></div>
       </div>
-      <div class="card" style="margin-bottom:1.1rem">
-        <div class="card-header"><div><div class="card-title">Estado de Planta</div><div class="card-sub">Lotes por estacion ahora mismo</div></div><button class="btn btn-outline btn-sm" onclick="go('floor')">Ver detalle</button></div>
+      <div class="card" style="margin-bottom:1rem">
+        <div class="card-header">
+          <div><div class="card-title">Estado de Planta — Tiempo Real</div><div class="card-sub">Lotes activos y Work Orders por estacion</div></div>
+          <div style="display:flex;gap:.5rem">
+            <button class="btn btn-outline btn-sm" onclick="go('analytics')">Analytics</button>
+            <button class="btn btn-gold btn-sm" onclick="go('workorders')">+ Nueva WO</button>
+          </div>
+        </div>
         <div class="floor-grid">${stCards}</div>
       </div>
       ${d.low_stock_parts&&d.low_stock_parts.length?`<div class="card"><div class="card-header"><div class="card-title">Alertas Stock Raw</div></div><div class="tw"><table><thead><tr><th>No. Parte</th><th>Descripcion</th><th class="r">Disp.</th><th class="r">Min</th></tr></thead><tbody>${d.low_stock_parts.map(p=>`<tr><td class="mono">${p.part_number}</td><td>${p.description}</td><td class="r">${badge('bD',fmn(p.qty_available))}</td><td class="r">${fmn(p.reorder_point)}</td></tr>`).join('')}</tbody></table></div></div>`:''}`;
@@ -1020,7 +1173,7 @@ async function renderUsers(){
 }
 function openUserModal(u){
   const e=!!u;
-  const roles=['admin','production','shipping','receiving','sales'];
+  const roles=['admin','production','sales','shipping','receiving','wc_tube','wc_bend','wc_laser','wc_weld','wc_sand','wc_coat','wc_oven','wc_assy','wc_pack','wc_cnc','wc_ship'];
   const roleOpts=roles.map(r=>`<option value="${r}" ${e&&u.role===r?'selected':''}>${r}</option>`).join('');
   const stOpts=STATION_LIST.map(s=>`<option value="${s.id}" ${e&&u.wc_id===s.id?'selected':''}>${s.name}</option>`).join('');
   openModal(e?'Editar Usuario':'Nuevo Usuario',`<div class="fg2">
@@ -1032,6 +1185,554 @@ function openUserModal(u){
   </div>`,`<button class="btn btn-outline" onclick="closeModal()">Cancelar</button><button class="btn btn-gold" onclick="saveUser(${e?`'${u.user_id}'`:'null'})">${e?'Guardar':'Crear'}</button>`);
 }
 async function saveUser(uid){ const d={username:v('u-user'),full_name:v('u-name'),role:v('u-role'),wc_id:v('u-wc'),password:v('u-pass')}; if(!uid&&!d.password)return toast('Contrasena requerida','e'); const r=await api({action:uid?'updateUser':'addUser',...d,...(uid?{user_id:uid}:{})},); if(!r.success)return toast(r.error,'e'); toast(uid?'Actualizado.':'Usuario creado.'); closeModal(); renderUsers(); }
+
+// ================================================================
+// WORK ORDERS — Admin
+// ================================================================
+const WO_TYPES = ['PRODUCTION','CNC','REPAIR','REWORK','MAINTENANCE','QUALITY'];
+const PRIORITIES = ['urgent','high','normal','low'];
+const PRIORITY_COLORS = {urgent:'#C0392B',high:'#B8860B',normal:'#C9A84C',low:'#6A7585'};
+
+async function renderWorkOrders(){
+  setLoading();
+  const isAdmin = ['admin','production'].includes(ST.user?.role);
+  document.getElementById('tactions').innerHTML = isAdmin
+    ? `<button class="btn btn-gold" onclick="openCreateWOModal()">+ Nueva Work Order</button>`
+    : '';
+
+  try {
+    const r = await api({action:'getWorkOrders2'});
+    if(!r.success) throw new Error(r.error);
+
+    const wos = r.data||[];
+    updateBadge('nb-wo', wos.filter(w=>w.status==='pending').length);
+
+    // Group by status
+    const pending   = wos.filter(w=>w.status==='pending');
+    const active    = wos.filter(w=>['accepted','in_progress'].includes(w.status));
+    const done      = wos.filter(w=>w.status==='completed').slice(0,20);
+    const cancelled = wos.filter(w=>w.status==='cancelled').slice(0,10);
+
+    const woCard = (wo, showPdf=true) => {
+      const priColor = PRIORITY_COLORS[wo.priority]||'#C9A84C';
+      const statusBadge = {pending:'bM',accepted:'bW',in_progress:'bG',completed:'bOK',cancelled:'bD'}[wo.status]||'bM';
+      const statusLabel = {pending:'Pendiente',accepted:'Aceptada',in_progress:'En Proceso',completed:'Completada',cancelled:'Cancelada'}[wo.status]||wo.status;
+      return `<div class="wo-card ${wo.status}">
+        <div class="wo-card-accent ${wo.priority}" style="background:linear-gradient(90deg,${priColor},${priColor}88)"></div>
+        <div class="wo-card-body">
+          <div class="wo-card-header">
+            <div>
+              <div class="wo-number">${wo.wo_number}</div>
+              <div style="display:flex;gap:.35rem;align-items:center;margin-top:.2rem">
+                <span class="wo-type-badge">${wo.type||'PROD'}</span>
+                ${badge(statusBadge,statusLabel)}
+                ${badge(wo.priority==='urgent'?'bD':wo.priority==='high'?'bW':'bM',wo.priority)}
+              </div>
+            </div>
+            <div style="display:flex;gap:.3rem;align-items:flex-start">
+              ${showPdf&&isAdmin?`<button class="btn-pdf" onclick="generateWOPdf('${wo.wo_id}')" title="Generar PDF">PDF</button>`:''}
+              ${isAdmin&&wo.status!=='completed'&&wo.status!=='cancelled'?`<button class="btn-icon" onclick="cancelWO('${wo.wo_id}')" title="Cancelar WO" style="color:var(--danger-l)"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>`:''} 
+            </div>
+          </div>
+          <div class="wo-station">${wo.assigned_wc_name||wo.assigned_wc_id}</div>
+          <div class="wo-operator">Operador: <span>${wo.assigned_operator||'Sin asignar'}</span></div>
+          ${wo.instructions?`<div class="wo-instructions">${wo.instructions}</div>`:''}
+          <div class="wo-meta">
+            <div class="wo-meta-item"><span class="lbl">Lote</span><span class="val">${wo.lot_number||'—'}</span></div>
+            <div class="wo-meta-item"><span class="lbl">SKU</span><span class="val">${wo.sku_number||'—'}</span></div>
+            <div class="wo-meta-item"><span class="lbl">Planeado</span><span class="val">${fmn(wo.qty_planned)} pzas</span></div>
+            ${wo.qty_completed>0?`<div class="wo-meta-item"><span class="lbl">Completado</span><span class="val" style="color:var(--ok-l)">${fmn(wo.qty_completed)} pzas</span></div>`:''}
+            ${wo.std_time_min>0?`<div class="wo-meta-item"><span class="lbl">T. Std</span><span class="val">${wo.std_time_min} min</span></div>`:''}
+          </div>
+          ${wo.status==='completed'&&wo.efficiency_pct?`
+            <div style="display:flex;align-items:center;gap:.5rem;margin-bottom:.6rem">
+              <div style="font-family:var(--fl);font-size:.62rem;color:var(--muted)">EFICIENCIA</div>
+              <div style="font-family:var(--fl);font-size:.88rem;font-weight:700;color:${wo.efficiency_pct>=90?'var(--ok-l)':wo.efficiency_pct>=70?'var(--warn-l)':'var(--danger-l)'}">
+                ${wo.efficiency_pct}%
+              </div>
+              ${wo.scrap>0?`<div style="font-family:var(--fl);font-size:.72rem;color:var(--danger-l)">Scrap: ${wo.scrap} pzas</div>`:''}
+            </div>`:''}
+        </div>
+      </div>`;
+    };
+
+    const section = (title, wos, cls='') => wos.length ? `
+      <div style="margin-bottom:1.75rem">
+        <div style="font-family:var(--fl);font-size:.62rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold-d);margin-bottom:.75rem;padding-bottom:.35rem;border-bottom:1px solid var(--bordersoft);display:flex;align-items:center;justify-content:space-between">
+          <span>${title}</span><span style="background:rgba(255,255,255,.06);padding:.1rem .45rem;border-radius:20px;font-size:.7rem">${wos.length}</span>
+        </div>
+        <div class="wo-grid ${cls}">${wos.map(w=>woCard(w)).join('')}</div>
+      </div>` : '';
+
+    const filterBar = `
+      <div class="fbar" style="margin-bottom:1.25rem">
+        <input class="si" placeholder="Buscar WO, lote, SKU, operador..." oninput="filterWOCards(this.value)">
+        <select class="si" style="width:auto" onchange="filterWOCards('',this.value)">
+          <option value="">Todas las estaciones</option>
+          ${STATION_LIST.map(s=>`<option value="${s.id}">${s.name}</option>`).join('')}
+        </select>
+      </div>`;
+
+    document.getElementById('content').innerHTML = filterBar +
+      `<div id="wo-all-content">` +
+      section(`Pendientes — En espera de aceptacion`, pending) +
+      section(`En Progreso`, active) +
+      section(`Completadas (ultimas 20)`, done) +
+      section(`Canceladas`, cancelled) +
+      (wos.length===0?'<div class="empty-state"><div class="empty-title">Sin Work Orders</div><p>Crea la primera usando el boton + Nueva Work Order.</p></div>':'') +
+      `</div>`;
+
+  } catch(e){ document.getElementById('content').innerHTML=`<div class="ab">${e.message}</div>`; }
+}
+
+function filterWOCards(q, station=''){
+  document.querySelectorAll('.wo-card').forEach(card=>{
+    const txt = card.textContent.toLowerCase();
+    const matchQ = !q || txt.includes(q.toLowerCase());
+    const matchS = !station || card.querySelector('.wo-station')?.textContent.includes(station) || card.closest('[data-wc]')?.dataset.wc===station;
+    card.closest('.wo-card') && (card.style.display = matchQ?'':'none');
+  });
+}
+
+async function cancelWO(woId){
+  if(!confirm('Cancelar esta Work Order?')) return;
+  const r = await api({action:'cancelWO',wo_id:woId,user:ST.user?.username});
+  if(!r.success) return toast(r.error,'e');
+  toast('WO cancelada.','w'); renderWorkOrders();
+}
+
+// ── Create WO Modal ────────────────────────────────────────────
+async function openCreateWOModal(){
+  const [lr,ur] = await Promise.all([api({action:'getAllLots'}),api({action:'getUsers'})]);
+  const lots = (lr.data||[]).filter(l=>l.status==='in_process');
+  const users = (ur.data||[]);
+
+  const lotOpts = lots.map(l=>`<option value="${l.lot_id}" data-ln="${l.lot_number}" data-sn="${l.sku_number}">${l.lot_number} — ${l.sku_number} @ ${l.current_station_name}</option>`).join('');
+  const stOpts = STATION_LIST.map(s=>`<option value="${s.id}" data-name="${s.name}">${s.name}</option>`).join('');
+  const opOpts = `<option value="">— Sin asignar —</option>`+users.map(u=>`<option value="${u.username}">${u.full_name||u.username} (${u.role})</option>`).join('');
+  const typeOpts = WO_TYPES.map(t=>`<option value="${t}">${t}</option>`).join('');
+  const priOpts = PRIORITIES.map(p=>`<option value="${p}" ${p==='normal'?'selected':''}>${p.charAt(0).toUpperCase()+p.slice(1)}</option>`).join('');
+
+  openModal('Nueva Work Order',`
+    <div class="fg2">
+      <div class="ff"><label>Tipo de WO *</label><select id="wo-type">${typeOpts}</select></div>
+      <div class="ff"><label>Prioridad</label><select id="wo-pri">${priOpts}</select></div>
+      <div class="ff"><label>Estacion Destino *</label><select id="wo-wc" onchange="document.getElementById('wo-wc-name').value=this.options[this.selectedIndex]?.dataset.name||''">${stOpts}</select></div>
+      <input type="hidden" id="wo-wc-name">
+      <div class="ff"><label>Operador Asignado</label><select id="wo-op">${opOpts}</select></div>
+      <div class="ff"><label>Lote Asociado (WIP)</label><select id="wo-lot" onchange="fillWOLot(this)"><option value="">— Sin lote —</option>${lotOpts}</select></div>
+      <div class="ff"><label>SKU</label><input id="wo-sku" readonly placeholder="Se llena automatico con el lote"></div>
+      <div class="ff"><label>Cantidad Planeada</label><input id="wo-qty" type="number" min="1" value="1"></div>
+      <div class="ff"><label>Tiempo Std (min)</label><input id="wo-std" type="number" min="0" value="0"></div>
+      <div class="ff s2"><label>Instrucciones para el Operador *</label><textarea id="wo-instr" style="min-height:80px" placeholder="Descripcion clara del trabajo a realizar, especificaciones, dimensiones, materiales, etc."></textarea></div>
+      <div class="ff s2"><label>Notas internas (admin)</label><input id="wo-notes" placeholder="Notas que no van al operador..."></div>
+    </div>`,
+    `<button class="btn btn-outline" onclick="closeModal()">Cancelar</button>
+     <button class="btn btn-gold" onclick="saveWO()">Crear y Asignar Work Order</button>`
+  );
+}
+function fillWOLot(sel){
+  const o=sel.options[sel.selectedIndex];
+  document.getElementById('wo-sku').value=o?.dataset.sn||'';
+}
+async function saveWO(){
+  const wcSel=document.getElementById('wo-wc');
+  const wcName=wcSel.options[wcSel.selectedIndex]?.dataset.name||wcSel.value;
+  const lotSel=document.getElementById('wo-lot');
+  const lotO=lotSel.options[lotSel.selectedIndex];
+  const d={
+    type:v('wo-type'), priority:v('wo-pri'),
+    assigned_wc_id:wcSel.value, assigned_wc_name:wcName,
+    assigned_operator:v('wo-op'),
+    lot_id:lotSel.value, lot_number:lotO?.dataset.ln||'',
+    sku_number:v('wo-sku'),
+    qty_planned:v('wo-qty'), std_time_min:v('wo-std'),
+    instructions:v('wo-instr'), notes:v('wo-notes'),
+    created_by:ST.user?.username
+  };
+  if(!d.assigned_wc_id) return toast('Selecciona la estacion destino','e');
+  if(!d.instructions) return toast('Las instrucciones son obligatorias','e');
+  const r=await api({action:'createWorkOrder2',...d});
+  if(!r.success) return toast(r.error,'e');
+  toast(`WO creada: ${r.wo_number} → ${wcName}`);
+  closeModal();
+  renderWorkOrders();
+}
+
+// ── PDF Generator ──────────────────────────────────────────────
+async function generateWOPdf(woId){
+  // Fetch WO data
+  const r = await api({action:'getWorkOrders2'});
+  if(!r.success) return toast('Error cargando WO','e');
+  const wo = (r.data||[]).find(w=>w.wo_id===woId);
+  if(!wo) return toast('WO no encontrada','e');
+
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF({orientation:'portrait',unit:'mm',format:'letter'});
+
+  // Colors
+  const NAVY  = [10,34,64];
+  const GOLD  = [201,168,76];
+  const WHITE = [244,241,236];
+  const GRAY  = [106,117,133];
+
+  // Header bar
+  doc.setFillColor(...NAVY);
+  doc.rect(0,0,216,32,'F');
+  doc.setFillColor(...GOLD);
+  doc.rect(0,32,216,1.2,'F');
+
+  // Logo text
+  doc.setTextColor(...WHITE);
+  doc.setFontSize(9); doc.setFont('helvetica','bold');
+  doc.text('HORUS SYSTEM CO.',14,10);
+  doc.setFontSize(16); doc.setFont('helvetica','bold');
+  doc.text('WORK ORDER',14,21);
+  doc.setFontSize(9); doc.setFont('helvetica','normal');
+  doc.setTextColor(...GOLD);
+  doc.text('MRP Manufactura v3.0',14,28);
+
+  // WO Number right aligned
+  doc.setTextColor(...GOLD);
+  doc.setFontSize(14); doc.setFont('helvetica','bold');
+  doc.text(wo.wo_number, 202, 18, {align:'right'});
+  doc.setFontSize(8); doc.setFont('helvetica','normal');
+  doc.setTextColor(...WHITE);
+  doc.text(new Date().toLocaleDateString('es-MX'), 202, 25, {align:'right'});
+
+  // QR placeholder (text-based since we can't render DOM)
+  doc.setFillColor(255,255,255);
+  doc.rect(170,35,35,35,'F');
+  doc.setTextColor(0,0,0);
+  doc.setFontSize(5.5);
+  doc.text('[ QR: '+wo.wo_id+' ]',172,53);
+  doc.setFontSize(6.5);
+  doc.text(wo.wo_number,172,60);
+
+  // Info block
+  let y = 42;
+  const col1=14, col2=85, colW=65;
+  const field = (lbl, val, cx, cy) => {
+    doc.setFontSize(7); doc.setFont('helvetica','normal'); doc.setTextColor(...GRAY);
+    doc.text(lbl.toUpperCase(), cx, cy);
+    doc.setFontSize(9.5); doc.setFont('helvetica','bold'); doc.setTextColor(...NAVY);
+    doc.text(String(val||'—'), cx, cy+5.5);
+  };
+
+  field('Estacion Destino', wo.assigned_wc_name, col1, y);
+  field('Operador Asignado', wo.assigned_operator||'Sin asignar', col2, y);
+  y+=15;
+  field('Tipo', wo.type, col1, y);
+  field('Prioridad', (wo.priority||'').toUpperCase(), col1+35, y);
+  field('Lote', wo.lot_number||'—', col2, y);
+  field('SKU', wo.sku_number||'—', col2+40, y);
+  y+=15;
+  field('Cantidad Planeada', fmn(wo.qty_planned)+' pzas', col1, y);
+  field('Tiempo Std', wo.std_time_min>0?(wo.std_time_min+' min'):'—', col1+40, y);
+  field('Creado por', wo.created_by||'—', col2, y);
+  y+=15;
+
+  // Separator
+  doc.setDrawColor(...GOLD); doc.setLineWidth(0.4);
+  doc.line(14, y, 202, y); y+=6;
+
+  // Instructions box
+  doc.setFillColor(15,40,70);
+  doc.roundedRect(14, y, 188, 8, 1, 1, 'F');
+  doc.setTextColor(...GOLD); doc.setFontSize(7.5); doc.setFont('helvetica','bold');
+  doc.text('INSTRUCCIONES PARA EL OPERADOR', 18, y+5.2);
+  y+=12;
+
+  doc.setTextColor(30,50,80); doc.setFontSize(9); doc.setFont('helvetica','normal');
+  doc.setTextColor(20,40,70);
+  const instrLines = doc.splitTextToSize(wo.instructions||'Sin instrucciones.', 182);
+  doc.setFillColor(240,245,255);
+  doc.rect(14,y,188,Math.max(instrLines.length*5+8,28),'F');
+  doc.setTextColor(10,30,60);
+  doc.text(instrLines, 18, y+6);
+  y += Math.max(instrLines.length*5+12, 32);
+
+  // Capture fields
+  doc.setDrawColor(...NAVY); doc.setLineWidth(0.3);
+  const captureFields = [
+    ['Cantidad Real Producida:', '_____________ pzas'],
+    ['Scrap / Merma:', '_____________ pzas'],
+    ['Tiempo Real (minutos):', '_____________'],
+    ['Observaciones / Defectos:', '________________________________________'],
+  ];
+  y+=4;
+  doc.setFontSize(7.5); doc.setFont('helvetica','bold'); doc.setTextColor(...NAVY);
+  doc.text('DATOS A CAPTURAR POR EL OPERADOR:', 14, y); y+=6;
+  captureFields.forEach(([lbl,blank])=>{
+    doc.setFont('helvetica','normal'); doc.setTextColor(...GRAY); doc.setFontSize(7.5);
+    doc.text(lbl, 18, y);
+    doc.setTextColor(...NAVY);
+    doc.text(blank, 80, y);
+    doc.line(14, y+2, 202, y+2);
+    y+=10;
+  });
+
+  // Signature area
+  y+=6;
+  doc.setDrawColor(...GRAY); doc.setLineWidth(0.25);
+  [[14,'Firma Operador'],[90,'Firma Supervisor'],[160,'Fecha / Hora']].forEach(([x,lbl])=>{
+    doc.line(x,y,x+55,y);
+    doc.setFontSize(6.5); doc.setFont('helvetica','normal'); doc.setTextColor(...GRAY);
+    doc.text(lbl,x,y+4);
+  });
+
+  // Footer
+  doc.setFillColor(...NAVY);
+  doc.rect(0,266,216,10,'F');
+  doc.setTextColor(...GOLD); doc.setFontSize(6.5);
+  doc.text('Horus System Co. | McAllen, TX | info@horussystem.net | +1 (956) 272-6415', 108, 272, {align:'center'});
+  doc.setTextColor(200,200,200);
+  doc.text('Documento generado automaticamente — '+new Date().toLocaleString('es-MX'), 108, 274.5, {align:'center'});
+
+  doc.save(`WO-${wo.wo_number}.pdf`);
+  toast('PDF generado: '+wo.wo_number);
+}
+
+// ================================================================
+// ANALYTICS
+// ================================================================
+let analyticsPeriod = 'week';
+async function renderAnalytics(){
+  setLoading();
+  document.getElementById('tactions').innerHTML=`
+    <div class="period-tabs">
+      <button class="period-tab ${analyticsPeriod==='day'?'active':''}" onclick="setAnalyticsPeriod('day')">Hoy</button>
+      <button class="period-tab ${analyticsPeriod==='week'?'active':''}" onclick="setAnalyticsPeriod('week')">7 Dias</button>
+      <button class="period-tab ${analyticsPeriod==='month'?'active':''}" onclick="setAnalyticsPeriod('month')">30 Dias</button>
+    </div>`;
+  try {
+    const r=await api({action:'getWOStats',period:analyticsPeriod});
+    if(!r.success) throw new Error(r.error);
+    const d=r.data;
+    const stations=d.by_station||[];
+    const ops=d.top_operators||[];
+    const trend=d.trend_7d||[];
+    const maxCompleted=Math.max(...stations.map(s=>s.completed),1);
+    const maxTrend=Math.max(...trend.map(t=>t.completed),1);
+
+    const effColor = pct => pct>=90?'var(--ok-l)':pct>=70?'var(--warn-l)':'var(--danger-l)';
+    const effBar = pct => `<div class="chart-bar-fill" style="width:${pct}%;background:${effColor(pct)}"></div>`;
+
+    const stationRows = stations.map(s=>`
+      <div class="chart-bar-row">
+        <div class="chart-bar-label" title="${s.station_name}">${s.station_name}</div>
+        <div style="flex:1">
+          <div style="display:flex;gap:.4rem;align-items:center">
+            <div class="chart-bar-track" style="flex:1"><div class="chart-bar-fill" style="width:${Math.round((s.completed/maxCompleted)*100)}%;background:var(--gold)"></div></div>
+            <span class="chart-bar-val">${s.completed}</span>
+          </div>
+          ${s.avg_efficiency!=null?`<div style="display:flex;align-items:center;gap:.3rem;margin-top:2px">
+            <div class="chart-bar-track" style="flex:1;height:4px">${effBar(s.avg_efficiency)}</div>
+            <span style="font-family:var(--fl);font-size:.63rem;color:${effColor(s.avg_efficiency)};width:40px;text-align:right">${s.avg_efficiency}% ef.</span>
+          </div>`:''}
+        </div>
+      </div>`).join('');
+
+    const trendBars = trend.map((t,i)=>{
+      const h=maxTrend>0?Math.round((t.completed/maxTrend)*100):0;
+      return `<div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:2px">
+        <div class="mini-trend-bar ${i===trend.length-1?'today':''}" style="height:${Math.max(h,4)}%;width:100%"></div>
+        <div style="font-family:var(--fl);font-size:.55rem;color:var(--muted)">${t.date.slice(5)}</div>
+        ${t.completed>0?`<div style="font-family:var(--fl);font-size:.6rem;color:var(--off)">${t.completed}</div>`:''}
+      </div>`;}).join('');
+
+    const opCards = ops.map(o=>{
+      const pct=o.avg_efficiency||0; const r_=50; const circ=2*Math.PI*r_;
+      const dash=((pct/100)*circ).toFixed(1);
+      return `<div style="display:flex;align-items:center;gap:.75rem;padding:.65rem 0;border-bottom:1px solid var(--bordersoft)">
+        <svg class="ring-svg" width="52" height="52" viewBox="0 0 120 120">
+          <circle cx="60" cy="60" r="50" fill="none" stroke="rgba(255,255,255,.06)" stroke-width="14"/>
+          <circle cx="60" cy="60" r="50" fill="none" stroke="${effColor(pct)}" stroke-width="14"
+            stroke-dasharray="${dash} ${circ.toFixed(1)}" stroke-dashoffset="${circ/4}" stroke-linecap="round"/>
+          <text x="60" y="65" text-anchor="middle" fill="white" font-size="24" font-family="Barlow Condensed,sans-serif" font-weight="700">${pct||'—'}</text>
+        </svg>
+        <div>
+          <div style="font-family:var(--fl);font-size:.85rem;font-weight:600;color:var(--white)">${o.operator}</div>
+          <div style="font-family:var(--fl);font-size:.68rem;color:var(--muted)">${o.completed} WOs — ${fmn(o.qty)} pzas</div>
+          ${o.scrap>0?`<div style="font-family:var(--fl);font-size:.65rem;color:var(--danger-l)">Scrap: ${o.scrap} pzas</div>`:''}
+        </div>
+      </div>`;}).join('') || '<div style="font-family:var(--fl);font-size:.78rem;color:var(--muted);padding:1rem 0">Sin datos en este periodo.</div>';
+
+    // Station comparison table
+    const stTable = stations.map(s=>`<tr>
+      <td style="font-family:var(--fl);font-weight:600">${s.station_name}</td>
+      <td class="r">${badge('bOK',s.completed)}</td>
+      <td class="r">${s.in_progress>0?badge('bG',s.in_progress):'—'}</td>
+      <td class="r">${s.pending>0?badge('bM',s.pending):'—'}</td>
+      <td class="r">${fmn(s.qty_total||0)}</td>
+      <td class="r">${s.scrap_total>0?badge('bD',s.scrap_total):'—'}</td>
+      <td class="r">${s.avg_efficiency!=null?`<span style="color:${effColor(s.avg_efficiency)};font-weight:700">${s.avg_efficiency}%</span>`:'—'}</td>
+      <td class="r">${s.avg_time>0?s.avg_time+' min':'—'}</td>
+    </tr>`).join('');
+
+    document.getElementById('content').innerHTML=`
+      <div class="stat-grid" style="margin-bottom:1.25rem">
+        <div class="stat"><div class="stat-label">WOs Completadas</div><div class="stat-value ok">${d.total_completed}</div><div class="stat-sub">En el periodo</div></div>
+        <div class="stat"><div class="stat-label">En Progreso</div><div class="stat-value gold">${d.total_in_progress}</div><div class="stat-sub">Ahora mismo</div></div>
+        <div class="stat"><div class="stat-label">Pendientes</div><div class="stat-value ${d.total_pending>10?'danger':''}">${d.total_pending}</div><div class="stat-sub">Sin iniciar</div></div>
+        <div class="stat"><div class="stat-label">Operadores Activos</div><div class="stat-value">${ops.length}</div></div>
+      </div>
+      <div class="analytics-grid">
+        <div class="card">
+          <div class="card-header"><div><div class="card-title">Produccion por Estacion</div><div class="card-sub">WOs completadas en el periodo</div></div></div>
+          ${stationRows||'<div style="font-family:var(--fl);font-size:.78rem;color:var(--muted)">Sin datos</div>'}
+        </div>
+        <div class="card">
+          <div class="card-header"><div><div class="card-title">Top Operadores</div><div class="card-sub">Por eficiencia y piezas producidas</div></div></div>
+          ${opCards}
+        </div>
+      </div>
+      <div class="analytics-grid" style="margin-bottom:1rem">
+        <div class="card">
+          <div class="card-header"><div><div class="card-title">Tendencia 7 Dias</div><div class="card-sub">WOs completadas por dia</div></div></div>
+          <div class="mini-trend" style="height:80px;align-items:flex-end;padding:.5rem 0">${trendBars}</div>
+        </div>
+        <div class="card">
+          <div class="card-header"><div><div class="card-title">Comparativa de Estaciones</div><div class="card-sub">Tabla detallada</div></div></div>
+          <div class="tw" style="font-size:.78rem"><table><thead><tr><th>Estacion</th><th class="r">Completadas</th><th class="r">En Proceso</th><th class="r">Pendientes</th><th class="r">Piezas</th><th class="r">Scrap</th><th class="r">Eficiencia</th><th class="r">T. Prom.</th></tr></thead>
+          <tbody>${stTable||emptyRow(8)}</tbody></table></div>
+        </div>
+      </div>`;
+  } catch(e){ document.getElementById('content').innerHTML=`<div class="ab">${e.message}</div>`; }
+}
+function setAnalyticsPeriod(p){ analyticsPeriod=p; renderAnalytics(); }
+
+// ================================================================
+// FLOOR OPERATOR VIEW
+// ================================================================
+let opTimers={};
+async function startFloorView(user){
+  loadOpWOs(user);
+  setInterval(()=>loadOpWOs(user), 30000);
+}
+async function loadOpWOs(user){
+  const wcId = user.wc_id || user.role;
+  const r = await api({action:'getWorkOrders2',wc_id:wcId});
+  if(!r.success){ document.getElementById('op-wo-list').innerHTML=`<div class="ab">${r.error}</div>`; return; }
+  const wos = (r.data||[]);
+  const active = wos.filter(w=>['pending','accepted','in_progress'].includes(w.status));
+  const done = wos.filter(w=>w.status==='completed').slice(0,5);
+
+  document.getElementById('op-station-title').innerHTML = `Estacion: <span>${user.wc_id||user.role}</span>`;
+
+  if(!active.length){
+    document.getElementById('op-wo-list').innerHTML=`<div class="empty-state"><div class="empty-title">Sin Work Orders</div><p>No hay trabajo asignado a esta estacion por ahora.</p></div>`;
+  } else {
+    document.getElementById('op-wo-list').innerHTML = active.map(wo=>renderOpWOCard(wo,user)).join('');
+    // Start timers for in_progress
+    active.filter(w=>w.status==='in_progress').forEach(wo=>{
+      if(!opTimers[wo.wo_id]) startOpTimer(wo);
+    });
+  }
+
+  document.getElementById('op-wo-done').innerHTML = done.length ? done.map(wo=>`
+    <div style="display:flex;align-items:center;gap:.75rem;padding:.55rem .85rem;background:rgba(26,122,74,.05);border:1px solid rgba(26,122,74,.12);border-radius:var(--r);margin-bottom:.4rem;opacity:.7">
+      <span style="font-family:var(--fl);font-size:.7rem;color:var(--ok-l)">✓</span>
+      <span style="font-family:var(--fl);font-size:.8rem;font-weight:600;color:var(--ok-l)">${wo.wo_number}</span>
+      <span style="font-family:var(--fl);font-size:.75rem;color:var(--muted)">${wo.sku_number||''} — ${fmn(wo.qty_completed)} pzas</span>
+      <span style="margin-left:auto;font-family:var(--fl);font-size:.7rem;color:var(--muted)">${wo.completed_at?fmd(wo.completed_at):''}</span>
+    </div>`).join('')
+    : '<div style="font-family:var(--fl);font-size:.75rem;color:var(--muted)">Sin completadas hoy.</div>';
+}
+
+function renderOpWOCard(wo, user){
+  const priColor = PRIORITY_COLORS[wo.priority]||'#C9A84C';
+  const canAccept = wo.status==='pending';
+  const canStart  = wo.status==='accepted';
+  const canFinish = wo.status==='in_progress';
+  return `<div class="op-wo-card" id="op-wo-${wo.wo_id}">
+    <div class="op-wo-accent" style="background:linear-gradient(90deg,${priColor},${priColor}66)"></div>
+    <div class="op-wo-inner">
+      <div class="op-wo-top">
+        <span class="op-wo-num">${wo.wo_number}</span>
+        <div style="display:flex;gap:.4rem;align-items:center">
+          ${badge({pending:'bM',accepted:'bW',in_progress:'bG'}[wo.status]||'bM',{pending:'Pendiente',accepted:'Aceptada',in_progress:'En Proceso'}[wo.status]||wo.status)}
+          ${wo.priority==='urgent'?badge('bD','URGENTE'):''}
+        </div>
+      </div>
+      <div style="font-family:var(--fl);font-size:.78rem;color:var(--muted);margin-bottom:.5rem">${wo.type} — ${wo.sku_number||'General'} — ${fmn(wo.qty_planned)} pzas</div>
+      <div class="op-wo-instr">${wo.instructions||'Sin instrucciones.'}</div>
+      <div class="op-wo-stats">
+        <div class="op-stat"><span class="lbl">Lote</span><span class="val">${wo.lot_number||'—'}</span></div>
+        <div class="op-stat"><span class="lbl">Planeado</span><span class="val">${fmn(wo.qty_planned)} pzas</span></div>
+        ${wo.std_time_min>0?`<div class="op-stat"><span class="lbl">T. Std</span><span class="val">${wo.std_time_min} min</span></div>`:''}
+        ${wo.status==='in_progress'?`<div class="op-stat"><span class="lbl">Tiempo</span><span class="val op-timer-live" id="timer-${wo.wo_id}">00:00</span></div>`:''}
+      </div>
+      <div class="op-wo-actions">
+        ${canAccept?`<button class="btn btn-outline btn-sm" onclick="opUpdateWO('${wo.wo_id}','accepted','${user.username}')">Aceptar WO</button>`:''}
+        ${canStart?`<button class="btn btn-gold btn-sm" onclick="opUpdateWO('${wo.wo_id}','in_progress','${user.username}')">Iniciar Trabajo</button>`:''}
+        ${canFinish?`<button class="btn btn-gold" onclick="openOpCompleteModal('${wo.wo_id}','${wo.wo_number}',${wo.qty_planned},'${user.username}')">Completar WO</button>`:''}
+      </div>
+    </div>
+  </div>`;
+}
+
+function startOpTimer(wo){
+  const startedAt = wo.started_at ? new Date(wo.started_at) : new Date();
+  opTimers[wo.wo_id] = setInterval(()=>{
+    const el=document.getElementById('timer-'+wo.wo_id); if(!el){ clearInterval(opTimers[wo.wo_id]); return; }
+    const diff=Math.floor((Date.now()-startedAt.getTime())/1000);
+    const m=String(Math.floor(diff/60)).padStart(2,'0'), s=String(diff%60).padStart(2,'0');
+    el.textContent=m+':'+s;
+  },1000);
+}
+
+async function opUpdateWO(woId, status, operator){
+  const r=await api({action:'updateWOStatus',wo_id:woId,status,operator});
+  if(!r.success) return toast(r.error,'e');
+  toast(status==='accepted'?'WO aceptada.':'Trabajo iniciado. Timer corriendo.');
+  loadOpWOs(ST.user);
+}
+
+function openOpCompleteModal(woId, woNum, qtyPlanned, operator){
+  document.getElementById('mbody-complete').innerHTML=`
+    <div style="font-family:var(--fl);font-size:.78rem;color:var(--gold-l);margin-bottom:1rem;letter-spacing:.06em">${woNum}</div>
+    <div class="fg2">
+      <div class="ff"><label>Cantidad Producida *</label><input id="oc-qty" type="number" min="0" value="${qtyPlanned}"></div>
+      <div class="ff"><label>Scrap / Merma (pzas)</label><input id="oc-scrap" type="number" min="0" value="0"></div>
+      <div class="ff"><label>Tiempo Real (minutos)</label><input id="oc-time" type="number" min="1" value="0"></div>
+      <div class="ff"><label>Siguiente Estacion</label><select id="oc-next"><option value="">— No mover lote —</option>${STATION_LIST.map(s=>`<option value="${s.id}" data-name="${s.name}">${s.name}</option>`).join('')}</select></div>
+      <div class="ff s2"><label>Observaciones</label><input id="oc-notes" placeholder="Defectos encontrados, material sobrante, etc."></div>
+    </div>`;
+  document.getElementById('mfoot-complete').innerHTML=`
+    <button class="btn btn-outline" onclick="document.getElementById('mo-complete').classList.remove('open')">Cancelar</button>
+    <button class="btn btn-gold" onclick="submitOpComplete('${woId}','${operator}')">Confirmar Completado</button>`;
+  document.getElementById('mo-complete').classList.add('open');
+}
+
+async function submitOpComplete(woId, operator){
+  const nextSel=document.getElementById('oc-next');
+  const nextName=nextSel.options[nextSel.selectedIndex]?.dataset.name||'';
+  const r=await api({
+    action:'updateWOStatus',
+    wo_id:woId, status:'completed',
+    qty_completed:v('oc-qty'), scrap:v('oc-scrap'),
+    actual_time_min:v('oc-time'),
+    next_station_id:nextSel.value, next_station_name:nextName,
+    notes:v('oc-notes'), operator
+  });
+  if(!r.success) return toast(r.error,'e');
+  clearInterval(opTimers[woId]); delete opTimers[woId];
+  document.getElementById('mo-complete').classList.remove('open');
+  toast('WO completada. Excelente trabajo.');
+  loadOpWOs(ST.user);
+}
+
+async function opScan(){
+  const code=document.getElementById('op-scan-in')?.value?.trim(); if(!code)return;
+  const res=document.getElementById('op-scan-result');
+  res.textContent='Buscando...';
+  const r=await api({action:'scan',code});
+  if(!r.success){ res.textContent='No encontrado: '+code; res.style.color='var(--danger-l)'; return; }
+  res.textContent=`Encontrado: ${r.type} — ${r.data.lot_number||r.data.sku_number||code} @ ${r.data.current_station_name||''}`;
+  res.style.color='var(--ok-l)';
+  document.getElementById('op-scan-in').value='';
+}
 </script>
 </body>
 </html>
