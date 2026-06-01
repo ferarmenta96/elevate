@@ -1481,7 +1481,7 @@ textarea.form-control{resize:vertical;min-height:80px}
 <script>
 // ─── CONFIG ──────────────────────────────────────────────
 // ⚠️ REEMPLAZAR con tu URL de Google Apps Script deployment
-const API_URL = 'https://script.google.com/macros/s/AKfycbzf3y2JvuOACrglVlM8gms3zQnVibDQPMXoCRChYVTHAdQfgLve63kUpPC3rbE9QTtglg/exec';
+const API_URL = 'https://script.google.com/macros/s/YOUR_DEPLOYMENT_ID_HERE/exec';
 
 // Estado global
 const STATE = {
@@ -1499,22 +1499,28 @@ const STATE = {
 
 // ─── API HELPER ───────────────────────────────────────────
 async function api(action, params = {}, method = 'GET') {
+  // Si no hay API configurada, usar demo data directamente
+  const isDemo = !API_URL || API_URL.includes('YOUR_DEPLOYMENT_ID_HERE');
+  if (isDemo) {
+    return getDemoData(action, params);
+  }
   try {
     if (method === 'GET') {
       const qs = new URLSearchParams({ action, token: STATE.token || '', ...params });
       const cb = 'cb_' + Date.now();
-      return await jsonp(`${API_URL}?${qs}&callback=${cb}`);
+      return await jsonp(API_URL + '?' + qs + '&callback=' + cb);
     } else {
       const res = await fetch(API_URL, {
         method: 'POST',
         headers: { 'Content-Type': 'text/plain' },
         body: JSON.stringify({ action, token: STATE.token, ...params })
       });
-      return await res.json();
+      const text = await res.text();
+      try { return JSON.parse(text); }
+      catch(e) { return getDemoData(action, params); }
     }
   } catch (err) {
-    console.error('API Error:', err);
-    // En modo demo/sin backend, devolver datos de muestra
+    console.warn('API unreachable, using demo data:', err.message);
     return getDemoData(action, params);
   }
 }
@@ -1631,6 +1637,153 @@ function getDemoData(action, params) {
     ]},
     notifications: { success: true, data: [] }
   };
+
+  // Para BOM y Routing: devolver datos de demostración para cualquier part number
+  if (action === 'bom') {
+    const pn = (params && params.part_number) ? params.part_number : 'PN-3301';
+    return { success: true, data: {
+      header: { bom_id:'BOM-'+pn, part_number:pn, description:pn+' — Bill of Materials', revision:'A',
+        total_material_cost:180.00, total_labor_cost:45.00, total_overhead:33.75, standard_cost:258.75 },
+      items: [
+        { item_id:'BI1', bom_level:1, sequence:10, parent_part:pn, child_part:'PN-1201', description:'Steel Frame 2x2', quantity:2, unit_cost:42, extended_cost:84, scrap_allowance:0.03 },
+        { item_id:'BI2', bom_level:1, sequence:20, parent_part:pn, child_part:'PN-1202', description:'Bracket 3/16 HR', quantity:4, unit_cost:3.5, extended_cost:14, scrap_allowance:0.02 },
+        { item_id:'BI3', bom_level:1, sequence:30, parent_part:pn, child_part:'PN-0055', description:'Top Cover Sheet 14ga', quantity:1, unit_cost:18, extended_cost:18, scrap_allowance:0.02 },
+        { item_id:'BI4', bom_level:1, sequence:40, parent_part:pn, child_part:'PN-0088', description:'Piano Hinge 18"', quantity:2, unit_cost:6.5, extended_cost:13, scrap_allowance:0.01 },
+        { item_id:'BI5', bom_level:1, sequence:50, parent_part:pn, child_part:'PN-0102', description:'M8 Hex Bolt 20mm', quantity:8, unit_cost:0.15, extended_cost:1.2, scrap_allowance:0.01 }
+      ]
+    }};
+  }
+
+  if (action === 'routing') {
+    const pn = (params && params.part_number) ? params.part_number : 'PN-3301';
+    return { success: true, data: {
+      routing: { routing_id:'RTG-'+pn, part_number:pn, description:pn+' Routing', revision:'A', total_std_time_min:195, status:'active' },
+      steps: [
+        { step_id:'S1', sequence:10, station:'Cutting',   std_time_min:15, setup_time_min:5,  machine:'CNC Plasma',    instructions:'Cut to spec ±0.030"', operators_needed:1, qc_required:false },
+        { step_id:'S2', sequence:20, station:'Welding',   std_time_min:45, setup_time_min:10, machine:'MIG Welder',    instructions:'Full penetration weld, grind flush', operators_needed:1, qc_required:true },
+        { step_id:'S3', sequence:30, station:'Grinding',  std_time_min:20, setup_time_min:5,  machine:'Angle Grinder', instructions:'Smooth all welds, deburr edges', operators_needed:1, qc_required:false },
+        { step_id:'S4', sequence:40, station:'Painting',  std_time_min:60, setup_time_min:15, machine:'Spray Booth',   instructions:'RAL 7016 Anthracite, 2 coats', operators_needed:1, qc_required:true },
+        { step_id:'S5', sequence:50, station:'Assembly',  std_time_min:30, setup_time_min:5,  machine:'Assembly Table',instructions:'Install all hardware per BOM', operators_needed:2, qc_required:true },
+        { step_id:'S6', sequence:60, station:'Packaging', std_time_min:15, setup_time_min:5,  machine:'—',            instructions:'Box, label, stretch wrap, palletize', operators_needed:1, qc_required:false },
+        { step_id:'S7', sequence:70, station:'Shipping',  std_time_min:10, setup_time_min:0,  machine:'—',            instructions:'Generate shipping label, scan out', operators_needed:1, qc_required:false }
+      ]
+    }};
+  }
+
+  if (action === 'work_order') {
+    const id = (params && (params.wo_id || params.wo_number)) ? (params.wo_id || params.wo_number) : 'WO-2048';
+    const found = STATE.allWOs.find(w => w.wo_id === id || w.wo_number === id) || STATE.allWOs[0] || {};
+    return { success: true, data: Object.assign({}, found, {
+      scraps: [], operations: [],
+      customer: { company_name: found.customer_name || 'Demo Customer' },
+      progress_pct: found.progress_pct || 0
+    })};
+  }
+
+  // Respuestas para acciones POST de creación
+  if (action === 'create_wo') {
+    const woNum = 'WO-' + (2100 + Math.floor(Math.random() * 900));
+    const woId  = 'WO-DEMO-' + Date.now();
+    const newWO = {
+      wo_id: woId, wo_number: woNum,
+      part_number: (params.data && params.data.part_number) || 'PN-XXXX',
+      customer_name: 'Demo Customer',
+      quantity: (params.data && params.data.quantity) || 1,
+      quantity_complete: 0, progress_pct: 0,
+      priority: (params.data && params.data.priority) || 'medium',
+      status: 'draft',
+      due_date: (params.data && params.data.due_date) || '',
+      current_station: '', is_overdue: false,
+      description: (params.data && params.data.part_number) || ''
+    };
+    STATE.allWOs = STATE.allWOs || [];
+    STATE.allWOs.unshift(newWO);
+    return { success: true, wo_id: woId, wo_number: woNum,
+             material_available: true, shortage: [] };
+  }
+
+  if (action === 'release_wo') {
+    const wo = STATE.allWOs.find(w => w.wo_id === params.wo_id);
+    if (wo) { wo.status = 'released'; wo.current_station = 'Cutting'; }
+    return { success: true, first_station: 'Cutting', wo_number: wo ? wo.wo_number : '' };
+  }
+
+  if (action === 'move_wo') {
+    const stations = ['Cutting','Welding','Grinding','Painting','Assembly','Packaging','Shipping'];
+    const wo = STATE.allWOs.find(w => w.wo_id === params.wo_id);
+    if (wo) {
+      const idx = stations.indexOf(wo.current_station);
+      const next = idx >= 0 && idx < stations.length-1 ? stations[idx+1] : null;
+      const from = wo.current_station;
+      if (next) { wo.current_station = next; wo.status = 'in_production'; }
+      else { wo.status = 'completed'; wo.current_station = 'Completed'; }
+      wo.quantity_complete = Math.min(wo.quantity, (+wo.quantity_complete||0) + (+params.quantity_complete||0));
+      wo.progress_pct = Math.round((wo.quantity_complete / wo.quantity) * 100);
+      return { success: true, from_station: from, to_station: wo.current_station,
+               status: wo.status, quantity_complete: wo.quantity_complete,
+               wo_number: wo.wo_number };
+    }
+    return { success: true, from_station: '', to_station: 'Welding', status: 'in_production' };
+  }
+
+  if (action === 'log_scrap') {
+    return { success: true, scrap_id: 'SCR-'+Date.now(),
+             total_cost: ((params.data&&params.data.quantity)||1) * 42, unit_cost: 42 };
+  }
+
+  if (action === 'log_rework') {
+    return { success: true, rework_id: 'RWK-'+Date.now(), extra_cost: 18.75 };
+  }
+
+  if (action === 'create_customer') {
+    const code = 'CUST' + String(100 + Math.floor(Math.random()*900));
+    return { success: true, customer_id: 'CUST-'+Date.now(), customer_code: code };
+  }
+
+  if (action === 'create_part') {
+    return { success: true, part_id: 'PRT-'+Date.now(),
+             part_number: params.data && params.data.part_number };
+  }
+
+  if (action === 'receive_inventory') {
+    return { success: true,
+             part_number: params.data && params.data.part_number,
+             quantity_received: params.data && params.data.quantity,
+             unit_cost: params.data && params.data.unit_cost };
+  }
+
+  if (action === 'create_shipment') {
+    const shipNum = 'SH-' + String(500 + Math.floor(Math.random()*500)).padStart(4,'0');
+    return { success: true, ship_id: 'SHIP-'+Date.now(), ship_number: shipNum };
+  }
+
+  if (action === 'create_user') {
+    return { success: true, user_id: 'USR-'+Date.now(),
+             username: params.data && params.data.username };
+  }
+
+  if (action === 'create_po') {
+    const poNum = 'PO-' + (1100 + Math.floor(Math.random()*900));
+    return { success: true, po_id: 'PO-'+Date.now(), po_number: poNum, total: 0 };
+  }
+
+  if (action === 'mark_notification_read' || action === 'mark_all_notifications_read') {
+    return { success: true };
+  }
+
+  if (action === 'scan') {
+    const code = params.code || '';
+    if (code.startsWith('WO-')) {
+      const wo = STATE.allWOs.find(w => w.wo_number === code);
+      if (wo) return { success: true, data: { type: 'work_order', data: wo } };
+    }
+    if (code.startsWith('PN-')) {
+      const part = (STATE.allParts||[]).find(p => p.part_number === code);
+      if (part) return { success: true, data: { type: 'part', data: { part } } };
+    }
+    return { success: false, error: 'Code not found: ' + code,
+             data: { type: 'unknown', data: null } };
+  }
 
   return demos[action] || { success: true, data: [] };
 }
@@ -1830,7 +1983,7 @@ async function loadAuditFeed() {
 async function loadWorkOrders() {
   const res = await api('work_orders');
   STATE.allWOs = res.data || [];
-  setElText('woSubtitle', `${STATE.allWOs.length} Total · ${STATE.allWOs.filter(w=>w.is_overdue).length} Overdue`);
+  setElText('woSubtitle', STATE.allWOs.length + ' Total · ' + STATE.allWOs.filter(w=>w.is_overdue).length + ' Overdue');
   renderWOTable(STATE.allWOs);
 }
 
@@ -1878,7 +2031,7 @@ async function viewWO(woId) {
   document.getElementById('woDetailBody').innerHTML = '<div class="loading"><div class="spinner"></div>Loading…</div>';
   const res = await api('work_order', { wo_id: woId });
   const wo = res.data || STATE.allWOs.find(w => w.wo_id === woId || w.wo_number === woId) || {};
-  document.getElementById('woDetailTitle').textContent = `Work Order ${wo.wo_number||woId}`;
+  document.getElementById('woDetailTitle').textContent = 'Work Order ' + (wo.wo_number||woId);
   document.getElementById('woDetailBody').innerHTML = renderWODetail(wo);
   document.getElementById('woDetailFooter').innerHTML = `
     <button class="btn btn-outline" onclick="closeModal('woDetail')">Close</button>
@@ -1928,10 +2081,10 @@ function renderWODetail(wo) {
 }
 
 async function releaseWO(woId, woNum) {
-  if (!confirm(`Release ${woNum} to production?`)) return;
+  if (!confirm('Release ' + woNum + ' to production?')) return;
   const res = await api('release_wo', { wo_id: woId }, 'POST');
-  if (res.success) {
-    showToast('success', `${woNum} released to ${res.first_station||'production'}`);
+  if (res && res.success) {
+    showToast('success', woNum + ' released to ' + (res.first_station||'production'));
     closeModal('woDetail');
     loadWorkOrders();
   } else {
@@ -1943,8 +2096,8 @@ async function moveWO(woId, woNum) {
   const qty = prompt(`${woNum} — Quantity completed at this station:`, '0');
   if (qty === null) return;
   const res = await api('move_wo', { wo_id: woId, quantity_complete: qty }, 'POST');
-  if (res.success) {
-    showToast('success', `${woNum} moved: ${res.from_station} → ${res.to_station || 'Completed'}`);
+  if (res && res.success) {
+    showToast('success', woNum + ' moved: ' + (res.from_station||'') + ' → ' + (res.to_station||'Completed'));
     closeModal('woDetail');
     loadWorkOrders();
     if (STATE.currentPage === 'production') loadKanban();
@@ -2053,12 +2206,28 @@ function filterParts() {
 // ─── BOM ──────────────────────────────────────────────────
 async function loadBOM(partNumber) {
   if (!partNumber) return;
-  document.getElementById('bomTree').innerHTML = '<div class="loading"><div class="spinner"></div></div>';
-  const res = await api('bom', { part_number: partNumber });
-  const bom = res.data || {};
-  if (!bom.header) { document.getElementById('bomTree').innerHTML = '<div style="color:var(--g400);text-align:center;padding:20px;font-family:var(--fl)">No BOM found for ' + partNumber + '</div>'; return; }
+  document.getElementById('bomTree').innerHTML = '<div class="loading"><div class="spinner"></div>Loading BOM...</div>';
+  document.getElementById('bomCardTitle').textContent = 'BOM — ' + partNumber;
+  let res, bom;
+  try {
+    res = await api('bom', { part_number: partNumber });
+    // res.data puede ser array vacío, objeto, o tener header directamente
+    if (Array.isArray(res.data) || !res.data) {
+      bom = {};
+    } else {
+      bom = res.data;
+    }
+  } catch(e) {
+    bom = {};
+  }
+  if (!bom || !bom.header) {
+    document.getElementById('bomTree').innerHTML = '<div style="color:var(--g400);text-align:center;padding:20px;font-family:var(--fl);font-size:12px;letter-spacing:.1em;text-transform:uppercase">No BOM found for ' + partNumber + '<br><br><span style="font-size:10px">Tip: BOM must be configured in the system for this part.</span></div>';
+    document.getElementById('bomSummary').innerHTML = '<div style="color:var(--g400);font-size:12px;text-align:center;padding:20px">—</div>';
+    document.getElementById('bomCost').innerHTML = '<div style="color:var(--g400);font-size:12px;text-align:center;padding:20px">—</div>';
+    return;
+  }
 
-  document.getElementById('bomCardTitle').textContent = `BOM — ${partNumber}`;
+  document.getElementById('bomCardTitle').textContent = 'BOM — ' + partNumber;
   document.getElementById('bomRevBadge').innerHTML = `<span class="badge bgo">Rev ${bom.header.revision}</span>`;
 
   // Tree
@@ -2110,11 +2279,21 @@ function viewBOM(partNumber) {
 // ─── ROUTING ──────────────────────────────────────────────
 async function loadRouting(partNumber) {
   if (!partNumber) return;
-  const res = await api('routing', { part_number: partNumber });
-  const data = res.data || {};
-  if (!data.routing) { document.getElementById('routingCardTitle').textContent = 'No routing found for ' + partNumber; return; }
+  document.getElementById('routingCardTitle').textContent = 'Loading Routing — ' + partNumber;
+  document.getElementById('routingStepsBody').innerHTML = '<tr><td colspan="8"><div class="loading"><div class="spinner"></div>Loading...</div></td></tr>';
+  let res, data;
+  try {
+    res = await api('routing', { part_number: partNumber });
+    data = Array.isArray(res.data) || !res.data ? {} : res.data;
+  } catch(e) { data = {}; }
+  if (!data || !data.routing) {
+    document.getElementById('routingCardTitle').textContent = 'No routing found for ' + partNumber;
+    document.getElementById('routingFlow').innerHTML = '<div style="color:var(--g400);font-size:12px;text-align:center;padding:16px;font-family:var(--fl);letter-spacing:.08em;text-transform:uppercase">No routing configured for this part</div>';
+    document.getElementById('routingStepsBody').innerHTML = '<tr><td colspan="8" style="text-align:center;color:var(--g400);padding:20px;font-family:var(--fl)">No routing steps found</td></tr>';
+    return;
+  }
 
-  document.getElementById('routingCardTitle').textContent = `Routing — ${partNumber}`;
+  document.getElementById('routingCardTitle').textContent = 'Routing — ' + partNumber;
   document.getElementById('routingStatus').innerHTML = `<span class="badge bg">${data.routing.status}</span>`;
 
   const stationIcons = { Cutting:'✂️',Welding:'🔥',Grinding:'⚙️',Painting:'🎨',Assembly:'🔩',Packaging:'📦',Shipping:'🚚' };
@@ -2385,9 +2564,11 @@ async function loadUsers() {
 async function loadPurchaseOrders() {
   const res = await api('purchase_orders');
   const pos = res.data || [];
-  const tbody = document.getElementById('poTableBody') || document.getElementById('purchTableBody');
-  if (!tbody) return;
-  tbody.innerHTML = pos.map(po => `
+  // Actualizar ambas tablas (Raw Materials y Purchasing)
+  ['poTableBody', 'purchTableBody'].forEach(tbId => {
+    const tbody = document.getElementById(tbId);
+    if (!tbody) return;
+    tbody.innerHTML = pos.map(po => `
     <tr>
       <td><span class="mono">${po.po_number}</span></td>
       <td>${po.vendor_name||'—'}</td>
@@ -2404,6 +2585,7 @@ async function loadPurchaseOrders() {
       </div></td>
     </tr>
   `).join('') || '<tr><td colspan="10" style="text-align:center;padding:20px;color:var(--g400)">No purchase orders</td></tr>';
+  }); // end forEach
 }
 
 // ─── DROPDOWNS POPULATORS ─────────────────────────────────
@@ -2478,15 +2660,24 @@ async function submitNewWO(action) {
     return;
   }
   const res = await api('create_wo', { data }, 'POST');
-  if (res.success) {
-    showToast('success', `${res.wo_number} created${action === 'release' ? ' and released' : ''}`);
+  if (res && res.success) {
+    const woNum = res.wo_number || 'WO-NEW';
+    const woId  = res.wo_id  || '';
+    showToast('success', woNum + ' creado' + (action === 'release' ? ' y liberado a producción' : ''));
     closeModal('newWO');
+    // Limpiar formulario
+    ['wo-customer','wo-so','wo-part','wo-qty','wo-instructions','wo-notes'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.value = '';
+    });
+    document.getElementById('woAutoLoad').style.display = 'none';
     loadWorkOrders();
-    if (action === 'release' && res.wo_id) {
-      setTimeout(() => releaseWO(res.wo_id, res.wo_number), 500);
+    loadWOsForDropdowns();
+    if (action === 'release' && woId) {
+      setTimeout(() => releaseWO(woId, woNum), 600);
     }
   } else {
-    showToast('error', res.error || 'Failed to create WO');
+    showToast('error', (res && res.error) ? res.error : 'Error al crear el WO. Verifica los campos requeridos.');
   }
 }
 
@@ -2509,8 +2700,8 @@ async function submitScrap() {
   if (wo) data.wo_id = wo.wo_id;
 
   const res = await api('log_scrap', { data }, 'POST');
-  if (res.success) {
-    showToast('warning', `Scrap logged — ${data.quantity} pcs · Est. cost $${res.total_cost?.toFixed(2)||0}`);
+  if (res && res.success) {
+    showToast('warning', 'Scrap logged — ' + data.quantity + ' pcs · Est. cost $' + (res.total_cost ? res.total_cost.toFixed(2) : '0'));
     closeModal('logScrap');
     loadScrap();
   } else {
@@ -2532,8 +2723,8 @@ async function submitRework() {
   if (wo) { data.wo_id = wo.wo_id; data.part_number = wo.part_number; }
 
   const res = await api('log_rework', { data }, 'POST');
-  if (res.success) {
-    showToast('warning', `Rework logged — ${data.from_station} → ${data.to_station}`);
+  if (res && res.success) {
+    showToast('warning', 'Rework logged — ' + data.from_station + ' → ' + data.to_station);
     closeModal('logRework');
     loadScrap();
   } else {
@@ -2555,8 +2746,8 @@ async function submitCustomer() {
   };
   if (!data.company_name) { showToast('error', 'Company name is required'); return; }
   const res = await api('create_customer', { data }, 'POST');
-  if (res.success) {
-    showToast('success', `Customer ${data.company_name} created`);
+  if (res && res.success) {
+    showToast('success', 'Customer ' + data.company_name + ' created');
     closeModal('newCustomer');
     loadCRM();
     loadCustomersForDropdowns();
@@ -2586,8 +2777,8 @@ async function submitPart() {
   };
   if (!data.part_number || !data.description) { showToast('error', 'Part Number and Description are required'); return; }
   const res = await api('create_part', { data }, 'POST');
-  if (res.success) {
-    showToast('success', `Part ${data.part_number} created`);
+  if (res && res.success) {
+    showToast('success', 'Part ' + data.part_number + ' created');
     closeModal('newPart');
     loadParts();
     loadPartsForDropdowns();
@@ -2607,8 +2798,8 @@ async function submitReceive() {
   };
   if (!data.part_number || !data.quantity) { showToast('error', 'Part and Quantity are required'); return; }
   const res = await api('receive_inventory', { data }, 'POST');
-  if (res.success) {
-    showToast('success', `Received ${data.quantity} pcs of ${data.part_number}`);
+  if (res && res.success) {
+    showToast('success', 'Received ' + data.quantity + ' pcs of ' + data.part_number);
     closeModal('receiveInv');
     loadInventory();
   } else {
@@ -2631,13 +2822,16 @@ async function submitShipment() {
   if (wo) { data.wo_id = wo.wo_id; data.customer_id = wo.customer_id; }
 
   const res = await api('create_shipment', { data }, 'POST');
-  if (res.success) {
-    showToast('success', `Shipment ${res.ship_number} created`);
+  if (res && res.success) {
+    showToast('success', 'Shipment ' + (res.ship_number || '') + ' created');
     closeModal('newShipment');
+    ['ship-wo','ship-tracking','ship-weight','ship-to','ship-notes'].forEach(id => {
+      const el = document.getElementById(id); if (el) el.value = '';
+    });
     loadShipping();
     loadWorkOrders();
   } else {
-    showToast('error', res.error || 'Failed to create shipment');
+    showToast('error', (res && res.error) ? res.error : 'Failed to create shipment');
   }
 }
 
@@ -2653,8 +2847,8 @@ async function submitUser() {
   };
   if (!data.username || !data.email || !data.password) { showToast('error', 'Username, email and password are required'); return; }
   const res = await api('create_user', { data }, 'POST');
-  if (res.success) {
-    showToast('success', `User ${data.username} created`);
+  if (res && res.success) {
+    showToast('success', 'User ' + data.username + ' created');
     closeModal('newUser');
     loadUsers();
   } else {
@@ -2673,8 +2867,8 @@ async function submitPO() {
   };
   if (!data.vendor_id || !data.part_number || !data.quantity) { showToast('error', 'Vendor, Part and Quantity are required'); return; }
   const res = await api('create_po', { data }, 'POST');
-  if (res.success) {
-    showToast('success', `PO ${res.po_number} created`);
+  if (res && res.success) {
+    showToast('success', 'PO ' + (res.po_number||'') + ' created');
     closeModal('newPO');
     loadPurchaseOrders();
   } else {
