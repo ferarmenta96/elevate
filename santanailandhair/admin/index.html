@@ -1,0 +1,835 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin — Santa Nail &amp; Hair Arts</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --black: #000; --dark: #1c1c1e; --dark-2: #2c2c2e; --gray-1: #3a3a3c;
+      --gray-2: #636366; --gray-3: #8e8e93; --gray-4: #aeaeb2; --gray-5: #d1d1d6;
+      --light-bg: #f5f0fa; --white: #fff;
+      --text-primary: #1d1d1f; --text-sec: #6e6e73;
+      --purple: #7c3aed; --purple-dark: #5b21b6;
+      --pink: #ec4899; --pink-dark: #be185d;
+      --green: #34c759; --orange: #ff9f0a; --red: #ff3b30;
+      --sidebar-w: 240px;
+    }
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--light-bg); color: var(--text-primary);
+      -webkit-font-smoothing: antialiased;
+      display: flex; min-height: 100vh;
+    }
+
+    /* ── LOGIN WALL ── */
+    .login-wall {
+      position: fixed; inset: 0; z-index: 500;
+      background: #000;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .login-wall-bg {
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(124,58,237,0.25) 0%, transparent 60%);
+    }
+    .login-wall.hidden { display: none; }
+    .login-box {
+      background: #fff; border-radius: 28px; padding: 52px 44px;
+      width: 100%; max-width: 400px; position: relative; z-index: 1;
+      box-shadow: 0 40px 100px rgba(0,0,0,0.5);
+    }
+    .login-logo { text-align: center; margin-bottom: 32px; }
+    .login-logo img { width: 80px; height: 80px; object-fit: contain; border-radius: 50%; display: block; margin: 0 auto 12px; border: 3px solid rgba(124,58,237,0.2); }
+    .login-brand { font-size: 22px; font-weight: 800; letter-spacing: -0.03em; color: var(--text-primary); }
+    .login-brand span { background: linear-gradient(135deg, var(--purple), var(--pink)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .login-sub { font-size: 13px; color: var(--text-sec); margin-top: 4px; }
+    .login-field { margin-bottom: 14px; }
+    .login-field label {
+      display: block; font-size: 11px; font-weight: 600; letter-spacing: 0.08em;
+      text-transform: uppercase; color: var(--text-sec); margin-bottom: 8px;
+    }
+    .login-field input {
+      width: 100%; padding: 13px 16px; border: 1.5px solid rgba(0,0,0,0.12);
+      border-radius: 12px; font-family: inherit; font-size: 14px; color: var(--text-primary);
+      background: var(--light-bg); outline: none; transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .login-field input:focus {
+      border-color: var(--purple); box-shadow: 0 0 0 3px rgba(124,58,237,0.12); background: #fff;
+    }
+    .login-err {
+      background: #fff2f2; border: 1.5px solid #ffd1d1; color: #c0392b;
+      padding: 11px 14px; border-radius: 10px; font-size: 13px; font-weight: 600;
+      margin-bottom: 14px; display: none;
+    }
+    .login-err.show { display: block; }
+    .btn-login {
+      width: 100%; padding: 15px;
+      background: linear-gradient(135deg, var(--purple), var(--pink)); color: #fff;
+      font-family: inherit; font-weight: 700; font-size: 15px;
+      border: none; border-radius: 13px; cursor: pointer; transition: all 0.25s;
+    }
+    .btn-login:hover { opacity: 0.9; transform: translateY(-1px); }
+    .login-hint { text-align: center; font-size: 12px; color: var(--text-sec); margin-top: 12px; }
+
+    /* ── SIDEBAR ── */
+    .sidebar {
+      width: var(--sidebar-w); background: #1a0030; min-height: 100vh;
+      position: fixed; left: 0; top: 0; bottom: 0;
+      display: flex; flex-direction: column; overflow-y: auto;
+      border-right: 1px solid rgba(255,255,255,0.06);
+    }
+    .sidebar-header { padding: 24px 20px 20px; border-bottom: 1px solid rgba(255,255,255,0.07); }
+    .sidebar-logo { display: flex; align-items: center; gap: 10px; }
+    .sidebar-logo img { width: 36px; height: 36px; border-radius: 50%; object-fit: contain; background: rgba(255,255,255,0.08); }
+    .sidebar-logo-icon { width: 36px; height: 36px; border-radius: 50%; background: linear-gradient(135deg, var(--purple), var(--pink)); display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
+    .sidebar-brand { font-size: 14px; font-weight: 700; color: #fff; letter-spacing: -0.02em; line-height: 1.2; }
+    .sidebar-brand-sub { font-size: 10px; color: rgba(255,255,255,0.35); font-weight: 500; letter-spacing: 0.08em; margin-top: 1px; }
+    .sidebar-section { padding: 20px 0 4px; }
+    .sidebar-section-label {
+      font-size: 10px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase;
+      color: rgba(255,255,255,0.3); padding: 0 20px 8px;
+    }
+    .sidebar-link {
+      display: flex; align-items: center; gap: 10px; padding: 10px 20px;
+      color: rgba(255,255,255,0.6); text-decoration: none; font-size: 13.5px; font-weight: 500;
+      transition: all 0.2s; border-left: 3px solid transparent; margin: 1px 0;
+    }
+    .sidebar-link:hover { color: #fff; background: rgba(255,255,255,0.06); }
+    .sidebar-link.active { color: #fff; background: rgba(124,58,237,0.2); border-left-color: var(--purple); }
+    .sidebar-link-icon { font-size: 16px; width: 22px; text-align: center; flex-shrink: 0; }
+    .sidebar-badge {
+      margin-left: auto; background: var(--pink); color: #fff;
+      font-size: 10px; font-weight: 700; padding: 2px 7px; border-radius: 10px;
+    }
+    .sidebar-bottom { margin-top: auto; padding: 16px 20px; border-top: 1px solid rgba(255,255,255,0.07); }
+    .sidebar-logout {
+      display: flex; align-items: center; gap: 10px; color: rgba(255,255,255,0.4);
+      font-size: 13px; font-weight: 500; cursor: pointer; transition: color 0.2s;
+    }
+    .sidebar-logout:hover { color: rgba(255,255,255,0.8); }
+
+    /* ── MAIN ── */
+    .main { margin-left: var(--sidebar-w); flex: 1; display: flex; flex-direction: column; min-height: 100vh; }
+    .topbar {
+      background: rgba(245,240,250,0.9); backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(0,0,0,0.08); height: 56px;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 36px; position: sticky; top: 0; z-index: 50;
+    }
+    .topbar-title { font-size: 20px; font-weight: 700; letter-spacing: -0.03em; color: var(--text-primary); }
+    .topbar-right { display: flex; align-items: center; gap: 14px; }
+    .topbar-date { font-size: 12px; color: var(--text-sec); font-weight: 500; }
+    .topbar-avatar {
+      width: 32px; height: 32px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--purple), var(--pink)); overflow: hidden; cursor: pointer;
+      display: flex; align-items: center; justify-content: center; font-size: 14px;
+    }
+    .topbar-avatar img { width: 100%; height: 100%; object-fit: cover; }
+
+    .content { padding: 32px 36px; flex: 1; }
+
+    /* ── STAT CARDS ── */
+    .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 28px; }
+    .stat-card {
+      background: #fff; border-radius: 18px; padding: 22px 24px;
+      border: 1px solid rgba(0,0,0,0.06); transition: box-shadow 0.2s;
+    }
+    .stat-card:hover { box-shadow: 0 8px 24px rgba(0,0,0,0.08); }
+    .stat-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+    .stat-icon {
+      width: 40px; height: 40px; border-radius: 12px;
+      display: flex; align-items: center; justify-content: center; font-size: 18px;
+    }
+    .si-purple { background: rgba(124,58,237,0.1); }
+    .si-pink   { background: rgba(236,72,153,0.1); }
+    .si-green  { background: #e8fef0; }
+    .si-orange { background: #fff4e0; }
+    .stat-badge {
+      font-size: 10px; font-weight: 700; padding: 3px 9px; border-radius: 20px;
+      background: var(--light-bg); color: var(--text-sec);
+    }
+    .stat-num { font-size: 38px; font-weight: 700; letter-spacing: -0.05em; line-height: 1; color: var(--text-primary); }
+    .stat-label { font-size: 12px; color: var(--text-sec); font-weight: 500; margin-top: 6px; }
+
+    /* ── PANEL ── */
+    .panel {
+      background: #fff; border-radius: 18px; overflow: hidden;
+      border: 1px solid rgba(0,0,0,0.06); margin-bottom: 24px;
+    }
+    .panel-header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 18px 24px; border-bottom: 1px solid rgba(0,0,0,0.06);
+      background: rgba(0,0,0,0.015);
+    }
+    .panel-title { font-size: 16px; font-weight: 700; letter-spacing: -0.02em; color: var(--text-primary); }
+    .panel-action {
+      font-size: 13px; font-weight: 600; color: var(--purple); cursor: pointer;
+      background: none; border: none; font-family: inherit; transition: opacity 0.2s; padding: 0;
+    }
+    .panel-action:hover { opacity: 0.7; }
+
+    /* ── FILTERS ── */
+    .filters { display: flex; align-items: center; gap: 10px; padding: 16px 24px; border-bottom: 1px solid rgba(0,0,0,0.06); flex-wrap: wrap; }
+    .filter-select {
+      padding: 8px 14px; border: 1.5px solid rgba(0,0,0,0.1); border-radius: 10px;
+      font-family: inherit; font-size: 13px; font-weight: 500; color: var(--text-primary);
+      background: var(--light-bg); outline: none; cursor: pointer; transition: border-color 0.2s;
+      appearance: none;
+    }
+    .filter-select:focus { border-color: var(--purple); }
+    .filter-date {
+      padding: 8px 14px; border: 1.5px solid rgba(0,0,0,0.1); border-radius: 10px;
+      font-family: inherit; font-size: 13px; color: var(--text-primary);
+      background: var(--light-bg); outline: none; transition: border-color 0.2s;
+    }
+    .filter-date:focus { border-color: var(--purple); }
+    .filter-clear {
+      padding: 8px 16px; border: 1.5px solid rgba(0,0,0,0.1); border-radius: 10px;
+      font-family: inherit; font-size: 13px; font-weight: 600; color: var(--text-sec);
+      background: transparent; cursor: pointer; transition: all 0.2s;
+    }
+    .filter-clear:hover { background: rgba(0,0,0,0.04); color: var(--text-primary); }
+
+    /* ── TABLE ── */
+    .table-wrap { overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; }
+    th {
+      text-align: left; padding: 12px 20px;
+      font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--text-sec); background: rgba(0,0,0,0.02); border-bottom: 1px solid rgba(0,0,0,0.06);
+      white-space: nowrap;
+    }
+    td { padding: 14px 20px; font-size: 13.5px; color: var(--text-primary); border-bottom: 1px solid rgba(0,0,0,0.05); vertical-align: middle; }
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background: rgba(124,58,237,0.02); }
+    .td-name { font-weight: 700; font-size: 14px; }
+    .td-sub  { font-size: 12px; color: var(--text-sec); margin-top: 2px; }
+
+    /* ── BADGES ── */
+    .badge {
+      display: inline-flex; align-items: center; gap: 5px;
+      padding: 4px 12px; border-radius: 20px;
+      font-size: 11px; font-weight: 700; letter-spacing: 0.02em; white-space: nowrap;
+    }
+    .badge::before { content: ''; width: 6px; height: 6px; border-radius: 50%; }
+    .badge-pending   { background: #fff4e0; color: #92400e; }
+    .badge-pending::before { background: var(--orange); }
+    .badge-confirmado { background: rgba(124,58,237,0.1); color: #4c1d95; }
+    .badge-confirmado::before { background: var(--purple); }
+    .badge-completado { background: #e8fef0; color: #14532d; }
+    .badge-completado::before { background: var(--green); }
+    .badge-cancelado  { background: #fef0ee; color: #7f1d1d; }
+    .badge-cancelado::before { background: var(--red); }
+
+    /* ── ACTION BUTTONS ── */
+    .act-btn {
+      padding: 6px 12px; border: 1.5px solid rgba(0,0,0,0.1); border-radius: 8px;
+      background: transparent; font-family: inherit; font-size: 12px; font-weight: 600;
+      color: var(--text-sec); cursor: pointer; transition: all 0.2s;
+      white-space: nowrap;
+    }
+    .act-btn:hover { background: var(--light-bg); color: var(--text-primary); border-color: rgba(0,0,0,0.2); }
+    .act-btn.confirm:hover { background: rgba(124,58,237,0.1); color: var(--purple); border-color: var(--purple); }
+    .act-btn.complete:hover { background: #e8fef0; color: #14532d; border-color: var(--green); }
+    .act-btn.cancel:hover { background: #fef0ee; color: #7f1d1d; border-color: var(--red); }
+    .act-row { display: flex; gap: 6px; }
+
+    .empty-row td { text-align: center; padding: 48px; color: var(--text-sec); font-size: 14px; }
+
+    /* ── TWO COL ── */
+    .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+
+    /* ── QUICK ACTIONS ── */
+    .quick-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 16px 20px; }
+    .quick-item {
+      display: flex; align-items: center; gap: 12px; padding: 14px 16px;
+      border: 1.5px solid rgba(0,0,0,0.08); border-radius: 14px;
+      text-decoration: none; transition: all 0.2s; background: var(--light-bg);
+    }
+    .quick-item:hover { background: #ece6f5; border-color: var(--purple); transform: translateY(-2px); box-shadow: 0 6px 16px rgba(124,58,237,0.12); }
+    .quick-item-icon { font-size: 24px; }
+    .quick-item-title { font-size: 13px; font-weight: 700; color: var(--text-primary); }
+    .quick-item-sub { font-size: 11px; color: var(--text-sec); margin-top: 1px; }
+
+    /* ── MODAL ── */
+    .modal-overlay {
+      display: none; position: fixed; inset: 0; z-index: 300;
+      background: rgba(0,0,0,0.45); backdrop-filter: blur(8px);
+      align-items: center; justify-content: center; padding: 20px;
+    }
+    .modal-overlay.open { display: flex; }
+    .modal {
+      background: #fff; border-radius: 24px; padding: 36px;
+      max-width: 580px; width: 100%; max-height: 90vh; overflow-y: auto;
+      box-shadow: 0 24px 80px rgba(0,0,0,0.25);
+    }
+    .modal-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px; }
+    .modal-title { font-size: 22px; font-weight: 700; letter-spacing: -0.03em; }
+    .modal-close {
+      background: var(--light-bg); border: none; width: 34px; height: 34px;
+      border-radius: 50%; font-size: 16px; cursor: pointer; transition: background 0.2s;
+      display: flex; align-items: center; justify-content: center; color: var(--text-sec);
+    }
+    .modal-close:hover { background: #e0e0e5; }
+    .modal-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px 24px; }
+    .modal-field .mf-label {
+      font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--text-sec); margin-bottom: 4px;
+    }
+    .modal-field .mf-val { font-size: 14px; font-weight: 600; color: var(--text-primary); }
+    .modal-field.full { grid-column: 1 / -1; }
+    .modal-actions { display: flex; gap: 10px; margin-top: 24px; flex-wrap: wrap; }
+    .modal-btn {
+      padding: 11px 22px; border: none; border-radius: 12px; cursor: pointer;
+      font-family: inherit; font-size: 14px; font-weight: 700; transition: all 0.2s;
+    }
+    .modal-btn.confirm  { background: var(--purple); color: #fff; }
+    .modal-btn.confirm:hover  { background: var(--purple-dark); }
+    .modal-btn.complete { background: var(--green); color: #fff; }
+    .modal-btn.complete:hover { background: #28a34a; }
+    .modal-btn.cancel   { background: var(--light-bg); color: var(--text-primary); border: 1.5px solid rgba(0,0,0,0.1); }
+    .modal-btn.cancel:hover   { background: #e8e8ed; }
+
+    /* ── TOAST ── */
+    #toast {
+      position: fixed; bottom: 28px; right: 28px; z-index: 999;
+      padding: 13px 20px; border-radius: 14px; font-size: 13px; font-weight: 700;
+      color: #fff; opacity: 0; transition: opacity 0.3s; pointer-events: none;
+      box-shadow: 0 8px 28px rgba(0,0,0,0.2); font-family: inherit;
+    }
+    #toast.show { opacity: 1; }
+
+    /* ── MOBILE ── */
+    @media(max-width: 900px) {
+      .sidebar { display: none; }
+      .main { margin-left: 0; }
+      .stats-grid { grid-template-columns: 1fr 1fr; }
+      .two-col { grid-template-columns: 1fr; }
+      .content { padding: 20px 16px; }
+      .topbar { padding: 0 20px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── LOGIN WALL ── -->
+<div class="login-wall" id="loginWall">
+  <div class="login-wall-bg"></div>
+  <div class="login-box">
+    <div class="login-logo">
+      <img src="../santa_logo.png" alt="Santa" onerror="this.style.display='none'">
+      <div class="login-brand">Santa <span>Nail &amp; Hair</span></div>
+      <div class="login-sub">Admin — Secure staff access only</div>
+    </div>
+    <div class="login-field">
+      <label>Username</label>
+      <input type="text" id="loginUser" placeholder="admin" autocomplete="username">
+    </div>
+    <div class="login-field">
+      <label>Password</label>
+      <input type="password" id="loginPass" placeholder="••••••••" autocomplete="current-password"
+             onkeydown="if(event.key==='Enter') doLogin()">
+    </div>
+    <div class="login-err" id="loginErr">Incorrect username or password.</div>
+    <button class="btn-login" onclick="doLogin()">Sign In →</button>
+    <div class="login-hint">Staff access · Contact Santa for credentials</div>
+  </div>
+</div>
+
+<!-- ── SIDEBAR ── -->
+<aside class="sidebar">
+  <div class="sidebar-header">
+    <div class="sidebar-logo">
+      <div class="sidebar-logo-icon">💅</div>
+      <div>
+        <div class="sidebar-brand">Santa N&amp;H</div>
+        <div class="sidebar-brand-sub">Admin Panel</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sidebar-section">
+    <div class="sidebar-section-label">Overview</div>
+    <a href="#" class="sidebar-link active" onclick="showTab('dashboard',this);return false;">
+      <span class="sidebar-link-icon">📊</span> Dashboard
+    </a>
+  </div>
+
+  <div class="sidebar-section">
+    <div class="sidebar-section-label">Bookings</div>
+    <a href="#" class="sidebar-link" onclick="showTab('bookings',this);return false;">
+      <span class="sidebar-link-icon">📅</span> All Appointments
+      <span class="sidebar-badge" id="pendingBadge">0</span>
+    </a>
+  </div>
+
+  <div class="sidebar-section">
+    <div class="sidebar-section-label">Site</div>
+    <a href="../index.html" class="sidebar-link" target="_blank">
+      <span class="sidebar-link-icon">🌐</span> View Website
+    </a>
+    <a href="../booking/index.html" class="sidebar-link" target="_blank">
+      <span class="sidebar-link-icon">📝</span> Booking Form
+    </a>
+    <a href="https://wa.me/971523825342" class="sidebar-link" target="_blank" rel="noopener">
+      <span class="sidebar-link-icon">💬</span> WhatsApp
+    </a>
+  </div>
+
+  <div class="sidebar-bottom">
+    <div class="sidebar-logout" onclick="logout()">
+      <span style="font-size:16px;">🚪</span> Sign Out
+    </div>
+  </div>
+</aside>
+
+<!-- ── MAIN ── -->
+<main class="main">
+  <div class="topbar">
+    <div class="topbar-title" id="topbarTitle">Dashboard</div>
+    <div class="topbar-right">
+      <span class="topbar-date" id="topbarDate"></span>
+      <div class="topbar-avatar">💅</div>
+    </div>
+  </div>
+
+  <div class="content">
+
+    <!-- ── DASHBOARD TAB ── -->
+    <div id="tab-dashboard">
+      <div class="stats-grid" id="statsGrid">
+        <div class="stat-card">
+          <div class="stat-top"><div class="stat-icon si-orange">⏳</div><span class="stat-badge">Pending</span></div>
+          <div class="stat-num" id="stat-pending">—</div>
+          <div class="stat-label">Pending Appointments</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-top"><div class="stat-icon si-purple">✅</div><span class="stat-badge">Confirmed</span></div>
+          <div class="stat-num" id="stat-confirmed">—</div>
+          <div class="stat-label">Confirmed</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-top"><div class="stat-icon si-green">🏆</div><span class="stat-badge">All time</span></div>
+          <div class="stat-num" id="stat-completed">—</div>
+          <div class="stat-label">Completed</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-top"><div class="stat-icon si-pink">👥</div><span class="stat-badge">Unique #s</span></div>
+          <div class="stat-num" id="stat-clients">—</div>
+          <div class="stat-label">Unique Clients</div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-header">
+          <div class="panel-title">Recent Appointments</div>
+          <button class="panel-action" onclick="showTab('bookings',null)">View all →</button>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Client</th><th>Service</th><th>Date</th><th>Time</th><th>Status</th><th>Actions</th></tr></thead>
+            <tbody id="recent-tbody">
+              <tr><td colspan="6" class="empty-row">Loading appointments…</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="two-col">
+        <div class="panel">
+          <div class="panel-header"><div class="panel-title">⚡ Quick Actions</div></div>
+          <div class="quick-grid">
+            <a href="../booking/index.html" target="_blank" class="quick-item">
+              <span class="quick-item-icon">➕</span>
+              <div><div class="quick-item-title">New Booking</div><div class="quick-item-sub">Open form</div></div>
+            </a>
+            <a href="https://wa.me/971523825342" target="_blank" rel="noopener" class="quick-item">
+              <span class="quick-item-icon">💬</span>
+              <div><div class="quick-item-title">WhatsApp</div><div class="quick-item-sub">+971 52-3825-342</div></div>
+            </a>
+            <a href="https://wa.me/971564552721" target="_blank" rel="noopener" class="quick-item">
+              <span class="quick-item-icon">💬</span>
+              <div><div class="quick-item-title">WhatsApp 2</div><div class="quick-item-sub">+971 56-4552-721</div></div>
+            </a>
+            <a href="#" class="quick-item" onclick="showTab('bookings',null);return false;">
+              <span class="quick-item-icon">📅</span>
+              <div><div class="quick-item-title">All Bookings</div><div class="quick-item-sub">Full list</div></div>
+            </a>
+          </div>
+        </div>
+        <div class="panel">
+          <div class="panel-header"><div class="panel-title">📋 By Service</div></div>
+          <table><tbody id="service-breakdown">
+            <tr><td>Loading…</td></tr>
+          </tbody></table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── BOOKINGS TAB ── -->
+    <div id="tab-bookings" style="display:none;">
+      <div class="panel">
+        <div class="panel-header">
+          <div class="panel-title">All Appointments</div>
+          <button class="panel-action" onclick="loadAll()">↻ Refresh</button>
+        </div>
+        <div class="filters">
+          <input type="date" id="filterDate" class="filter-date" onchange="applyFilters()">
+          <select id="filterStatus" class="filter-select" onchange="applyFilters()">
+            <option value="">All Statuses</option>
+            <option value="pendiente">Pending</option>
+            <option value="confirmado">Confirmed</option>
+            <option value="completado">Completed</option>
+            <option value="cancelado">Cancelled</option>
+          </select>
+          <select id="filterService" class="filter-select" onchange="applyFilters()">
+            <option value="">All Services</option>
+            <option value="acrylic_nails">Acrylic Nails</option>
+            <option value="gel_nails">Gel Nails</option>
+            <option value="nail_art">Nail Art</option>
+            <option value="pedicure_manicure">Pedicure &amp; Manicure</option>
+            <option value="braids">Braids &amp; Cornrows</option>
+            <option value="eyelash">Eyelash Extensions</option>
+            <option value="massage">Massage</option>
+            <option value="bridal">Bridal Package</option>
+          </select>
+          <button class="filter-clear" onclick="clearFilters()">Clear</button>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>ID</th><th>Client</th><th>Service</th><th>Date</th><th>Time</th><th>Address</th><th>Status</th><th>Actions</th></tr></thead>
+            <tbody id="all-tbody">
+              <tr><td colspan="8" class="empty-row">Loading appointments…</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /content -->
+</main>
+
+<!-- ── MODAL ── -->
+<div class="modal-overlay" id="modalOverlay" onclick="closeModal(event)">
+  <div class="modal" onclick="event.stopPropagation()">
+    <div class="modal-header">
+      <div class="modal-title">Appointment Detail</div>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    <div id="modalBody"></div>
+  </div>
+</div>
+
+<!-- ── TOAST ── -->
+<div id="toast"></div>
+
+<script>
+  // ── CONFIG ──
+  // Update this URL after deploying your Google Apps Script backend
+  const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzRabgnMuWrE6j7xt2F727dNMF9umLxGjkQF1Ksq0y5PsQ5tpWYYIJrtXRFxG7vPVtT/exec';
+  const ADMIN_KEY = 'fernando';
+  const LOGIN_USER = 'admin';
+  const LOGIN_PASS = 'fernando';
+
+  let allBookings = [];
+
+  // ── Date in topbar ──
+  document.getElementById('topbarDate').textContent =
+    new Date().toLocaleDateString('en-US', { weekday:'short', month:'long', day:'numeric' });
+
+  // ── Login ──
+  function doLogin() {
+    const u = document.getElementById('loginUser').value.trim();
+    const p = document.getElementById('loginPass').value;
+    if (u === LOGIN_USER && p === LOGIN_PASS) {
+      document.getElementById('loginWall').classList.add('hidden');
+      initDashboard();
+    } else {
+      const err = document.getElementById('loginErr');
+      err.classList.add('show');
+      setTimeout(() => err.classList.remove('show'), 3500);
+    }
+  }
+
+  function logout() {
+    document.getElementById('loginWall').classList.remove('hidden');
+    document.getElementById('loginUser').value = '';
+    document.getElementById('loginPass').value = '';
+  }
+
+  // ── JSONP helper ──
+  function jsonpFetch(url) {
+    return new Promise((resolve, reject) => {
+      const cb = '_adm_' + Date.now() + '_' + Math.random().toString(36).slice(2);
+      const s = document.createElement('script');
+      let done = false;
+      window[cb] = (d) => { done = true; delete window[cb]; s.remove(); resolve(d); };
+      s.onerror = () => { if (!done) { delete window[cb]; reject(new Error('Network error')); } };
+      s.src = url + (url.includes('?') ? '&' : '?') + 'callback=' + cb;
+      document.head.appendChild(s);
+      setTimeout(() => {
+        if (!done) { delete window[cb]; s.remove(); reject(new Error('Timeout')); }
+      }, 10000);
+    });
+  }
+
+  // ── Init Dashboard ──
+  async function initDashboard() {
+    setStatsLoading();
+    await loadAll();
+    renderDashboard();
+  }
+
+  function setStatsLoading() {
+    ['stat-pending','stat-confirmed','stat-completed','stat-clients'].forEach(id => {
+      document.getElementById(id).textContent = '—';
+    });
+  }
+
+  async function loadAll() {
+    try {
+      const data = await jsonpFetch(`${APPS_SCRIPT_URL}?action=getCitas&adminKey=${ADMIN_KEY}`);
+      allBookings = Array.isArray(data.citas) ? data.citas : (Array.isArray(data) ? data : []);
+    } catch(e) {
+      allBookings = DEMO_BOOKINGS;
+      showToast('Using demo data — update APPS_SCRIPT_URL', true);
+    }
+    renderDashboard();
+    renderBookingsTab();
+    updateBadge();
+  }
+
+  // ── Dashboard render ──
+  function renderDashboard() {
+    const pending   = allBookings.filter(b => b.Estado === 'pendiente').length;
+    const confirmed = allBookings.filter(b => b.Estado === 'confirmado').length;
+    const completed = allBookings.filter(b => b.Estado === 'completado').length;
+    const clients   = new Set(allBookings.map(b => b.Telefono).filter(Boolean)).size;
+
+    document.getElementById('stat-pending').textContent   = pending;
+    document.getElementById('stat-confirmed').textContent = confirmed;
+    document.getElementById('stat-completed').textContent = completed;
+    document.getElementById('stat-clients').textContent   = clients;
+
+    // Recent (last 5)
+    const recent = [...allBookings].reverse().slice(0, 5);
+    document.getElementById('recent-tbody').innerHTML = recent.length
+      ? recent.map(b => buildRow(b, true)).join('')
+      : emptyRow(6, 'No appointments yet');
+
+    // Service breakdown
+    const counts = {};
+    allBookings.forEach(b => { const k = b.Servicio || 'unknown'; counts[k] = (counts[k]||0)+1; });
+    document.getElementById('service-breakdown').innerHTML = Object.entries(counts).length
+      ? Object.entries(counts).sort((a,b)=>b[1]-a[1]).map(([svc, count]) =>
+          `<tr><td>${escHtml(svcLabel(svc))}</td><td style="text-align:right;font-weight:700;">${count}</td></tr>`
+        ).join('')
+      : '<tr><td colspan="2" style="text-align:center;padding:24px;color:var(--text-sec);">No data</td></tr>';
+  }
+
+  // ── Bookings tab render ──
+  function renderBookingsTab() {
+    const sorted = [...allBookings].reverse();
+    document.getElementById('all-tbody').innerHTML = sorted.length
+      ? sorted.map(b => buildRow(b, false)).join('')
+      : emptyRow(8, 'No appointments found');
+    updateBadge();
+  }
+
+  function updateBadge() {
+    const n = allBookings.filter(b => b.Estado === 'pendiente').length;
+    document.getElementById('pendingBadge').textContent = n;
+    document.getElementById('pendingBadge').style.display = n ? '' : 'none';
+  }
+
+  // ── Row builder — NOTE: no price/total column shown ──
+  function buildRow(b, mini) {
+    const name    = escHtml((b.Cliente || b['First Name'] || '—').trim());
+    const phone   = escHtml(b.Telefono || b.Phone || '—');
+    const svc     = escHtml(svcLabel(b.Servicio || b['Service Type'] || '—'));
+    const date    = fmtDate(b.Fecha || b['Preferred Date'] || '');
+    const time    = escHtml(b.HoraInicio || b['Preferred Time'] || '—');
+    const status  = b.Estado || b.Status || 'pendiente';
+    const addr    = escHtml((b.Direccion || b.Address || '—').split(',')[0]);
+    const id      = escHtml(String(b.ID || ''));
+    const bCls    = badgeClass(status);
+
+    if (mini) {
+      return `<tr>
+        <td><div class="td-name">${name}</div><div class="td-sub">${phone}</div></td>
+        <td>${svc}</td><td>${date}</td><td>${time}</td>
+        <td><span class="badge ${bCls}">${capFirst(status)}</span></td>
+        <td><button class="act-btn" onclick="openDetail('${id}')">Detail</button></td>
+      </tr>`;
+    }
+    return `<tr>
+      <td style="font-size:11px;color:var(--text-sec);">${id.slice(0,8) || '—'}</td>
+      <td><div class="td-name">${name}</div><div class="td-sub">${phone}</div></td>
+      <td>${svc}</td><td>${date}</td><td>${time}</td><td>${addr}</td>
+      <td><span class="badge ${bCls}">${capFirst(status)}</span></td>
+      <td><div class="act-row">
+        <button class="act-btn confirm"  onclick="changeStatus('${id}','confirmado')">Confirm</button>
+        <button class="act-btn complete" onclick="changeStatus('${id}','completado')">Done</button>
+        <button class="act-btn"          onclick="openDetail('${id}')">···</button>
+      </div></td>
+    </tr>`;
+  }
+
+  function emptyRow(cols, msg) {
+    return `<tr><td colspan="${cols}" class="empty-row">${msg}</td></tr>`;
+  }
+
+  // ── Status update ──
+  async function changeStatus(id, status) {
+    if (!id) return;
+    try {
+      await fetch(APPS_SCRIPT_URL, {
+        method: 'POST',
+        body: JSON.stringify({ action: 'actualizar', id, estado: status, adminKey: ADMIN_KEY }),
+        headers: { 'Content-Type': 'text/plain' }
+      });
+    } catch(e) { /* update locally anyway */ }
+    const bk = allBookings.find(b => String(b.ID) === String(id));
+    if (bk) bk.Estado = status;
+    renderDashboard(); renderBookingsTab();
+    showToast(`Marked as ${capFirst(status)} ✓`);
+  }
+
+  // ── Filters ──
+  function applyFilters() {
+    const dateF    = document.getElementById('filterDate').value;
+    const statusF  = document.getElementById('filterStatus').value.toLowerCase();
+    const serviceF = document.getElementById('filterService').value.toLowerCase();
+
+    let filtered = [...allBookings].reverse();
+    if (dateF)    filtered = filtered.filter(b => (b.Fecha||'').startsWith(dateF));
+    if (statusF)  filtered = filtered.filter(b => (b.Estado||'').toLowerCase() === statusF);
+    if (serviceF) filtered = filtered.filter(b => (b.Servicio||b['Service Type']||'').toLowerCase().includes(serviceF));
+
+    document.getElementById('all-tbody').innerHTML = filtered.length
+      ? filtered.map(b => buildRow(b, false)).join('')
+      : emptyRow(8, 'No appointments match the filters');
+  }
+
+  function clearFilters() {
+    document.getElementById('filterDate').value = '';
+    document.getElementById('filterStatus').value = '';
+    document.getElementById('filterService').value = '';
+    renderBookingsTab();
+  }
+
+  // ── Detail modal — NOTE: price/total NOT shown ──
+  function openDetail(id) {
+    const b = allBookings.find(bk => String(bk.ID) === String(id));
+    if (!b) return;
+    const name   = (b.Cliente || '—');
+    const status = b.Estado || 'pendiente';
+    const phone  = b.Telefono || '';
+    document.getElementById('modalBody').innerHTML = `
+      <div class="modal-grid">
+        <div class="modal-field"><div class="mf-label">Booking ID</div><div class="mf-val">${escHtml(String(b.ID||'—'))}</div></div>
+        <div class="modal-field"><div class="mf-label">Status</div><div class="mf-val"><span class="badge ${badgeClass(status)}">${capFirst(status)}</span></div></div>
+        <div class="modal-field"><div class="mf-label">Client</div><div class="mf-val">${escHtml(name)}</div></div>
+        <div class="modal-field"><div class="mf-label">Phone / WhatsApp</div><div class="mf-val"><a href="https://wa.me/${escHtml(phone.replace(/[^0-9]/g,''))}" target="_blank" style="color:var(--purple);text-decoration:none;">${escHtml(phone||'—')}</a></div></div>
+        <div class="modal-field"><div class="mf-label">Service</div><div class="mf-val">${escHtml(svcLabel(b.Servicio||'—'))}</div></div>
+        <div class="modal-field"><div class="mf-label">Location Type</div><div class="mf-val">${escHtml(b.Tamano||'—')}</div></div>
+        <div class="modal-field"><div class="mf-label">Date</div><div class="mf-val">${fmtDate(b.Fecha||'')}</div></div>
+        <div class="modal-field"><div class="mf-label">Time</div><div class="mf-val">${escHtml(b.HoraInicio||'—')}</div></div>
+        <div class="modal-field full"><div class="mf-label">Address / Location</div><div class="mf-val">${escHtml(b.Direccion||'—')}</div></div>
+        <div class="modal-field full"><div class="mf-label">Notes</div><div class="mf-val">${escHtml(b.Notas||'—')}</div></div>
+        <div class="modal-field"><div class="mf-label">Registered</div><div class="mf-val">${escHtml(b.FechaRegistro||'—')}</div></div>
+      </div>
+      <div class="modal-actions">
+        <button class="modal-btn confirm"  onclick="changeStatus('${escHtml(String(b.ID||''))}','confirmado');closeModal()">✓ Confirm</button>
+        <button class="modal-btn complete" onclick="changeStatus('${escHtml(String(b.ID||''))}','completado');closeModal()">✔ Mark Done</button>
+        <button class="modal-btn cancel"   onclick="changeStatus('${escHtml(String(b.ID||''))}','cancelado');closeModal()">✕ Cancel</button>
+      </div>`;
+    document.getElementById('modalOverlay').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeModal(e) {
+    if (!e || e.target === document.getElementById('modalOverlay')) {
+      document.getElementById('modalOverlay').classList.remove('open');
+      document.body.style.overflow = '';
+    }
+  }
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') { document.getElementById('modalOverlay').classList.remove('open'); document.body.style.overflow = ''; }
+  });
+
+  // ── Tab navigation ──
+  const TABS = ['dashboard', 'bookings'];
+  const TITLES = { dashboard: 'Dashboard', bookings: 'All Appointments' };
+  function showTab(name, linkEl) {
+    TABS.forEach(t => {
+      const el = document.getElementById('tab-' + t);
+      if (el) el.style.display = 'none';
+    });
+    document.querySelectorAll('.sidebar-link').forEach(l => l.classList.remove('active'));
+    const target = document.getElementById('tab-' + name);
+    if (target) target.style.display = '';
+    document.getElementById('topbarTitle').textContent = TITLES[name] || name;
+    if (linkEl) linkEl.classList.add('active');
+    if (name === 'bookings') renderBookingsTab();
+  }
+
+  // ── Toast ──
+  function showToast(msg, isError) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.style.background = isError ? 'var(--red)' : 'var(--purple-dark)';
+    t.classList.add('show');
+    clearTimeout(t._timer);
+    t._timer = setTimeout(() => t.classList.remove('show'), 3200);
+  }
+
+  // ── Helpers ──
+  function escHtml(s) {
+    return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+  function fmtDate(s) {
+    if (!s) return '—';
+    const d = new Date(s + (s.includes('T') ? '' : 'T00:00:00'));
+    return isNaN(d) ? s : d.toLocaleDateString('en-US', { month:'short', day:'numeric', year:'numeric' });
+  }
+  function capFirst(s) { return s ? s.charAt(0).toUpperCase() + s.slice(1) : ''; }
+  function badgeClass(status) {
+    const s = (status||'').toLowerCase();
+    if (s === 'confirmado' || s === 'confirmed') return 'badge-confirmado';
+    if (s === 'completado' || s === 'completed') return 'badge-completado';
+    if (s === 'cancelado'  || s === 'cancelled') return 'badge-cancelado';
+    return 'badge-pending';
+  }
+  function svcLabel(v) {
+    const map = {
+      acrylic_nails:     '💅 Acrylic Nails',
+      gel_nails:         '✨ Gel Nails',
+      nail_art:          '🎨 Nail Art',
+      pedicure_manicure: '🦶 Pedicure & Manicure',
+      braids:            '🌸 Braids & Cornrows',
+      eyelash:           '👁️ Eyelash Extensions',
+      massage:           '💆 Massage',
+      bridal:            '💒 Bridal Package',
+      nails:             '💅 Nails & Beauty',
+      hair:              '✂️ Hair Services',
+    };
+    return map[v] || v;
+  }
+
+  // ── Demo fallback ──
+  const DEMO_BOOKINGS = [
+    { ID:'1001', Cliente:'Sara Al Mansoori', Telefono:'+971501112233', Fecha:'2026-06-10', HoraInicio:'10:00', Servicio:'acrylic_nails', Tamano:'home_visit', Notas:'French tips',        Direccion:'Dubai Marina, Tower A', Estado:'confirmado', FechaRegistro:'2026-06-05 10:00' },
+    { ID:'1002', Cliente:'Fatima Hassan',    Telefono:'+971502223344', Fecha:'2026-06-12', HoraInicio:'14:00', Servicio:'braids',         Tamano:'salon',      Notas:'Box braids',        Direccion:'JBR, Apartment 12',     Estado:'pendiente',  FechaRegistro:'2026-06-05 11:30' },
+    { ID:'1003', Cliente:'Layla Ahmed',      Telefono:'+971503334455', Fecha:'2026-06-08', HoraInicio:'11:00', Servicio:'eyelash',        Tamano:'home_visit', Notas:'Volume lashes',     Direccion:'Downtown Dubai',         Estado:'completado', FechaRegistro:'2026-06-04 09:00' },
+    { ID:'1004', Cliente:'Nour Al Rashid',   Telefono:'+971504445566', Fecha:'2026-06-15', HoraInicio:'09:00', Servicio:'bridal',         Tamano:'salon',      Notas:'Wedding June 20',  Direccion:'Palm Jumeirah',           Estado:'pendiente',  FechaRegistro:'2026-06-05 14:00' },
+    { ID:'1005', Cliente:'Hana Khalid',      Telefono:'+971505556677', Fecha:'2026-06-20', HoraInicio:'16:00', Servicio:'gel_nails',      Tamano:'home_visit', Notas:'Pastel pink',       Direccion:'Jumeirah Village Circle', Estado:'pendiente',  FechaRegistro:'2026-06-05 15:30' },
+  ];
+</script>
+</body>
+</html>
