@@ -304,6 +304,87 @@
     }
     #toast.show { opacity: 1; }
 
+    /* ── REFRESH CHIP ── */
+    .refresh-chip {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-size: 11px; font-weight: 600; color: var(--text-sec);
+      background: rgba(0,0,0,0.05); border-radius: 20px;
+      padding: 5px 12px; cursor: pointer; transition: all 0.2s; user-select: none;
+    }
+    .refresh-chip:hover { background: rgba(124,58,237,0.12); color: var(--purple); }
+    .rc-dot {
+      width: 7px; height: 7px; border-radius: 50%; background: var(--green);
+      animation: pulse-dot 2s infinite; flex-shrink: 0;
+    }
+    @keyframes pulse-dot { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+    /* ── NEW BOOKING BANNER ── */
+    .new-booking-banner {
+      display: none; position: fixed; top: 68px; right: 24px; z-index: 400;
+      background: #fff; border: 2px solid var(--green); border-radius: 18px;
+      padding: 18px 20px 16px; width: 300px;
+      box-shadow: 0 16px 48px rgba(0,0,0,0.18); animation: slide-right 0.35s ease;
+    }
+    .new-booking-banner.show { display: block; }
+    @keyframes slide-right { from{transform:translateX(120%);opacity:0} to{transform:translateX(0);opacity:1} }
+    .nbb-close {
+      position: absolute; top: 10px; right: 14px; background: none; border: none;
+      font-size: 16px; color: var(--text-sec); cursor: pointer; line-height: 1;
+    }
+    .nbb-title { font-size: 14px; font-weight: 800; color: #14532d; margin-bottom: 4px; }
+    .nbb-sub   { font-size: 12px; color: var(--text-sec); line-height: 1.4; }
+    .nbb-action {
+      margin-top: 12px; padding: 8px 18px; background: var(--green); color: #fff;
+      border: none; border-radius: 10px; font-family: inherit; font-size: 12px;
+      font-weight: 700; cursor: pointer; transition: background 0.2s;
+    }
+    .nbb-action:hover { background: #28a34a; }
+
+    /* ── SETTINGS ── */
+    .settings-section {
+      background: #fff; border-radius: 18px; padding: 28px 32px;
+      border: 1px solid rgba(0,0,0,0.06); margin-bottom: 20px;
+    }
+    .settings-section-title { font-size: 17px; font-weight: 700; letter-spacing: -0.02em; color: var(--text-primary); margin-bottom: 5px; }
+    .settings-section-sub   { font-size: 13px; color: var(--text-sec); margin-bottom: 22px; line-height: 1.5; }
+    .settings-field { margin-bottom: 16px; }
+    .settings-field label {
+      display: block; font-size: 11px; font-weight: 700; letter-spacing: 0.08em;
+      text-transform: uppercase; color: var(--text-sec); margin-bottom: 8px;
+    }
+    .settings-field input {
+      width: 100%; padding: 12px 16px; border: 1.5px solid rgba(0,0,0,0.12);
+      border-radius: 12px; font-family: inherit; font-size: 14px; color: var(--text-primary);
+      background: var(--light-bg); outline: none; transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .settings-field input:focus { border-color: var(--purple); box-shadow: 0 0 0 3px rgba(124,58,237,0.12); background: #fff; }
+    .settings-row { display: flex; gap: 12px; align-items: flex-end; flex-wrap: wrap; }
+    .settings-row .settings-field { flex: 1; min-width: 200px; margin-bottom: 0; }
+    .settings-btn {
+      padding: 12px 28px;
+      background: linear-gradient(135deg, var(--purple), var(--pink));
+      color: #fff; border: none; border-radius: 12px; font-family: inherit;
+      font-size: 14px; font-weight: 700; cursor: pointer; transition: all 0.25s; white-space: nowrap;
+    }
+    .settings-btn:hover { opacity: 0.88; transform: translateY(-1px); }
+    .settings-btn.secondary {
+      background: var(--light-bg); color: var(--text-primary);
+      border: 1.5px solid rgba(0,0,0,0.12);
+    }
+    .settings-btn.secondary:hover { background: #e8e8ed; transform: none; }
+    .settings-divider { border: none; border-top: 1px solid rgba(0,0,0,0.07); margin: 20px 0; }
+    .settings-current-user {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(124,58,237,0.08); color: var(--purple);
+      font-size: 13px; font-weight: 700; padding: 6px 14px; border-radius: 20px;
+      margin-bottom: 20px;
+    }
+    .notif-perm-row { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 16px; }
+    .perm-status { font-size: 12px; font-weight: 600; padding: 5px 12px; border-radius: 20px; }
+    .perm-granted  { background: #e8fef0; color: #14532d; }
+    .perm-denied   { background: #fef0ee; color: #7f1d1d; }
+    .perm-default  { background: var(--light-bg); color: var(--text-sec); }
+
     /* ── MOBILE ── */
     @media(max-width: 900px) {
       .sidebar { display: none; }
@@ -369,6 +450,13 @@
   </div>
 
   <div class="sidebar-section">
+    <div class="sidebar-section-label">Config</div>
+    <a href="#" class="sidebar-link" onclick="showTab('settings',this);return false;">
+      <span class="sidebar-link-icon">⚙️</span> Settings
+    </a>
+  </div>
+
+  <div class="sidebar-section">
     <div class="sidebar-section-label">Site</div>
     <a href="../index.html" class="sidebar-link" target="_blank">
       <span class="sidebar-link-icon">🌐</span> View Website
@@ -376,7 +464,7 @@
     <a href="../booking/index.html" class="sidebar-link" target="_blank">
       <span class="sidebar-link-icon">📝</span> Booking Form
     </a>
-    <a href="https://wa.me/971523825342" class="sidebar-link" target="_blank" rel="noopener">
+    <a href="https://wa.me/971564552721" class="sidebar-link" target="_blank" rel="noopener">
       <span class="sidebar-link-icon">💬</span> WhatsApp
     </a>
   </div>
@@ -394,6 +482,10 @@
     <div class="topbar-title" id="topbarTitle">Dashboard</div>
     <div class="topbar-right">
       <span class="topbar-date" id="topbarDate"></span>
+      <div class="refresh-chip" id="refreshChip" onclick="manualRefresh()" title="Click to refresh now">
+        <span class="rc-dot"></span>
+        <span>Auto ↻ <span class="rc-time">60s</span></span>
+      </div>
       <div class="topbar-avatar">💅</div>
     </div>
   </div>
@@ -448,13 +540,13 @@
               <span class="quick-item-icon">➕</span>
               <div><div class="quick-item-title">New Booking</div><div class="quick-item-sub">Open form</div></div>
             </a>
-            <a href="https://wa.me/971523825342" target="_blank" rel="noopener" class="quick-item">
-              <span class="quick-item-icon">💬</span>
-              <div><div class="quick-item-title">WhatsApp</div><div class="quick-item-sub">+971 52-3825-342</div></div>
-            </a>
             <a href="https://wa.me/971564552721" target="_blank" rel="noopener" class="quick-item">
               <span class="quick-item-icon">💬</span>
-              <div><div class="quick-item-title">WhatsApp 2</div><div class="quick-item-sub">+971 56-4552-721</div></div>
+              <div><div class="quick-item-title">WhatsApp</div><div class="quick-item-sub">+971 56-4552-721</div></div>
+            </a>
+            <a href="tel:+971523825342" class="quick-item">
+              <span class="quick-item-icon">📞</span>
+              <div><div class="quick-item-title">Call Only</div><div class="quick-item-sub">+971 52-3825-342</div></div>
             </a>
             <a href="#" class="quick-item" onclick="showTab('bookings',null);return false;">
               <span class="quick-item-icon">📅</span>
@@ -469,6 +561,55 @@
           </tbody></table>
         </div>
       </div>
+    </div>
+
+    <!-- ── SETTINGS TAB ── -->
+    <div id="tab-settings" style="display:none;">
+
+      <!-- Auto-refresh & browser notifications -->
+      <div class="settings-section">
+        <div class="settings-section-title">Auto-Refresh &amp; Notifications</div>
+        <div class="settings-section-sub">The panel refreshes every 60 seconds automatically. You can also enable browser pop-up notifications when a new booking arrives.</div>
+        <div class="notif-perm-row">
+          <button class="settings-btn secondary" onclick="requestBrowserNotif()">Enable Pop-up Notifications</button>
+          <span class="perm-status" id="permStatus">Checking…</span>
+        </div>
+        <div style="font-size:12px;color:var(--text-sec);">Current refresh interval: every <strong>60 seconds</strong>. Click the <strong>Auto ↻</strong> chip in the top bar to refresh immediately.</div>
+      </div>
+
+      <!-- Notification email -->
+      <div class="settings-section">
+        <div class="settings-section-title">Email Notifications</div>
+        <div class="settings-section-sub">Enter the email address where you want to receive an alert every time a new booking is submitted. Requires the Apps Script to include the email function (see instructions).</div>
+        <div class="settings-row">
+          <div class="settings-field">
+            <label>Notification Email</label>
+            <input type="email" id="notifEmailInput" placeholder="yourname@gmail.com" />
+          </div>
+          <button class="settings-btn" onclick="saveNotifEmail()">Save Email</button>
+        </div>
+      </div>
+
+      <!-- Admin credentials -->
+      <div class="settings-section">
+        <div class="settings-section-title">Admin Credentials</div>
+        <div class="settings-section-sub">Change the username and password used to log in. Stored securely in this browser.</div>
+        <div class="settings-current-user">👤 Current user: <span id="currentUserDisplay">—</span></div>
+        <div class="settings-field">
+          <label>New Username</label>
+          <input type="text" id="newUser" placeholder="New username" autocomplete="off" />
+        </div>
+        <div class="settings-field">
+          <label>New Password</label>
+          <input type="password" id="newPass" placeholder="Minimum 6 characters" autocomplete="new-password" />
+        </div>
+        <div class="settings-field">
+          <label>Confirm Password</label>
+          <input type="password" id="newPass2" placeholder="Repeat password" autocomplete="new-password" />
+        </div>
+        <button class="settings-btn" onclick="saveNewCredentials()">Update Credentials</button>
+      </div>
+
     </div>
 
     <!-- ── BOOKINGS TAB ── -->
@@ -525,18 +666,38 @@
   </div>
 </div>
 
+<!-- ── NEW BOOKING BANNER ── -->
+<div class="new-booking-banner" id="newBookingBanner">
+  <button class="nbb-close" onclick="document.getElementById('newBookingBanner').classList.remove('show')">✕</button>
+  <div class="nbb-title">🗓️ New Booking Received!</div>
+  <div class="nbb-sub" id="nbbSub">A new appointment was just submitted.</div>
+  <button class="nbb-action" onclick="showTab('bookings',null);document.getElementById('newBookingBanner').classList.remove('show')">View Bookings →</button>
+</div>
+
 <!-- ── TOAST ── -->
 <div id="toast"></div>
 
 <script>
   // ── CONFIG ──
-  // Update this URL after deploying your Google Apps Script backend
-  const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbymcCprZKZgaNUmhGHzGRWgFRgsSspTmH_IQWanxHYPEwblNi5jLg7OAmFvSRRJCTmW/exec';
-  const ADMIN_KEY = 'fernando';
-  const LOGIN_USER = 'admin';
-  const LOGIN_PASS = 'fernando';
+  const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzQli9yo6kYKTFQ3Lk3LUhASHod_cm6W_W4hczEs2H65xQaS2N5SBNA3RkYUq60lXnJ/exec';
+  const ADMIN_KEY       = 'fernando';
+  // Hardcoded fallback credentials (used if nothing saved in localStorage)
+  const DEFAULT_USER    = 'admin';
+  const DEFAULT_PASS    = 'fernando';
 
-  let allBookings = [];
+  let allBookings    = [];
+  let prevCount      = 0;          // for new-booking detection
+  let refreshTimer   = null;
+  let refreshSecs    = 60;
+  const REFRESH_EVERY = 60;        // seconds
+
+  // ── Read credentials from localStorage (fallback to defaults) ──
+  function getCreds() {
+    return {
+      user: localStorage.getItem('snh_user') || DEFAULT_USER,
+      pass: localStorage.getItem('snh_pass') || DEFAULT_PASS
+    };
+  }
 
   // ── Date in topbar ──
   document.getElementById('topbarDate').textContent =
@@ -546,7 +707,8 @@
   function doLogin() {
     const u = document.getElementById('loginUser').value.trim();
     const p = document.getElementById('loginPass').value;
-    if (u === LOGIN_USER && p === LOGIN_PASS) {
+    const c = getCreds();
+    if (u === c.user && p === c.pass) {
       document.getElementById('loginWall').classList.add('hidden');
       initDashboard();
     } else {
@@ -557,6 +719,7 @@
   }
 
   function logout() {
+    clearInterval(refreshTimer);
     document.getElementById('loginWall').classList.remove('hidden');
     document.getElementById('loginUser').value = '';
     document.getElementById('loginPass').value = '';
@@ -582,7 +745,66 @@
   async function initDashboard() {
     setStatsLoading();
     await loadAll();
+    prevCount = allBookings.length;
     renderDashboard();
+    startAutoRefresh();
+    loadNotifEmailFromScript();
+    updatePermStatus();
+    const c = getCreds();
+    const el = document.getElementById('currentUserDisplay');
+    if (el) el.textContent = c.user;
+  }
+
+  // ── Auto-refresh ──
+  function startAutoRefresh() {
+    clearInterval(refreshTimer);
+    refreshSecs = REFRESH_EVERY;
+    updateChip();
+    refreshTimer = setInterval(() => {
+      refreshSecs--;
+      if (refreshSecs <= 0) {
+        refreshSecs = REFRESH_EVERY;
+        silentRefresh();
+      }
+      updateChip();
+    }, 1000);
+  }
+
+  function updateChip() {
+    const el = document.querySelector('#refreshChip .rc-time');
+    if (el) el.textContent = refreshSecs + 's';
+  }
+
+  async function manualRefresh() {
+    refreshSecs = REFRESH_EVERY;
+    updateChip();
+    showToast('Refreshing…');
+    await silentRefresh();
+  }
+
+  async function silentRefresh() {
+    const before = allBookings.length;
+    await loadAll();
+    const after = allBookings.length;
+    if (after > before) {
+      const diff = after - before;
+      const sub = diff === 1
+        ? '1 new appointment just came in!'
+        : `${diff} new appointments just came in!`;
+      document.getElementById('nbbSub').textContent = sub;
+      document.getElementById('newBookingBanner').classList.add('show');
+      clearTimeout(window._nbbTimer);
+      window._nbbTimer = setTimeout(() => {
+        document.getElementById('newBookingBanner').classList.remove('show');
+      }, 10000);
+      // Browser notification
+      if (window.Notification && Notification.permission === 'granted') {
+        new Notification('Santa Nail & Hair Arts', {
+          body: sub,
+          icon: '../santa_logo.png'
+        });
+      }
+    }
   }
 
   function setStatsLoading() {
@@ -595,6 +817,11 @@
     try {
       const data = await jsonpFetch(`${APPS_SCRIPT_URL}?action=getCitas&adminKey=${ADMIN_KEY}`);
       allBookings = Array.isArray(data.citas) ? data.citas : (Array.isArray(data) ? data : []);
+      // DEBUG — ver campos exactos que manda el backend
+      if (allBookings.length > 0) {
+        console.log('=== CAMPOS DEL BACKEND ===', Object.keys(allBookings[0]));
+        console.log('=== PRIMER REGISTRO ===', allBookings[0]);
+      }
     } catch(e) {
       allBookings = DEMO_BOOKINGS;
       showToast('Using demo data — update APPS_SCRIPT_URL', true);
@@ -649,14 +876,17 @@
 
   // ── Row builder — NOTE: no price/total column shown ──
   function buildRow(b, mini) {
-    const name    = escHtml((b.Cliente || b['First Name'] || '—').trim());
-    const phone   = escHtml(b.Telefono || b.Phone || '—');
-    const svc     = escHtml(svcLabel(b.Servicio || b['Service Type'] || '—'));
-    const date    = fmtDate(b.Fecha || b['Preferred Date'] || '');
-    const time    = fmtTime(b.HoraInicio || b['Preferred Time'] || '');
-    const status  = b.Estado || b.Status || 'pendiente';
-    const addr    = escHtml((b.Direccion || b.Address || '—').split(',')[0]);
-    const id      = escHtml(String(b.ID || ''));
+    const name    = escHtml((b.Cliente || b['First Name'] || b.Nombre || b.nombre || '—').trim());
+    const phone   = escHtml(b.Telefono || b.telefono || b.Phone || '—');
+    const svc     = escHtml(svcLabel(b.Servicio || b.servicio || b['Service Type'] || '—'));
+    const date    = fmtDate(b.Fecha || b.fecha || b.Date || b.date || b['Preferred Date'] || '');
+    const time    = fmtTime(b.HoraInicio || b.horaInicio || b.Hora || b.hora || b['Preferred Time'] || '');
+    const status  = b.Estado || b.estado || b.Status || 'pendiente';
+    const addr    = escHtml((b.Direccion || b.direccion || b.Address || '—').split(',')[0]);
+    const id      = escHtml(String(b.ID || b.id || b.Id || ''));
+    // Usar índice en el array como fallback si no hay ID
+    const idx     = allBookings.indexOf(b);
+    const ref     = id || String(idx);
     const bCls    = badgeClass(status);
 
     if (mini) {
@@ -664,18 +894,18 @@
         <td><div class="td-name">${name}</div><div class="td-sub">${phone}</div></td>
         <td>${svc}</td><td>${date}</td><td>${time}</td>
         <td><span class="badge ${bCls}">${capFirst(status)}</span></td>
-        <td><button class="act-btn" onclick="openDetail('${id}')">Detail</button></td>
+        <td><button class="act-btn" onclick="openDetail(${idx})">Detail</button></td>
       </tr>`;
     }
     return `<tr>
-      <td style="font-size:11px;color:var(--text-sec);">${id.slice(0,8) || '—'}</td>
+      <td style="font-size:11px;color:var(--text-sec);">${id.slice(0,8) || String(idx+1)}</td>
       <td><div class="td-name">${name}</div><div class="td-sub">${phone}</div></td>
       <td>${svc}</td><td>${date}</td><td>${time}</td><td>${addr}</td>
       <td><span class="badge ${bCls}">${capFirst(status)}</span></td>
       <td><div class="act-row">
-        <button class="act-btn confirm"  onclick="changeStatus('${id}','confirmado')">Confirm</button>
-        <button class="act-btn complete" onclick="changeStatus('${id}','completado')">Done</button>
-        <button class="act-btn"          onclick="openDetail('${id}')">···</button>
+        <button class="act-btn confirm"  onclick="changeStatus(${idx},'confirmado')">Confirm</button>
+        <button class="act-btn complete" onclick="changeStatus(${idx},'completado')">Done</button>
+        <button class="act-btn"          onclick="openDetail(${idx})">···</button>
       </div></td>
     </tr>`;
   }
@@ -685,8 +915,10 @@
   }
 
   // ── Status update ──
-  async function changeStatus(id, status) {
-    if (!id) return;
+  async function changeStatus(idx, status) {
+    const bk = allBookings[idx];
+    if (!bk) return;
+    const id = bk.ID || bk.id || bk.Id || idx;
     try {
       await fetch(APPS_SCRIPT_URL, {
         method: 'POST',
@@ -694,10 +926,9 @@
         headers: { 'Content-Type': 'text/plain' }
       });
     } catch(e) { /* update locally anyway */ }
-    const bk = allBookings.find(b => String(b.ID) === String(id));
-    if (bk) bk.Estado = status;
+    bk.Estado = status;
     renderDashboard(); renderBookingsTab();
-    showToast(`Marked as ${capFirst(status)} ✓`);
+    showToast(`Marked as ${capFirst(status)}`);
   }
 
   // ── Filters ──
@@ -724,12 +955,12 @@
   }
 
   // ── Detail modal — NOTE: price/total NOT shown ──
-  function openDetail(id) {
-    const b = allBookings.find(bk => String(bk.ID) === String(id));
+  function openDetail(idx) {
+    const b = allBookings[idx];
     if (!b) return;
-    const name   = (b.Cliente || '—');
-    const status = b.Estado || 'pendiente';
-    const phone  = b.Telefono || '';
+    const name   = b.Cliente || b.Nombre || b.nombre || '—';
+    const status = b.Estado || b.estado || 'pendiente';
+    const phone  = b.Telefono || b.telefono || '';
     document.getElementById('modalBody').innerHTML = `
       <div class="modal-grid">
         <div class="modal-field"><div class="mf-label">Booking ID</div><div class="mf-val">${escHtml(String(b.ID||'—'))}</div></div>
@@ -745,9 +976,9 @@
         <div class="modal-field"><div class="mf-label">Registered</div><div class="mf-val">${escHtml(b.FechaRegistro||'—')}</div></div>
       </div>
       <div class="modal-actions">
-        <button class="modal-btn confirm"  onclick="changeStatus('${escHtml(String(b.ID||''))}','confirmado');closeModal()">✓ Confirm</button>
-        <button class="modal-btn complete" onclick="changeStatus('${escHtml(String(b.ID||''))}','completado');closeModal()">✔ Mark Done</button>
-        <button class="modal-btn cancel"   onclick="changeStatus('${escHtml(String(b.ID||''))}','cancelado');closeModal()">✕ Cancel</button>
+        <button class="modal-btn confirm"  onclick="changeStatus(${idx},'confirmado');closeModal()">Confirm</button>
+        <button class="modal-btn complete" onclick="changeStatus(${idx},'completado');closeModal()">Mark Done</button>
+        <button class="modal-btn cancel"   onclick="changeStatus(${idx},'cancelado');closeModal()">Cancel</button>
       </div>`;
     document.getElementById('modalOverlay').classList.add('open');
     document.body.style.overflow = 'hidden';
@@ -764,8 +995,8 @@
   });
 
   // ── Tab navigation ──
-  const TABS = ['dashboard', 'bookings'];
-  const TITLES = { dashboard: 'Dashboard', bookings: 'All Appointments' };
+  const TABS   = ['dashboard', 'settings', 'bookings'];
+  const TITLES = { dashboard: 'Dashboard', bookings: 'All Appointments', settings: 'Settings' };
   function showTab(name, linkEl) {
     TABS.forEach(t => {
       const el = document.getElementById('tab-' + t);
@@ -777,6 +1008,73 @@
     document.getElementById('topbarTitle').textContent = TITLES[name] || name;
     if (linkEl) linkEl.classList.add('active');
     if (name === 'bookings') renderBookingsTab();
+  }
+
+  // ── Settings: notification email (saved in Apps Script Script Properties) ──
+  async function loadNotifEmailFromScript() {
+    try {
+      const data = await jsonpFetch(`${APPS_SCRIPT_URL}?action=getSettings&adminKey=${ADMIN_KEY}`);
+      if (data && data.notifEmail) {
+        document.getElementById('notifEmailInput').value = data.notifEmail;
+      }
+    } catch(e) { /* silently ignore if endpoint not yet added */ }
+  }
+
+  async function saveNotifEmail() {
+    const email = (document.getElementById('notifEmailInput').value || '').trim();
+    if (!email || !email.includes('@')) return showToast('Enter a valid email address', true);
+    try {
+      await fetch(APPS_SCRIPT_URL, {
+        method: 'POST',
+        body: JSON.stringify({ action: 'saveSettings', notifEmail: email, adminKey: ADMIN_KEY }),
+        headers: { 'Content-Type': 'text/plain' }
+      });
+      showToast('Notification email saved!');
+    } catch(e) {
+      showToast('Error saving — check Apps Script', true);
+    }
+  }
+
+  // ── Settings: change credentials (localStorage) ──
+  function saveNewCredentials() {
+    const user  = (document.getElementById('newUser').value  || '').trim();
+    const pass  = (document.getElementById('newPass').value  || '');
+    const pass2 = (document.getElementById('newPass2').value || '');
+    if (!user)            return showToast('Enter a username', true);
+    if (!pass)            return showToast('Enter a password', true);
+    if (pass.length < 6)  return showToast('Password must be at least 6 characters', true);
+    if (pass !== pass2)   return showToast('Passwords do not match', true);
+    localStorage.setItem('snh_user', user);
+    localStorage.setItem('snh_pass', pass);
+    document.getElementById('newUser').value  = '';
+    document.getElementById('newPass').value  = '';
+    document.getElementById('newPass2').value = '';
+    document.getElementById('currentUserDisplay').textContent = user;
+    showToast('Credentials updated! Use them on next login.');
+  }
+
+  // ── Settings: browser notifications ──
+  function requestBrowserNotif() {
+    if (!('Notification' in window)) {
+      return showToast('Your browser does not support notifications', true);
+    }
+    Notification.requestPermission().then(p => {
+      updatePermStatus();
+      if (p === 'granted') showToast('Browser notifications enabled!');
+      else showToast('Notification permission denied', true);
+    });
+  }
+
+  function updatePermStatus() {
+    const el = document.getElementById('permStatus');
+    if (!el) return;
+    if (!('Notification' in window)) {
+      el.textContent = 'Not supported'; el.className = 'perm-status perm-denied'; return;
+    }
+    const p = Notification.permission;
+    if (p === 'granted')  { el.textContent = 'Enabled';  el.className = 'perm-status perm-granted'; }
+    else if (p === 'denied') { el.textContent = 'Blocked'; el.className = 'perm-status perm-denied'; }
+    else                  { el.textContent = 'Not enabled'; el.className = 'perm-status perm-default'; }
   }
 
   // ── Toast ──
