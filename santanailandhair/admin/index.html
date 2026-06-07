@@ -653,7 +653,7 @@
     const phone   = escHtml(b.Telefono || b.Phone || '—');
     const svc     = escHtml(svcLabel(b.Servicio || b['Service Type'] || '—'));
     const date    = fmtDate(b.Fecha || b['Preferred Date'] || '');
-    const time    = escHtml(b.HoraInicio || b['Preferred Time'] || '—');
+    const time    = fmtTime(b.HoraInicio || b['Preferred Time'] || '');
     const status  = b.Estado || b.Status || 'pendiente';
     const addr    = escHtml((b.Direccion || b.Address || '—').split(',')[0]);
     const id      = escHtml(String(b.ID || ''));
@@ -795,8 +795,36 @@
   }
   function fmtDate(s) {
     if (!s) return '—';
-    const d = new Date(s + (s.includes('T') ? '' : 'T00:00:00'));
-    return isNaN(d) ? s : d.toLocaleDateString('en-US', { month:'short', day:'numeric', year:'numeric' });
+    const str = String(s);
+    // Google Sheets serializes "date-only" cells as full ISO — take only the date part
+    const datePart = str.split('T')[0];
+    // Ignore Google Sheets zero-epoch (time-only values appear as 1899-12-30)
+    if (datePart.startsWith('1899') || datePart.startsWith('190')) return '—';
+    const d = new Date(datePart + 'T00:00:00');
+    if (isNaN(d) || d.getFullYear() < 2000) return '—';
+    return d.toLocaleDateString('en-US', { month:'short', day:'numeric', year:'numeric' });
+  }
+  // Google Sheets serializes time values as "1899-12-30T19:30:00.000Z"
+  // Extract HH:MM from the T portion without timezone conversion
+  function fmtTime(s) {
+    if (!s) return '—';
+    const str = String(s);
+    const tMatch = str.match(/T(\d{2}):(\d{2})/);
+    if (tMatch) {
+      const h = parseInt(tMatch[1], 10);
+      const m = tMatch[2];
+      const period = h >= 12 ? 'PM' : 'AM';
+      const h12 = h % 12 || 12;
+      return `${h12}:${m} ${period}`;
+    }
+    // Already "HH:MM" plain string
+    if (/^\d{1,2}:\d{2}/.test(str)) {
+      const [hh, mm] = str.split(':');
+      const hour = parseInt(hh, 10);
+      const period = hour >= 12 ? 'PM' : 'AM';
+      return `${(hour % 12 || 12)}:${mm} ${period}`;
+    }
+    return str;
   }
   function capFirst(s) { return s ? s.charAt(0).toUpperCase() + s.slice(1) : ''; }
   function badgeClass(status) {
