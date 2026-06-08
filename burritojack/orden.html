@@ -108,8 +108,8 @@
     .field textarea { resize:vertical; min-height:72px; }
     .field select option { background:#fff; color:var(--negro); }
     .phone-group { display:flex; gap:0; }
-    .phone-pais { width:160px; min-width:140px; flex-shrink:0; border-right:none !important; font-size:.82rem; }
-    .phone-group input { flex:1; }
+    .phone-pais { width:auto; min-width:0; flex:0 0 auto; border-right:none !important; font-size:.82rem; padding-left:8px; padding-right:4px; }
+    .phone-group input { flex:1; min-width:0; }
 
     /* TARJETA RESUMEN ORDEN */
     .card { background:#fff; border:1px solid rgba(183,28,28,.15); box-shadow:0 2px 10px rgba(0,0,0,.06); margin-bottom:16px; position:relative; animation:fadeUp .45s ease both; }
@@ -227,8 +227,8 @@
         <label for="inp-telefono">WhatsApp / Teléfono</label>
         <div class="phone-group">
           <select id="inp-pais" class="phone-pais">
-            <option value="+52">🇲🇽 +52 México</option>
-            <option value="+1">🇺🇸 +1 EE.UU.</option>
+            <option value="+52">+52 🇲🇽</option>
+            <option value="+1">+1 🇺🇸</option>
           </select>
           <input id="inp-telefono" type="tel" placeholder="Ej. 899 123 4567" autocomplete="tel"/>
         </div>
