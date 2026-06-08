@@ -1,0 +1,47 @@
+═══════════════════════════════════════════════════
+  BURRITO JACK — GALERÍA DE IMÁGENES
+  Carpeta:  burritojack/img/
+  Formato:  PNG  (.png)
+═══════════════════════════════════════════════════
+
+Sube tus fotos con EXACTAMENTE estos nombres.
+Si una foto no existe, el sitio usará automáticamente
+una imagen de Unsplash como respaldo.
+
+── FONDOS ──────────────────────────────────────────
+  hero.png         → Foto de fondo del HERO (pantalla principal)
+                     Tamaño recomendado: 1920×1080 px mínimo
+  cta-bg.png       → Foto de fondo del botón final "¿Ya se te antojó?"
+                     Tamaño recomendado: 1400×800 px
+
+── LO MÁS PEDIDO (3 tarjetas grandes) ─────────────
+  feat-1.png       → Puerco en Salsa Verde
+  feat-2.png       → Papa con Huevo
+  feat-3.png       → Bistec Ranchero
+                     Tamaño recomendado: 800×1066 px (relación 3:4)
+
+── MENÚ — UN ARCHIVO POR PLATILLO ─────────────────
+  PLT-1.png        → Papa con Huevo
+  PLT-2.png        → Papa, Chorizo y Huevo
+  PLT-3.png        → Salchicha con Huevo
+  PLT-4.png        → Jamón con Huevo
+  PLT-5.png        → Puerco en Salsa Verde
+  PLT-6.png        → Asado de Puerco
+  PLT-7.png        → Chicharrón en Salsa
+  PLT-8.png        → Picadillo
+  PLT-9.png        → Deshebrada
+  PLT-10.png       → Bistec Ranchero
+                     Tamaño recomendado: 600×400 px
+
+── CATEGORÍAS (fallback si el platillo no tiene foto propia) ──
+  cat-desayuno.png → Imagen genérica para Desayunos
+  cat-guisado.png  → Imagen genérica para Guisados
+  cat-otros.png    → Imagen genérica para otras categorías
+  default.png      → Imagen de último recurso
+
+── NOTAS ───────────────────────────────────────────
+  · Formato requerido: PNG (.png)
+  · Si renombras un archivo, actualiza el nombre aquí también
+  · El logo sigue en la carpeta raíz:  burritojack/logo.png
+
+═══════════════════════════════════════════════════
