@@ -129,6 +129,20 @@
       display: inline-flex; align-items: center; gap: 8px;
     }
     .btn-hdr-order:hover { background: var(--rojo2); transform: translateY(-1px); }
+    .btn-hdr-admin {
+      background: transparent;
+      color: rgba(30,10,0,.45) !important;
+      font-family: 'Montserrat', sans-serif;
+      font-size: .62rem; font-weight: 700;
+      letter-spacing: 2px; text-transform: uppercase;
+      padding: 9px 16px;
+      border: 1px solid rgba(183,28,28,.2);
+      text-decoration: none;
+      transition: all .2s;
+      white-space: nowrap;
+      display: inline-flex; align-items: center; gap: 6px;
+    }
+    .btn-hdr-admin:hover { border-color:var(--rojo); color:var(--rojo) !important; background:rgba(183,28,28,.04); }
     .nav-toggle {
       display: none; background: none; border: none;
       color: var(--negro); font-size: 1.5rem; cursor: pointer; padding: 4px;
@@ -895,6 +909,7 @@
   </nav>
 
   <div class="hdr-cta">
+    <a href="crm.html" class="btn-hdr-admin">⚙️ Admin</a>
     <a href="orden.html" class="btn-hdr-order">🌯 Ordenar ahora</a>
     <button class="nav-toggle" onclick="toggleMobileNav()" aria-label="Menú">☰</button>
   </div>
@@ -907,6 +922,7 @@
   <a href="#como" onclick="closeMobileNav()">🛵 ¿Cómo pedir?</a>
   <a href="#info" onclick="closeMobileNav()">🕐 Horarios</a>
   <a href="orden.html" class="btn-mob-order">🌯 Ordenar Ahora</a>
+  <a href="crm.html" onclick="closeMobileNav()" style="text-align:center;padding:10px;font-size:.62rem;letter-spacing:3px;text-transform:uppercase;color:rgba(30,10,0,.4);text-decoration:none;">⚙️ Admin</a>
 </div>
 
 <!-- ── HERO ──────────────────────────────────────────────── -->
