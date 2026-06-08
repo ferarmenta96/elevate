@@ -361,7 +361,7 @@
       var estado   = o.estado || 'pendiente';
       var ts       = o.timestamp ? new Date(o.timestamp).toLocaleString('es-MX', { day:'2-digit', month:'short', hour:'2-digit', minute:'2-digit' }) : '—';
       var link     = RECEIVER_URL + '?id=' + encodeURIComponent(o.id);
-      var msgWA    = encodeURIComponent('🌯 Burrito Jack\n\nHola ' + (o.cliente||'') + ', tu pedido ya va en camino! 🛵\n\nPedido: ' + (o.pedido||'') + '\n\n¡Gracias por tu preferencia! 🤙');
+      var msgWA    = encodeURIComponent('🌯 *Burrito Jack*\n\nHola ' + (o.cliente||'') + ', tu pedido ya va en camino! 🛵\n\n📋 *Pedido:* ' + (o.pedido||'') + '\n\n🔗 *Rastrea tu pedido aquí:*\n' + link + '\n\n¡Gracias por tu preferencia! 🤙');
 
       html += '<div class="order-card ' + estado + '" id="ord-' + o.id + '">';
       html += '<div class="order-top">';
