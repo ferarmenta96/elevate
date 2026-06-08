@@ -425,6 +425,8 @@
   // ════════════════════════════════════
   //  CONFIGURACIÓN
   // ════════════════════════════════════
+  if (sessionStorage.getItem('bjAdmin') !== '1') { window.location.href = 'index.html'; }
+
   var GAS_URL   = 'https://script.google.com/macros/s/AKfycbz4syNWO1BspRufcbDv3x0uWvWuI7Rts3YUtf8hvN3OWWMRh3OS5sOwhAZwZp56vZ1yzQ/exec';
   var ADMIN_KEY = 'burritojack2025';
   // ════════════════════════════════════

@@ -143,6 +143,23 @@
       display: inline-flex; align-items: center; gap: 6px;
     }
     .btn-hdr-admin:hover { border-color:var(--rojo); color:var(--rojo) !important; background:rgba(183,28,28,.04); }
+
+    /* ── ADMIN LOGIN MODAL ── */
+    .admin-overlay { position:fixed; inset:0; background:rgba(0,0,0,.55); z-index:9000; display:flex; align-items:center; justify-content:center; padding:20px; opacity:0; pointer-events:none; transition:opacity .22s; }
+    .admin-overlay.open { opacity:1; pointer-events:all; }
+    .admin-modal { background:#fff; width:100%; max-width:360px; box-shadow:0 20px 60px rgba(0,0,0,.22); animation:adminSlide .25s ease; }
+    @keyframes adminSlide { from{transform:translateY(20px);opacity:0} to{transform:translateY(0);opacity:1} }
+    .admin-modal-top { background:var(--rojo2); padding:22px 24px 18px; }
+    .admin-modal-top h3 { font-family:'Bebas Neue',sans-serif; font-size:1.5rem; letter-spacing:3px; color:#fff; margin-bottom:3px; }
+    .admin-modal-top p { font-size:.6rem; letter-spacing:2px; text-transform:uppercase; color:rgba(255,255,255,.5); }
+    .admin-modal-body { padding:24px; }
+    .admin-modal-body label { display:block; font-size:.55rem; letter-spacing:4px; text-transform:uppercase; color:var(--rojo); font-weight:700; margin-bottom:7px; }
+    .admin-modal-body input { width:100%; border:1px solid rgba(183,28,28,.25); padding:12px 14px; font-family:'Lora',serif; font-size:1rem; color:var(--negro); outline:none; letter-spacing:3px; transition:border-color .2s; }
+    .admin-modal-body input:focus { border-color:var(--rojo); }
+    .admin-modal-footer { padding:0 24px 24px; display:flex; flex-direction:column; gap:10px; }
+    .btn-admin-enter { background:var(--rojo); color:#fff; border:none; width:100%; padding:13px; font-family:'Montserrat',sans-serif; font-size:.7rem; font-weight:700; letter-spacing:3px; text-transform:uppercase; cursor:pointer; transition:background .2s; }
+    .btn-admin-enter:hover { background:var(--rojo2); }
+    .admin-error { font-size:.68rem; color:var(--rojo); text-align:center; min-height:18px; font-family:'Lora',serif; font-style:italic; }
     .nav-toggle {
       display: none; background: none; border: none;
       color: var(--negro); font-size: 1.5rem; cursor: pointer; padding: 4px;
@@ -909,7 +926,7 @@
   </nav>
 
   <div class="hdr-cta">
-    <a href="crm.html" class="btn-hdr-admin">⚙️ Admin</a>
+    <button class="btn-hdr-admin" onclick="abrirLoginAdmin()">⚙️ Admin</button>
     <a href="orden.html" class="btn-hdr-order">🌯 Ordenar ahora</a>
     <button class="nav-toggle" onclick="toggleMobileNav()" aria-label="Menú">☰</button>
   </div>
@@ -922,7 +939,7 @@
   <a href="#como" onclick="closeMobileNav()">🛵 ¿Cómo pedir?</a>
   <a href="#info" onclick="closeMobileNav()">🕐 Horarios</a>
   <a href="orden.html" class="btn-mob-order">🌯 Ordenar Ahora</a>
-  <a href="crm.html" onclick="closeMobileNav()" style="text-align:center;padding:10px;font-size:.62rem;letter-spacing:3px;text-transform:uppercase;color:rgba(30,10,0,.4);text-decoration:none;">⚙️ Admin</a>
+  <button onclick="closeMobileNav();abrirLoginAdmin();" style="background:none;border:none;text-align:center;padding:10px;font-size:.62rem;letter-spacing:3px;text-transform:uppercase;color:rgba(30,10,0,.4);cursor:pointer;width:100%;">⚙️ Admin</button>
 </div>
 
 <!-- ── HERO ──────────────────────────────────────────────── -->
@@ -1295,6 +1312,24 @@
   </div>
 </footer>
 
+<!-- ── ADMIN LOGIN MODAL ──────────────────────────────────── -->
+<div class="admin-overlay" id="adminOverlay" onclick="if(event.target===this)cerrarLoginAdmin()">
+  <div class="admin-modal">
+    <div class="admin-modal-top">
+      <h3>Panel Admin</h3>
+      <p>Acceso exclusivo para personal</p>
+    </div>
+    <div class="admin-modal-body">
+      <label>Contraseña</label>
+      <input type="password" id="adminPass" placeholder="••••••••••••" onkeydown="if(event.key==='Enter')verificarAdmin()"/>
+    </div>
+    <div class="admin-modal-footer">
+      <div class="admin-error" id="adminError"></div>
+      <button class="btn-admin-enter" onclick="verificarAdmin()">Entrar al panel</button>
+    </div>
+  </div>
+</div>
+
 <!-- ── WA FLOAT ────────────────────────────────────────────── -->
 <a href="https://wa.me/528992466943" target="_blank" class="wa-float" aria-label="WhatsApp">
   <div class="wa-tooltip">¡Escríbenos!</div>
@@ -1489,6 +1524,36 @@
   }, { passive: true });
 
   loadMenu();
+
+  // ── ADMIN LOGIN ───────────────────────────────────────────
+  var ADMIN_PWD = 'burritojack2025';
+
+  function abrirLoginAdmin() {
+    document.getElementById('adminPass').value = '';
+    document.getElementById('adminError').textContent = '';
+    document.getElementById('adminOverlay').classList.add('open');
+    setTimeout(function() { document.getElementById('adminPass').focus(); }, 120);
+  }
+
+  function cerrarLoginAdmin() {
+    document.getElementById('adminOverlay').classList.remove('open');
+  }
+
+  function verificarAdmin() {
+    var pass = document.getElementById('adminPass').value;
+    if (pass === ADMIN_PWD) {
+      sessionStorage.setItem('bjAdmin', '1');
+      window.location.href = 'crm.html';
+    } else {
+      document.getElementById('adminError').textContent = 'Contraseña incorrecta';
+      document.getElementById('adminPass').value = '';
+      document.getElementById('adminPass').focus();
+    }
+  }
+
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') cerrarLoginAdmin();
+  });
 </script>
 </body>
 </html>
