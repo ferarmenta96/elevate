@@ -308,7 +308,7 @@
   // ════════════════════════════════════════════════════
   //  CONFIGURACIÓN
   // ════════════════════════════════════════════════════
-  var GAS_URL      = 'https://script.google.com/macros/s/AKfycbyMbsEg61bm2vfcCnAVq3oXlrv5Yl-jd7-rQ6pmm4n3OyI5E7uaogVbsVuGay9HSeBJRQ/exec';
+  var GAS_URL      = 'https://script.google.com/macros/s/AKfycbxZYH3AQJgjIqzNoN3Q2z21Q6m1nj4yofpJPN--Fm_kKYjjMZbMj_kzS2ti3IjLuhoi7Q/exec';
   var RECEIVER_URL = 'https://horussystemco.com/burritojack/receiver'; // Ej: https://tusitio.com/burritojack/receiver.html
   var WA_NUMBER    = '528992466943';
   var ENVIO        = 50;
@@ -332,7 +332,7 @@
 
   // ── Cargar menú ───────────────────────────────────
   function loadMenu() {
-    if (GAS_URL === 'https://script.google.com/macros/s/AKfycbyMbsEg61bm2vfcCnAVq3oXlrv5Yl-jd7-rQ6pmm4n3OyI5E7uaogVbsVuGay9HSeBJRQ/exec') { renderMenu(MENU_FALLBACK); return; }
+    if (GAS_URL === 'https://script.google.com/macros/s/AKfycbxZYH3AQJgjIqzNoN3Q2z21Q6m1nj4yofpJPN--Fm_kKYjjMZbMj_kzS2ti3IjLuhoi7Q/exec') { renderMenu(MENU_FALLBACK); return; }
     var cbName = 'cb_' + Date.now();
     var script = document.createElement('script');
     var timer  = setTimeout(function() { cleanup(); renderMenu(MENU_FALLBACK); }, 7000);
