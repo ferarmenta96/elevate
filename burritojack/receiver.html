@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Tu Pedido — Burrito Jack</title>
+  <meta property="og:title"  content="Burrito Jack 🌯 — Confirmar pago"/>
+  <meta property="og:image"  content="logo.png"/>
+  <link rel="icon" href="logo.png" type="image/png"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:wght@300;400;600;700&family=Lora:ital,wght@0,400;1,400&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
+    :root {
+      --rojo:#B71C1C; --rojo2:#8B0000;
+      --amarillo:#FFD600; --amarillo2:#F5C842;
+      --verde:#25D366; --negro:#1a0800; --negro2:#2d1000;
+      --crema:#FFF8E1; --dim:rgba(255,248,225,.55);
+      --texto:#1a0800; --fondo:#FFFFFF; --fondo2:#FBF7F2;
+      --dim-dark:rgba(60,20,0,.58);
+    }
+    html { scroll-behavior:smooth; }
+    body { font-family:'Montserrat',sans-serif; background:var(--fondo); color:var(--texto); min-height:100vh; overflow-x:hidden; }
+    body::before { display:none; }
+
+    header { background:rgba(255,255,255,.97); border-bottom:1px solid rgba(183,28,28,.12); box-shadow:0 2px 14px rgba(0,0,0,.07); padding:13px 32px; display:flex; align-items:center; justify-content:space-between; backdrop-filter:blur(8px); }
+    .logo { display:flex; align-items:center; gap:10px; text-decoration:none; }
+    .logo img { height:42px; border-radius:50%; }
+    .logo-txt { font-family:'Bebas Neue',sans-serif; font-size:1.6rem; color:var(--rojo); letter-spacing:3px; }
+    .header-tag { font-size:.56rem; letter-spacing:4px; text-transform:uppercase; color:rgba(139,0,0,.45); }
+
+    /* ESTADOS */
+    .state-screen { display:flex; flex-direction:column; align-items:center; justify-content:center; min-height:60vh; gap:18px; text-align:center; padding:40px 24px; }
+    .loader { width:40px; height:40px; border:2px solid rgba(183,28,28,.15); border-top-color:var(--rojo); border-radius:50%; animation:spin .8s linear infinite; }
+    @keyframes spin { to{transform:rotate(360deg)} }
+    .state-screen p { font-family:'Lora',serif; font-style:italic; font-size:1rem; color:var(--dim-dark); }
+    .state-screen h2 { font-family:'Bebas Neue',sans-serif; font-size:2rem; letter-spacing:2px; color:var(--negro); }
+
+    /* HERO PAGO */
+    .hero-pago { background:var(--rojo2); padding:50px 32px 50px; text-align:center; position:relative; overflow:hidden; }
+    .hero-pago::before { content:''; position:absolute; inset:0; background:radial-gradient(ellipse at center,rgba(255,214,0,.08),transparent 65%); pointer-events:none; }
+    .hero-pago::after  { content:''; position:absolute; bottom:-2px; left:0; right:0; height:52px; background:#fff; clip-path:polygon(0 100%,100% 0,100% 100%); }
+
+    /* HERO EN CAMINO */
+    .hero-camino { background:linear-gradient(135deg,#071a07 0%,#031003 100%); padding:50px 32px 56px; text-align:center; position:relative; overflow:hidden; }
+    .hero-camino::before { content:''; position:absolute; inset:0; background:radial-gradient(ellipse at center,rgba(37,211,102,.09),transparent 65%); pointer-events:none; }
+    .hero-camino::after  { content:''; position:absolute; bottom:-2px; left:0; right:0; height:52px; background:#fff; clip-path:polygon(0 100%,100% 0,100% 100%); }
+
+    /* HERO ENTREGADO */
+    .hero-entregado { background:linear-gradient(135deg,#1a1200 0%,#0e0900 100%); padding:50px 32px 56px; text-align:center; position:relative; overflow:hidden; }
+    .hero-entregado::after { content:''; position:absolute; bottom:-2px; left:0; right:0; height:52px; background:#fff; clip-path:polygon(0 100%,100% 0,100% 100%); }
+
+    .eyebrow { display:inline-block; font-size:.58rem; letter-spacing:5px; text-transform:uppercase; color:rgba(255,248,225,.55); border-top:1px solid rgba(255,214,0,.4); padding-top:6px; margin-bottom:12px; position:relative; z-index:1; }
+    .eyebrow.verde { border-top-color:rgba(37,211,102,.5); color:rgba(37,211,102,.8); }
+    .eyebrow.oro   { border-top-color:rgba(255,214,0,.6); color:var(--amarillo); }
+
+    .hero-icon { font-size:3.8rem; display:block; margin-bottom:14px; position:relative; z-index:1; animation:bounce 1s ease infinite alternate; }
+    @keyframes bounce { from{transform:translateY(0)} to{transform:translateY(-10px)} }
+
+    .hero-h1 { font-family:'Bebas Neue',sans-serif; font-size:clamp(2.2rem,7vw,3.5rem); letter-spacing:2px; color:var(--crema); line-height:1; position:relative; z-index:1; }
+    .hero-h1 em.oro   { color:var(--amarillo2); font-style:normal; }
+    .hero-h1 em.verde { color:#4ade80; font-style:normal; }
+    .hero-sub { font-family:'Lora',serif; font-style:italic; font-size:.92rem; color:rgba(255,248,225,.55); margin-top:10px; position:relative; z-index:1; }
+
+    /* SALUDO */
+    .saludo { text-align:center; padding:44px 24px 16px; }
+    .saludo .hola   { font-family:'Lora',serif; font-size:1.1rem; font-style:italic; color:var(--dim-dark); }
+    .saludo .nombre { font-family:'Bebas Neue',sans-serif; font-size:clamp(2.5rem,8vw,4.5rem); letter-spacing:2px; color:var(--negro); line-height:1; }
+    .saludo .msg    { font-family:'Lora',serif; font-style:italic; font-size:1rem; color:var(--dim-dark); margin-top:12px; line-height:1.8; }
+    .saludo .msg strong { color:var(--negro); font-style:normal; }
+
+    main { max-width:700px; margin:0 auto; padding:44px 20px 80px; }
+
+    .card { background:#fff; border:1px solid rgba(183,28,28,.15); box-shadow:0 2px 10px rgba(0,0,0,.06); margin-bottom:22px; position:relative; animation:fadeUp .55s ease both; }
+    @keyframes fadeUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
+    .card::before { content:''; position:absolute; top:0; left:0; width:3px; height:100%; background:var(--rojo); }
+    .card.verde::before { background:var(--verde); }
+    .card.oro::before   { background:var(--amarillo); }
+    .card-header { padding:12px 20px; border-bottom:1px solid rgba(183,28,28,.08); display:flex; align-items:center; gap:9px; }
+    .card-title { font-size:.6rem; letter-spacing:4px; text-transform:uppercase; color:var(--rojo); font-weight:700; }
+    .card-body { padding:22px 20px; }
+
+    .msg-pedido { background:#fdf8f5; border:1px dashed rgba(183,28,28,.18); padding:20px 22px; font-family:'Lora',serif; font-size:1rem; line-height:2; color:var(--negro); }
+    .msg-val { color:var(--rojo2); font-weight:700; }
+    .msg-dim { color:var(--dim-dark); font-style:italic; }
+
+    .monto-block { background:var(--rojo2); border:1px solid rgba(255,214,0,.2); padding:18px 22px; display:flex; align-items:center; justify-content:space-between; gap:14px; flex-wrap:wrap; }
+    .monto-label { font-size:.56rem; letter-spacing:4px; text-transform:uppercase; color:rgba(255,248,225,.4); margin-bottom:4px; }
+    .monto-val { font-family:'Bebas Neue',sans-serif; font-size:2.8rem; letter-spacing:2px; color:var(--amarillo2); line-height:1; }
+    .monto-val span { font-size:.9rem; font-family:'Montserrat',sans-serif; font-weight:300; letter-spacing:2px; color:rgba(255,214,0,.5); margin-right:5px; }
+
+    .spei-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+    .spei-item { background:#f9f5f3; border:1px solid rgba(183,28,28,.12); padding:13px 15px; position:relative; }
+    .spei-item.full { grid-column:1/-1; }
+    .spei-label { font-size:.52rem; letter-spacing:4px; text-transform:uppercase; color:var(--rojo); margin-bottom:4px; }
+    .spei-value { font-family:'Lora',serif; font-size:.94rem; color:var(--negro); line-height:1.5; }
+    .spei-value.mono { font-family:'Montserrat',sans-serif; font-size:.9rem; font-weight:700; letter-spacing:2px; color:var(--rojo2); }
+    .btn-copy { position:absolute; top:9px; right:9px; background:none; border:1px solid rgba(183,28,28,.2); color:rgba(139,0,0,.5); font-family:'Montserrat',sans-serif; font-size:.5rem; font-weight:700; letter-spacing:2px; text-transform:uppercase; padding:3px 9px; cursor:pointer; transition:all .2s; }
+    .btn-copy:hover { border-color:var(--rojo); color:var(--rojo); }
+    .btn-copy.ok { border-color:#25D366; color:#25D366; }
+
+    .note { background:#fff8f5; border-left:3px solid var(--rojo); padding:12px 15px; margin-top:14px; font-family:'Lora',serif; font-size:.84rem; color:var(--dim-dark); line-height:1.7; font-style:italic; }
+    .note strong { color:var(--negro); font-style:normal; }
+
+    .cta-wrap { text-align:center; padding:10px 0 0; }
+    .cta-eyebrow { font-size:.56rem; letter-spacing:5px; text-transform:uppercase; color:rgba(139,0,0,.45); margin-bottom:14px; display:block; }
+    .cta-h2 { font-family:'Bebas Neue',sans-serif; font-size:clamp(1.8rem,5vw,2.6rem); letter-spacing:2px; color:var(--negro); margin-bottom:6px; line-height:1; }
+    .cta-h2 em { color:var(--rojo); font-style:normal; }
+    .cta-sub { font-family:'Lora',serif; font-style:italic; font-size:.86rem; color:var(--dim-dark); margin-bottom:22px; }
+
+    .btn-wa { display:inline-flex; align-items:center; gap:12px; background:#25D366; color:#fff; padding:17px 44px; text-decoration:none; font-family:'Montserrat',sans-serif; font-size:.82rem; font-weight:700; letter-spacing:3px; text-transform:uppercase; transition:all .3s; animation:waPulse 2.5s infinite; }
+    @keyframes waPulse { 0%,100%{box-shadow:0 4px 22px rgba(37,211,102,.25),0 0 0 0 rgba(37,211,102,.3)} 50%{box-shadow:0 4px 22px rgba(37,211,102,.25),0 0 0 12px rgba(37,211,102,0)} }
+    .btn-wa:hover { background:#1da851; transform:translateY(-2px); }
+    .btn-wa svg { width:22px; height:22px; fill:currentColor; flex-shrink:0; }
+    .btn-wa-note { display:block; margin-top:8px; font-family:'Lora',serif; font-style:italic; font-size:.76rem; color:rgba(30,10,0,.35); }
+
+    hr { border:none; border-top:1px solid rgba(183,28,28,.1); margin:6px 0 22px; }
+
+    .wa-float { position:fixed; bottom:24px; right:24px; z-index:200; background:#25D366; width:54px; height:54px; border-radius:50%; display:flex; align-items:center; justify-content:center; text-decoration:none; animation:waPulse2 2.5s infinite; }
+    @keyframes waPulse2 { 0%,100%{box-shadow:0 4px 18px rgba(37,211,102,.4),0 0 0 0 rgba(37,211,102,.35)} 50%{box-shadow:0 4px 18px rgba(37,211,102,.4),0 0 0 12px rgba(37,211,102,0)} }
+    .wa-float svg { width:28px; height:28px; fill:#fff; }
+
+    .toast { position:fixed; bottom:28px; left:50%; transform:translateX(-50%) translateY(16px); background:rgba(255,255,255,.97); border:1px solid rgba(183,28,28,.3); color:var(--rojo2); font-family:'Montserrat',sans-serif; font-size:.62rem; letter-spacing:3px; text-transform:uppercase; padding:11px 26px; opacity:0; pointer-events:none; transition:opacity .3s,transform .3s; z-index:9998; white-space:nowrap; box-shadow:0 4px 16px rgba(0,0,0,.12); }
+    .toast.show { opacity:1; transform:translateX(-50%) translateY(0); }
+
+    footer { background:#050000; border-top:1px solid rgba(183,28,28,.15); padding:22px 32px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; }
+    .footer-logo { font-family:'Bebas Neue',sans-serif; font-size:1rem; color:var(--amarillo); letter-spacing:3px; }
+    footer p { font-size:.55rem; letter-spacing:2px; text-transform:uppercase; color:rgba(255,248,225,.18); }
+
+    @media (max-width:560px) {
+      header { padding:12px 16px; }
+      .hero-pago,.hero-camino,.hero-entregado { padding:36px 16px 48px; }
+      main { padding:32px 12px 60px; }
+      .spei-grid { grid-template-columns:1fr; }
+      .monto-block { flex-direction:column; align-items:flex-start; }
+      .btn-wa { padding:15px 28px; }
+      footer { padding:18px 16px; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <a class="logo" href="index.html">
+    <img src="logo.png" alt="Burrito Jack"/>
+    <span class="logo-txt">Burrito Jack</span>
+  </a>
+  <span class="header-tag" id="header-tag">Tu Pedido</span>
+</header>
+
+<!-- CARGANDO -->
+<div class="state-screen" id="screenLoading">
+  <div class="loader"></div>
+  <p>Cargando tu pedido...</p>
+</div>
+
+<!-- ERROR -->
+<div class="state-screen" id="screenError" style="display:none">
+  <h2 style="color:var(--rojo)">Pedido no encontrado</h2>
+  <p>El link puede haber expirado o ser incorrecto.<br/>Contáctanos por WhatsApp.</p>
+  <a href="https://wa.me/528992466943" target="_blank" style="margin-top:12px;background:#25D366;color:#fff;padding:13px 32px;font-family:'Montserrat',sans-serif;font-size:.75rem;font-weight:700;letter-spacing:3px;text-transform:uppercase;text-decoration:none;display:inline-block;">Ir a WhatsApp</a>
+</div>
+
+<!-- ══ ESTADO: PENDIENTE PAGO ══ -->
+<div id="vista-pago" style="display:none">
+  <div class="hero-pago">
+    <span class="eyebrow">Confirmar pedido</span>
+    <h1 class="hero-h1">Solo falta<br/><em class="oro">tu pago</em></h1>
+    <p class="hero-sub">Transfiere y envíanos tu comprobante por WhatsApp. ¡Listo!</p>
+  </div>
+  <main>
+    <!-- Resumen -->
+    <div class="card" style="animation-delay:.05s">
+      <div class="card-header"><span>🌯</span><span class="card-title">Resumen de tu pedido</span></div>
+      <div class="card-body">
+        <div class="msg-pedido">
+          <span class="msg-dim">Hola </span><span class="msg-val" id="p-nombre"></span>
+          <span class="msg-dim">, tu orden de </span><span class="msg-val" id="p-pedido"></span>
+          <span class="msg-dim"> está confirmada.</span>
+          <span id="p-dir-wrap" style="display:none"><br/><span class="msg-dim">📍 Entrega en: </span><span class="msg-val" id="p-direccion"></span></span>
+          <br/><br/>
+          <span class="msg-dim">Para confirmar, realiza la transferencia de </span>
+          <span class="msg-val" id="p-monto"></span>
+          <span class="msg-dim"> y envíanos el comprobante por WhatsApp. 🤝</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Monto -->
+    <div class="card" style="animation-delay:.1s">
+      <div class="card-header"><span>💰</span><span class="card-title">Monto a pagar</span></div>
+      <div class="card-body">
+        <div class="monto-block">
+          <div>
+            <div class="monto-label">Total</div>
+            <div class="monto-val"><span>MXN</span><span id="p-monto2"></span></div>
+          </div>
+          <div style="text-align:right">
+            <div class="monto-label" style="margin-bottom:3px">Método</div>
+            <div style="font-family:'Lora',serif;font-size:.9rem;color:var(--dim);font-style:italic;" id="p-metodo">Transferencia SPEI</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Datos SPEI (solo si transferencia) -->
+    <div class="card" id="card-spei" style="animation-delay:.15s">
+      <div class="card-header"><span>🏦</span><span class="card-title">Datos para transferencia SPEI</span></div>
+      <div class="card-body">
+        <div class="spei-grid">
+          <div class="spei-item">
+            <div class="spei-label">Institución</div>
+            <div class="spei-value"><!-- BANCO AQUÍ --></div>
+          </div>
+          <div class="spei-item">
+            <div class="spei-label">Beneficiario</div>
+            <div class="spei-value"><!-- NOMBRE AQUÍ --></div>
+          </div>
+          <div class="spei-item full">
+            <div class="spei-label">CLABE Interbancaria</div>
+            <div class="spei-value mono" id="clabe-val"><!-- TU CLABE AQUÍ --></div>
+            <button class="btn-copy" onclick="copiar('clabe-val', this)">Copiar</button>
+          </div>
+          <div class="spei-item">
+            <div class="spei-label">Concepto</div>
+            <div class="spei-value" style="font-style:italic;color:var(--dim);font-family:'Lora',serif;">Pedido Burrito Jack</div>
+          </div>
+          <div class="spei-item">
+            <div class="spei-label">WhatsApp</div>
+            <div class="spei-value">(899) 246-69-43</div>
+          </div>
+        </div>
+        <div class="note">⚠️ <strong>Importante:</strong> Envía la foto de tu <strong>comprobante por WhatsApp</strong> para confirmar y agendar tu entrega.</div>
+      </div>
+    </div>
+
+    <!-- Pago efectivo -->
+    <div class="card" id="card-efectivo" style="animation-delay:.15s;display:none">
+      <div class="card-header"><span>💵</span><span class="card-title">Pago en efectivo</span></div>
+      <div class="card-body">
+        <div class="note" style="margin-top:0">💵 Elegiste pagar en <strong>efectivo</strong>. Ten el monto exacto listo al momento de la entrega. Te contactaremos por WhatsApp para coordinar. 🤝</div>
+      </div>
+    </div>
+
+    <hr/>
+
+    <!-- CTA -->
+    <div class="cta-wrap" style="animation-delay:.2s">
+      <span class="cta-eyebrow">Último paso</span>
+      <h2 class="cta-h2">Manda tu<br/><em>comprobante</em></h2>
+      <p class="cta-sub">Toca el botón, adjunta la foto del comprobante y listo 🌯</p>
+      <a id="btnWaPago" href="#" target="_blank" class="btn-wa">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        Enviar comprobante
+      </a>
+      <span class="btn-wa-note">Abre WhatsApp con el mensaje listo</span>
+    </div>
+  </main>
+</div>
+
+<!-- ══ ESTADO: EN CAMINO ══ -->
+<div id="vista-camino" style="display:none">
+  <div class="hero-camino">
+    <span class="eyebrow verde">¡Buenas noticias!</span>
+    <span class="hero-icon">🛵</span>
+    <h1 class="hero-h1"><em class="verde">En camino</em><br/>a tu puerta</h1>
+    <p class="hero-sub">Tu burrito ya salió — prepara la mesa. 🔥</p>
+  </div>
+  <div class="saludo">
+    <div class="hola">Hola,</div>
+    <div class="nombre" id="c-nombre"></div>
+    <div class="msg">Tu pedido de <strong id="c-pedido"></strong><br/>ya va en camino. ¡Antójate! 🌯🔥</div>
+  </div>
+  <main>
+    <div class="card verde" style="animation-delay:.05s">
+      <div class="card-header"><span>✅</span><span class="card-title" style="color:#4ade80">Estado del pedido</span></div>
+      <div class="card-body">
+        <div style="display:flex;align-items:center;gap:14px;padding:6px 0">
+          <div style="font-size:2.4rem">🛵</div>
+          <div>
+            <div style="font-family:'Bebas Neue',sans-serif;font-size:1.4rem;letter-spacing:2px;color:#4ade80;margin-bottom:3px">Tu pedido está en camino</div>
+            <div style="font-family:'Lora',serif;font-style:italic;font-size:.88rem;color:var(--dim)">Pronto llegará tu burrito. ¡No te muevas! 🔥</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div style="text-align:center;padding:20px 0 0">
+      <p style="font-family:'Lora',serif;font-style:italic;font-size:.95rem;color:var(--dim);margin-bottom:22px;line-height:1.8">¿Alguna duda sobre tu entrega?<br/>Escríbenos directo por WhatsApp.</p>
+      <a id="btnWaCamino" href="#" target="_blank" class="btn-wa">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        Contactar a Burrito Jack
+      </a>
+    </div>
+  </main>
+</div>
+
+<!-- ══ ESTADO: ENTREGADO ══ -->
+<div id="vista-entregado" style="display:none">
+  <div class="hero-entregado">
+    <span class="hero-icon">🎉</span>
+    <h1 class="hero-h1">¡<em class="oro">Entregado!</em><br/>Buen provecho</h1>
+    <p class="hero-sub">Esperamos que hayas disfrutado tu burrito. 🌯🔥</p>
+  </div>
+  <main>
+    <div class="card oro" style="animation-delay:.05s;text-align:center">
+      <div class="card-body" style="padding:32px">
+        <div style="font-size:3rem;margin-bottom:14px">🌯</div>
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:1.6rem;letter-spacing:2px;color:var(--amarillo);margin-bottom:8px">¡Gracias por tu pedido!</div>
+        <div style="font-family:'Lora',serif;font-style:italic;font-size:.92rem;color:var(--dim);line-height:1.8">Fue un placer servirte. Cuéntale a tus amigos de <strong style="color:var(--crema);font-style:normal">Burrito Jack</strong> 🤙</div>
+        <a href="orden.html" style="display:inline-block;margin-top:22px;background:var(--rojo2);color:var(--crema);padding:13px 30px;font-family:'Montserrat',sans-serif;font-size:.72rem;font-weight:700;letter-spacing:3px;text-transform:uppercase;text-decoration:none;">Pedir de nuevo</a>
+      </div>
+    </div>
+  </main>
+</div>
+
+<a href="https://wa.me/528992466943" target="_blank" class="wa-float" aria-label="WhatsApp">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+</a>
+<footer>
+  <div class="footer-logo">Burrito Jack</div>
+  <p>Reynosa, Tamaulipas · (899) 246-69-43</p>
+  <p>© 2025 Burrito Jack</p>
+</footer>
+<div class="toast" id="toast"></div>
+
+<script>
+  var GAS_URL   = 'https://script.google.com/macros/s/AKfycbyMbsEg61bm2vfcCnAVq3oXlrv5Yl-jd7-rQ6pmm4n3OyI5E7uaogVbsVuGay9HSeBJRQ/exec';
+  var WA_NUMBER = '528992466943';
+  var id = new URLSearchParams(window.location.search).get('id');
+
+  if (!id) { mostrarError(); } else { cargarOrden(id); }
+
+  function cargarOrden(orderId) {
+    var cbName = 'cb_' + Date.now() + '_' + Math.floor(Math.random() * 99999);
+    var url    = GAS_URL + '?action=getOrden&id=' + encodeURIComponent(orderId) + '&callback=' + encodeURIComponent(cbName);
+    var script = document.createElement('script');
+    var timer  = setTimeout(function() { cleanup(); mostrarError(); }, 15000);
+    window[cbName] = function(data) { cleanup(); if (data && data.ok) { renderOrden(data); } else { mostrarError(); } };
+    function cleanup() { clearTimeout(timer); delete window[cbName]; if (script.parentNode) script.parentNode.removeChild(script); }
+    script.onerror = function() { cleanup(); mostrarError(); };
+    script.src = url;
+    document.head.appendChild(script);
+  }
+
+  function renderOrden(data) {
+    document.getElementById('screenLoading').style.display = 'none';
+    var estado = data.estado || 'pendiente';
+
+    if (estado === 'entregado') {
+      document.getElementById('header-tag').textContent = 'Entregado ✅';
+      document.getElementById('vista-entregado').style.display = '';
+      return;
+    }
+
+    if (estado === 'en_camino') {
+      document.getElementById('header-tag').textContent = 'En Camino 🛵';
+      document.getElementById('c-nombre').textContent = data.cliente;
+      document.getElementById('c-pedido').textContent = data.pedido;
+      var msgC = encodeURIComponent('Hola Burrito Jack! 🌯\n\nTengo una pregunta sobre mi pedido.\n\nNombre: ' + data.cliente + '\nPedido: ' + data.pedido);
+      document.getElementById('btnWaCamino').href = 'https://wa.me/' + WA_NUMBER + '?text=' + msgC;
+      document.getElementById('vista-camino').style.display = '';
+      return;
+    }
+
+    // Pendiente — mostrar datos de pago
+    document.getElementById('header-tag').textContent = 'Confirmar Pedido';
+    document.getElementById('p-nombre').textContent  = data.cliente;
+    document.getElementById('p-pedido').textContent  = data.pedido;
+    document.getElementById('p-monto').textContent   = data.monto;
+    document.getElementById('p-monto2').textContent  = data.monto;
+
+    var metodo = data.metodoPago || 'transferencia';
+    document.getElementById('p-metodo').textContent = metodo === 'efectivo' ? '💵 Efectivo al recibir' : '💳 Transferencia SPEI';
+    if (metodo === 'efectivo') {
+      document.getElementById('card-spei').style.display    = 'none';
+      document.getElementById('card-efectivo').style.display = '';
+    }
+
+    if (data.direccion && data.direccion !== 'Pasa a recoger') {
+      document.getElementById('p-direccion').textContent = data.direccion;
+      document.getElementById('p-dir-wrap').style.display = '';
+    }
+
+    var msgP = encodeURIComponent(
+      'Hola Burrito Jack! 🌯\n\nLe comparto mi comprobante para confirmar mi pedido.\n\n' +
+      'Nombre: ' + data.cliente + '\nPedido: ' + data.pedido + '\nMonto: ' + data.monto +
+      '\n\n[Adjunto comprobante 📸]'
+    );
+    document.getElementById('btnWaPago').href = 'https://wa.me/' + WA_NUMBER + '?text=' + msgP;
+    document.getElementById('vista-pago').style.display = '';
+  }
+
+  function mostrarError() {
+    document.getElementById('screenLoading').style.display = 'none';
+    document.getElementById('screenError').style.display   = 'flex';
+  }
+
+  var toastTimer;
+  function copiar(elId, btn) {
+    var texto = document.getElementById(elId).textContent.replace(/\s/g, '');
+    navigator.clipboard.writeText(texto).then(function() {
+      btn.textContent = '✓ Copiado'; btn.classList.add('ok');
+      toast('CLABE copiada');
+      setTimeout(function() { btn.textContent = 'Copiar'; btn.classList.remove('ok'); }, 2200);
+    }).catch(function() { toast('Error al copiar'); });
+  }
+
+  function toast(msg) {
+    var t = document.getElementById('toast');
+    t.textContent = msg; t.classList.add('show');
+    clearTimeout(toastTimer); toastTimer = setTimeout(function() { t.classList.remove('show'); }, 2400);
+  }
+</script>
+</body>
+</html>

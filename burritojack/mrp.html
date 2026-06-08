@@ -1,0 +1,821 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>MRP Inventario — Burrito Jack</title>
+  <link rel="icon" href="logo.png" type="image/png"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:wght@300;400;600;700&family=Lora:ital,wght@0,400;1,400&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
+    :root {
+      --rojo:#B71C1C; --rojo2:#8B0000;
+      --amarillo:#FFD600; --amarillo2:#F5C842;
+      --verde:#25D366; --negro:#1a0800; --negro2:#2d1000;
+      --crema:#FFF8E1; --dim:rgba(255,248,225,.55);
+      --texto:#1a0800; --fondo:#FFFFFF; --fondo2:#FBF7F2;
+      --dim-dark:rgba(60,20,0,.58);
+    }
+    html { scroll-behavior:smooth; }
+    body { font-family:'Montserrat',sans-serif; background:var(--fondo2); color:var(--texto); min-height:100vh; }
+    body::before { display:none; }
+
+    header { background:rgba(255,255,255,.97); border-bottom:1px solid rgba(183,28,28,.12); box-shadow:0 2px 14px rgba(0,0,0,.07); padding:12px 32px; display:flex; align-items:center; justify-content:space-between; position:sticky; top:0; z-index:100; backdrop-filter:blur(8px); }
+    .logo { display:flex; align-items:center; gap:10px; text-decoration:none; }
+    .logo img { height:40px; border-radius:50%; }
+    .logo-txt { font-family:'Bebas Neue',sans-serif; font-size:1.5rem; color:var(--rojo); letter-spacing:3px; }
+    .header-badge { font-size:.52rem; font-weight:700; letter-spacing:3px; text-transform:uppercase; color:rgba(139,0,0,.6); background:rgba(183,28,28,.07); border:1px solid rgba(183,28,28,.15); padding:3px 12px; }
+    .header-nav { display:flex; gap:6px; }
+    .header-nav a { text-decoration:none; color:rgba(30,10,0,.45); font-size:.58rem; font-weight:600; letter-spacing:3px; text-transform:uppercase; padding:6px 14px; border:1px solid transparent; transition:all .2s; }
+    .header-nav a:hover { color:var(--rojo); border-color:rgba(183,28,28,.2); }
+    .header-nav a.active { color:var(--rojo); border-color:rgba(183,28,28,.3); background:rgba(183,28,28,.05); }
+
+    /* TABS */
+    .tabs { display:flex; background:#fff; border-bottom:1px solid rgba(183,28,28,.1); overflow-x:auto; box-shadow:0 2px 8px rgba(0,0,0,.04); }
+    .tab { padding:14px 22px; font-size:.6rem; letter-spacing:4px; text-transform:uppercase; color:rgba(30,10,0,.35); cursor:pointer; border-bottom:2px solid transparent; transition:all .2s; white-space:nowrap; flex-shrink:0; }
+    .tab:hover { color:var(--rojo); }
+    .tab.active { color:var(--rojo); border-bottom-color:var(--rojo); background:rgba(183,28,28,.04); }
+
+    /* PANELS */
+    .panel { display:none; }
+    .panel.active { display:block; }
+    main { max-width:900px; margin:0 auto; padding:32px 18px 80px; }
+
+    /* TITLES */
+    .page-title { margin-bottom:28px; }
+    .eyebrow { font-size:.56rem; letter-spacing:5px; text-transform:uppercase; color:var(--rojo); border-top:1px solid rgba(183,28,28,.25); padding-top:6px; margin-bottom:8px; display:inline-block; }
+    .page-title h2 { font-family:'Bebas Neue',sans-serif; font-size:clamp(1.8rem,5vw,2.8rem); letter-spacing:2px; color:var(--negro); line-height:1; }
+    .page-title h2 em { color:var(--rojo); font-style:normal; }
+    .page-title p { font-family:'Lora',serif; font-style:italic; font-size:.84rem; color:var(--dim-dark); margin-top:6px; }
+
+    /* ALERTS */
+    .alert-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(200px,1fr)); gap:12px; margin-bottom:24px; }
+    .alert-card { background:#fff5f5; border:1px solid rgba(183,28,28,.25); border-left:3px solid var(--rojo); padding:14px 16px; }
+    .alert-card.ok { background:#f5fdf7; border-color:rgba(37,211,102,.3); border-left-color:var(--verde); }
+    .alert-nombre { font-family:'Montserrat',sans-serif; font-weight:700; font-size:.78rem; color:var(--negro); margin-bottom:3px; }
+    .alert-stock { font-family:'Bebas Neue',sans-serif; font-size:1.4rem; color:var(--rojo); letter-spacing:1px; }
+    .alert-card.ok .alert-stock { color:#1a8a40; }
+    .alert-unidad { font-size:.55rem; letter-spacing:2px; text-transform:uppercase; color:var(--dim-dark); }
+
+    /* CARDS */
+    .card { background:#fff; border:1px solid rgba(183,28,28,.15); box-shadow:0 2px 8px rgba(0,0,0,.05); margin-bottom:16px; position:relative; }
+    .card::before { content:''; position:absolute; top:0; left:0; width:3px; height:100%; background:var(--rojo); }
+    .card.verde::before { background:var(--verde); }
+    .card.oro::before { background:#a07800; }
+    .card-header { padding:11px 18px; border-bottom:1px solid rgba(183,28,28,.08); display:flex; align-items:center; justify-content:space-between; gap:8px; }
+    .card-title { font-size:.58rem; letter-spacing:4px; text-transform:uppercase; color:var(--rojo); font-weight:700; }
+    .card-body { padding:18px 18px; }
+
+    /* FORM FIELDS */
+    .form-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(160px,1fr)); gap:12px; margin-bottom:14px; }
+    .field { margin-bottom:0; }
+    .field label { display:block; font-size:.52rem; letter-spacing:4px; text-transform:uppercase; color:var(--rojo); margin-bottom:5px; }
+    .field input, .field select, .field textarea { width:100%; background:#fff; border:1px solid rgba(183,28,28,.18); padding:10px 12px; font-family:'Lora',serif; font-size:.9rem; color:var(--negro); outline:none; border-radius:0; transition:border-color .2s,box-shadow .2s; -webkit-appearance:none; }
+    .field input::placeholder { color:rgba(30,10,0,.28); font-style:italic; }
+    .field input:focus, .field select:focus { border-color:var(--rojo); box-shadow:0 0 0 3px rgba(183,28,28,.07); }
+    .field select option { background:#fff; color:var(--negro); }
+
+    /* TABLES */
+    .tbl-wrap { overflow-x:auto; }
+    table { width:100%; border-collapse:collapse; }
+    th { font-size:.52rem; letter-spacing:3px; text-transform:uppercase; color:var(--rojo); padding:9px 12px; border-bottom:1px solid rgba(183,28,28,.12); text-align:left; white-space:nowrap; background:#fdf8f5; }
+    td { padding:10px 12px; border-bottom:1px solid rgba(183,28,28,.06); font-size:.85rem; vertical-align:middle; }
+    tr:last-child td { border-bottom:none; }
+    tr:hover td { background:#fdf8f5; }
+    .td-nombre { font-family:'Montserrat',sans-serif; font-weight:600; color:var(--negro); }
+    .td-dim { color:var(--dim-dark); font-family:'Lora',serif; font-style:italic; font-size:.8rem; }
+    .td-stock { font-family:'Bebas Neue',sans-serif; font-size:1.1rem; letter-spacing:1px; }
+    .td-stock.bajo { color:#c0392b; }
+    .td-stock.ok   { color:#1a7a3c; }
+    .td-precio { font-family:'Bebas Neue',sans-serif; font-size:1rem; letter-spacing:1px; color:var(--rojo2); }
+
+    /* BADGES */
+    .badge { display:inline-block; font-size:.5rem; letter-spacing:2px; text-transform:uppercase; padding:3px 8px; font-weight:700; }
+    .badge.activo    { background:rgba(37,211,102,.1); color:#1a7a3c; border:1px solid rgba(37,211,102,.3); }
+    .badge.inactivo  { background:rgba(30,10,0,.05); color:rgba(30,10,0,.35); border:1px solid rgba(30,10,0,.1); }
+    .badge.desayuno  { background:rgba(183,28,28,.06); color:var(--rojo2); border:1px solid rgba(183,28,28,.15); }
+    .badge.guisado   { background:rgba(139,0,0,.08); color:var(--rojo); border:1px solid rgba(139,0,0,.2); }
+
+    /* BUTTONS */
+    .btn-add { padding:9px 20px; background:var(--rojo2); border:1px solid rgba(183,28,28,.4); color:var(--crema); font-family:'Montserrat',sans-serif; font-size:.62rem; font-weight:700; letter-spacing:3px; text-transform:uppercase; cursor:pointer; transition:all .2s; }
+    .btn-add:hover { background:#6B0000; }
+    .btn-sm2 { padding:5px 12px; background:#fff; border:1px solid rgba(183,28,28,.18); color:rgba(139,0,0,.55); font-family:'Montserrat',sans-serif; font-size:.52rem; font-weight:700; letter-spacing:2px; text-transform:uppercase; cursor:pointer; transition:all .2s; white-space:nowrap; }
+    .btn-sm2:hover { border-color:var(--rojo); color:var(--rojo); }
+    .btn-sm2.danger { border-color:rgba(183,28,28,.25); color:rgba(183,28,28,.55); }
+    .btn-sm2.danger:hover { border-color:var(--rojo); color:var(--rojo); }
+    .btn-sm2.verde { border-color:rgba(37,211,102,.3); color:rgba(20,100,40,.65); }
+    .btn-sm2.verde:hover { border-color:#25D366; color:#1a7a3c; }
+    .btn-sm2.oro { border-color:rgba(160,120,0,.3); color:rgba(120,80,0,.7); }
+
+    /* INLINE FORM */
+    .inline-form { background:#fdf8f5; border:1px dashed rgba(183,28,28,.2); padding:16px; margin-top:14px; }
+    .inline-form .form-title { font-size:.56rem; letter-spacing:4px; text-transform:uppercase; color:rgba(139,0,0,.5); margin-bottom:12px; }
+    .inline-actions { display:flex; gap:8px; margin-top:12px; flex-wrap:wrap; }
+
+    /* SPINNER */
+    .spinner { display:none; width:16px; height:16px; border:2px solid rgba(183,28,28,.2); border-top-color:var(--crema); border-radius:50%; animation:spin .7s linear infinite; }
+    @keyframes spin { to{transform:rotate(360deg)} }
+
+    /* MOVIMIENTOS */
+    .mov-row td:first-child { font-size:.6rem; letter-spacing:1px; }
+    .mov-salida { color:#c0392b; font-weight:600; }
+    .mov-entrada { color:#1a7a3c; font-weight:600; }
+
+    /* MODAL */
+    .modal-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,.65); z-index:500; align-items:center; justify-content:center; padding:20px; }
+    .modal-overlay.open { display:flex; }
+    .modal { background:#fff; border:1px solid rgba(183,28,28,.2); box-shadow:0 8px 40px rgba(0,0,0,.2); max-width:600px; width:100%; max-height:90vh; overflow-y:auto; position:relative; }
+    .modal-header { padding:16px 20px; border-bottom:1px solid rgba(183,28,28,.1); display:flex; align-items:center; justify-content:space-between; }
+    .modal-title { font-family:'Bebas Neue',sans-serif; font-size:1.4rem; letter-spacing:2px; color:var(--rojo); }
+    .modal-close { background:none; border:none; color:rgba(30,10,0,.4); font-size:1.4rem; cursor:pointer; padding:0 4px; transition:color .2s; }
+    .modal-close:hover { color:var(--negro); }
+    .modal-body { padding:20px; }
+
+    /* INGREDIENTES EDITOR */
+    .ing-row { display:grid; grid-template-columns:1fr 120px 100px auto; gap:8px; align-items:center; margin-bottom:8px; }
+    .ing-row select, .ing-row input { background:#fff; border:1px solid rgba(183,28,28,.18); padding:8px 10px; color:var(--negro); font-family:'Lora',serif; font-size:.88rem; outline:none; border-radius:0; width:100%; }
+    .ing-row select:focus, .ing-row input:focus { border-color:var(--rojo); box-shadow:0 0 0 2px rgba(183,28,28,.07); }
+    .ing-row .btn-rm { background:none; border:none; color:rgba(183,28,28,.45); font-size:1.1rem; cursor:pointer; padding:4px; }
+    .ing-row .btn-rm:hover { color:var(--rojo); }
+
+    /* TOAST */
+    .toast { position:fixed; bottom:28px; left:50%; transform:translateX(-50%) translateY(16px); background:rgba(255,255,255,.97); border:1px solid rgba(183,28,28,.3); color:var(--rojo2); font-family:'Montserrat',sans-serif; font-size:.62rem; letter-spacing:3px; text-transform:uppercase; padding:11px 26px; opacity:0; pointer-events:none; transition:opacity .3s,transform .3s; z-index:9998; white-space:nowrap; box-shadow:0 4px 16px rgba(0,0,0,.12); }
+    .toast.show { opacity:1; transform:translateX(-50%) translateY(0); }
+
+    /* EMPTY */
+    .empty-state { text-align:center; padding:50px 20px; }
+    .empty-state p { font-family:'Lora',serif; font-style:italic; font-size:.9rem; color:rgba(30,10,0,.35); }
+
+    footer { border-top:1px solid rgba(183,28,28,.12); padding:20px 32px; text-align:center; background:#fff; }
+    footer p { font-size:.55rem; letter-spacing:3px; text-transform:uppercase; color:rgba(30,10,0,.3); }
+
+    @media (max-width:600px) {
+      header { padding:11px 14px; flex-wrap:wrap; gap:8px; }
+      main { padding:24px 12px 60px; }
+      .form-grid { grid-template-columns:1fr; }
+      .ing-row { grid-template-columns:1fr 80px 70px auto; gap:4px; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <a class="logo" href="index.html">
+    <img src="logo.png" alt="Burrito Jack"/>
+    <span class="logo-txt">Burrito Jack</span>
+  </a>
+  <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">
+    <span class="header-badge">MRP</span>
+    <nav class="header-nav">
+      <a href="sender.html">➕ Nuevo</a>
+      <a href="crm.html">📋 CRM</a>
+      <a href="mrp.html" class="active">📦 MRP</a>
+    </nav>
+  </div>
+</header>
+
+<!-- TABS -->
+<div class="tabs">
+  <div class="tab active" onclick="switchTab('dashboard')">📊 Dashboard</div>
+  <div class="tab"        onclick="switchTab('platillos')">🌯 Platillos</div>
+  <div class="tab"        onclick="switchTab('insumos')">📦 Insumos</div>
+  <div class="tab"        onclick="switchTab('movimientos')">📋 Movimientos</div>
+</div>
+
+<!-- ══ TAB: DASHBOARD ══ -->
+<div class="panel active" id="tab-dashboard">
+<main>
+  <div class="page-title">
+    <span class="eyebrow">MRP · Dashboard</span>
+    <h2>Inventario<br/><em>en tiempo real</em></h2>
+    <p>Stock actual de todos los insumos. Rojo = bajo stock (menos de 500 unidades).</p>
+  </div>
+
+  <div id="dash-alerts">
+    <div class="empty-state"><p>Cargando inventario...</p></div>
+  </div>
+
+  <div style="margin-top:28px">
+    <div style="font-size:.56rem;letter-spacing:4px;text-transform:uppercase;color:rgba(139,0,0,.5);border-top:1px solid rgba(183,28,28,.12);padding-top:12px;margin-bottom:16px">Accesos rápidos</div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap">
+      <button class="btn-add" onclick="switchTab('insumos')">📦 Gestionar Insumos</button>
+      <button class="btn-add" onclick="switchTab('platillos')">🌯 Gestionar Platillos</button>
+      <button class="btn-add" style="background:transparent;border-color:rgba(37,211,102,.3);color:#25D366" onclick="initData()">⚡ Inicializar menú base</button>
+    </div>
+  </div>
+</main>
+</div>
+
+<!-- ══ TAB: PLATILLOS ══ -->
+<div class="panel" id="tab-platillos">
+<main>
+  <div class="page-title">
+    <span class="eyebrow">MRP · Platillos</span>
+    <h2>Gestión del<br/><em>menú</em></h2>
+    <p>Agrega platillos y asígnales los ingredientes que usa cada uno.</p>
+  </div>
+
+  <!-- AGREGAR PLATILLO -->
+  <div class="card">
+    <div class="card-header">
+      <span class="card-title">➕ Agregar nuevo platillo</span>
+    </div>
+    <div class="card-body">
+      <div class="form-grid">
+        <div class="field" style="grid-column:1/-1">
+          <label>Nombre del platillo</label>
+          <input id="np-nombre" type="text" placeholder="Ej. Picadillo con Queso"/>
+        </div>
+        <div class="field">
+          <label>Categoría</label>
+          <select id="np-cat">
+            <option value="Desayuno">Desayuno</option>
+            <option value="Guisado">Guisado</option>
+            <option value="Especial">Especial</option>
+            <option value="Otros">Otros</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Precio Clásico ($)</label>
+          <input id="np-clasico" type="number" placeholder="70" min="0"/>
+        </div>
+        <div class="field">
+          <label>Precio Especial ($) <span style="color:rgba(139,0,0,.4);font-size:.48rem">opcional</span></label>
+          <input id="np-especial" type="number" placeholder="0" min="0"/>
+        </div>
+        <div class="field">
+          <label>Precio Pirata ($) <span style="color:rgba(139,0,0,.4);font-size:.48rem">opcional</span></label>
+          <input id="np-pirata" type="number" placeholder="0" min="0"/>
+        </div>
+        <div class="field" style="grid-column:1/-1">
+          <label>Ingredientes (texto visible en el menú, sin gramaje)</label>
+          <input id="np-ing" type="text" placeholder="Ej. Tortilla de harina, picadillo, frijoles, arroz"/>
+        </div>
+      </div>
+      <button class="btn-add" id="btnAddPlatillo" onclick="addPlatillo()">
+        <span id="bap-txt">Guardar Platillo</span>
+        <div class="spinner" id="bap-spin" style="display:inline-block;vertical-align:middle;margin-left:8px"></div>
+      </button>
+      <div class="error-msg" id="np-error" style="display:none;margin-top:10px;padding:10px 14px;background:rgba(183,28,28,.07);border:1px solid rgba(183,28,28,.3);border-left:3px solid var(--rojo);font-family:'Lora',serif;font-size:.84rem;color:var(--rojo2)"></div>
+    </div>
+  </div>
+
+  <!-- LISTA PLATILLOS -->
+  <div class="card">
+    <div class="card-header">
+      <span class="card-title">Lista de platillos</span>
+      <button class="btn-sm2" onclick="loadPlatillos()">↻ Actualizar</button>
+    </div>
+    <div class="card-body" style="padding:0">
+      <div id="platillos-table">
+        <div class="empty-state"><p>Cargando...</p></div>
+      </div>
+    </div>
+  </div>
+</main>
+</div>
+
+<!-- ══ TAB: INSUMOS ══ -->
+<div class="panel" id="tab-insumos">
+<main>
+  <div class="page-title">
+    <span class="eyebrow">MRP · Insumos</span>
+    <h2>Control de<br/><em>inventario</em></h2>
+    <p>Registra tus materias primas. El stock baja automáticamente con cada orden.</p>
+  </div>
+
+  <!-- AGREGAR INSUMO -->
+  <div class="card">
+    <div class="card-header"><span class="card-title">➕ Agregar insumo</span></div>
+    <div class="card-body">
+      <div class="form-grid">
+        <div class="field">
+          <label>Nombre del insumo</label>
+          <input id="ni-nombre" type="text" placeholder="Ej. Tortilla de harina"/>
+        </div>
+        <div class="field">
+          <label>Unidad de medida</label>
+          <select id="ni-unidad">
+            <option value="gramos">Gramos (g)</option>
+            <option value="kg">Kilogramos (kg)</option>
+            <option value="litros">Litros (L)</option>
+            <option value="mililitros">Mililitros (ml)</option>
+            <option value="piezas">Piezas (pza)</option>
+            <option value="cucharadas">Cucharadas</option>
+            <option value="tazas">Tazas</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Stock inicial</label>
+          <input id="ni-stock" type="number" placeholder="0" min="0"/>
+        </div>
+      </div>
+      <button class="btn-add" id="btnAddInsumo" onclick="addInsumo()">
+        <span id="bai-txt">Guardar Insumo</span>
+        <div class="spinner" id="bai-spin" style="display:inline-block;vertical-align:middle;margin-left:8px"></div>
+      </button>
+    </div>
+  </div>
+
+  <!-- LISTA INSUMOS -->
+  <div class="card">
+    <div class="card-header">
+      <span class="card-title">Inventario actual</span>
+      <button class="btn-sm2" onclick="loadInsumos()">↻ Actualizar</button>
+    </div>
+    <div class="card-body" style="padding:0">
+      <div id="insumos-table">
+        <div class="empty-state"><p>Cargando...</p></div>
+      </div>
+    </div>
+  </div>
+</main>
+</div>
+
+<!-- ══ TAB: MOVIMIENTOS ══ -->
+<div class="panel" id="tab-movimientos">
+<main>
+  <div class="page-title">
+    <span class="eyebrow">MRP · Bitácora</span>
+    <h2>Registro de<br/><em>movimientos</em></h2>
+    <p>Entradas y salidas de inventario, con referencia a las órdenes.</p>
+  </div>
+  <div class="card">
+    <div class="card-header">
+      <span class="card-title">Últimos movimientos</span>
+      <button class="btn-sm2" onclick="loadMovimientos()">↻ Actualizar</button>
+    </div>
+    <div class="card-body" style="padding:0">
+      <div id="movimientos-table">
+        <div class="empty-state"><p>Cargando...</p></div>
+      </div>
+    </div>
+  </div>
+</main>
+</div>
+
+<!-- ══ MODAL: AJUSTE STOCK ══ -->
+<div class="modal-overlay" id="modalStock">
+  <div class="modal">
+    <div class="modal-header">
+      <span class="modal-title" id="ms-titulo">Ajustar Stock</span>
+      <button class="modal-close" onclick="cerrarModal('modalStock')">×</button>
+    </div>
+    <div class="modal-body">
+      <div style="margin-bottom:14px">
+        <div style="font-size:.56rem;letter-spacing:4px;text-transform:uppercase;color:rgba(255,214,0,.4);margin-bottom:4px">Insumo</div>
+        <div style="font-family:'Montserrat',sans-serif;font-weight:700;font-size:1rem;color:var(--crema)" id="ms-nombre"></div>
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:1.6rem;color:var(--amarillo);margin-top:2px">Stock actual: <span id="ms-stock">—</span> <span id="ms-unidad" style="font-size:1rem;opacity:.6"></span></div>
+      </div>
+      <div class="form-grid" style="grid-template-columns:1fr 1fr">
+        <div class="field">
+          <label>Tipo de movimiento</label>
+          <select id="ms-tipo">
+            <option value="entrada">📈 Entrada (compra/reposición)</option>
+            <option value="salida">📉 Salida (merma/ajuste)</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Cantidad</label>
+          <input id="ms-cantidad" type="number" placeholder="0" min="0"/>
+        </div>
+        <div class="field" style="grid-column:1/-1">
+          <label>Nota / Motivo <span style="color:rgba(139,0,0,.4);font-size:.48rem">opcional</span></label>
+          <input id="ms-nota" type="text" placeholder="Ej. Compra semanal, merma, ajuste de inventario..."/>
+        </div>
+      </div>
+      <div style="display:flex;gap:8px;margin-top:4px">
+        <button class="btn-add" onclick="guardarStock()" style="flex:1">Guardar Ajuste</button>
+        <button class="btn-sm2" onclick="cerrarModal('modalStock')" style="padding:9px 20px">Cancelar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ MODAL: INGREDIENTES DE PLATILLO ══ -->
+<div class="modal-overlay" id="modalIng">
+  <div class="modal">
+    <div class="modal-header">
+      <span class="modal-title">Ingredientes</span>
+      <button class="modal-close" onclick="cerrarModal('modalIng')">×</button>
+    </div>
+    <div class="modal-body">
+      <div style="margin-bottom:16px">
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:1.3rem;letter-spacing:2px;color:var(--crema)" id="mi-nombre"></div>
+        <div style="font-family:'Lora',serif;font-style:italic;font-size:.8rem;color:var(--dim)">Define cuánto de cada insumo usa este platillo. El sistema lo descuenta automáticamente.</div>
+      </div>
+
+      <div id="ing-rows" style="margin-bottom:12px"></div>
+      <button class="btn-sm2 verde" onclick="addIngRow()" style="margin-bottom:16px;padding:7px 16px">+ Agregar ingrediente</button>
+
+      <div style="display:flex;gap:8px">
+        <button class="btn-add" onclick="guardarIngredientes()" style="flex:1">Guardar ingredientes</button>
+        <button class="btn-sm2" onclick="cerrarModal('modalIng')" style="padding:9px 20px">Cancelar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer><p>Burrito Jack · MRP · Reynosa, Tamaulipas</p></footer>
+<div class="toast" id="toast"></div>
+
+<script>
+  // ════════════════════════════════════
+  //  CONFIGURACIÓN
+  // ════════════════════════════════════
+  var GAS_URL   = 'https://script.google.com/macros/s/AKfycbyMbsEg61bm2vfcCnAVq3oXlrv5Yl-jd7-rQ6pmm4n3OyI5E7uaogVbsVuGay9HSeBJRQ/exec';
+  var ADMIN_KEY = 'burritojack2025';
+  // ════════════════════════════════════
+
+  var tabActual   = 'dashboard';
+  var insumosData = [];
+  var stockModalId = null;
+  var ingModalId   = null;
+
+  // ── Tabs ──────────────────────────────────────────
+  function switchTab(name) {
+    tabActual = name;
+    document.querySelectorAll('.tab').forEach(function(t, i) {
+      var names = ['dashboard','platillos','insumos','movimientos'];
+      t.classList.toggle('active', names[i] === name);
+    });
+    document.querySelectorAll('.panel').forEach(function(p) { p.classList.remove('active'); });
+    document.getElementById('tab-' + name).classList.add('active');
+
+    if (name === 'dashboard')    loadDashboard();
+    if (name === 'platillos')    loadPlatillos();
+    if (name === 'insumos')      loadInsumos();
+    if (name === 'movimientos')  loadMovimientos();
+  }
+
+  // ── DASHBOARD ─────────────────────────────────────
+  async function loadDashboard() {
+    document.getElementById('dash-alerts').innerHTML = '<div class="empty-state"><p>Cargando...</p></div>';
+    try {
+      var data = await callGAS({ action:'getDashboard', adminKey: ADMIN_KEY });
+      if (!data.ok) throw new Error(data.error);
+      insumosData = data.insumos || [];
+      renderDashboard(data);
+    } catch(err) {
+      document.getElementById('dash-alerts').innerHTML = '<div class="empty-state"><p>Error: ' + esc(err.message) + '</p></div>';
+    }
+  }
+
+  function renderDashboard(data) {
+    var insumos = data.insumos || [];
+    if (!insumos.length) {
+      document.getElementById('dash-alerts').innerHTML = '<div class="empty-state"><p>No hay insumos registrados aún.<br/>Ve a la pestaña Insumos para agregar.</p></div>';
+      return;
+    }
+    var html = '';
+    // Summary boxes
+    html += '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin-bottom:22px">';
+    html += '<div style="background:rgba(255,255,255,.03);border:1px solid rgba(255,214,0,.1);padding:14px;text-align:center"><div style="font-family:\'Bebas Neue\',sans-serif;font-size:2rem;color:var(--amarillo)">' + (data.totalOrdenes||0) + '</div><div style="font-size:.5rem;letter-spacing:3px;text-transform:uppercase;color:var(--dim);margin-top:2px">Órdenes total</div></div>';
+    html += '<div style="background:rgba(255,255,255,.03);border:1px solid rgba(255,214,0,.1);padding:14px;text-align:center"><div style="font-family:\'Bebas Neue\',sans-serif;font-size:2rem;color:#ff6b6b">' + (data.pendientes||0) + '</div><div style="font-size:.5rem;letter-spacing:3px;text-transform:uppercase;color:var(--dim);margin-top:2px">Pendientes</div></div>';
+    html += '<div style="background:rgba(255,255,255,.03);border:1px solid rgba(255,214,0,.1);padding:14px;text-align:center"><div style="font-family:\'Bebas Neue\',sans-serif;font-size:2rem;color:#25D366">' + (data.enCamino||0) + '</div><div style="font-size:.5rem;letter-spacing:3px;text-transform:uppercase;color:var(--dim);margin-top:2px">En camino</div></div>';
+    html += '<div style="background:rgba(255,255,255,.03);border:1px solid rgba(255,214,0,.1);padding:14px;text-align:center"><div style="font-family:\'Bebas Neue\',sans-serif;font-size:2rem;color:var(--amarillo)">' + (data.entregados||0) + '</div><div style="font-size:.5rem;letter-spacing:3px;text-transform:uppercase;color:var(--dim);margin-top:2px">Entregados</div></div>';
+    html += '</div>';
+
+    // Stock alerts
+    var bajos = (data.stockBajo || []).length;
+    if (bajos > 0) {
+      html += '<div style="background:rgba(183,28,28,.1);border:1px solid rgba(183,28,28,.3);border-left:3px solid var(--rojo);padding:12px 16px;margin-bottom:16px;font-family:\'Montserrat\',sans-serif;font-size:.72rem;font-weight:700;letter-spacing:1px">⚠️ ' + bajos + ' insumo' + (bajos>1?'s':'') + ' con stock bajo</div>';
+    }
+
+    html += '<div class="alert-grid">';
+    insumos.forEach(function(ins) {
+      var bajo = ins.stock < 500;
+      html += '<div class="alert-card' + (bajo ? '' : ' ok') + '">';
+      html += '<div class="alert-nombre">' + esc(ins.nombre) + '</div>';
+      html += '<div class="alert-stock">' + ins.stock.toLocaleString('es-MX') + '</div>';
+      html += '<div class="alert-unidad">' + esc(ins.unidad) + '</div>';
+      if (bajo) html += '<div style="margin-top:8px"><button class="btn-sm2 verde" onclick="abrirModalStock(\'' + ins.id + '\',\'' + esc(ins.nombre) + '\',' + ins.stock + ',\'' + esc(ins.unidad) + '\')">+ Reponer</button></div>';
+      html += '</div>';
+    });
+    html += '</div>';
+    document.getElementById('dash-alerts').innerHTML = html;
+  }
+
+  // ── PLATILLOS ─────────────────────────────────────
+  async function loadPlatillos() {
+    document.getElementById('platillos-table').innerHTML = '<div class="empty-state"><p>Cargando...</p></div>';
+    try {
+      var data = await callGAS({ action:'getPlatillosAdmin', adminKey: ADMIN_KEY });
+      if (!data.ok) throw new Error(data.error);
+      renderPlatillos(data.platillos || []);
+    } catch(err) {
+      document.getElementById('platillos-table').innerHTML = '<div class="empty-state"><p>Error: ' + esc(err.message) + '</p></div>';
+    }
+  }
+
+  function renderPlatillos(platillos) {
+    if (!platillos.length) {
+      document.getElementById('platillos-table').innerHTML = '<div class="empty-state"><p>No hay platillos. Agrega uno arriba.</p></div>';
+      return;
+    }
+    var html = '<div class="tbl-wrap"><table><thead><tr><th>Nombre</th><th>Categoría</th><th>Clásico</th><th>Especial</th><th>Pirata</th><th>Estado</th><th>Acciones</th></tr></thead><tbody>';
+    platillos.forEach(function(p) {
+      var activo = p.activo !== 'false' && p.activo !== '0' && p.activo !== 'no';
+      html += '<tr>';
+      html += '<td><div class="td-nombre">' + esc(p.nombre) + '</div><div class="td-dim">' + esc(p.ingredientes||'') + '</div></td>';
+      html += '<td><span class="badge ' + (p.categoria||'').toLowerCase() + '">' + esc(p.categoria) + '</span></td>';
+      html += '<td class="td-precio">$' + (p.precioClasico||0) + '</td>';
+      html += '<td class="td-precio" style="color:var(--amarillo2)">' + (p.precioEspecial > 0 ? '$'+p.precioEspecial : '—') + '</td>';
+      html += '<td class="td-precio" style="color:#ff8a80">' + (p.precioPirata > 0 ? '$'+p.precioPirata : '—') + '</td>';
+      html += '<td><span class="badge ' + (activo ? 'activo' : 'inactivo') + '">' + (activo ? 'Activo' : 'Inactivo') + '</span></td>';
+      html += '<td style="display:flex;gap:6px;flex-wrap:wrap">';
+      html += '<button class="btn-sm2" onclick="abrirModalIng(\'' + p.id + '\',\'' + esc(p.nombre) + '\')">🧂 Ingredientes</button>';
+      html += '<button class="btn-sm2 ' + (activo ? 'danger' : 'verde') + '" onclick="togglePlatillo(\'' + p.id + '\',\'' + !activo + '\')">' + (activo ? 'Desactivar' : 'Activar') + '</button>';
+      html += '</td></tr>';
+    });
+    html += '</tbody></table></div>';
+    document.getElementById('platillos-table').innerHTML = html;
+  }
+
+  async function addPlatillo() {
+    var nombre  = document.getElementById('np-nombre').value.trim();
+    var cat     = document.getElementById('np-cat').value;
+    var clasico = document.getElementById('np-clasico').value;
+    var especial= document.getElementById('np-especial').value;
+    var pirata  = document.getElementById('np-pirata').value;
+    var ing     = document.getElementById('np-ing').value.trim();
+
+    var errEl = document.getElementById('np-error');
+    if (!nombre) { errEl.textContent = 'Escribe el nombre del platillo.'; errEl.style.display = 'block'; return; }
+    if (!clasico){ errEl.textContent = 'Escribe el precio clásico.'; errEl.style.display = 'block'; return; }
+    errEl.style.display = 'none';
+
+    document.getElementById('btnAddPlatillo').disabled = true;
+    document.getElementById('bap-spin').style.display = 'inline-block';
+    document.getElementById('bap-txt').textContent = 'Guardando...';
+
+    try {
+      var data = await callGAS({ action:'addPlatillo', adminKey: ADMIN_KEY, nombre, categoria: cat, precioClasico: clasico, precioEspecial: especial||0, precioPirata: pirata||0, ingredientes: ing });
+      if (!data.ok) throw new Error(data.error);
+      toast('✓ Platillo guardado: ' + nombre);
+      ['np-nombre','np-clasico','np-especial','np-pirata','np-ing'].forEach(function(id) { document.getElementById(id).value = ''; });
+      loadPlatillos();
+    } catch(err) {
+      errEl.textContent = 'Error: ' + err.message; errEl.style.display = 'block';
+    } finally {
+      document.getElementById('btnAddPlatillo').disabled = false;
+      document.getElementById('bap-spin').style.display = 'none';
+      document.getElementById('bap-txt').textContent = 'Guardar Platillo';
+    }
+  }
+
+  async function togglePlatillo(id, activo) {
+    try {
+      var data = await callGAS({ action:'togglePlatillo', adminKey: ADMIN_KEY, id, activo });
+      if (!data.ok) throw new Error(data.error);
+      toast('✓ Estado actualizado');
+      loadPlatillos();
+    } catch(err) { toast('Error: ' + err.message); }
+  }
+
+  // ── INSUMOS ───────────────────────────────────────
+  async function loadInsumos() {
+    document.getElementById('insumos-table').innerHTML = '<div class="empty-state"><p>Cargando...</p></div>';
+    try {
+      var data = await callGAS({ action:'getInsumos', adminKey: ADMIN_KEY });
+      if (!data.ok) throw new Error(data.error);
+      insumosData = data.insumos || [];
+      renderInsumos(insumosData);
+    } catch(err) {
+      document.getElementById('insumos-table').innerHTML = '<div class="empty-state"><p>Error: ' + esc(err.message) + '</p></div>';
+    }
+  }
+
+  function renderInsumos(insumos) {
+    if (!insumos.length) {
+      document.getElementById('insumos-table').innerHTML = '<div class="empty-state"><p>No hay insumos. Agrega uno arriba.</p></div>';
+      return;
+    }
+    var html = '<div class="tbl-wrap"><table><thead><tr><th>Insumo</th><th>Unidad</th><th>Stock actual</th><th>Acciones</th></tr></thead><tbody>';
+    insumos.forEach(function(ins) {
+      var bajo = ins.stock < 500;
+      html += '<tr>';
+      html += '<td class="td-nombre">' + esc(ins.nombre) + '</td>';
+      html += '<td class="td-dim">' + esc(ins.unidad) + '</td>';
+      html += '<td><span class="td-stock ' + (bajo ? 'bajo' : 'ok') + '">' + ins.stock.toLocaleString('es-MX') + '</span>' + (bajo ? ' <span style="font-size:.52rem;color:#ff6b6b;letter-spacing:1px">⚠ bajo</span>' : '') + '</td>';
+      html += '<td style="display:flex;gap:6px;flex-wrap:wrap">';
+      html += '<button class="btn-sm2 verde" onclick="abrirModalStock(\'' + ins.id + '\',\'' + esc(ins.nombre) + '\',' + ins.stock + ',\'' + esc(ins.unidad) + '\')">± Ajustar Stock</button>';
+      html += '</td></tr>';
+    });
+    html += '</tbody></table></div>';
+    document.getElementById('insumos-table').innerHTML = html;
+  }
+
+  async function addInsumo() {
+    var nombre = document.getElementById('ni-nombre').value.trim();
+    var unidad = document.getElementById('ni-unidad').value;
+    var stock  = document.getElementById('ni-stock').value || '0';
+    if (!nombre) { toast('⚠ Escribe el nombre del insumo'); return; }
+
+    document.getElementById('btnAddInsumo').disabled = true;
+    document.getElementById('bai-spin').style.display = 'inline-block';
+    document.getElementById('bai-txt').textContent = 'Guardando...';
+
+    try {
+      var data = await callGAS({ action:'addInsumo', adminKey: ADMIN_KEY, nombre, unidad, stock });
+      if (!data.ok) throw new Error(data.error);
+      toast('✓ Insumo guardado: ' + nombre);
+      document.getElementById('ni-nombre').value = '';
+      document.getElementById('ni-stock').value  = '';
+      loadInsumos();
+    } catch(err) { toast('Error: ' + err.message); }
+    finally {
+      document.getElementById('btnAddInsumo').disabled = false;
+      document.getElementById('bai-spin').style.display = 'none';
+      document.getElementById('bai-txt').textContent = 'Guardar Insumo';
+    }
+  }
+
+  // ── MOVIMIENTOS ───────────────────────────────────
+  async function loadMovimientos() {
+    document.getElementById('movimientos-table').innerHTML = '<div class="empty-state"><p>Cargando...</p></div>';
+    try {
+      var data = await callGAS({ action:'getMovimientos', adminKey: ADMIN_KEY });
+      if (!data.ok) throw new Error(data.error);
+      renderMovimientos(data.movimientos || []);
+    } catch(err) {
+      document.getElementById('movimientos-table').innerHTML = '<div class="empty-state"><p>Error: ' + esc(err.message) + '</p></div>';
+    }
+  }
+
+  function renderMovimientos(movs) {
+    if (!movs.length) {
+      document.getElementById('movimientos-table').innerHTML = '<div class="empty-state"><p>Sin movimientos registrados.</p></div>';
+      return;
+    }
+    var html = '<div class="tbl-wrap"><table><thead><tr><th>Tipo</th><th>Descripción</th><th>Detalle</th><th>Orden</th><th>Fecha</th></tr></thead><tbody>';
+    movs.forEach(function(m) {
+      var ts = m.timestamp ? new Date(m.timestamp).toLocaleString('es-MX',{day:'2-digit',month:'short',hour:'2-digit',minute:'2-digit'}) : '—';
+      html += '<tr class="mov-row">';
+      html += '<td><span class="badge ' + (m.tipo==='entrada'?'activo':'inactivo') + ' mov-' + m.tipo + '" style="font-size:.52rem">' + (m.tipo==='entrada'?'📈 Entrada':'📉 Salida') + '</span></td>';
+      html += '<td class="td-nombre">' + esc(m.desc) + '</td>';
+      html += '<td class="td-dim">' + esc(m.detalle||'') + '</td>';
+      html += '<td class="td-dim">' + esc(m.ordenId||'—') + '</td>';
+      html += '<td class="td-dim">' + ts + '</td>';
+      html += '</tr>';
+    });
+    html += '</tbody></table></div>';
+    document.getElementById('movimientos-table').innerHTML = html;
+  }
+
+  // ── MODAL: STOCK ──────────────────────────────────
+  function abrirModalStock(id, nombre, stock, unidad) {
+    stockModalId = id;
+    document.getElementById('ms-titulo').textContent = 'Ajustar: ' + nombre;
+    document.getElementById('ms-nombre').textContent = nombre;
+    document.getElementById('ms-stock').textContent  = stock;
+    document.getElementById('ms-unidad').textContent = unidad;
+    document.getElementById('ms-cantidad').value = '';
+    document.getElementById('ms-nota').value = '';
+    document.getElementById('modalStock').classList.add('open');
+  }
+
+  async function guardarStock() {
+    var tipo     = document.getElementById('ms-tipo').value;
+    var cantidad = document.getElementById('ms-cantidad').value;
+    var nota     = document.getElementById('ms-nota').value.trim();
+    if (!cantidad || isNaN(cantidad) || Number(cantidad) <= 0) { toast('⚠ Escribe una cantidad válida'); return; }
+
+    try {
+      var data = await callGAS({ action:'updateStock', adminKey: ADMIN_KEY, id: stockModalId, cantidad, tipo, nota });
+      if (!data.ok) throw new Error(data.error);
+      toast('✓ Stock actualizado. Nuevo: ' + data.nuevoStock);
+      cerrarModal('modalStock');
+      if (tabActual === 'dashboard') loadDashboard();
+      else loadInsumos();
+    } catch(err) { toast('Error: ' + err.message); }
+  }
+
+  // ── MODAL: INGREDIENTES ───────────────────────────
+  async function abrirModalIng(platilloId, nombre) {
+    ingModalId = platilloId;
+    document.getElementById('mi-nombre').textContent = nombre;
+    document.getElementById('ing-rows').innerHTML = '<div style="font-family:\'Lora\',serif;font-style:italic;color:var(--dim);font-size:.85rem">Cargando...</div>';
+    document.getElementById('modalIng').classList.add('open');
+
+    // Cargar insumos y relaciones en paralelo
+    try {
+      var [dIns, dRel] = await Promise.all([
+        callGAS({ action:'getInsumos', adminKey: ADMIN_KEY }),
+        callGAS({ action:'getPlatilloInsumos', adminKey: ADMIN_KEY, id: platilloId })
+      ]);
+      insumosData = (dIns.ok ? dIns.insumos : []);
+      var existentes = dRel.ok ? dRel.insumos : [];
+      renderIngRows(existentes);
+    } catch(err) {
+      document.getElementById('ing-rows').innerHTML = '<div style="color:#ff6b6b;font-size:.84rem">Error: ' + esc(err.message) + '</div>';
+    }
+  }
+
+  function renderIngRows(ingList) {
+    var container = document.getElementById('ing-rows');
+    var rows = ingList.length ? ingList : [];
+    var html = '';
+    rows.forEach(function(ing, i) {
+      html += buildIngRow(i, ing.idInsumo, ing.cantidad);
+    });
+    container.innerHTML = html || '<div style="font-family:\'Lora\',serif;font-style:italic;color:var(--dim);font-size:.82rem;margin-bottom:8px">Sin ingredientes asignados aún.</div>';
+  }
+
+  function buildIngRow(idx, selectedId, cantidad) {
+    var opts = insumosData.map(function(ins) {
+      return '<option value="' + ins.id + '" ' + (ins.id === selectedId ? 'selected' : '') + '>' + esc(ins.nombre) + ' (' + esc(ins.unidad) + ')</option>';
+    }).join('');
+    return '<div class="ing-row" id="ingrow-' + idx + '">'
+      + '<select id="ir-ins-' + idx + '"><option value="">— Selecciona insumo —</option>' + opts + '</select>'
+      + '<input id="ir-cant-' + idx + '" type="number" placeholder="Cantidad" value="' + (cantidad||'') + '" min="0" step="any"/>'
+      + '<div style="font-size:.56rem;letter-spacing:1px;color:var(--dim);font-family:\'Montserrat\',sans-serif;padding:0 2px">por pieza</div>'
+      + '<button class="btn-rm" onclick="removeIngRow(' + idx + ')">×</button>'
+      + '</div>';
+  }
+
+  var ingRowCount = 0;
+  function addIngRow() {
+    var container = document.getElementById('ing-rows');
+    var newDiv = document.createElement('div');
+    newDiv.innerHTML = buildIngRow('new_' + ingRowCount++);
+    container.appendChild(newDiv.firstChild);
+  }
+
+  function removeIngRow(idx) {
+    var row = document.getElementById('ingrow-' + idx);
+    if (row) row.remove();
+  }
+
+  async function guardarIngredientes() {
+    var rows = document.getElementById('ing-rows').querySelectorAll('.ing-row');
+    var insumos = [];
+    for (var i = 0; i < rows.length; i++) {
+      var idSel = rows[i].querySelector('select').value;
+      var cant  = rows[i].querySelector('input[type=number]').value;
+      if (!idSel || !cant) continue;
+      var insFound = insumosData.find(function(x) { return x.id === idSel; }) || {};
+      insumos.push({ idInsumo: idSel, nombreInsumo: insFound.nombre || idSel, cantidad: Number(cant) });
+    }
+
+    try {
+      var data = await callGAS({ action:'savePlatilloInsumos', adminKey: ADMIN_KEY, id: ingModalId, insumos: JSON.stringify(insumos) });
+      if (!data.ok) throw new Error(data.error);
+      toast('✓ Ingredientes guardados (' + insumos.length + ')');
+      cerrarModal('modalIng');
+    } catch(err) { toast('Error: ' + err.message); }
+  }
+
+  // ── INIT DATA ─────────────────────────────────────
+  async function initData() {
+    if (!confirm('Esto agrega el menú base de Burrito Jack a Google Sheets.\n¿Continuar?')) return;
+    try {
+      var data = await callGAS({ action:'initPlatillos', adminKey: ADMIN_KEY });
+      toast(data.ok ? '✓ ' + data.id : '⚠ ' + data.error);
+      if (data.ok) loadPlatillos();
+    } catch(err) { toast('Error: ' + err.message); }
+  }
+
+  // ── MODALS ────────────────────────────────────────
+  function cerrarModal(id) {
+    document.getElementById(id).classList.remove('open');
+  }
+  document.querySelectorAll('.modal-overlay').forEach(function(overlay) {
+    overlay.addEventListener('click', function(e) {
+      if (e.target === overlay) overlay.classList.remove('open');
+    });
+  });
+
+  // ── JSONP ──────────────────────────────────────────
+  function callGAS(params) {
+    return new Promise(function(resolve, reject) {
+      var cbName = 'cb_' + Date.now() + '_' + Math.floor(Math.random() * 99999);
+      var qs = Object.keys(params).map(function(k) {
+        return encodeURIComponent(k) + '=' + encodeURIComponent(String(params[k]));
+      }).join('&') + '&callback=' + encodeURIComponent(cbName);
+      var script = document.createElement('script');
+      var timer  = setTimeout(function() { cleanup(); reject(new Error('Timeout — verifica la URL del script')); }, 20000);
+      window[cbName] = function(d) { cleanup(); resolve(d); };
+      function cleanup() { clearTimeout(timer); delete window[cbName]; if (script.parentNode) script.parentNode.removeChild(script); }
+      script.onerror = function() { cleanup(); reject(new Error('Sin conexión al servidor GAS')); };
+      script.src = GAS_URL + '?' + qs;
+      document.head.appendChild(script);
+    });
+  }
+
+  function esc(s) { return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
+  var toastT;
+  function toast(msg) {
+    var t = document.getElementById('toast');
+    t.textContent = msg; t.classList.add('show');
+    clearTimeout(toastT); toastT = setTimeout(function() { t.classList.remove('show'); }, 2800);
+  }
+
+  // Init
+  loadDashboard();
+</script>
+</body>
+</html>

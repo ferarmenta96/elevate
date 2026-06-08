@@ -1,0 +1,1478 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Burrito Jack — Burritos Tex-Mex Reynosa</title>
+  <meta name="description" content="Los mejores burritos Tex-Mex de Reynosa. Pide en línea y recíbelos en tu puerta."/>
+  <meta property="og:title"       content="Burrito Jack 🌯 — Tex-Mex Reynosa"/>
+  <meta property="og:description" content="Burritos estilo Tex-Mex, el mejor sabor de Reynosa. ¡Haz tu pedido en línea!"/>
+  <meta property="og:image"       content="logo.png"/>
+  <meta property="og:type"        content="website"/>
+  <meta property="og:locale"      content="es_MX"/>
+  <meta name="twitter:card"       content="summary_large_image"/>
+  <link rel="icon" href="logo.png" type="image/png"/>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:wght@300;400;500;600;700;900&family=Lora:ital,wght@0,400;1,400&display=swap" rel="stylesheet"/>
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --rojo:      #B71C1C;
+      --rojo2:     #8B0000;
+      --rojo3:     #D32F2F;
+      --amarillo:  #FFD600;
+      --amarillo2: #F5C842;
+      --negro:     #1a0800;
+      --negro2:    #2d1000;
+      --crema:     #FFF8E1;
+      --dim:       rgba(255,248,225,.7);
+      --texto:     #1C1C1C;
+      --texto2:    #555;
+      --fondo:     #FFFFFF;
+      --fondo2:    #F8F4F0;
+      --fondo3:    #FBF7F2;
+      --borde:     rgba(183,28,28,.13);
+      --sombra:    0 4px 24px rgba(0,0,0,.08);
+      --sombra2:   0 8px 40px rgba(0,0,0,.14);
+    }
+
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Montserrat', sans-serif;
+      background: var(--fondo);
+      color: var(--texto);
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ═══════════════════════════════════════════════════
+       ANNOUNCEMENT BAR
+    ═══════════════════════════════════════════════════ */
+    .announce-bar {
+      background: var(--negro);
+      color: var(--amarillo);
+      text-align: center;
+      padding: 9px 24px;
+      font-size: .65rem;
+      font-weight: 600;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+    .announce-bar a {
+      color: var(--amarillo);
+      text-decoration: underline;
+      margin-left: 12px;
+      font-weight: 700;
+    }
+
+    /* ═══════════════════════════════════════════════════
+       HEADER
+    ═══════════════════════════════════════════════════ */
+    header {
+      position: sticky; top: 0; z-index: 200;
+      background: #fff;
+      border-bottom: 1px solid rgba(0,0,0,.08);
+      box-shadow: 0 2px 20px rgba(0,0,0,.07);
+      padding: 0 32px;
+      display: flex; align-items: center; justify-content: space-between;
+      height: 72px;
+    }
+    .logo-wrap {
+      display: flex; align-items: center; gap: 14px;
+      text-decoration: none; flex-shrink: 0;
+    }
+    .logo-wrap img {
+      height: 46px; width: auto; border-radius: 50%;
+      border: 2px solid rgba(183,28,28,.15);
+    }
+    .logo-txt {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.8rem; color: var(--rojo);
+      letter-spacing: 3px; line-height: 1;
+    }
+    .logo-sub {
+      font-size: .48rem; letter-spacing: 4px;
+      text-transform: uppercase; color: rgba(139,0,0,.45);
+      margin-top: 2px;
+    }
+    nav.main-nav {
+      display: flex; align-items: center; gap: 4px;
+    }
+    nav.main-nav a {
+      text-decoration: none;
+      color: var(--texto2);
+      font-size: .7rem; font-weight: 600;
+      letter-spacing: 1.5px; text-transform: uppercase;
+      padding: 8px 14px;
+      border-radius: 4px;
+      transition: color .2s, background .2s;
+    }
+    nav.main-nav a:hover { color: var(--rojo); background: rgba(183,28,28,.05); }
+    .hdr-cta {
+      display: flex; align-items: center; gap: 12px;
+    }
+    .btn-hdr-order {
+      background: var(--rojo);
+      color: #fff !important;
+      font-family: 'Montserrat', sans-serif;
+      font-size: .7rem; font-weight: 700;
+      letter-spacing: 1.5px; text-transform: uppercase;
+      padding: 12px 24px;
+      border-radius: 4px;
+      text-decoration: none;
+      transition: background .2s, transform .15s;
+      white-space: nowrap;
+      display: inline-flex; align-items: center; gap: 8px;
+    }
+    .btn-hdr-order:hover { background: var(--rojo2); transform: translateY(-1px); }
+    .nav-toggle {
+      display: none; background: none; border: none;
+      color: var(--negro); font-size: 1.5rem; cursor: pointer; padding: 4px;
+    }
+    /* Mobile nav overlay */
+    .mobile-nav {
+      display: none;
+      position: fixed; top: 72px; left: 0; right: 0; bottom: 0;
+      background: rgba(255,255,255,.98);
+      z-index: 199; flex-direction: column; padding: 32px 24px; gap: 8px;
+    }
+    .mobile-nav.open { display: flex; }
+    .mobile-nav a {
+      text-decoration: none; color: var(--texto);
+      font-size: 1.1rem; font-weight: 600;
+      padding: 16px 0; border-bottom: 1px solid rgba(0,0,0,.06);
+    }
+    .mobile-nav .btn-mob-order {
+      background: var(--rojo); color: #fff;
+      text-align: center; border-radius: 4px; margin-top: 16px;
+      padding: 18px; font-size: 1rem; border-bottom: none;
+    }
+
+    /* ═══════════════════════════════════════════════════
+       HERO
+    ═══════════════════════════════════════════════════ */
+    .hero {
+      position: relative;
+      min-height: calc(100vh - 72px - 38px);
+      display: flex; align-items: center;
+      overflow: hidden;
+    }
+    .hero-bg {
+      position: absolute; inset: 0;
+      background-image: url('img/hero.png');
+      background-size: cover; background-position: center 40%;
+      filter: brightness(.3) saturate(1.4);
+      transform: scale(1.04);
+      transition: transform 8s ease;
+    }
+    .hero:hover .hero-bg { transform: scale(1.07); }
+    .hero-overlay {
+      position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse at 20% 60%, rgba(139,0,0,.5) 0%, transparent 55%),
+        linear-gradient(110deg, rgba(10,0,0,.92) 0%, rgba(10,0,0,.7) 45%, rgba(10,0,0,.15) 100%);
+    }
+    .hero-content {
+      position: relative; z-index: 1;
+      max-width: 700px;
+      padding: 80px 48px 80px 72px;
+    }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: var(--rojo);
+      color: #fff;
+      font-size: .62rem; font-weight: 700;
+      letter-spacing: 3px; text-transform: uppercase;
+      padding: 6px 16px; border-radius: 2px;
+      margin-bottom: 24px;
+    }
+    .hero h1 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(3.8rem, 9.5vw, 7.5rem);
+      line-height: .92; color: #fff;
+      letter-spacing: 2px;
+      margin-bottom: 24px;
+    }
+    .hero h1 em { color: var(--amarillo); font-style: normal; }
+    .hero h1 .line-accent {
+      display: block;
+      -webkit-text-stroke: 2px var(--amarillo);
+      color: transparent;
+    }
+    .hero-sub {
+      font-family: 'Lora', serif; font-style: italic;
+      font-size: clamp(.9rem, 2vw, 1.15rem);
+      color: rgba(255,248,225,.8);
+      margin-bottom: 40px;
+      max-width: 460px; line-height: 1.9;
+    }
+    .hero-actions { display: flex; gap: 16px; flex-wrap: wrap; }
+    .btn-primary {
+      display: inline-flex; align-items: center; gap: 10px;
+      background: var(--rojo); color: #fff;
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 700; font-size: .8rem;
+      letter-spacing: 2.5px; text-transform: uppercase;
+      padding: 18px 40px; border-radius: 4px;
+      text-decoration: none;
+      transition: all .25s;
+      box-shadow: 0 4px 20px rgba(183,28,28,.5);
+    }
+    .btn-primary:hover {
+      background: var(--rojo2);
+      transform: translateY(-3px);
+      box-shadow: 0 8px 28px rgba(183,28,28,.55);
+    }
+    .btn-ghost {
+      display: inline-flex; align-items: center; gap: 10px;
+      background: transparent; color: #fff;
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 600; font-size: .8rem;
+      letter-spacing: 2.5px; text-transform: uppercase;
+      padding: 18px 40px; border-radius: 4px;
+      text-decoration: none;
+      border: 1.5px solid rgba(255,255,255,.35);
+      transition: all .25s;
+    }
+    .btn-ghost:hover {
+      border-color: var(--amarillo);
+      color: var(--amarillo);
+      transform: translateY(-2px);
+    }
+    .hero-trust {
+      position: absolute; bottom: 40px; left: 72px; right: 0;
+      z-index: 1;
+      display: flex; gap: 32px; align-items: center;
+    }
+    .trust-item {
+      display: flex; align-items: center; gap: 10px;
+      color: rgba(255,248,225,.55);
+      font-size: .62rem; letter-spacing: 1.5px; text-transform: uppercase; font-weight: 600;
+    }
+    .trust-item span { font-size: 1.2rem; }
+
+    /* ═══════════════════════════════════════════════════
+       STATS STRIP
+    ═══════════════════════════════════════════════════ */
+    .stats-strip {
+      background: var(--rojo2);
+      padding: 18px 48px;
+      display: flex; justify-content: center; gap: 0; flex-wrap: wrap;
+    }
+    .stat-item {
+      display: flex; align-items: center; gap: 14px;
+      padding: 6px 40px;
+      border-right: 1px solid rgba(255,255,255,.12);
+    }
+    .stat-item:last-child { border-right: none; }
+    .stat-icon { font-size: 1.4rem; }
+    .stat-info { }
+    .stat-val {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.6rem; color: var(--amarillo);
+      letter-spacing: 2px; line-height: 1;
+    }
+    .stat-lbl {
+      font-size: .55rem; letter-spacing: 2.5px;
+      text-transform: uppercase; color: rgba(255,248,225,.5);
+      margin-top: 1px;
+    }
+
+    /* ═══════════════════════════════════════════════════
+       FEATURED SECTION  (like Pizza Hut "order now" cards)
+    ═══════════════════════════════════════════════════ */
+    #featured {
+      background: var(--fondo);
+      padding: 80px 24px;
+    }
+    .sec-inner { max-width: 1140px; margin: 0 auto; }
+    .sec-header { text-align: center; margin-bottom: 56px; }
+    .sec-eyebrow {
+      display: inline-block;
+      font-size: .6rem; letter-spacing: 5px;
+      text-transform: uppercase; color: var(--rojo);
+      border-top: 2px solid var(--rojo);
+      padding-top: 8px; margin-bottom: 14px;
+    }
+    .sec-header h2 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(2.6rem, 6vw, 4.2rem);
+      letter-spacing: 2px; color: var(--negro); line-height: 1;
+    }
+    .sec-header h2 em { color: var(--rojo); font-style: normal; }
+    .sec-header p {
+      font-family: 'Lora', serif; font-style: italic;
+      font-size: .95rem; color: var(--texto2);
+      margin-top: 12px;
+    }
+    .featured-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+    .feat-card {
+      position: relative; overflow: hidden;
+      border-radius: 8px;
+      aspect-ratio: 3/4;
+      cursor: pointer;
+      text-decoration: none;
+      display: block;
+    }
+    .feat-card img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      transition: transform .6s ease;
+    }
+    .feat-card:hover img { transform: scale(1.07); }
+    .feat-card-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to top, rgba(10,0,0,.88) 0%, rgba(10,0,0,.3) 45%, rgba(10,0,0,.1) 100%);
+    }
+    .feat-card-body {
+      position: absolute; bottom: 0; left: 0; right: 0;
+      padding: 28px 24px;
+    }
+    .feat-card-tag {
+      display: inline-block;
+      background: var(--rojo);
+      color: #fff; font-size: .55rem; font-weight: 700;
+      letter-spacing: 3px; text-transform: uppercase;
+      padding: 4px 12px; border-radius: 2px;
+      margin-bottom: 10px;
+    }
+    .feat-card-name {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 2rem; color: #fff; letter-spacing: 2px;
+      line-height: 1; margin-bottom: 6px;
+    }
+    .feat-card-desc {
+      font-family: 'Lora', serif; font-style: italic;
+      font-size: .8rem; color: rgba(255,248,225,.7); line-height: 1.6;
+      margin-bottom: 16px;
+    }
+    .feat-card-price {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 2.2rem; color: var(--amarillo); letter-spacing: 2px;
+    }
+    .feat-card-price span { font-size: 1rem; color: rgba(255,248,225,.5); margin-left: 4px; }
+    .feat-card-cta {
+      display: inline-flex; align-items: center; gap: 8px;
+      margin-top: 12px;
+      background: var(--rojo); color: #fff;
+      font-size: .65rem; font-weight: 700; letter-spacing: 2px;
+      text-transform: uppercase; padding: 10px 20px; border-radius: 3px;
+      transition: background .2s;
+    }
+    .feat-card:hover .feat-card-cta { background: var(--rojo2); }
+
+    /* ═══════════════════════════════════════════════════
+       PROMO BANNER  (like Pizza Hut's deal strip)
+    ═══════════════════════════════════════════════════ */
+    .promo-banner {
+      background: var(--negro);
+      padding: 48px 24px;
+      text-align: center;
+    }
+    .promo-banner h3 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      color: var(--amarillo);
+      letter-spacing: 3px; line-height: 1;
+      margin-bottom: 10px;
+    }
+    .promo-banner p {
+      font-family: 'Lora', serif; font-style: italic;
+      color: rgba(255,248,225,.6); font-size: .95rem;
+      margin-bottom: 24px;
+    }
+    .promo-chips { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; }
+    .chip {
+      background: rgba(255,214,0,.1);
+      border: 1px solid rgba(255,214,0,.25);
+      color: var(--amarillo);
+      font-size: .65rem; font-weight: 700;
+      letter-spacing: 2px; text-transform: uppercase;
+      padding: 10px 22px; border-radius: 100px;
+    }
+
+    /* ═══════════════════════════════════════════════════
+       MENÚ SECTION
+    ═══════════════════════════════════════════════════ */
+    #menu { background: var(--fondo2); padding: 80px 24px; }
+
+    /* Tab strip */
+    .cat-tabs-wrap {
+      display: flex; justify-content: center;
+      margin-bottom: 48px;
+      border-bottom: 2px solid rgba(183,28,28,.1);
+      gap: 0; flex-wrap: wrap;
+    }
+    .cat-tab {
+      background: none; border: none;
+      color: rgba(30,10,0,.45);
+      font-family: 'Montserrat', sans-serif;
+      font-size: .68rem; font-weight: 700;
+      letter-spacing: 2px; text-transform: uppercase;
+      padding: 14px 28px;
+      cursor: pointer;
+      position: relative;
+      transition: color .2s;
+    }
+    .cat-tab::after {
+      content: '';
+      position: absolute; bottom: -2px; left: 0; right: 0; height: 3px;
+      background: var(--rojo);
+      transform: scaleX(0);
+      transition: transform .2s;
+    }
+    .cat-tab:hover { color: var(--rojo); }
+    .cat-tab.active { color: var(--rojo); }
+    .cat-tab.active::after { transform: scaleX(1); }
+
+    /* Category section header */
+    .cat-section { display: none; }
+    .cat-section.active { display: block; }
+    .cat-section-header {
+      display: flex; align-items: center; gap: 16px;
+      margin-bottom: 32px;
+    }
+    .cat-section-icon { font-size: 2rem; }
+    .cat-section-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 2.2rem; letter-spacing: 3px;
+      color: var(--negro); line-height: 1;
+    }
+    .cat-section-sub {
+      font-family: 'Lora', serif; font-style: italic;
+      font-size: .85rem; color: var(--texto2);
+    }
+    .cat-divider {
+      flex: 1; height: 1px;
+      background: linear-gradient(to right, rgba(183,28,28,.2), transparent);
+    }
+
+    /* Menu grid - with image cards */
+    .menu-loading {
+      text-align: center; padding: 60px;
+      color: var(--texto2); font-family: 'Lora', serif; font-style: italic;
+    }
+    .loader-ring {
+      width: 36px; height: 36px;
+      border: 2px solid rgba(183,28,28,.2);
+      border-top-color: var(--rojo);
+      border-radius: 50%;
+      animation: spin .8s linear infinite;
+      margin: 0 auto 16px;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .menu-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 24px;
+    }
+    .menu-card {
+      background: #fff;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: var(--sombra);
+      transition: transform .25s, box-shadow .25s;
+      cursor: pointer;
+      text-decoration: none;
+      display: flex; flex-direction: column;
+      border: 1px solid rgba(0,0,0,.05);
+    }
+    .menu-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 12px 40px rgba(183,28,28,.15);
+    }
+    .menu-card-img-wrap {
+      position: relative; width: 100%; height: 200px; overflow: hidden;
+      background: var(--fondo3);
+    }
+    .menu-card-img-wrap img {
+      width: 100%; height: 100%; object-fit: cover;
+      transition: transform .45s ease;
+    }
+    .menu-card:hover .menu-card-img-wrap img { transform: scale(1.08); }
+    .menu-card-img-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to top, rgba(183,28,28,.2), transparent 50%);
+    }
+    .menu-card-cat-badge {
+      position: absolute; top: 12px; left: 12px;
+      background: var(--rojo); color: #fff;
+      font-size: .52rem; font-weight: 700;
+      letter-spacing: 2.5px; text-transform: uppercase;
+      padding: 4px 10px; border-radius: 2px;
+    }
+    .menu-card-body {
+      padding: 20px 18px 18px;
+      flex: 1; display: flex; flex-direction: column;
+    }
+    .menu-card-name {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.35rem; letter-spacing: 2px;
+      color: var(--negro); margin-bottom: 6px; line-height: 1.1;
+    }
+    .menu-card-ing {
+      font-family: 'Lora', serif; font-style: italic;
+      font-size: .8rem; color: var(--texto2);
+      line-height: 1.6; margin-bottom: 16px;
+      flex: 1; min-height: 40px;
+    }
+    .menu-prices { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 14px; }
+    .price-tag {
+      display: inline-flex; flex-direction: column; align-items: center;
+      background: rgba(183,28,28,.04);
+      border: 1px solid rgba(183,28,28,.12);
+      padding: 7px 14px; border-radius: 4px;
+    }
+    .price-tag-lbl {
+      font-size: .48rem; letter-spacing: 2.5px;
+      text-transform: uppercase; color: rgba(30,10,0,.4); margin-bottom: 3px;
+    }
+    .price-tag-val {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.3rem; letter-spacing: 1px; color: var(--rojo);
+    }
+    .price-tag.especial { background: rgba(255,214,0,.07); border-color: rgba(255,214,0,.35); }
+    .price-tag.especial .price-tag-val { color: #c8a500; }
+    .price-tag.pirata { background: rgba(183,28,28,.08); border-color: rgba(183,28,28,.35); }
+    .price-tag.pirata .price-tag-val { color: var(--rojo2); }
+    .menu-card-order {
+      display: flex; align-items: center; justify-content: space-between;
+      padding-top: 14px;
+      border-top: 1px solid rgba(0,0,0,.06);
+    }
+    .menu-card-order-text {
+      font-size: .62rem; font-weight: 700; letter-spacing: 2px;
+      text-transform: uppercase; color: var(--rojo);
+    }
+    .menu-card-order-arrow {
+      width: 32px; height: 32px;
+      background: var(--rojo); border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      color: #fff; font-size: .9rem;
+      transition: transform .2s, background .2s;
+    }
+    .menu-card:hover .menu-card-order-arrow {
+      transform: translateX(3px);
+      background: var(--rojo2);
+    }
+
+    /* ═══════════════════════════════════════════════════
+       HOW IT WORKS
+    ═══════════════════════════════════════════════════ */
+    #como { background: var(--fondo); padding: 80px 24px; }
+    .steps-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 24px;
+    }
+    .step-card {
+      background: #fff;
+      border: 1px solid rgba(0,0,0,.06);
+      border-radius: 8px;
+      padding: 36px 28px;
+      text-align: center;
+      box-shadow: var(--sombra);
+      position: relative;
+      transition: transform .25s, box-shadow .25s;
+    }
+    .step-card:hover { transform: translateY(-4px); box-shadow: var(--sombra2); }
+    .step-card::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0; height: 4px;
+      background: var(--rojo); border-radius: 8px 8px 0 0;
+    }
+    .step-num-big {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 5rem; color: rgba(183,28,28,.08);
+      line-height: 1; margin-bottom: 4px;
+    }
+    .step-icon-wrap {
+      width: 64px; height: 64px;
+      background: rgba(183,28,28,.07);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.8rem;
+      margin: 0 auto 18px;
+    }
+    .step-title {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 700; font-size: .82rem;
+      letter-spacing: 1.5px; text-transform: uppercase;
+      color: var(--negro); margin-bottom: 10px;
+    }
+    .step-desc {
+      font-family: 'Lora', serif; font-style: italic;
+      font-size: .85rem; color: var(--texto2); line-height: 1.75;
+    }
+    .steps-connector {
+      display: flex; align-items: center; justify-content: center;
+      padding-top: 32px; gap: 16px; color: rgba(183,28,28,.3);
+      font-size: .55rem; letter-spacing: 3px; text-transform: uppercase;
+    }
+    .steps-connector::before, .steps-connector::after {
+      content: ''; flex: 1; height: 1px; background: rgba(183,28,28,.12);
+    }
+
+    /* ═══════════════════════════════════════════════════
+       INFO / LOCATION
+    ═══════════════════════════════════════════════════ */
+    #info { background: var(--rojo2); padding: 80px 24px; }
+    #info .sec-eyebrow { color: var(--amarillo); border-top-color: rgba(255,214,0,.5); }
+    #info .sec-header h2 { color: #fff; }
+    #info .sec-header h2 em { color: var(--amarillo); }
+    #info .sec-header p { color: rgba(255,248,225,.6); }
+
+    .info-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 24px;
+    }
+    .info-card {
+      background: rgba(255,255,255,.07);
+      border: 1px solid rgba(255,255,255,.12);
+      border-radius: 8px;
+      padding: 32px 28px;
+      transition: background .2s;
+    }
+    .info-card:hover { background: rgba(255,255,255,.11); }
+    .info-card-header {
+      display: flex; align-items: center; gap: 14px;
+      margin-bottom: 24px;
+      padding-bottom: 18px;
+      border-bottom: 1px solid rgba(255,255,255,.1);
+    }
+    .info-card-icon {
+      width: 48px; height: 48px;
+      background: rgba(255,214,0,.12);
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.3rem;
+    }
+    .info-card h3 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.5rem; letter-spacing: 3px;
+      color: var(--amarillo);
+    }
+    .info-row {
+      display: flex; align-items: flex-start; gap: 14px;
+      padding: 11px 0;
+      border-bottom: 1px solid rgba(255,255,255,.06);
+    }
+    .info-row:last-child { border-bottom: none; }
+    .info-row-icon { font-size: 1rem; margin-top: 2px; flex-shrink: 0; }
+    .info-row-text { line-height: 1.6; }
+    .info-row-label {
+      font-family: 'Montserrat', sans-serif;
+      font-size: .62rem; font-weight: 700;
+      letter-spacing: 2px; text-transform: uppercase;
+      color: rgba(255,248,225,.45); margin-bottom: 3px; display: block;
+    }
+    .info-row-value {
+      font-family: 'Lora', serif;
+      font-size: .9rem; color: rgba(255,248,225,.85); line-height: 1.6;
+    }
+    .info-row-value strong { color: #fff; font-style: normal; }
+
+    /* ═══════════════════════════════════════════════════
+       CTA FINAL  (Pizza Hut-style big bold CTA)
+    ═══════════════════════════════════════════════════ */
+    #cta-final {
+      position: relative; overflow: hidden;
+      padding: 110px 24px;
+      text-align: center;
+      background: url('img/cta-bg.png') center/cover no-repeat;
+    }
+    #cta-final::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(135deg, rgba(139,0,0,.96) 0%, rgba(26,8,0,.92) 100%);
+    }
+    #cta-final .sec-inner { position: relative; z-index: 1; }
+    #cta-final .eyebrow-cta {
+      font-size: .65rem; letter-spacing: 5px;
+      text-transform: uppercase; color: rgba(255,214,0,.7);
+      font-weight: 600; margin-bottom: 16px; display: block;
+    }
+    #cta-final h2 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(3rem, 9vw, 7rem);
+      letter-spacing: 2px; line-height: .9;
+      margin-bottom: 22px; color: #fff;
+    }
+    #cta-final h2 em { color: var(--amarillo); font-style: normal; }
+    #cta-final p {
+      font-family: 'Lora', serif; font-style: italic;
+      font-size: 1.05rem; color: rgba(255,248,225,.65);
+      margin-bottom: 44px; max-width: 480px; margin-left: auto; margin-right: auto;
+    }
+    .cta-actions { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+    .btn-cta-main {
+      display: inline-flex; align-items: center; gap: 12px;
+      background: var(--amarillo); color: var(--negro);
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 800; font-size: .85rem;
+      letter-spacing: 2px; text-transform: uppercase;
+      padding: 20px 52px; border-radius: 4px;
+      text-decoration: none;
+      transition: all .25s;
+      box-shadow: 0 6px 28px rgba(255,214,0,.3);
+    }
+    .btn-cta-main:hover { background: var(--amarillo2); transform: translateY(-3px); box-shadow: 0 12px 36px rgba(255,214,0,.4); }
+    .btn-cta-ghost {
+      display: inline-flex; align-items: center; gap: 12px;
+      background: transparent; color: #fff;
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 600; font-size: .85rem;
+      letter-spacing: 2px; text-transform: uppercase;
+      padding: 20px 52px; border-radius: 4px;
+      text-decoration: none;
+      border: 1.5px solid rgba(255,255,255,.3);
+      transition: all .25s;
+    }
+    .btn-cta-ghost:hover { border-color: #fff; transform: translateY(-2px); }
+
+    /* ═══════════════════════════════════════════════════
+       FOOTER
+    ═══════════════════════════════════════════════════ */
+    footer {
+      background: var(--negro);
+      padding: 56px 48px 28px;
+    }
+    .footer-top {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr;
+      gap: 48px;
+      margin-bottom: 48px;
+    }
+    .footer-brand {}
+    .footer-logo {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 2rem; color: var(--amarillo);
+      letter-spacing: 3px; display: block; margin-bottom: 8px;
+    }
+    .footer-tagline {
+      font-family: 'Lora', serif; font-style: italic;
+      color: rgba(255,248,225,.35); font-size: .85rem; line-height: 1.7;
+      max-width: 280px;
+    }
+    .footer-social { display: flex; gap: 12px; margin-top: 20px; }
+    .social-btn {
+      width: 36px; height: 36px;
+      background: rgba(255,255,255,.06);
+      border: 1px solid rgba(255,255,255,.1);
+      border-radius: 6px;
+      display: flex; align-items: center; justify-content: center;
+      color: rgba(255,248,225,.4); font-size: .85rem;
+      text-decoration: none;
+      transition: background .2s, color .2s;
+    }
+    .social-btn:hover { background: var(--rojo); color: #fff; border-color: var(--rojo); }
+    .footer-col-title {
+      font-family: 'Montserrat', sans-serif;
+      font-size: .65rem; font-weight: 700;
+      letter-spacing: 3px; text-transform: uppercase;
+      color: rgba(255,248,225,.3);
+      margin-bottom: 18px;
+    }
+    .footer-links {
+      display: flex; flex-direction: column; gap: 10px;
+    }
+    .footer-links a {
+      text-decoration: none;
+      color: rgba(255,248,225,.5);
+      font-size: .82rem; line-height: 1;
+      transition: color .2s;
+    }
+    .footer-links a:hover { color: var(--amarillo); }
+    .footer-contact-item {
+      display: flex; align-items: flex-start; gap: 10px;
+      margin-bottom: 12px;
+    }
+    .footer-contact-item span:first-child { font-size: .95rem; margin-top: 1px; flex-shrink: 0; }
+    .footer-contact-item span:last-child {
+      color: rgba(255,248,225,.5); font-size: .82rem; line-height: 1.6;
+    }
+    .footer-bottom {
+      border-top: 1px solid rgba(255,255,255,.06);
+      padding-top: 24px;
+      display: flex; justify-content: space-between; align-items: center;
+      flex-wrap: wrap; gap: 12px;
+    }
+    .footer-copy {
+      font-size: .58rem; letter-spacing: 2px;
+      text-transform: uppercase;
+      color: rgba(255,248,225,.2);
+    }
+
+    /* ═══════════════════════════════════════════════════
+       WA FLOAT
+    ═══════════════════════════════════════════════════ */
+    .wa-float {
+      position: fixed; bottom: 28px; right: 28px; z-index: 300;
+      width: 60px; height: 60px;
+      background: #25D366; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      text-decoration: none; box-shadow: 0 4px 20px rgba(37,211,102,.5);
+      animation: waPulse 2.5s infinite;
+    }
+    @keyframes waPulse {
+      0%,100% { box-shadow: 0 4px 20px rgba(37,211,102,.5), 0 0 0 0 rgba(37,211,102,.3); }
+      50%      { box-shadow: 0 4px 20px rgba(37,211,102,.5), 0 0 0 14px rgba(37,211,102,0); }
+    }
+    .wa-float svg { width: 32px; height: 32px; fill: #fff; }
+    .wa-tooltip {
+      position: absolute; right: 72px; top: 50%;
+      transform: translateY(-50%);
+      background: #fff; color: var(--negro);
+      font-size: .65rem; font-weight: 700; letter-spacing: 1px;
+      padding: 8px 14px; border-radius: 6px; white-space: nowrap;
+      box-shadow: var(--sombra);
+      opacity: 0; pointer-events: none;
+      transition: opacity .2s;
+    }
+    .wa-float:hover .wa-tooltip { opacity: 1; }
+
+    /* ═══════════════════════════════════════════════════
+       RESPONSIVE
+    ═══════════════════════════════════════════════════ */
+    @media (max-width: 1024px) {
+      .footer-top { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 900px) {
+      .featured-grid { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 768px) {
+      header { padding: 0 20px; }
+      nav.main-nav { display: none; }
+      .nav-toggle { display: block; }
+      .hdr-cta .btn-hdr-order { display: none; }
+      .hero-content { padding: 60px 24px; }
+      .hero-trust { left: 24px; flex-wrap: wrap; gap: 16px; }
+      .stats-strip { padding: 14px 16px; gap: 0; }
+      .stat-item { padding: 6px 18px; }
+      .featured-grid { grid-template-columns: 1fr; }
+      .footer-top { grid-template-columns: 1fr; gap: 32px; }
+    }
+    @media (max-width: 480px) {
+      .menu-grid { grid-template-columns: 1fr; }
+      .steps-grid { grid-template-columns: 1fr; }
+      .stat-item:nth-child(n+4) { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── ANNOUNCEMENT BAR ─────────────────────────────────── -->
+<div class="announce-bar">
+  🌶 ¡Envío a domicilio disponible en Reynosa! · Pide antes de las 3:30 PM
+  <a href="orden.html">Pedir ahora →</a>
+</div>
+
+<!-- ── HEADER ────────────────────────────────────────────── -->
+<header>
+  <a class="logo-wrap" href="#">
+    <img src="logo.png" alt="Burrito Jack"/>
+    <div>
+      <div class="logo-txt">Burrito Jack</div>
+      <div class="logo-sub">Tex-Mex · Reynosa</div>
+    </div>
+  </a>
+
+  <nav class="main-nav">
+    <a href="#featured">Populares</a>
+    <a href="#menu">Menú</a>
+    <a href="#como">¿Cómo pedir?</a>
+    <a href="#info">Horarios</a>
+  </nav>
+
+  <div class="hdr-cta">
+    <a href="orden.html" class="btn-hdr-order">🌯 Ordenar ahora</a>
+    <button class="nav-toggle" onclick="toggleMobileNav()" aria-label="Menú">☰</button>
+  </div>
+</header>
+
+<!-- Mobile nav overlay -->
+<div class="mobile-nav" id="mobileNav">
+  <a href="#featured" onclick="closeMobileNav()">🔥 Lo Más Popular</a>
+  <a href="#menu" onclick="closeMobileNav()">📋 Menú Completo</a>
+  <a href="#como" onclick="closeMobileNav()">🛵 ¿Cómo pedir?</a>
+  <a href="#info" onclick="closeMobileNav()">🕐 Horarios</a>
+  <a href="orden.html" class="btn-mob-order">🌯 Ordenar Ahora</a>
+</div>
+
+<!-- ── HERO ──────────────────────────────────────────────── -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-overlay"></div>
+
+  <div class="hero-content">
+    <div class="hero-badge">🌶 El sabor de Reynosa</div>
+    <h1>
+      Los mejores<br/>
+      <em>Burritos</em><br/>
+      <span class="line-accent">Tex-Mex</span>
+    </h1>
+    <p class="hero-sub">
+      Hechos con tortilla de harina artesanal, guisados del día y el mejor sazón. Pide en línea y los recibís en tu puerta. 🔥
+    </p>
+    <div class="hero-actions">
+      <a href="orden.html" class="btn-primary">
+        <span>🌯</span> Hacer mi pedido
+      </a>
+      <a href="#menu" class="btn-ghost">
+        Ver el menú
+      </a>
+    </div>
+  </div>
+
+  <div class="hero-trust">
+    <div class="trust-item"><span>⭐</span> Favorito de Reynosa</div>
+    <div class="trust-item"><span>🛵</span> Envío $50 · Domicilio</div>
+    <div class="trust-item"><span>🕗</span> Abrimos 8 AM</div>
+  </div>
+</section>
+
+<!-- ── STATS STRIP ────────────────────────────────────────── -->
+<div class="stats-strip">
+  <div class="stat-item">
+    <div class="stat-icon">🌯</div>
+    <div class="stat-info">
+      <div class="stat-val">10+</div>
+      <div class="stat-lbl">Variedades</div>
+    </div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-icon">💰</div>
+    <div class="stat-info">
+      <div class="stat-val">$60</div>
+      <div class="stat-lbl">Desde</div>
+    </div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-icon">🕗</div>
+    <div class="stat-info">
+      <div class="stat-val">8AM–4PM</div>
+      <div class="stat-lbl">Horario Lun–Sáb</div>
+    </div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-icon">🛵</div>
+    <div class="stat-info">
+      <div class="stat-val">$50</div>
+      <div class="stat-lbl">Envío a domicilio</div>
+    </div>
+  </div>
+</div>
+
+<!-- ── FEATURED / LO MÁS POPULAR ─────────────────────────── -->
+<section id="featured">
+  <div class="sec-inner">
+    <div class="sec-header">
+      <span class="sec-eyebrow">Los clásicos que no pueden faltar</span>
+      <h2>Lo más <em>pedido</em></h2>
+      <p>Nuestros clientes siempre vuelven por estos. ¿Ya los probaste?</p>
+    </div>
+
+    <div class="featured-grid">
+      <!-- Card 1 -->
+      <a href="orden.html" class="feat-card">
+        <img src="img/feat-1.png"
+             onerror="this.src='https://images.unsplash.com/photo-1552332386-f8dd00dc2f85?w=800&auto=format&fit=crop&q=80';this.onerror=null"
+             alt="Puerco en Salsa Verde"/>
+        <div class="feat-card-overlay"></div>
+        <div class="feat-card-body">
+          <div class="feat-card-tag">🔥 El más pedido</div>
+          <div class="feat-card-name">Puerco en Salsa Verde</div>
+          <div class="feat-card-desc">Tortilla artesanal, guisado de puerco, salsa verde, frijoles y arroz</div>
+          <div class="feat-card-price">$70 <span>Clásico · $80 Pirata</span></div>
+          <div class="feat-card-cta">Pedir este →</div>
+        </div>
+      </a>
+
+      <!-- Card 2 -->
+      <a href="orden.html" class="feat-card">
+        <img src="img/feat-2.png"
+             onerror="this.src='https://images.unsplash.com/photo-1626700051175-6818013e1d4f?w=800&auto=format&fit=crop&q=80';this.onerror=null"
+             alt="Papa con Huevo"/>
+        <div class="feat-card-overlay"></div>
+        <div class="feat-card-body">
+          <div class="feat-card-tag">🍳 Desayuno</div>
+          <div class="feat-card-name">Papa con Huevo</div>
+          <div class="feat-card-desc">La combinación perfecta para arrancar el día con energía</div>
+          <div class="feat-card-price">$60 <span>Clásico</span></div>
+          <div class="feat-card-cta">Pedir →</div>
+        </div>
+      </a>
+
+      <!-- Card 3 -->
+      <a href="orden.html" class="feat-card">
+        <img src="img/feat-3.png"
+             onerror="this.src='https://images.unsplash.com/photo-1615870216519-2f9fa575fa5c?w=800&auto=format&fit=crop&q=80';this.onerror=null"
+             alt="Bistec Ranchero"/>
+        <div class="feat-card-overlay"></div>
+        <div class="feat-card-body">
+          <div class="feat-card-tag">🥩 Premium</div>
+          <div class="feat-card-name">Bistec Ranchero</div>
+          <div class="feat-card-desc">Bistec jugoso, salsa ranchera, frijoles y arroz. El favorito de los carnívoros</div>
+          <div class="feat-card-price">$80 <span>Clásico · $90 Pirata</span></div>
+          <div class="feat-card-cta">Pedir →</div>
+        </div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ── PROMO BANNER ───────────────────────────────────────── -->
+<div class="promo-banner">
+  <h3>¿Cuál es el tuyo hoy?</h3>
+  <p>Más de 10 variedades de burritos, listos para llevar o a domicilio</p>
+  <div class="promo-chips">
+    <div class="chip">🍳 Desayunos desde $60</div>
+    <div class="chip">🥩 Guisados desde $70</div>
+    <div class="chip">🏴 Opción Pirata disponible</div>
+    <div class="chip">🛵 Entrega a domicilio</div>
+  </div>
+</div>
+
+<!-- ── MENÚ COMPLETO ──────────────────────────────────────── -->
+<section id="menu">
+  <div class="sec-inner">
+    <div class="sec-header">
+      <span class="sec-eyebrow">Todos incluyen tortilla de harina artesanal</span>
+      <h2>Nuestro <em>Menú</em></h2>
+      <p>Clásico, Especial o Pirata — tú eliges el tamaño y el sabor.</p>
+    </div>
+
+    <div id="menu-container">
+      <div class="menu-loading">
+        <div class="loader-ring"></div>
+        <p>Cargando el menú...</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── ¿CÓMO PEDIR? ───────────────────────────────────────── -->
+<section id="como">
+  <div class="sec-inner">
+    <div class="sec-header">
+      <span class="sec-eyebrow">Súper rápido y fácil</span>
+      <h2>¿Cómo <em>pedir?</em></h2>
+      <p>Tu burrito favorito en 4 simples pasos.</p>
+    </div>
+
+    <div class="steps-grid">
+      <div class="step-card">
+        <div class="step-num-big">01</div>
+        <div class="step-icon-wrap">🛒</div>
+        <div class="step-title">Elige tu burrito</div>
+        <div class="step-desc">Explora el menú, selecciona tu favorito y la presentación: Clásico, Especial o Pirata.</div>
+      </div>
+      <div class="step-card">
+        <div class="step-num-big">02</div>
+        <div class="step-icon-wrap">📋</div>
+        <div class="step-title">Llena tus datos</div>
+        <div class="step-desc">Tu nombre, teléfono y dirección de entrega. ¡Listo en menos de un minuto!</div>
+      </div>
+      <div class="step-card">
+        <div class="step-num-big">03</div>
+        <div class="step-icon-wrap">💳</div>
+        <div class="step-title">Realiza tu pago</div>
+        <div class="step-desc">Transferencia SPEI o efectivo al momento de la entrega. Seguro y sencillo.</div>
+      </div>
+      <div class="step-card">
+        <div class="step-num-big">04</div>
+        <div class="step-icon-wrap">🛵</div>
+        <div class="step-title">Recibe en tu puerta</div>
+        <div class="step-desc">Te avisamos por WhatsApp cuando tu pedido esté en camino. ¡A disfrutar! 🔥</div>
+      </div>
+    </div>
+
+    <div class="steps-connector">O si prefieres, pasa a recoger directamente en el local</div>
+  </div>
+</section>
+
+<!-- ── INFO / HORARIOS ────────────────────────────────────── -->
+<section id="info">
+  <div class="sec-inner">
+    <div class="sec-header">
+      <span class="sec-eyebrow">Dónde y cuándo encontrarnos</span>
+      <h2>Encuéntranos <em>aquí</em></h2>
+      <p>Estamos en el corazón de Reynosa, listos para atenderte.</p>
+    </div>
+
+    <div class="info-grid">
+      <div class="info-card">
+        <div class="info-card-header">
+          <div class="info-card-icon">🕐</div>
+          <h3>Horarios</h3>
+        </div>
+        <div class="info-row">
+          <div class="info-row-icon">📅</div>
+          <div class="info-row-text">
+            <span class="info-row-label">Lunes a Viernes</span>
+            <span class="info-row-value"><strong>8:00 AM — 4:00 PM</strong></span>
+          </div>
+        </div>
+        <div class="info-row">
+          <div class="info-row-icon">📅</div>
+          <div class="info-row-text">
+            <span class="info-row-label">Sábado</span>
+            <span class="info-row-value"><strong>8:30 AM — 4:00 PM</strong></span>
+          </div>
+        </div>
+        <div class="info-row">
+          <div class="info-row-icon">❌</div>
+          <div class="info-row-text">
+            <span class="info-row-label">Domingo</span>
+            <span class="info-row-value">Cerrado — ¡Descansamos!</span>
+          </div>
+        </div>
+        <div class="info-row">
+          <div class="info-row-icon">⚠️</div>
+          <div class="info-row-text">
+            <span class="info-row-label">Último pedido a domicilio</span>
+            <span class="info-row-value"><strong>3:30 PM</strong> para garantizar entrega</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="info-card">
+        <div class="info-card-header">
+          <div class="info-card-icon">📍</div>
+          <h3>Ubicación</h3>
+        </div>
+        <div class="info-row">
+          <div class="info-row-icon">📌</div>
+          <div class="info-row-text">
+            <span class="info-row-label">Dirección</span>
+            <span class="info-row-value">Calle Tres Picos #102, Col. Fuentes<br/><strong>Atrás del 7-Eleven de la 20</strong></span>
+          </div>
+        </div>
+        <div class="info-row">
+          <div class="info-row-icon">📞</div>
+          <div class="info-row-text">
+            <span class="info-row-label">WhatsApp / Teléfono</span>
+            <span class="info-row-value"><strong>(899) 246-69-43</strong></span>
+          </div>
+        </div>
+        <div class="info-row">
+          <div class="info-row-icon">📱</div>
+          <div class="info-row-text">
+            <span class="info-row-label">Redes Sociales</span>
+            <span class="info-row-value"><strong>@BurritoJackReynosa</strong></span>
+          </div>
+        </div>
+        <div class="info-row">
+          <div class="info-row-icon">🛵</div>
+          <div class="info-row-text">
+            <span class="info-row-label">Domicilio</span>
+            <span class="info-row-value">Servicio disponible · <strong>$50 de envío</strong></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="info-card">
+        <div class="info-card-header">
+          <div class="info-card-icon">💳</div>
+          <h3>Pagos</h3>
+        </div>
+        <div class="info-row">
+          <div class="info-row-icon">🏦</div>
+          <div class="info-row-text">
+            <span class="info-row-label">Transferencia SPEI</span>
+            <span class="info-row-value">Te enviamos los datos al confirmar el pedido</span>
+          </div>
+        </div>
+        <div class="info-row">
+          <div class="info-row-icon">💵</div>
+          <div class="info-row-text">
+            <span class="info-row-label">Efectivo</span>
+            <span class="info-row-value">Al momento de la entrega o en el local</span>
+          </div>
+        </div>
+        <div class="info-row">
+          <div class="info-row-icon">✅</div>
+          <div class="info-row-text">
+            <span class="info-row-label">Confirmación</span>
+            <span class="info-row-value">Te avisamos por <strong>WhatsApp</strong> al confirmar</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── CTA FINAL ──────────────────────────────────────────── -->
+<section id="cta-final">
+  <div class="sec-inner">
+    <span class="eyebrow-cta">¿Listo para ordenar?</span>
+    <h2>¿Ya se te <em>antojó?</em></h2>
+    <p>Haz tu pedido ahora y lo entregamos en tu puerta. Caliente, fresco y con todo el sabor de Reynosa.</p>
+    <div class="cta-actions">
+      <a href="orden.html" class="btn-cta-main">🌯 Quiero mi burrito</a>
+      <a href="https://wa.me/528992466943" target="_blank" class="btn-cta-ghost">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        Escribir por WhatsApp
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ── FOOTER ─────────────────────────────────────────────── -->
+<footer>
+  <div class="footer-top">
+    <div class="footer-brand">
+      <span class="footer-logo">Burrito Jack</span>
+      <div class="footer-tagline">
+        El mejor sabor Tex-Mex de Reynosa, Tamaulipas. Burritos hechos con cariño y los mejores ingredientes desde el primer día.
+      </div>
+      <div class="footer-social">
+        <a href="https://wa.me/528992466943" class="social-btn" target="_blank" title="WhatsApp">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        </a>
+        <a href="#" class="social-btn" title="Facebook">f</a>
+        <a href="#" class="social-btn" title="Instagram">ig</a>
+      </div>
+    </div>
+
+    <div>
+      <div class="footer-col-title">Navegar</div>
+      <div class="footer-links">
+        <a href="#featured">Lo más popular</a>
+        <a href="#menu">Menú completo</a>
+        <a href="#como">¿Cómo pedir?</a>
+        <a href="#info">Horarios y ubicación</a>
+        <a href="orden.html">Hacer un pedido</a>
+      </div>
+    </div>
+
+    <div>
+      <div class="footer-col-title">Contacto</div>
+      <div class="footer-contact-item">
+        <span>📞</span>
+        <span>(899) 246-69-43</span>
+      </div>
+      <div class="footer-contact-item">
+        <span>📌</span>
+        <span>Calle Tres Picos #102,<br/>Col. Fuentes, Reynosa, Tamps.</span>
+      </div>
+      <div class="footer-contact-item">
+        <span>🕗</span>
+        <span>Lun–Vie 8AM–4PM<br/>Sáb 8:30AM–4PM</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <div class="footer-copy">© 2025 Burrito Jack · Reynosa, Tamaulipas · Todos los derechos reservados</div>
+    <div class="footer-copy">Hecho con 🌯 en Reynosa</div>
+  </div>
+</footer>
+
+<!-- ── WA FLOAT ────────────────────────────────────────────── -->
+<a href="https://wa.me/528992466943" target="_blank" class="wa-float" aria-label="WhatsApp">
+  <div class="wa-tooltip">¡Escríbenos!</div>
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+</a>
+
+<!-- ══════════════════════════════════════════════════
+     SCRIPT
+══════════════════════════════════════════════════ -->
+<script>
+  var GAS_URL   = 'https://script.google.com/macros/s/AKfycbyMbsEg61bm2vfcCnAVq3oXlrv5Yl-jd7-rQ6pmm4n3OyI5E7uaogVbsVuGay9HSeBJRQ/exec';
+  var ORDEN_URL = 'orden.html';
+
+  // ── GALERÍA DE IMÁGENES ──────────────────────────────────────
+  // Coloca tus fotos en la carpeta  img/  con estos nombres exactos.
+  // Si una imagen no existe, se usará automáticamente la foto de Unsplash como respaldo.
+  // ─────────────────────────────────────────────────────────────
+  var GALLERY = {
+    hero:    { local:'img/hero.png',    fallback:'https://images.unsplash.com/photo-1552332386-f8dd00dc2f85?w=1920&auto=format&fit=crop&q=80' },
+    ctaBg:   { local:'img/cta-bg.png',  fallback:'https://images.unsplash.com/photo-1565299585323-38d6b0865b47?w=1400&auto=format&fit=crop&q=80' },
+    'PLT-1': { local:'img/PLT-1.png',   fallback:'https://images.unsplash.com/photo-1626700051175-6818013e1d4f?w=600&auto=format&fit=crop&q=80' },
+    'PLT-2': { local:'img/PLT-2.png',   fallback:'https://images.unsplash.com/photo-1607532941433-304659e8198a?w=600&auto=format&fit=crop&q=80' },
+    'PLT-3': { local:'img/PLT-3.png',   fallback:'https://images.unsplash.com/photo-1484723091739-30a097e8f929?w=600&auto=format&fit=crop&q=80' },
+    'PLT-4': { local:'img/PLT-4.png',   fallback:'https://images.unsplash.com/photo-1565299585323-38d6b0865b47?w=600&auto=format&fit=crop&q=80' },
+    'PLT-5': { local:'img/PLT-5.png',   fallback:'https://images.unsplash.com/photo-1552332386-f8dd00dc2f85?w=600&auto=format&fit=crop&q=80' },
+    'PLT-6': { local:'img/PLT-6.png',   fallback:'https://images.unsplash.com/photo-1599974579688-8dbdd335c77f?w=600&auto=format&fit=crop&q=80' },
+    'PLT-7': { local:'img/PLT-7.png',   fallback:'https://images.unsplash.com/photo-1540420773420-3366772f4999?w=600&auto=format&fit=crop&q=80' },
+    'PLT-8': { local:'img/PLT-8.png',   fallback:'https://images.unsplash.com/photo-1547592180-85f173990554?w=600&auto=format&fit=crop&q=80' },
+    'PLT-9': { local:'img/PLT-9.png',   fallback:'https://images.unsplash.com/photo-1615870216519-2f9fa575fa5c?w=600&auto=format&fit=crop&q=80' },
+    'PLT-10':{ local:'img/PLT-10.png',  fallback:'https://images.unsplash.com/photo-1558030006-450675393462?w=600&auto=format&fit=crop&q=80' },
+    default: { local:'img/default.png', fallback:'https://images.unsplash.com/photo-1599974579688-8dbdd335c77f?w=600&auto=format&fit=crop&q=80' }
+  };
+
+  function galImg(id) {
+    var g = GALLERY[id] || GALLERY.default;
+    return 'src="' + g.local + '" onerror="this.src=\'' + g.fallback + '\';this.onerror=null"';
+  }
+
+  // Aplicar fondo hero con fallback automático
+  (function() {
+    var heroBg = document.querySelector('.hero-bg');
+    var ctaEl  = document.getElementById('cta-final');
+    function setBg(el, key) {
+      var t = new Image();
+      t.onload  = function() {};  // imagen local existe — CSS ya la usa
+      t.onerror = function() {
+        if (el) el.style.backgroundImage = "url('" + GALLERY[key].fallback + "')";
+      };
+      t.src = GALLERY[key].local;
+    }
+    setBg(heroBg, 'hero');
+    setBg(ctaEl,  'ctaBg');
+  })();
+
+  var MENU_FALLBACK = [
+    { id:'PLT-1',  nombre:'Papa con Huevo',        categoria:'Desayuno', precioClasico:60, precioEspecial:70, precioPirata:0,  ingredientes:'Tortilla de harina, papa, huevo' },
+    { id:'PLT-2',  nombre:'Papa, Chorizo y Huevo', categoria:'Desayuno', precioClasico:68, precioEspecial:70, precioPirata:0,  ingredientes:'Tortilla de harina, papa, chorizo, huevo' },
+    { id:'PLT-3',  nombre:'Salchicha con Huevo',   categoria:'Desayuno', precioClasico:60, precioEspecial:70, precioPirata:0,  ingredientes:'Tortilla de harina, salchicha, huevo' },
+    { id:'PLT-4',  nombre:'Jamón con Huevo',       categoria:'Desayuno', precioClasico:60, precioEspecial:70, precioPirata:0,  ingredientes:'Tortilla de harina, jamón, huevo' },
+    { id:'PLT-5',  nombre:'Puerco en Salsa Verde', categoria:'Guisado',  precioClasico:70, precioEspecial:0,  precioPirata:80, ingredientes:'Tortilla de harina, puerco, salsa verde, frijoles, arroz' },
+    { id:'PLT-6',  nombre:'Asado de Puerco',       categoria:'Guisado',  precioClasico:70, precioEspecial:0,  precioPirata:80, ingredientes:'Tortilla de harina, asado de puerco, frijoles, arroz' },
+    { id:'PLT-7',  nombre:'Chicharrón en Salsa',   categoria:'Guisado',  precioClasico:70, precioEspecial:0,  precioPirata:80, ingredientes:'Tortilla de harina, chicharrón, salsa, frijoles, arroz' },
+    { id:'PLT-8',  nombre:'Picadillo',              categoria:'Guisado',  precioClasico:70, precioEspecial:0,  precioPirata:80, ingredientes:'Tortilla de harina, picadillo, frijoles, arroz' },
+    { id:'PLT-9',  nombre:'Deshebrada',             categoria:'Guisado',  precioClasico:70, precioEspecial:0,  precioPirata:80, ingredientes:'Tortilla de harina, carne deshebrada, frijoles, arroz' },
+    { id:'PLT-10', nombre:'Bistec Ranchero',        categoria:'Guisado',  precioClasico:80, precioEspecial:0,  precioPirata:90, ingredientes:'Tortilla de harina, bistec, salsa ranchera, frijoles, arroz' }
+  ];
+
+  // CAT_IMAGES: fallback por categoría cuando el platillo no tiene ID en GALLERY
+  var CAT_IMAGES = {
+    'Desayuno': { local:'img/cat-desayuno.png', fallback:'https://images.unsplash.com/photo-1626700051175-6818013e1d4f?w=600&auto=format&fit=crop&q=80' },
+    'Guisado':  { local:'img/cat-guisado.png',  fallback:'https://images.unsplash.com/photo-1552332386-f8dd00dc2f85?w=600&auto=format&fit=crop&q=80' },
+    'Otros':    { local:'img/cat-otros.png',     fallback:'https://images.unsplash.com/photo-1599974579688-8dbdd335c77f?w=600&auto=format&fit=crop&q=80' }
+  };
+
+  function loadMenu() {
+    if (GAS_URL === 'https://script.google.com/macros/s/AKfycbyMbsEg61bm2vfcCnAVq3oXlrv5Yl-jd7-rQ6pmm4n3OyI5E7uaogVbsVuGay9HSeBJRQ/exec') { renderMenu(MENU_FALLBACK); return; }
+    var cbName = 'cb_' + Date.now();
+    var script = document.createElement('script');
+    var timer  = setTimeout(function() { cleanup(); renderMenu(MENU_FALLBACK); }, 6000);
+    window[cbName] = function(data) {
+      cleanup();
+      if (data && data.ok) renderMenu(data.platillos); else renderMenu(MENU_FALLBACK);
+    };
+    function cleanup() {
+      clearTimeout(timer); delete window[cbName];
+      if (script.parentNode) script.parentNode.removeChild(script);
+    }
+    script.onerror = function() { cleanup(); renderMenu(MENU_FALLBACK); };
+    script.src = GAS_URL + '?action=getPlatillos&callback=' + encodeURIComponent(cbName);
+    document.head.appendChild(script);
+  }
+
+  function renderMenu(platillos) {
+    var cats = {};
+    platillos.forEach(function(p) {
+      var c = p.categoria || 'Otros';
+      if (!cats[c]) cats[c] = [];
+      cats[c].push(p);
+    });
+
+    var catNames = Object.keys(cats);
+    var html = '';
+
+    // Tab strip
+    html += '<div class="cat-tabs-wrap">';
+    catNames.forEach(function(c, i) {
+      html += '<button class="cat-tab' + (i === 0 ? ' active' : '') + '" onclick="switchCat(\'' + esc(c) + '\')">' + catIcon(c) + ' ' + esc(c) + '</button>';
+    });
+    html += '</div>';
+
+    // Sections
+    catNames.forEach(function(c, i) {
+      html += '<div class="cat-section' + (i === 0 ? ' active' : '') + '" id="cat-' + c.replace(/\s/g,'_') + '">';
+      html += '<div class="cat-section-header">';
+      html += '<div class="cat-section-icon">' + catIcon(c) + '</div>';
+      html += '<div><div class="cat-section-title">' + esc(c) + '</div>';
+      html += '<div class="cat-section-sub">' + cats[c].length + ' opciones disponibles</div></div>';
+      html += '<div class="cat-divider"></div>';
+      html += '</div>';
+      html += '<div class="menu-grid">';
+      cats[c].forEach(function(p) {
+        // Busca imagen local por ID del platillo → categoría → default
+        var gEntry = GALLERY[p.id] || CAT_IMAGES[c] || GALLERY.default;
+        var imgAttrs = 'src="' + gEntry.local + '" onerror="this.src=\'' + gEntry.fallback + '\';this.onerror=null"';
+        html += '<div class="menu-card" onclick="window.location=\'orden.html\'">';
+        html += '<div class="menu-card-img-wrap">';
+        html += '<img ' + imgAttrs + ' alt="' + esc(p.nombre) + '" loading="lazy"/>';
+        html += '<div class="menu-card-img-overlay"></div>';
+        html += '<div class="menu-card-cat-badge">' + catIcon(c) + ' ' + esc(c) + '</div>';
+        html += '</div>';
+        html += '<div class="menu-card-body">';
+        html += '<div class="menu-card-name">' + esc(p.nombre) + '</div>';
+        html += '<div class="menu-card-ing">' + esc(p.ingredientes || '') + '</div>';
+        html += '<div class="menu-prices">';
+        html += '<div class="price-tag"><div class="price-tag-lbl">Clásico</div><div class="price-tag-val">$' + p.precioClasico + '</div></div>';
+        if (p.precioEspecial > 0) {
+          html += '<div class="price-tag especial"><div class="price-tag-lbl">Especial ✨</div><div class="price-tag-val">$' + p.precioEspecial + '</div></div>';
+        }
+        if (p.precioPirata > 0) {
+          html += '<div class="price-tag pirata"><div class="price-tag-lbl">Pirata 🏴</div><div class="price-tag-val">$' + p.precioPirata + '</div></div>';
+        }
+        html += '</div>';
+        html += '<div class="menu-card-order">';
+        html += '<span class="menu-card-order-text">Ordenar ahora</span>';
+        html += '<span class="menu-card-order-arrow">→</span>';
+        html += '</div>';
+        html += '</div></div>';
+      });
+      html += '</div></div>';
+    });
+
+    document.getElementById('menu-container').innerHTML = html;
+  }
+
+  function switchCat(name) {
+    document.querySelectorAll('.cat-tab').forEach(function(t) {
+      t.classList.toggle('active', t.textContent.trim().indexOf(name) !== -1);
+    });
+    document.querySelectorAll('.cat-section').forEach(function(s) {
+      s.classList.toggle('active', s.id === 'cat-' + name.replace(/\s/g,'_'));
+    });
+    document.getElementById('menu').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  function catIcon(c) {
+    var icons = { 'Desayuno': '🍳', 'Guisado': '🥩', 'Especial': '⭐', 'Otros': '🌯' };
+    return icons[c] || '🌯';
+  }
+
+  function esc(s) { return String(s||'').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+  function toggleMobileNav() {
+    document.getElementById('mobileNav').classList.toggle('open');
+  }
+  function closeMobileNav() {
+    document.getElementById('mobileNav').classList.remove('open');
+  }
+
+  // Close mobile nav on outside click
+  document.addEventListener('click', function(e) {
+    var nav = document.getElementById('mobileNav');
+    var toggle = document.querySelector('.nav-toggle');
+    if (nav.classList.contains('open') && !nav.contains(e.target) && e.target !== toggle) {
+      nav.classList.remove('open');
+    }
+  });
+
+  // Hero parallax (subtle)
+  window.addEventListener('scroll', function() {
+    var bg = document.querySelector('.hero-bg');
+    if (bg) bg.style.transform = 'scale(1.04) translateY(' + (window.scrollY * 0.15) + 'px)';
+  }, { passive: true });
+
+  loadMenu();
+</script>
+</body>
+</html>
