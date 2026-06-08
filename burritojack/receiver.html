@@ -211,27 +211,28 @@
         <div class="spei-grid">
           <div class="spei-item">
             <div class="spei-label">Institución</div>
-            <div class="spei-value"><!-- BANCO AQUÍ --></div>
+            <div class="spei-value" id="spei-banco">—</div>
           </div>
           <div class="spei-item">
             <div class="spei-label">Beneficiario</div>
-            <div class="spei-value"><!-- NOMBRE AQUÍ --></div>
+            <div class="spei-value" id="spei-beneficiario">—</div>
           </div>
           <div class="spei-item full">
             <div class="spei-label">CLABE Interbancaria</div>
-            <div class="spei-value mono" id="clabe-val"><!-- TU CLABE AQUÍ --></div>
+            <div class="spei-value mono" id="clabe-val">—</div>
             <button class="btn-copy" onclick="copiar('clabe-val', this)">Copiar</button>
           </div>
-          <div class="spei-item">
-            <div class="spei-label">Concepto</div>
-            <div class="spei-value" style="font-style:italic;color:var(--dim);font-family:'Lora',serif;">Pedido Burrito Jack</div>
+          <div class="spei-item full">
+            <div class="spei-label">Concepto de pago</div>
+            <div class="spei-value" id="spei-concepto" style="font-weight:700;color:var(--rojo);">—</div>
+            <button class="btn-copy" onclick="copiar('spei-concepto', this)">Copiar</button>
           </div>
           <div class="spei-item">
             <div class="spei-label">WhatsApp</div>
             <div class="spei-value">(899) 246-69-43</div>
           </div>
         </div>
-        <div class="note">⚠️ <strong>Importante:</strong> Envía la foto de tu <strong>comprobante por WhatsApp</strong> para confirmar y agendar tu entrega.</div>
+        <div class="note">⚠️ <strong>Importante:</strong> Usa tu nombre completo como concepto. Envía la foto de tu <strong>comprobante por WhatsApp</strong> para confirmar y agendar tu entrega.</div>
       </div>
     </div>
 
@@ -375,6 +376,11 @@
     if (metodo === 'efectivo') {
       document.getElementById('card-spei').style.display    = 'none';
       document.getElementById('card-efectivo').style.display = '';
+    } else {
+      // Mostrar nombre del cliente como concepto de pago
+      document.getElementById('spei-concepto').textContent = data.cliente || 'Pedido Burrito Jack';
+      // Cargar configuración de pago (banco, CLABE, beneficiario)
+      cargarConfigPago();
     }
 
     if (data.direccion && data.direccion !== 'Pasa a recoger') {
@@ -389,6 +395,41 @@
     );
     document.getElementById('btnWaPago').href = 'https://wa.me/' + WA_NUMBER + '?text=' + msgP;
     document.getElementById('vista-pago').style.display = '';
+  }
+
+  function cargarConfigPago() {
+    // Intentar cargar desde GAS primero
+    var cbName = 'cb_cfg_' + Date.now();
+    var url = GAS_URL + '?action=getConfig&key=metodosPago&callback=' + encodeURIComponent(cbName);
+    var script = document.createElement('script');
+    var timer = setTimeout(function() {
+      cleanup(); cargarConfigLocal();
+    }, 10000);
+    window[cbName] = function(data) {
+      cleanup();
+      if (data && data.ok && data.value) {
+        try { aplicarConfigPago(JSON.parse(data.value)); return; } catch(e) {}
+      }
+      cargarConfigLocal();
+    };
+    function cleanup() { clearTimeout(timer); delete window[cbName]; if (script.parentNode) script.parentNode.removeChild(script); }
+    script.onerror = function() { cleanup(); cargarConfigLocal(); };
+    script.src = url;
+    document.head.appendChild(script);
+  }
+
+  function cargarConfigLocal() {
+    var local = localStorage.getItem('bj_metodosPago');
+    if (local) {
+      try { aplicarConfigPago(JSON.parse(local)); } catch(e) {}
+    }
+  }
+
+  function aplicarConfigPago(cfg) {
+    if (!cfg) return;
+    if (cfg.banco)        { var el = document.getElementById('spei-banco');        if (el) el.textContent = cfg.banco; }
+    if (cfg.beneficiario) { var el2 = document.getElementById('spei-beneficiario'); if (el2) el2.textContent = cfg.beneficiario; }
+    if (cfg.clabe)        { var el3 = document.getElementById('clabe-val');          if (el3) el3.textContent = cfg.clabe; }
   }
 
   function mostrarError() {
