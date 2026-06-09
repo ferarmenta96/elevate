@@ -1,0 +1,844 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Manual de Usuario — Burrito Jack</title>
+  <link rel="icon" href="logo.png" type="image/png"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:wght@400;500;600;700&family=Lora:ital,wght@0,400;1,400&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
+    :root {
+      --rojo:#B71C1C; --rojo2:#8B0000;
+      --amarillo:#FFD600;
+      --negro:#1a0800;
+      --texto:#1C1C1C; --texto2:#555;
+      --fondo:#FFFFFF; --fondo2:#F8F4F0;
+      --borde:rgba(183,28,28,.12);
+    }
+    html { scroll-behavior:smooth; }
+    body { font-family:'Montserrat',sans-serif; background:var(--fondo); color:var(--texto); -webkit-font-smoothing:antialiased; }
+
+    /* ── LAYOUT ── */
+    .layout { display:flex; min-height:100vh; }
+
+    /* ── SIDEBAR ── */
+    .sidebar {
+      width:260px; flex-shrink:0;
+      background:var(--negro);
+      position:sticky; top:0; height:100vh;
+      overflow-y:auto; padding-bottom:32px;
+    }
+    .sb-logo { padding:22px 22px 18px; border-bottom:1px solid rgba(255,255,255,.07); margin-bottom:12px; }
+    .sb-logo-title { font-family:'Bebas Neue',sans-serif; font-size:1.6rem; color:var(--amarillo); letter-spacing:3px; }
+    .sb-logo-sub { font-size:.55rem; letter-spacing:3px; text-transform:uppercase; color:rgba(255,255,255,.25); margin-top:2px; }
+    .sb-section { padding:5px 22px 3px; font-size:.5rem; letter-spacing:4px; text-transform:uppercase; color:rgba(255,255,255,.22); font-weight:700; margin-top:14px; }
+    .sidebar a { display:flex; align-items:center; gap:9px; padding:8px 22px; text-decoration:none; color:rgba(255,255,255,.45); font-size:.7rem; font-weight:500; border-left:3px solid transparent; transition:all .15s; }
+    .sidebar a:hover { color:#fff; background:rgba(255,255,255,.05); }
+    .sidebar a.active { color:var(--amarillo); border-left-color:var(--amarillo); background:rgba(255,214,0,.06); }
+    .sb-icon { font-size:.95rem; width:18px; text-align:center; }
+
+    /* ── MAIN ── */
+    .main { flex:1; overflow-x:hidden; }
+    .topbar { background:#fff; border-bottom:1px solid var(--borde); padding:15px 44px; display:flex; justify-content:space-between; align-items:center; position:sticky; top:0; z-index:10; box-shadow:0 2px 10px rgba(0,0,0,.05); }
+    .topbar-title { font-family:'Bebas Neue',sans-serif; font-size:1.25rem; color:var(--rojo); letter-spacing:2px; }
+    .topbar-right { display:flex; gap:10px; align-items:center; }
+    .topbar-badge { background:rgba(183,28,28,.08); color:var(--rojo); font-size:.58rem; font-weight:700; letter-spacing:2px; text-transform:uppercase; padding:5px 12px; border:1px solid var(--borde); }
+    .btn-print { display:inline-flex; align-items:center; gap:6px; background:var(--rojo); color:#fff; font-size:.6rem; font-weight:700; letter-spacing:2px; text-transform:uppercase; padding:8px 18px; border:none; cursor:pointer; text-decoration:none; transition:background .2s; }
+    .btn-print:hover { background:var(--rojo2); }
+
+    /* ── CONTENT ── */
+    .content { padding:44px; max-width:860px; }
+
+    /* ── SECTION ── */
+    .section { margin-bottom:70px; scroll-margin-top:76px; }
+
+    /* ── HERO BANNER ── */
+    .hero-banner { background:var(--rojo2); border-radius:8px; padding:26px 28px; margin-bottom:28px; display:flex; align-items:center; gap:20px; }
+    .hero-banner-icon { font-size:2.6rem; flex-shrink:0; }
+    .hero-banner-label { font-size:.55rem; letter-spacing:4px; text-transform:uppercase; color:rgba(255,255,255,.45); margin-bottom:3px; }
+    .hero-banner h2 { font-family:'Bebas Neue',sans-serif; font-size:2rem; color:#fff; letter-spacing:2px; line-height:1; }
+    .hero-banner p { font-family:'Lora',serif; font-style:italic; color:rgba(255,255,255,.6); font-size:.88rem; margin-top:5px; }
+    .hero-banner-url { margin-left:auto; flex-shrink:0; text-align:right; }
+    .hero-banner-url .url-lbl { font-size:.52rem; letter-spacing:2px; text-transform:uppercase; color:rgba(255,255,255,.3); margin-bottom:5px; }
+    .hero-banner-url a { display:inline-block; background:rgba(255,255,255,.1); color:var(--amarillo); font-size:.6rem; font-weight:700; letter-spacing:1px; padding:7px 14px; border:1px solid rgba(255,214,0,.25); text-decoration:none; transition:background .2s; }
+    .hero-banner-url a:hover { background:rgba(255,255,255,.18); }
+
+    /* ── SEC TITLE ── */
+    .sec-title { font-family:'Bebas Neue',sans-serif; font-size:1.2rem; color:var(--negro); letter-spacing:2px; margin:28px 0 14px; display:flex; align-items:center; gap:10px; }
+    .sec-title::after { content:''; flex:1; height:1px; background:rgba(0,0,0,.07); }
+
+    /* ── STEPS ── */
+    .steps { display:flex; flex-direction:column; gap:0; }
+    .step { display:flex; gap:18px; align-items:flex-start; padding:16px 0; border-bottom:1px solid rgba(0,0,0,.06); }
+    .step:last-child { border-bottom:none; }
+    .step-num { width:34px; height:34px; flex-shrink:0; background:var(--rojo); color:#fff; border-radius:50%; display:flex; align-items:center; justify-content:center; font-family:'Bebas Neue',sans-serif; font-size:1.05rem; letter-spacing:1px; }
+    .step-title { font-weight:700; font-size:.82rem; color:var(--negro); margin-bottom:3px; }
+    .step-desc { font-size:.78rem; color:var(--texto2); line-height:1.65; }
+    .step-desc code { background:rgba(183,28,28,.07); color:var(--rojo); padding:1px 6px; font-size:.76rem; font-family:monospace; }
+    .step-desc strong { color:var(--negro); }
+
+    /* ── CARDS ── */
+    .cards { display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:14px; margin:16px 0 24px; }
+    .card { background:#fff; border:1px solid rgba(0,0,0,.07); border-radius:7px; padding:18px 16px; box-shadow:0 2px 10px rgba(0,0,0,.04); }
+    .card-icon { font-size:1.5rem; margin-bottom:8px; display:block; }
+    .card h4 { font-size:.78rem; font-weight:700; color:var(--negro); margin-bottom:5px; }
+    .card p { font-size:.75rem; color:var(--texto2); line-height:1.6; }
+
+    /* ── ALERT ── */
+    .alert { display:flex; gap:12px; align-items:flex-start; padding:14px 16px; margin:16px 0; font-size:.78rem; line-height:1.65; border-radius:5px; }
+    .alert-icon { font-size:1.1rem; flex-shrink:0; margin-top:1px; }
+    .alert-tip  { background:#F0FDF4; border:1px solid #BBF7D0; color:#166534; }
+    .alert-warn { background:#FFFBEB; border:1px solid #FDE68A; color:#92400E; }
+    .alert-info { background:#EFF6FF; border:1px solid #BFDBFE; color:#1E40AF; }
+    .alert-rojo { background:#FEF2F2; border:1px solid #FECACA; color:var(--rojo2); }
+
+    /* ── TABLE ── */
+    .tbl-wrap { overflow-x:auto; margin:16px 0; }
+    table { width:100%; border-collapse:collapse; font-size:.76rem; }
+    th { background:var(--rojo2); color:#fff; font-size:.6rem; letter-spacing:2px; text-transform:uppercase; padding:9px 13px; text-align:left; font-weight:700; }
+    td { padding:9px 13px; border-bottom:1px solid rgba(0,0,0,.06); color:var(--texto); }
+    tr:nth-child(even) td { background:var(--fondo2); }
+
+    /* ── BADGE ── */
+    .badge { display:inline-block; font-size:.58rem; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; padding:3px 9px; border-radius:100px; }
+    .badge-red    { background:rgba(183,28,28,.1);  color:var(--rojo2); }
+    .badge-green  { background:rgba(22,163,74,.1);  color:#15803D; }
+    .badge-yellow { background:rgba(234,179,8,.12); color:#854D0E; }
+
+    /* ── MOCKUP SCREENS ── */
+    .screen-mock { background:var(--fondo2); border:1px solid var(--borde); border-radius:6px; padding:16px 18px; margin:14px 0; font-size:.78rem; color:var(--texto2); }
+    .screen-mock-title { font-size:.55rem; letter-spacing:3px; text-transform:uppercase; color:var(--rojo); font-weight:700; margin-bottom:10px; }
+    .screen-row { display:flex; align-items:center; gap:10px; padding:7px 0; border-bottom:1px solid rgba(0,0,0,.05); }
+    .screen-row:last-child { border-bottom:none; }
+    .screen-label { font-size:.62rem; letter-spacing:1px; text-transform:uppercase; color:rgba(0,0,0,.35); width:110px; flex-shrink:0; }
+    .screen-val { font-weight:600; color:var(--negro); }
+
+    /* ── DIVIDER ── */
+    .divider { display:flex; align-items:center; gap:14px; color:rgba(0,0,0,.15); font-size:.58rem; letter-spacing:3px; text-transform:uppercase; margin:40px 0; }
+    .divider::before, .divider::after { content:''; flex:1; height:1px; background:rgba(0,0,0,.07); }
+
+    /* ── INTRO HERO ── */
+    .intro-hero { background:linear-gradient(135deg,var(--rojo2) 0%,#5a0000 100%); border-radius:10px; padding:40px 36px; margin-bottom:40px; }
+    .intro-hero-label { font-size:.58rem; letter-spacing:5px; text-transform:uppercase; color:rgba(255,214,0,.6); font-weight:700; margin-bottom:10px; }
+    .intro-hero h1 { font-family:'Bebas Neue',sans-serif; font-size:3rem; color:#fff; letter-spacing:2px; line-height:1.05; }
+    .intro-hero h1 span { color:var(--amarillo); }
+    .intro-hero p { font-family:'Lora',serif; font-style:italic; color:rgba(255,255,255,.65); font-size:.95rem; line-height:1.8; margin-top:12px; max-width:540px; }
+
+    /* ── ROLES GRID ── */
+    .roles { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin:20px 0; }
+    .role-card { border-radius:7px; padding:18px; }
+    .role-cliente { background:rgba(183,28,28,.04); border:1px solid rgba(183,28,28,.12); }
+    .role-admin   { background:rgba(26,8,0,.04);    border:1px solid rgba(26,8,0,.12); }
+    .role-title { font-family:'Bebas Neue',sans-serif; font-size:1.1rem; letter-spacing:2px; margin-bottom:8px; }
+    .role-cliente .role-title { color:var(--rojo); }
+    .role-admin   .role-title { color:var(--negro); }
+    .role-list { list-style:none; }
+    .role-list li { font-size:.76rem; color:var(--texto2); padding:3px 0; display:flex; gap:7px; }
+    .role-list li::before { content:'→'; color:var(--rojo); font-weight:700; flex-shrink:0; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width:900px) {
+      .sidebar { display:none; }
+      .content { padding:24px; }
+      .topbar  { padding:13px 22px; }
+      .hero-banner { flex-direction:column; }
+      .hero-banner-url { margin-left:0; text-align:left; }
+      .roles { grid-template-columns:1fr; }
+    }
+    @media print {
+      .sidebar,.topbar { display:none; }
+      .content { padding:20px; }
+    }
+  </style>
+</head>
+<body>
+<div class="layout">
+
+<!-- ══ SIDEBAR ══ -->
+<nav class="sidebar">
+  <div class="sb-logo">
+    <div class="sb-logo-title">Burrito Jack</div>
+    <div class="sb-logo-sub">Manual de Usuario</div>
+  </div>
+
+  <div class="sb-section">Inicio</div>
+  <a href="#inicio" class="active"><span class="sb-icon">🏠</span> Introducción</a>
+  <a href="#roles"><span class="sb-icon">👥</span> ¿Quién usa qué?</a>
+
+  <div class="sb-section">Para el cliente</div>
+  <a href="#menu"><span class="sb-icon">🌐</span> Ver el menú</a>
+  <a href="#pedido"><span class="sb-icon">🛒</span> Hacer un pedido</a>
+  <a href="#seguimiento"><span class="sb-icon">📦</span> Rastrear el pedido</a>
+  <a href="#pago"><span class="sb-icon">🏦</span> Cómo pagar</a>
+
+  <div class="sb-section">Para el personal</div>
+  <a href="#admin-acceso"><span class="sb-icon">🔐</span> Entrar al panel</a>
+  <a href="#crm"><span class="sb-icon">📋</span> Gestionar órdenes</a>
+  <a href="#estados"><span class="sb-icon">🔄</span> Cambiar estados</a>
+  <a href="#wa"><span class="sb-icon">💬</span> WhatsApp al cliente</a>
+  <a href="#metodos-pago"><span class="sb-icon">💳</span> Configurar pagos</a>
+  <a href="#nueva-orden"><span class="sb-icon">✏️</span> Crear orden manual</a>
+  <a href="#inventario"><span class="sb-icon">📦</span> Inventario MRP</a>
+
+  <div class="sb-section">Referencia</div>
+  <a href="#flujo"><span class="sb-icon">🔄</span> Flujo completo</a>
+  <a href="#tips"><span class="sb-icon">💡</span> Tips del día a día</a>
+</nav>
+
+<!-- ══ MAIN ══ -->
+<div class="main">
+  <div class="topbar">
+    <div class="topbar-title">📖 Manual de Usuario — Burrito Jack</div>
+    <div class="topbar-right">
+      <span class="topbar-badge">v1.0 · 2025</span>
+      <a class="btn-print" onclick="window.print()">🖨️ Imprimir</a>
+    </div>
+  </div>
+
+  <div class="content">
+
+    <!-- ══ INICIO ══ -->
+    <div class="section" id="inicio">
+      <div class="intro-hero">
+        <div class="intro-hero-label">Manual de operación</div>
+        <h1>Cómo usar<br/><span>Burrito Jack</span></h1>
+        <p>Todo lo que necesitas saber para operar el sistema de pedidos en línea, desde recibir un cliente hasta entregar su burrito. Sin tecnicismos.</p>
+      </div>
+
+      <div class="cards">
+        <div class="card"><span class="card-icon">📱</span><h4>Funciona en celular</h4><p>Todo el sistema está optimizado para usarse desde el teléfono, tanto el panel del negocio como la página del cliente.</p></div>
+        <div class="card"><span class="card-icon">⚡</span><h4>Se actualiza solo</h4><p>El CRM revisa los pedidos nuevos cada 15 segundos automáticamente. No necesitas recargar la página.</p></div>
+        <div class="card"><span class="card-icon">🌯</span><h4>Sin complicaciones</h4><p>El cliente hace su pedido, tú lo ves en el CRM, lo marcas como entregado. Así de sencillo.</p></div>
+        <div class="card"><span class="card-icon">🔗</span><h4>Link de seguimiento</h4><p>Cada orden genera un link único que le muestra al cliente el estado de su pedido en tiempo real.</p></div>
+      </div>
+    </div>
+
+    <!-- ══ ROLES ══ -->
+    <div class="section" id="roles">
+      <div class="sec-title">👥 ¿Quién usa qué?</div>
+      <div class="roles">
+        <div class="role-card role-cliente">
+          <div class="role-title">🙋 El Cliente</div>
+          <ul class="role-list">
+            <li>Entra a <strong>index.html</strong> para ver el menú</li>
+            <li>Hace su pedido en <strong>orden.html</strong></li>
+            <li>Ve el estado de su orden en <strong>receiver.html</strong></li>
+            <li>Paga por transferencia SPEI o efectivo</li>
+          </ul>
+        </div>
+        <div class="role-card role-admin">
+          <div class="role-title">🧑‍💼 El Personal</div>
+          <ul class="role-list">
+            <li>Entra al panel con contraseña desde <strong>index.html</strong></li>
+            <li>Ve y gestiona órdenes en <strong>crm.html</strong></li>
+            <li>Crea órdenes por teléfono en <strong>sender.html</strong></li>
+            <li>Controla el inventario en <strong>mrp.html</strong></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider">para el cliente</div>
+
+    <!-- ══ MENÚ ══ -->
+    <div class="section" id="menu">
+      <div class="hero-banner">
+        <div class="hero-banner-icon">🌐</div>
+        <div>
+          <div class="hero-banner-label">Página principal</div>
+          <h2>Ver el Menú</h2>
+          <p>La página de inicio que ven todos los clientes.</p>
+        </div>
+        <div class="hero-banner-url">
+          <div class="url-lbl">Dirección</div>
+          <a href="index.html" target="_blank">horussystemco.com/burritojack/</a>
+        </div>
+      </div>
+
+      <div class="cards">
+        <div class="card"><span class="card-icon">🔥</span><h4>Lo Más Pedido</h4><p>Sección con los 3 platillos más populares con foto, nombre y precio directo.</p></div>
+        <div class="card"><span class="card-icon">📋</span><h4>Menú completo</h4><p>Todas las categorías: Desayunos, Guisados y más. Cada platillo muestra sus 3 tipos de precio.</p></div>
+        <div class="card"><span class="card-icon">🕐</span><h4>Horarios e info</h4><p>Horarios del negocio, dirección, número de teléfono y métodos de pago aceptados.</p></div>
+        <div class="card"><span class="card-icon">💬</span><h4>Botón WhatsApp</h4><p>El botón verde flotante abre WhatsApp directo al número del negocio para preguntas rápidas.</p></div>
+      </div>
+
+      <div class="alert alert-tip">
+        <span class="alert-icon">✅</span>
+        <div>El botón <strong>"🌯 Ordenar ahora"</strong> en la parte superior lleva al cliente directamente al formulario de pedido.</div>
+      </div>
+    </div>
+
+    <!-- ══ PEDIDO ══ -->
+    <div class="section" id="pedido">
+      <div class="hero-banner">
+        <div class="hero-banner-icon">🛒</div>
+        <div>
+          <div class="hero-banner-label">Formulario de pedido</div>
+          <h2>Hacer un Pedido</h2>
+          <p>Así hace su pedido el cliente paso a paso.</p>
+        </div>
+        <div class="hero-banner-url">
+          <div class="url-lbl">Dirección</div>
+          <a href="orden.html" target="_blank">…/burritojack/orden</a>
+        </div>
+      </div>
+
+      <div class="steps">
+        <div class="step">
+          <div class="step-num">1</div>
+          <div>
+            <div class="step-title">Seleccionar platillos</div>
+            <div class="step-desc">El cliente ve todos los platillos por categoría. Hace clic en uno, elige el <strong>tipo</strong> (Clásico, Especial o Pirata) y la <strong>cantidad</strong>. Los platillos elegidos aparecen en el resumen de la derecha.</div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <div>
+            <div class="step-title">Elegir tipo de entrega</div>
+            <div class="step-desc">El cliente elige <strong>🛵 A domicilio</strong> (se agrega $50 de envío y aparece campo de dirección) o <strong>🥡 Pasar a recoger</strong> (sin costo extra).</div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <div>
+            <div class="step-title">Llenar sus datos</div>
+            <div class="step-desc">Escribe su <strong>nombre completo</strong>, su <strong>número de teléfono/WhatsApp</strong> (con selector de país: 🇲🇽 +52 México o 🇺🇸 +1 EE.UU.) y la dirección si pidió domicilio.</div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">4</div>
+          <div>
+            <div class="step-title">Elegir método de pago</div>
+            <div class="step-desc">Selecciona <strong>Transferencia SPEI</strong> o <strong>Efectivo al recibir</strong> según lo que hayas configurado en el panel de Métodos de Pago.</div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">5</div>
+          <div>
+            <div class="step-title">Confirmar pedido</div>
+            <div class="step-desc">Hace clic en <strong>"Confirmar pedido"</strong>. El sistema guarda la orden y lo lleva automáticamente a su página de seguimiento.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="alert alert-info">
+        <span class="alert-icon">💡</span>
+        <div>El <strong>resumen del pedido</strong> a la derecha se actualiza en tiempo real mientras el cliente agrega o quita platillos. El total incluye automáticamente el costo de envío si eligió domicilio.</div>
+      </div>
+    </div>
+
+    <!-- ══ SEGUIMIENTO ══ -->
+    <div class="section" id="seguimiento">
+      <div class="hero-banner">
+        <div class="hero-banner-icon">📦</div>
+        <div>
+          <div class="hero-banner-label">Página del cliente</div>
+          <h2>Rastrear el Pedido</h2>
+          <p>El cliente ve aquí el estado de su orden en tiempo real.</p>
+        </div>
+        <div class="hero-banner-url">
+          <div class="url-lbl">Link con ID de orden</div>
+          <a href="#">…/receiver?id=BJ-XXXXX</a>
+        </div>
+      </div>
+
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>Estado</th><th>Color</th><th>Lo que ve el cliente</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><span class="badge badge-yellow">⏳ Pendiente</span></td>
+              <td>Fondo rojo oscuro</td>
+              <td>Los datos bancarios para hacer la transferencia SPEI (banco, CLABE, beneficiario). Su nombre aparece como concepto de pago.</td>
+            </tr>
+            <tr>
+              <td><span class="badge badge-green">🛵 En camino</span></td>
+              <td>Fondo verde oscuro</td>
+              <td>Pantalla animada "¡Tu pedido va en camino!" con el detalle de lo que pidió.</td>
+            </tr>
+            <tr>
+              <td><span class="badge badge-red">✅ Entregado</span></td>
+              <td>Fondo dorado</td>
+              <td>Pantalla de confirmación "¡Buen provecho!" con opción de hacer otro pedido.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="alert alert-tip">
+        <span class="alert-icon">🔄</span>
+        <div>La página <strong>se actualiza sola cada 30 segundos</strong>. El cliente no necesita recargar — cuando tú cambias el estado en el CRM, él lo ve automáticamente.</div>
+      </div>
+    </div>
+
+    <!-- ══ PAGO ══ -->
+    <div class="section" id="pago">
+      <div class="hero-banner">
+        <div class="hero-banner-icon">🏦</div>
+        <div>
+          <div class="hero-banner-label">Proceso de pago</div>
+          <h2>Cómo Paga el Cliente</h2>
+          <p>Lo que hace el cliente para confirmar su pedido.</p>
+        </div>
+      </div>
+
+      <div class="sec-title">Transferencia SPEI</div>
+      <div class="steps">
+        <div class="step">
+          <div class="step-num">1</div>
+          <div>
+            <div class="step-title">Ve la pantalla de pago</div>
+            <div class="step-desc">El cliente llega a su página de seguimiento y ve los datos bancarios: banco, beneficiario, CLABE y su nombre como concepto. Puede copiar la CLABE con un toque.</div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <div>
+            <div class="step-title">Hace la transferencia</div>
+            <div class="step-desc">Entra a su banco, hace la transferencia SPEI usando los datos que aparecen. Usa su nombre como concepto para que puedas identificarla fácilmente.</div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <div>
+            <div class="step-title">Manda el comprobante por WhatsApp</div>
+            <div class="step-desc">Toca el botón verde <strong>"Enviar comprobante"</strong> que abre WhatsApp directo al número del negocio. El cliente adjunta la foto del comprobante.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="sec-title">Pago en efectivo</div>
+      <div class="alert alert-info">
+        <span class="alert-icon">💵</span>
+        <div>Si el cliente eligió efectivo, su pantalla muestra un mensaje indicando que tenga el monto exacto listo al momento de la entrega. No hay transferencia bancaria — se paga al repartidor.</div>
+      </div>
+    </div>
+
+    <div class="divider">para el personal</div>
+
+    <!-- ══ ACCESO ADMIN ══ -->
+    <div class="section" id="admin-acceso">
+      <div class="hero-banner">
+        <div class="hero-banner-icon">🔐</div>
+        <div>
+          <div class="hero-banner-label">Acceso interno</div>
+          <h2>Entrar al Panel</h2>
+          <p>Cómo acceder al área de administración desde la página principal.</p>
+        </div>
+      </div>
+
+      <div class="steps">
+        <div class="step">
+          <div class="step-num">1</div>
+          <div>
+            <div class="step-title">Entra a la página principal</div>
+            <div class="step-desc">Ve a <code>horussystemco.com/burritojack/</code> — la misma que ven los clientes.</div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <div>
+            <div class="step-title">Haz clic en "⚙️ Admin"</div>
+            <div class="step-desc">El botón está en la esquina superior derecha del encabezado. En celular aparece en el menú hamburguesa (☰) al final.</div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <div>
+            <div class="step-title">Escribe la contraseña</div>
+            <div class="step-desc">Aparece una ventana de acceso. Escribe la contraseña y presiona <strong>Enter</strong> o el botón <strong>"Entrar al panel"</strong>.</div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">4</div>
+          <div>
+            <div class="step-title">Accedes al CRM</div>
+            <div class="step-desc">Si la contraseña es correcta, entras directo al panel de órdenes. Desde ahí puedes navegar al MRP o al creador de órdenes.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="alert alert-rojo">
+        <span class="alert-icon">🔒</span>
+        <div><strong>No compartas la contraseña</strong> con los clientes. Es exclusiva para el personal del negocio. Si cierras el navegador o la pestaña, tendrás que volver a ingresar.</div>
+      </div>
+    </div>
+
+    <!-- ══ CRM ══ -->
+    <div class="section" id="crm">
+      <div class="hero-banner">
+        <div class="hero-banner-icon">📋</div>
+        <div>
+          <div class="hero-banner-label">Panel principal</div>
+          <h2>Gestionar Órdenes</h2>
+          <p>El corazón del sistema — aquí ves y controlas todos los pedidos.</p>
+        </div>
+        <div class="hero-banner-url">
+          <div class="url-lbl">Solo personal</div>
+          <a href="crm.html" target="_blank">…/burritojack/crm</a>
+        </div>
+      </div>
+
+      <div class="sec-title">Lo que ves al entrar</div>
+      <div class="cards">
+        <div class="card"><span class="card-icon">📊</span><h4>Barra de estadísticas</h4><p>En la parte superior: total de órdenes, cuántas están pendientes, en camino, entregadas e ingresos del día.</p></div>
+        <div class="card"><span class="card-icon">🔍</span><h4>Filtros y búsqueda</h4><p>Filtra por estado (Todos / Pendientes / En camino / Entregados) o escribe el nombre del cliente para encontrarlo rápido.</p></div>
+        <div class="card"><span class="card-icon">🃏</span><h4>Tarjetas de órdenes</h4><p>Cada pedido muestra: nombre del cliente, lo que pidió, hora, teléfono, dirección y método de pago.</p></div>
+        <div class="card"><span class="card-icon">🔄</span><h4>Auto-actualización</h4><p>Se refresca solo cada 15 segundos. También puedes presionar el botón <strong>"Actualizar"</strong> en cualquier momento.</p></div>
+      </div>
+
+      <div class="sec-title">Información en cada tarjeta de orden</div>
+      <div class="screen-mock">
+        <div class="screen-mock-title">Ejemplo de tarjeta</div>
+        <div class="screen-row"><span class="screen-label">Nombre</span><span class="screen-val">CYNTHIA</span></div>
+        <div class="screen-row"><span class="screen-label">Pedido</span><span class="screen-val">1x Papa con Huevo (Especial) | Envío a domicilio $50</span></div>
+        <div class="screen-row"><span class="screen-label">Hora</span><span class="screen-val">08-jun, 04:29 p.m.</span></div>
+        <div class="screen-row"><span class="screen-label">Teléfono</span><span class="screen-val">+19562726415</span></div>
+        <div class="screen-row"><span class="screen-label">Dirección</span><span class="screen-val">909 E la Cantera</span></div>
+        <div class="screen-row"><span class="screen-label">Pago</span><span class="screen-val">SPEI / Transferencia</span></div>
+        <div class="screen-row"><span class="screen-label">Monto</span><span class="screen-val" style="color:var(--rojo);font-family:'Bebas Neue',sans-serif;font-size:1.1rem;">$120</span></div>
+      </div>
+    </div>
+
+    <!-- ══ ESTADOS ══ -->
+    <div class="section" id="estados">
+      <div class="sec-title">🔄 Cambiar el Estado de una Orden</div>
+      <p style="font-size:.8rem;color:var(--texto2);line-height:1.7;margin-bottom:18px;">Cada tarjeta de orden tiene botones para avanzar el estado. El cliente lo ve en tiempo real en su página de seguimiento.</p>
+
+      <div class="steps">
+        <div class="step">
+          <div class="step-num">1</div>
+          <div>
+            <div class="step-title">Orden llega — Estado: Pendiente ⏳</div>
+            <div class="step-desc">La orden entra con estado <strong>Pendiente</strong>. El cliente está esperando confirmar su pago. Cuando recibas el comprobante por WhatsApp y lo verifiques, avanza al siguiente estado.</div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <div>
+            <div class="step-title">Pago confirmado → "🛵 En camino"</div>
+            <div class="step-desc">Haz clic en el botón <strong>"🛵 En camino"</strong> de la tarjeta. El cliente ve inmediatamente la pantalla verde en su receiver. Úsalo cuando confirmes el pago o cuando el pedido ya salió a entregar.</div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <div>
+            <div class="step-title">Entregado → "✅ Entregado"</div>
+            <div class="step-desc">Cuando el pedido fue entregado, haz clic en <strong>"✅ Entregado"</strong>. La tarjeta se opacará levemente y el cliente verá la pantalla dorada de confirmación.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="alert alert-warn">
+        <span class="alert-icon">⚠️</span>
+        <div>Los cambios de estado <strong>no se pueden revertir</strong> desde la interfaz. Una vez marcado como Entregado no hay botón de regreso. Asegúrate antes de cambiar el estado.</div>
+      </div>
+    </div>
+
+    <!-- ══ WHATSAPP ══ -->
+    <div class="section" id="wa">
+      <div class="sec-title">💬 Enviar WhatsApp al Cliente</div>
+      <p style="font-size:.8rem;color:var(--texto2);line-height:1.7;margin-bottom:18px;">Cada tarjeta tiene un botón verde <strong>"📲 WA Cliente"</strong> que abre WhatsApp directo al número que el cliente registró en su pedido.</p>
+
+      <div class="steps">
+        <div class="step">
+          <div class="step-num">1</div>
+          <div>
+            <div class="step-title">Haz clic en "WA Cliente"</div>
+            <div class="step-desc">Se abre WhatsApp (web o app) directo al número del cliente. El mensaje ya viene pre-llenado con el saludo, el detalle del pedido y el <strong>link de seguimiento</strong>.</div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <div>
+            <div class="step-title">El mensaje incluye el link</div>
+            <div class="step-desc">El cliente recibe algo como: <em>"Hola Cynthia, tu pedido ya va en camino 🛵 — Rastrea tu pedido aquí: https://horussystemco.com/burritojack/receiver?id=BJ-..."</em> para que pueda ver el estado en vivo.</div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <div>
+            <div class="step-title">Edita si quieres y envía</div>
+            <div class="step-desc">Puedes modificar el texto antes de enviarlo. Luego presiona enviar en WhatsApp como cualquier mensaje normal.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="alert alert-tip">
+        <span class="alert-icon">💡</span>
+        <div>Si el cliente puso su número con código <strong>+52 (México)</strong> o <strong>+1 (EE.UU.)</strong>, el botón WA lo detecta automáticamente y abre la conversación correcta.</div>
+      </div>
+
+      <div class="sec-title">Copiar link de seguimiento</div>
+      <p style="font-size:.8rem;color:var(--texto2);line-height:1.7;">El botón <strong>"Copiar link"</strong> copia al portapapeles el link del receiver del cliente para que puedas pegarlo en cualquier chat, SMS o donde necesites.</p>
+    </div>
+
+    <!-- ══ MÉTODOS DE PAGO ══ -->
+    <div class="section" id="metodos-pago">
+      <div class="hero-banner">
+        <div class="hero-banner-icon">💳</div>
+        <div>
+          <div class="hero-banner-label">Configuración de pagos</div>
+          <h2>Configurar Métodos de Pago</h2>
+          <p>Aquí defines los datos bancarios que ven los clientes al pagar.</p>
+        </div>
+      </div>
+
+      <div class="steps">
+        <div class="step">
+          <div class="step-num">1</div>
+          <div>
+            <div class="step-title">Abre el CRM y toca "⚙️ Métodos de Pago"</div>
+            <div class="step-desc">El botón está en la esquina superior derecha del encabezado del CRM. Se abre un panel flotante.</div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <div>
+            <div class="step-title">Llena los datos de SPEI</div>
+            <div class="step-desc">Escribe el <strong>nombre de tu banco</strong> (ej. BBVA), el <strong>nombre del beneficiario</strong> (tu nombre o el del negocio) y los <strong>18 dígitos de la CLABE</strong>. Activa el checkbox para habilitar SPEI.</div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <div>
+            <div class="step-title">Zelle o CashApp (opcional)</div>
+            <div class="step-desc">Si aceptas pagos en dólares desde EE.UU., llena también los datos de Zelle y/o CashApp y activa su checkbox.</div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">4</div>
+          <div>
+            <div class="step-title">Guarda la configuración</div>
+            <div class="step-desc">Haz clic en <strong>"💾 Guardar Configuración"</strong>. Verás el mensaje <em>"✓ Guardado en la nube"</em>. A partir de ese momento todos los clientes que abran su receiver verán tus datos bancarios actualizados.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="alert alert-warn">
+        <span class="alert-icon">⚠️</span>
+        <div><strong>Importante:</strong> Configura los datos bancarios la primera vez antes de recibir pedidos. Si no están configurados, el cliente verá "—" en los campos de la transferencia y no sabrá a dónde enviar el dinero.</div>
+      </div>
+
+      <div class="alert alert-info">
+        <span class="alert-icon">🏦</span>
+        <div>El <strong>concepto de pago</strong> se llena automáticamente con el nombre del cliente. Así puedes identificar fácilmente qué transferencia corresponde a qué pedido cuando revises tu banco.</div>
+      </div>
+    </div>
+
+    <!-- ══ NUEVA ORDEN ══ -->
+    <div class="section" id="nueva-orden">
+      <div class="hero-banner">
+        <div class="hero-banner-icon">✏️</div>
+        <div>
+          <div class="hero-banner-label">Pedidos por teléfono</div>
+          <h2>Crear Orden Manual</h2>
+          <p>Para clientes que llaman por teléfono o llegan al local.</p>
+        </div>
+        <div class="hero-banner-url">
+          <div class="url-lbl">Solo personal</div>
+          <a href="sender.html" target="_blank">…/burritojack/sender</a>
+        </div>
+      </div>
+
+      <div class="cards">
+        <div class="card"><span class="card-icon">📞</span><h4>Pedido por teléfono</h4><p>El cliente llama, tú registras aquí su pedido mientras hablas con él. Sin que él tenga que usar la web.</p></div>
+        <div class="card"><span class="card-icon">🏪</span><h4>Pedido en mostrador</h4><p>El cliente llega al local. Registras su pedido rápidamente y le mandas el link por WhatsApp.</p></div>
+      </div>
+
+      <div class="steps">
+        <div class="step">
+          <div class="step-num">1</div>
+          <div>
+            <div class="step-title">Selecciona los platillos</div>
+            <div class="step-desc">Haz clic en cada platillo que pida el cliente. Elige el tipo (Clásico / Especial / Pirata) y la cantidad.</div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <div>
+            <div class="step-title">Llena los datos del cliente</div>
+            <div class="step-desc">Nombre, teléfono (con selector de país +52/+1), tipo de entrega, dirección si es domicilio y método de pago.</div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <div>
+            <div class="step-title">Crea la orden</div>
+            <div class="step-desc">Presiona <strong>"Crear orden"</strong>. La orden aparece inmediatamente en el CRM.</div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">4</div>
+          <div>
+            <div class="step-title">Manda el link al cliente</div>
+            <div class="step-desc">El sistema genera el link de seguimiento. Cópialo y mándalo por WhatsApp al cliente para que pueda ver el estado de su pedido en tiempo real.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ INVENTARIO ══ -->
+    <div class="section" id="inventario">
+      <div class="hero-banner">
+        <div class="hero-banner-icon">📦</div>
+        <div>
+          <div class="hero-banner-label">Control de stock</div>
+          <h2>Inventario MRP</h2>
+          <p>Controla los insumos de tu cocina. Se descuenta automático con cada pedido.</p>
+        </div>
+        <div class="hero-banner-url">
+          <div class="url-lbl">Solo personal</div>
+          <a href="mrp.html" target="_blank">…/burritojack/mrp</a>
+        </div>
+      </div>
+
+      <div class="cards">
+        <div class="card"><span class="card-icon">📊</span><h4>Ver stock actual</h4><p>Lista de todos los insumos (tortillas, carne, huevo…) con la cantidad disponible. En rojo cuando está por agotarse.</p></div>
+        <div class="card"><span class="card-icon">➕</span><h4>Registrar compra</h4><p>Cuando vas al mercado, registra aquí lo que compraste para que el inventario quede actualizado.</p></div>
+        <div class="card"><span class="card-icon">⚡</span><h4>Descuento automático</h4><p>Cada vez que llega un pedido, el sistema descuenta los insumos que usa ese platillo. Sin hacer nada tú.</p></div>
+        <div class="card"><span class="card-icon">📉</span><h4>Historial</h4><p>Registro de todas las entradas y salidas del inventario con fecha y motivo.</p></div>
+      </div>
+
+      <div class="sec-title">Cómo registrar una compra de insumos</div>
+      <div class="steps">
+        <div class="step">
+          <div class="step-num">1</div>
+          <div>
+            <div class="step-title">Entra al MRP</div>
+            <div class="step-desc">Ve a la sección <strong>Inventario</strong> y busca el insumo que compraste (ej: Tortilla de harina, Papa, Bistec…).</div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <div>
+            <div class="step-title">Toca "+ Entrada"</div>
+            <div class="step-desc">Haz clic en el botón de entrada junto al insumo. Escribe la cantidad que compraste.</div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <div>
+            <div class="step-title">Confirma</div>
+            <div class="step-desc">El stock se actualiza inmediatamente. La alerta roja desaparece si el stock ya está en nivel normal.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider">referencia rápida</div>
+
+    <!-- ══ FLUJO COMPLETO ══ -->
+    <div class="section" id="flujo">
+      <div class="sec-title">🔄 Flujo Completo de un Pedido</div>
+      <p style="font-size:.8rem;color:var(--texto2);line-height:1.7;margin-bottom:18px;">De principio a fin, lo que pasa con cada orden.</p>
+
+      <div class="steps">
+        <div class="step">
+          <div class="step-num">1</div>
+          <div><div class="step-title">Cliente entra a la página y elige su burrito</div><div class="step-desc">Navega el menú en <strong>index.html</strong>, ve los platillos y hace clic en "Ordenar ahora".</div></div>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <div><div class="step-title">Llena el formulario en orden.html</div><div class="step-desc">Pone sus datos, elige entrega y método de pago, confirma el pedido.</div></div>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <div><div class="step-title">La orden aparece en tu CRM</div><div class="step-desc">En menos de 15 segundos ves el pedido en <strong>crm.html</strong> con estado <span class="badge badge-yellow">Pendiente</span>.</div></div>
+        </div>
+        <div class="step">
+          <div class="step-num">4</div>
+          <div><div class="step-title">El cliente hace su transferencia y manda comprobante</div><div class="step-desc">Ve los datos SPEI en su receiver, hace la transferencia y te manda foto del comprobante por WhatsApp.</div></div>
+        </div>
+        <div class="step">
+          <div class="step-num">5</div>
+          <div><div class="step-title">Tú confirmas el pago → "🛵 En camino"</div><div class="step-desc">Verificas el comprobante, haces clic en el botón del CRM. El cliente ve la pantalla verde al instante.</div></div>
+        </div>
+        <div class="step">
+          <div class="step-num">6</div>
+          <div><div class="step-title">Se entrega el pedido → "✅ Entregado"</div><div class="step-desc">El repartidor llega, entrega el burrito. Marcas la orden como Entregado en el CRM. ¡Listo! 🌯</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ TIPS ══ -->
+    <div class="section" id="tips">
+      <div class="sec-title">💡 Tips del Día a Día</div>
+
+      <div class="steps">
+        <div class="step">
+          <div class="step-num">💡</div>
+          <div>
+            <div class="step-title">Deja el CRM abierto todo el día</div>
+            <div class="step-desc">Como se actualiza cada 15 segundos, no necesitas estar revisando. Solo mira la pantalla cuando escuches el pedido nuevo. Funciona perfecto en una tablet o laptop en la cocina.</div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">💡</div>
+          <div>
+            <div class="step-title">Usa el filtro "Pendientes" durante el día</div>
+            <div class="step-desc">En horas pico, filtra solo los <strong>Pendientes</strong> para no distraerte con los ya entregados. Al final del día activa "Todos" para ver el resumen.</div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">💡</div>
+          <div>
+            <div class="step-title">Manda el WA al cliente cuando confirmes el pago</div>
+            <div class="step-desc">Antes de cambiar el estado a "En camino", toca primero el botón <strong>"WA Cliente"</strong> para avisarle. Así sabe que ya viste su comprobante y que su pedido va en camino.</div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">💡</div>
+          <div>
+            <div class="step-title">El concepto de la transferencia es el nombre del cliente</div>
+            <div class="step-desc">Cuando revises tu banco, el concepto de cada transferencia será el nombre del cliente (ej. "Cynthia"). Así puedes cruzar fácilmente qué pago corresponde a qué pedido en el CRM.</div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">💡</div>
+          <div>
+            <div class="step-title">Para pedidos por teléfono usa sender.html</div>
+            <div class="step-desc">No hagas que el cliente entre solo a la web. Tú registras el pedido en sender.html mientras hablas con él y le mandas el link por WhatsApp para que lo rastree.</div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">💡</div>
+          <div>
+            <div class="step-title">Configura los datos de pago antes de abrir</div>
+            <div class="step-desc">La primera vez que uses el sistema, entra al CRM → Métodos de Pago y guarda tu banco, CLABE y beneficiario. Sin esto los clientes no sabrán a dónde transferir.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── FOOTER ── -->
+    <div style="border-top:1px solid rgba(0,0,0,.08);padding-top:28px;margin-top:12px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;">
+      <div style="font-family:'Bebas Neue',sans-serif;font-size:1.1rem;color:var(--rojo);letter-spacing:3px;">Burrito Jack</div>
+      <div style="font-size:.58rem;letter-spacing:2px;text-transform:uppercase;color:rgba(0,0,0,.22);">Manual de Usuario · v1.0 · 2025 · Reynosa, Tam.</div>
+      <a class="btn-print" onclick="window.print()" style="font-size:.58rem;padding:7px 16px;">🖨️ Imprimir</a>
+    </div>
+
+  </div><!-- /content -->
+</div><!-- /main -->
+</div><!-- /layout -->
+
+<script>
+  // Sidebar link activo al hacer scroll
+  var sections = document.querySelectorAll('.section');
+  var links = document.querySelectorAll('.sidebar a');
+  window.addEventListener('scroll', function() {
+    var scrollY = window.scrollY + 100;
+    sections.forEach(function(sec) {
+      if (sec.offsetTop <= scrollY && sec.offsetTop + sec.offsetHeight > scrollY) {
+        links.forEach(function(a) {
+          a.classList.toggle('active', a.getAttribute('href') === '#' + sec.id);
+        });
+      }
+    });
+  }, { passive:true });
+</script>
+</body>
+</html>
