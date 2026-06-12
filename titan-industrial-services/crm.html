@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>CRM Solicitudes — Horus IT Solutions</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='14' fill='%23071A3D'/><text x='50' y='72' font-size='60' font-family='Arial Black' font-weight='900' fill='%23F5B400' text-anchor='middle'>H</text></svg>"/>
+  <style>
+    :root{
+      --navy:#071A3D; --navy-2:#0B2452; --navy-3:#102E66; --dark:#040F26;
+      --gold:#F5B400; --gold-2:#FFC72C;
+      --white:#FFFFFF; --grey:#9FB0CC; --grey-2:#C8D3E8;
+      --verde:#25D366; --radius:12px; --transition:.25s ease;
+    }
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{font-family:'Inter',system-ui,sans-serif;background:var(--navy);color:var(--white);min-height:100vh;line-height:1.55}
+    a{text-decoration:none;color:inherit}
+
+    header{background:rgba(4,15,38,.97);border-bottom:1px solid rgba(245,180,0,.18);box-shadow:0 4px 18px rgba(0,0,0,.3);padding:11px 28px;display:flex;align-items:center;justify-content:space-between;gap:12px;position:sticky;top:0;z-index:100;backdrop-filter:blur(10px);flex-wrap:wrap}
+    .logo{display:flex;align-items:center;gap:10px}
+    .logo-mark{width:38px;height:38px;border-radius:9px;background:var(--gold);display:grid;place-items:center;font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.35rem;color:var(--navy)}
+    .logo-txt{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:1.2rem;text-transform:uppercase;letter-spacing:1px}
+    .header-badge{font-size:.58rem;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--gold);background:rgba(245,180,0,.1);border:1px solid rgba(245,180,0,.35);padding:4px 12px;border-radius:6px}
+    .header-nav{display:flex;gap:6px;flex-wrap:wrap}
+    .header-nav a{color:var(--grey);font-size:.64rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:7px 14px;border:1px solid transparent;border-radius:7px;transition:var(--transition)}
+    .header-nav a:hover{color:var(--gold);border-color:rgba(245,180,0,.3)}
+    .header-nav a.active{color:var(--gold);border-color:rgba(245,180,0,.45);background:rgba(245,180,0,.08)}
+
+    .stats-bar{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:1px;background:rgba(245,180,0,.12);border-bottom:1px solid rgba(245,180,0,.12)}
+    .stat-box{background:var(--navy);padding:18px 16px;text-align:center}
+    .stat-val{font-family:'Barlow Condensed',sans-serif;font-size:2.1rem;font-weight:800;letter-spacing:1px;color:var(--gold);line-height:1}
+    .stat-lbl{font-size:.56rem;letter-spacing:2.5px;text-transform:uppercase;color:var(--grey);margin-top:4px}
+
+    main{max-width:960px;margin:0 auto;padding:30px 18px 80px}
+
+    .toolbar{display:flex;align-items:center;gap:10px;margin-bottom:20px;flex-wrap:wrap}
+    .filter-btn{padding:8px 16px;background:var(--navy-2);border:1px solid rgba(255,255,255,.12);color:var(--grey);font-family:'Inter';font-size:.62rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;border-radius:8px;transition:var(--transition)}
+    .filter-btn:hover{color:var(--gold);border-color:rgba(245,180,0,.4)}
+    .filter-btn.active{background:rgba(245,180,0,.12);border-color:var(--gold);color:var(--gold)}
+    .filter-btn.verde.active{background:rgba(37,211,102,.1);border-color:var(--verde);color:#4ade80}
+    .filter-btn.done.active{background:rgba(200,211,232,.08);border-color:var(--grey-2);color:var(--grey-2)}
+    .search-input{flex:1;min-width:180px;background:var(--navy-2);border:1px solid rgba(255,255,255,.12);padding:9px 14px;font-size:.86rem;color:var(--white);outline:none;border-radius:8px;transition:var(--transition)}
+    .search-input::placeholder{color:rgba(159,176,204,.4)}
+    .search-input:focus{border-color:var(--gold)}
+    .refresh-btn{display:flex;align-items:center;gap:6px;background:var(--navy-2);border:1px solid rgba(245,180,0,.3);color:var(--gold);font-size:.6rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:8px 14px;cursor:pointer;border-radius:8px;transition:var(--transition)}
+    .refresh-btn:hover{background:rgba(245,180,0,.1)}
+    .refresh-btn.spinning svg{animation:spin .7s linear infinite}
+    @keyframes spin{to{transform:rotate(360deg)}}
+    .results-count{font-size:.6rem;letter-spacing:1.5px;text-transform:uppercase;color:var(--grey);margin-left:auto;white-space:nowrap}
+
+    .orders-list{display:flex;flex-direction:column;gap:12px}
+    .order-card{background:var(--navy-2);border:1px solid rgba(255,255,255,.1);border-radius:var(--radius);position:relative;overflow:hidden;transition:var(--transition)}
+    .order-card::before{content:'';position:absolute;top:0;left:0;width:4px;height:100%;background:var(--gold)}
+    .order-card.en_proceso::before{background:var(--verde)}
+    .order-card.en_proceso{border-color:rgba(37,211,102,.3)}
+    .order-card.completada::before{background:var(--grey)}
+    .order-card.completada{opacity:.7}
+    .order-card.emergency{border-color:rgba(255,90,90,.45)}
+    .order-card.emergency::before{background:#ff5a5a}
+
+    .order-top{padding:16px 18px 12px;display:grid;grid-template-columns:1fr auto;gap:12px;align-items:start}
+    .order-nombre{font-family:'Barlow Condensed',sans-serif;font-size:1.2rem;font-weight:800;letter-spacing:.5px;text-transform:uppercase}
+    .order-empresa{font-size:.74rem;color:var(--gold-2);font-weight:600;margin-bottom:3px}
+    .order-servicios{font-size:.84rem;color:var(--grey-2);line-height:1.5;margin:4px 0 6px}
+    .order-desc{font-size:.78rem;color:var(--grey);font-style:italic;margin-bottom:6px}
+    .order-meta{display:flex;gap:14px;flex-wrap:wrap;margin-top:4px}
+    .order-meta span{font-size:.64rem;letter-spacing:.5px;color:var(--grey);display:flex;align-items:center;gap:4px}
+
+    .order-actions{display:flex;flex-direction:column;gap:7px;align-items:flex-end}
+    .badge{display:inline-block;font-size:.54rem;letter-spacing:2.5px;text-transform:uppercase;padding:5px 11px;font-weight:700;border-radius:6px;white-space:nowrap}
+    .badge.recibida{background:rgba(245,180,0,.15);color:var(--gold);border:1px solid rgba(245,180,0,.45)}
+    .badge.en_proceso{background:rgba(37,211,102,.1);color:#4ade80;border:1px solid rgba(37,211,102,.35)}
+    .badge.completada{background:rgba(200,211,232,.08);color:var(--grey-2);border:1px solid rgba(200,211,232,.25)}
+    .badge.emergency{background:rgba(255,90,90,.12);color:#ff8a80;border:1px solid rgba(255,90,90,.4)}
+
+    .btn-estado{padding:8px 14px;font-size:.6rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;border-radius:7px;border:1px solid;transition:var(--transition);white-space:nowrap}
+    .btn-proceso{background:rgba(37,211,102,.1);border-color:rgba(37,211,102,.35);color:#4ade80}
+    .btn-proceso:hover{background:rgba(37,211,102,.2)}
+    .btn-completar{background:rgba(245,180,0,.1);border-color:rgba(245,180,0,.35);color:var(--gold)}
+    .btn-completar:hover{background:rgba(245,180,0,.2)}
+    .btn-estado:disabled{opacity:.35;cursor:not-allowed}
+
+    .order-bottom{padding:10px 18px 14px;display:flex;gap:8px;flex-wrap:wrap;align-items:center;border-top:1px solid rgba(255,255,255,.06)}
+    .btn-link{background:transparent;border:1px solid rgba(255,255,255,.15);color:var(--grey);font-size:.58rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:6px 12px;cursor:pointer;border-radius:6px;transition:var(--transition)}
+    .btn-link:hover{border-color:var(--gold);color:var(--gold)}
+    .btn-link.ok{border-color:var(--verde);color:#4ade80}
+    .btn-wa-small{background:#25D366;border:none;color:#fff;font-size:.58rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:7px 12px;cursor:pointer;border-radius:6px;display:inline-flex;align-items:center;gap:5px;transition:var(--transition)}
+    .btn-wa-small:hover{background:#1da851}
+    .btn-wa-small svg{width:12px;height:12px;fill:#fff}
+    .order-id{font-size:.54rem;letter-spacing:.5px;color:rgba(159,176,204,.35);margin-left:auto}
+
+    .empty-state{text-align:center;padding:60px 20px}
+    .empty-state p{color:var(--grey);font-size:.92rem}
+
+    .demo-banner{background:rgba(245,180,0,.08);border:1px dashed rgba(245,180,0,.4);border-radius:10px;padding:10px 16px;font-size:.74rem;color:var(--gold-2);margin-bottom:18px;display:none}
+    .demo-banner.show{display:block}
+
+    .toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(16px);background:rgba(4,15,38,.97);border:1px solid rgba(245,180,0,.5);color:var(--gold);font-size:.66rem;letter-spacing:2px;text-transform:uppercase;font-weight:700;padding:11px 26px;border-radius:8px;opacity:0;pointer-events:none;transition:opacity .3s,transform .3s;z-index:9998;white-space:nowrap}
+    .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+    footer{border-top:1px solid rgba(245,180,0,.15);padding:18px 28px;text-align:center;background:var(--dark)}
+    footer p{font-size:.6rem;letter-spacing:2.5px;text-transform:uppercase;color:rgba(159,176,204,.35)}
+
+    @media (max-width:600px){
+      header{padding:10px 14px}
+      .order-top{grid-template-columns:1fr}
+      .order-actions{flex-direction:row;flex-wrap:wrap;align-items:center}
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <a class="logo" href="index.html">
+    <div class="logo-mark">H</div>
+    <span class="logo-txt">Horus</span>
+  </a>
+  <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">
+    <span class="header-badge">CRM</span>
+    <nav class="header-nav">
+      <a href="sender.html">➕ Nueva</a>
+      <a href="crm.html" class="active">📋 CRM</a>
+      <a href="mrp.html">📦 MRP</a>
+      <a href="guia.html">📖 Guía</a>
+    </nav>
+  </div>
+</header>
+
+<!-- STATS -->
+<div class="stats-bar">
+  <div class="stat-box"><div class="stat-val" id="s-total">—</div><div class="stat-lbl">Total solicitudes</div></div>
+  <div class="stat-box"><div class="stat-val" id="s-rec" style="color:var(--gold-2)">—</div><div class="stat-lbl">Recibidas</div></div>
+  <div class="stat-box"><div class="stat-val" id="s-proc" style="color:#4ade80">—</div><div class="stat-lbl">En proceso</div></div>
+  <div class="stat-box"><div class="stat-val" id="s-comp" style="color:var(--grey-2)">—</div><div class="stat-lbl">Completadas</div></div>
+  <div class="stat-box"><div class="stat-val" id="s-emerg" style="color:#ff8a80">—</div><div class="stat-lbl">Emergencias</div></div>
+</div>
+
+<main>
+  <div class="demo-banner" id="demoBanner">⚠ <strong>Modo demo:</strong> las solicitudes se guardan solo en este navegador. Configura la URL de Google Apps Script en cada página para activar la base de datos real.</div>
+
+  <div class="toolbar">
+    <button class="filter-btn active" id="f-todos" onclick="setFilter('todos')">Todas</button>
+    <button class="filter-btn" id="f-recibida" onclick="setFilter('recibida')">📥 Recibidas</button>
+    <button class="filter-btn verde" id="f-en_proceso" onclick="setFilter('en_proceso')">🔧 En proceso</button>
+    <button class="filter-btn done" id="f-completada" onclick="setFilter('completada')">✅ Completadas</button>
+    <input class="search-input" id="searchInput" type="text" placeholder="Buscar cliente, empresa, servicio..." oninput="renderFiltrado()"/>
+    <button class="refresh-btn" id="refreshBtn" onclick="cargarSolicitudes()">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+      Actualizar
+    </button>
+    <span class="results-count" id="resultsCount"></span>
+  </div>
+
+  <div id="solicitudes-container">
+    <div class="empty-state"><p>Cargando solicitudes...</p></div>
+  </div>
+</main>
+
+<footer><p>Horus IT Solutions · CRM Interno</p></footer>
+<div class="toast" id="toast"></div>
+
+<script>
+  // ════════════════════════════════════
+  //  CONFIGURACIÓN
+  // ════════════════════════════════════
+  if (sessionStorage.getItem('tiAdmin') !== '1') { window.location.href = 'index.html'; }
+
+  var GAS_URL      = 'PASTE_YOUR_GAS_URL_HERE';
+  var RECEIVER_URL = location.origin + location.pathname.replace(/[^\/]*$/,'') + 'receiver.html';
+  var ADMIN_KEY    = 'horus2026';
+  var DEMO         = GAS_URL.indexOf('PASTE_') === 0;
+  // ════════════════════════════════════
+
+  if (DEMO) document.getElementById('demoBanner').classList.add('show');
+
+  var todasSolicitudes = [];
+  var filtroActivo = 'todos';
+
+  // ── Cargar ────────────────────────────────────────
+  async function cargarSolicitudes() {
+    var btn = document.getElementById('refreshBtn');
+    btn.classList.add('spinning');
+    try {
+      if (DEMO) {
+        todasSolicitudes = JSON.parse(localStorage.getItem('ti_solicitudes') || '[]').slice().reverse();
+      } else {
+        var data = await callGAS({ action:'listarSolicitudes', adminKey: ADMIN_KEY });
+        if (!data.ok) throw new Error(data.error);
+        todasSolicitudes = data.solicitudes || [];
+      }
+      actualizarStats();
+      renderFiltrado();
+    } catch(err) {
+      document.getElementById('solicitudes-container').innerHTML = '<div class="empty-state"><p>Error al cargar: ' + esc(err.message) + '</p></div>';
+    } finally {
+      btn.classList.remove('spinning');
+    }
+  }
+
+  function actualizarStats() {
+    var rec  = todasSolicitudes.filter(function(o){ return (o.estado||'recibida') === 'recibida'; }).length;
+    var proc = todasSolicitudes.filter(function(o){ return o.estado === 'en_proceso'; }).length;
+    var comp = todasSolicitudes.filter(function(o){ return o.estado === 'completada'; }).length;
+    var emer = todasSolicitudes.filter(function(o){ return o.prioridad === 'emergency' && o.estado !== 'completada'; }).length;
+    document.getElementById('s-total').textContent = todasSolicitudes.length;
+    document.getElementById('s-rec').textContent   = rec;
+    document.getElementById('s-proc').textContent  = proc;
+    document.getElementById('s-comp').textContent  = comp;
+    document.getElementById('s-emerg').textContent = emer;
+  }
+
+  function setFilter(f) {
+    filtroActivo = f;
+    ['todos','recibida','en_proceso','completada'].forEach(function(k) {
+      document.getElementById('f-' + k).classList.toggle('active', k === f);
+    });
+    renderFiltrado();
+  }
+
+  function renderFiltrado() {
+    var q = (document.getElementById('searchInput').value || '').toLowerCase();
+    var filtered = todasSolicitudes.filter(function(o) {
+      var estado = o.estado || 'recibida';
+      if (filtroActivo !== 'todos' && estado !== filtroActivo) return false;
+      if (q) {
+        var hay = ((o.cliente||'') + (o.empresa||'') + (o.servicios||'') + (o.telefono||'') + (o.id||'')).toLowerCase().indexOf(q) !== -1;
+        if (!hay) return false;
+      }
+      return true;
+    });
+    document.getElementById('resultsCount').textContent = filtered.length + ' resultado' + (filtered.length !== 1 ? 's' : '');
+    renderSolicitudes(filtered);
+  }
+
+  function renderSolicitudes(lista) {
+    var container = document.getElementById('solicitudes-container');
+    if (!lista.length) {
+      container.innerHTML = '<div class="empty-state"><p>No hay solicitudes con estos filtros.</p></div>';
+      return;
+    }
+
+    var html = '<div class="orders-list">';
+    lista.forEach(function(o) {
+      var estado  = o.estado || 'recibida';
+      var emerg   = o.prioridad === 'emergency';
+      var ts      = o.timestamp ? new Date(o.timestamp).toLocaleString('es-MX', { day:'2-digit', month:'short', hour:'2-digit', minute:'2-digit' }) : '—';
+      var link    = RECEIVER_URL + '?id=' + encodeURIComponent(o.id);
+      var msgWA   = encodeURIComponent('🌐 *Horus IT Solutions*\n\nHello ' + (o.cliente||'') + ', we received your service request!\n\n📋 *Services:* ' + (o.servicios||'') + '\n🔖 *Reference:* ' + o.id + '\n\nView your request here:\n' + link + '\n\nOur team will contact you to coordinate the service. Thank you!');
+
+      html += '<div class="order-card ' + estado + (emerg ? ' emergency' : '') + '" id="sol-' + o.id + '">';
+      html += '<div class="order-top">';
+      html += '<div>';
+      if (o.empresa) html += '<div class="order-empresa">🏢 ' + esc(o.empresa) + '</div>';
+      html += '<div class="order-nombre">' + esc(o.cliente) + '</div>';
+      html += '<div class="order-servicios">🛠 ' + esc(o.servicios) + '</div>';
+      if (o.descripcion) html += '<div class="order-desc">"' + esc(o.descripcion) + '"</div>';
+      html += '<div class="order-meta">';
+      html += '<span>🕐 ' + ts + '</span>';
+      if (o.telefono) html += '<span>📱 ' + esc(o.telefono) + '</span>';
+      if (o.email)    html += '<span>✉️ ' + esc(o.email) + '</span>';
+      if (o.direccion) html += '<span>📍 ' + esc(o.direccion) + '</span>';
+      html += '</div>';
+      html += '</div>';
+
+      html += '<div class="order-actions">';
+      if (emerg) html += '<span class="badge emergency">🚨 Emergencia</span>';
+      html += '<span class="badge ' + estado + '">' + estadoLabel(estado) + '</span>';
+      if (estado === 'recibida') {
+        html += '<button class="btn-estado btn-proceso" onclick="cambiarEstado(\'' + o.id + '\',\'en_proceso\')">🔧 En proceso</button>';
+      }
+      if (estado === 'en_proceso') {
+        html += '<button class="btn-estado btn-completar" onclick="cambiarEstado(\'' + o.id + '\',\'completada\')">✅ Completar</button>';
+      }
+      html += '</div>';
+      html += '</div>';
+
+      html += '<div class="order-bottom">';
+      html += '<button class="btn-link" onclick="copiarLink(\'' + encodeURIComponent(link) + '\',this)">Copiar link</button>';
+      if (o.telefono) {
+        var waNum = String(o.telefono).replace(/[^0-9]/g,'');
+        html += '<a class="btn-wa-small" href="https://wa.me/' + waNum + '?text=' + msgWA + '" target="_blank"><svg viewBox="0 0 24 24"><path d="M17.5 14.4l-2.1-1c-.3-.1-.5-.1-.7.1l-1 1.2c-.2.2-.4.2-.6.1a8.1 8.1 0 0 1-2.4-1.5 9 9 0 0 1-1.7-2.1c-.1-.2 0-.4.1-.6l.5-.5c.1-.2.2-.3.3-.5s0-.4 0-.5l-1-2.2c-.2-.6-.5-.5-.7-.5h-.6a1.1 1.1 0 0 0-.8.4A3.4 3.4 0 0 0 5.7 9.2a5.9 5.9 0 0 0 1.2 3.1 13.3 13.3 0 0 0 5.1 4.5 17 17 0 0 0 1.7.6 4.1 4.1 0 0 0 1.9.1 3.1 3.1 0 0 0 2-1.4 2.5 2.5 0 0 0 .2-1.4c-.1-.1-.2-.2-.3-.3zM12 0a12 12 0 0 0-10.4 18L0 24l6.2-1.6A12 12 0 1 0 12 0zm0 21.8a9.9 9.9 0 0 1-5-1.4l-.4-.2-3.7 1 1-3.6-.2-.4A9.9 9.9 0 1 1 12 21.8z"/></svg> WA Cliente</a>';
+      }
+      if (o.email) html += '<a class="btn-link" style="display:inline-flex;align-items:center" href="mailto:' + esc(o.email) + '?subject=Horus IT Solutions — Request ' + esc(o.id) + '">✉ Email</a>';
+      html += '<span class="order-id">' + esc(o.id) + '</span>';
+      html += '</div>';
+      html += '</div>';
+    });
+    html += '</div>';
+    container.innerHTML = html;
+  }
+
+  async function cambiarEstado(id, nuevoEstado) {
+    var card = document.getElementById('sol-' + id);
+    var btns = card ? card.querySelectorAll('.btn-estado') : [];
+    btns.forEach(function(b) { b.disabled = true; b.textContent = 'Guardando...'; });
+
+    try {
+      if (DEMO) {
+        var db = JSON.parse(localStorage.getItem('ti_solicitudes') || '[]');
+        var s = db.find(function(x){ return x.id === id; });
+        if (!s) throw new Error('No encontrada');
+        s.estado = nuevoEstado;
+        localStorage.setItem('ti_solicitudes', JSON.stringify(db));
+      } else {
+        var data = await callGAS({ action:'updateEstado', id: id, estado: nuevoEstado, adminKey: ADMIN_KEY });
+        if (!data.ok) throw new Error(data.error);
+      }
+      toast('✓ Estado actualizado: ' + estadoLabel(nuevoEstado));
+      await cargarSolicitudes();
+    } catch(err) {
+      toast('Error: ' + err.message);
+      btns.forEach(function(b) { b.disabled = false; });
+    }
+  }
+
+  function copiarLink(encodedLink, btn) {
+    var link = decodeURIComponent(encodedLink);
+    navigator.clipboard.writeText(link).then(function() {
+      var orig = btn.textContent;
+      btn.textContent = '✓ Copiado'; btn.classList.add('ok');
+      toast('Link copiado');
+      setTimeout(function() { btn.textContent = orig; btn.classList.remove('ok'); }, 2200);
+    });
+  }
+
+  function estadoLabel(e) {
+    return { recibida:'📥 Recibida', en_proceso:'🔧 En proceso', completada:'✅ Completada' }[e] || e;
+  }
+
+  // ── JSONP ─────────────────────────────────────────
+  function callGAS(params) {
+    return new Promise(function(resolve, reject) {
+      var cbName = 'cb_' + Date.now() + '_' + Math.floor(Math.random() * 99999);
+      var qs = Object.keys(params).map(function(k) {
+        return encodeURIComponent(k) + '=' + encodeURIComponent(String(params[k]));
+      }).join('&') + '&callback=' + encodeURIComponent(cbName);
+      var script = document.createElement('script');
+      var timer  = setTimeout(function() { cleanup(); reject(new Error('Timeout')); }, 15000);
+      window[cbName] = function(d) { cleanup(); resolve(d); };
+      function cleanup() { clearTimeout(timer); delete window[cbName]; if (script.parentNode) script.parentNode.removeChild(script); }
+      script.onerror = function() { cleanup(); reject(new Error('Sin conexión')); };
+      script.src = GAS_URL + '?' + qs;
+      document.head.appendChild(script);
+    });
+  }
+
+  function esc(s) { return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
+  var toastT;
+  function toast(msg) {
+    var t = document.getElementById('toast');
+    t.textContent = msg; t.classList.add('show');
+    clearTimeout(toastT); toastT = setTimeout(function() { t.classList.remove('show'); }, 2600);
+  }
+
+  // Init + auto-refresh
+  cargarSolicitudes();
+  setInterval(function() {
+    if (document.visibilityState === 'visible') cargarSolicitudes();
+  }, 15000);
+</script>
+</body>
+</html>
