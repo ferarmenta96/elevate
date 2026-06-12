@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Nueva Solicitud — Horus Staff</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='14' fill='%23071A3D'/><text x='50' y='72' font-size='60' font-family='Arial Black' font-weight='900' fill='%23F5B400' text-anchor='middle'>H</text></svg>"/>
+  <style>
+    :root{
+      --navy:#071A3D; --navy-2:#0B2452; --dark:#040F26;
+      --gold:#F5B400; --gold-2:#FFC72C;
+      --white:#FFFFFF; --grey:#9FB0CC; --grey-2:#C8D3E8;
+      --radius:12px; --transition:.25s ease;
+    }
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{font-family:'Inter',system-ui,sans-serif;background:var(--navy);color:var(--white);min-height:100vh;line-height:1.55}
+    a{text-decoration:none;color:inherit}
+
+    header{background:rgba(4,15,38,.97);border-bottom:1px solid rgba(245,180,0,.18);padding:11px 28px;display:flex;align-items:center;justify-content:space-between;gap:12px;position:sticky;top:0;z-index:100;backdrop-filter:blur(10px);flex-wrap:wrap}
+    .logo{display:flex;align-items:center;gap:10px}
+    .logo-mark{width:38px;height:38px;border-radius:9px;background:var(--gold);display:grid;place-items:center;font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.35rem;color:var(--navy)}
+    .logo-txt{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:1.2rem;text-transform:uppercase;letter-spacing:1px}
+    .header-badge{font-size:.58rem;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--gold);background:rgba(245,180,0,.1);border:1px solid rgba(245,180,0,.35);padding:4px 12px;border-radius:6px}
+    .header-nav{display:flex;gap:6px;flex-wrap:wrap}
+    .header-nav a{color:var(--grey);font-size:.64rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:7px 14px;border:1px solid transparent;border-radius:7px;transition:var(--transition)}
+    .header-nav a:hover{color:var(--gold);border-color:rgba(245,180,0,.3)}
+    .header-nav a.active{color:var(--gold);border-color:rgba(245,180,0,.45);background:rgba(245,180,0,.08)}
+
+    main{max-width:700px;margin:0 auto;padding:36px 18px 80px}
+    .page-title{margin-bottom:28px}
+    .eyebrow{font-size:.62rem;letter-spacing:4px;text-transform:uppercase;color:var(--gold);font-weight:700;border-top:2px solid rgba(245,180,0,.35);padding-top:7px;display:inline-block;margin-bottom:8px}
+    .page-title h2{font-family:'Barlow Condensed',sans-serif;font-size:clamp(1.9rem,5vw,2.6rem);font-weight:800;text-transform:uppercase;line-height:1.05}
+    .page-title h2 em{color:var(--gold);font-style:normal}
+    .page-title p{color:var(--grey);font-size:.88rem;margin-top:7px}
+
+    .card{background:var(--navy-2);border:1px solid rgba(255,255,255,.08);border-radius:var(--radius);margin-bottom:18px;overflow:hidden}
+    .card-header{padding:12px 20px;border-bottom:1px solid rgba(255,255,255,.07);display:flex;align-items:center;gap:9px}
+    .card-title{font-size:.64rem;letter-spacing:3px;text-transform:uppercase;color:var(--gold);font-weight:700}
+    .card-body{padding:20px}
+
+    /* SERVICE TOGGLES */
+    .svc-selector{display:flex;flex-wrap:wrap;gap:8px}
+    .svc-btn{padding:9px 15px;background:var(--navy);border:1px solid rgba(255,255,255,.14);color:var(--grey);font-size:.64rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;cursor:pointer;border-radius:8px;transition:var(--transition)}
+    .svc-btn:hover{border-color:rgba(245,180,0,.45);color:var(--gold-2)}
+    .svc-btn.selected{background:rgba(245,180,0,.14);border-color:var(--gold);color:var(--gold)}
+
+    .prio-row{display:flex;gap:10px;margin-top:14px}
+    .prio-btn{flex:1;background:var(--navy);border:1px solid rgba(255,255,255,.12);border-radius:8px;padding:10px;text-align:center;font-size:.66rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--grey);cursor:pointer;transition:var(--transition)}
+    .prio-btn.active{border-color:var(--gold);color:var(--gold);background:rgba(245,180,0,.1)}
+    .prio-btn.emergency.active{border-color:#ff6b6b;color:#ff8a80;background:rgba(255,90,90,.08)}
+
+    .field{margin-bottom:15px}
+    .field:last-child{margin-bottom:0}
+    .field label{display:block;font-size:.64rem;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--grey);margin-bottom:6px}
+    .field input,.field textarea,.field select{width:100%;background:var(--navy);border:1px solid rgba(255,255,255,.14);border-radius:8px;padding:12px 14px;color:var(--white);font-family:'Inter';font-size:.92rem;outline:none;transition:var(--transition);-webkit-appearance:none}
+    .field input::placeholder,.field textarea::placeholder{color:rgba(159,176,204,.4)}
+    .field input:focus,.field textarea:focus,.field select:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(245,180,0,.12)}
+    .field textarea{resize:vertical;min-height:70px}
+    .field select option{background:var(--navy);color:var(--white)}
+    .field-hint{font-size:.7rem;color:rgba(159,176,204,.5);margin-top:4px}
+    .form-row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+    .phone-group{display:flex;gap:8px}
+    .phone-group select{width:96px;flex:0 0 96px}
+
+    .preview-box{background:var(--navy);border:1px dashed rgba(245,180,0,.3);border-radius:10px;padding:16px 18px;font-size:.88rem;line-height:1.9;color:var(--grey-2)}
+    .pv{color:var(--gold-2);font-weight:700}
+    .preview-lbl{font-size:.58rem;letter-spacing:3px;text-transform:uppercase;color:var(--grey);display:block;margin-bottom:8px}
+
+    .btn-generar{width:100%;padding:16px;background:var(--gold);border:none;color:var(--navy);font-family:'Barlow Condensed',sans-serif;font-size:1.15rem;font-weight:800;letter-spacing:2.5px;text-transform:uppercase;cursor:pointer;border-radius:8px;transition:var(--transition)}
+    .btn-generar:hover{background:var(--gold-2);transform:translateY(-2px)}
+    .btn-generar:disabled{opacity:.4;cursor:not-allowed;transform:none}
+    .spinner{display:none;width:18px;height:18px;border:2px solid rgba(7,26,61,.3);border-top-color:var(--navy);border-radius:50%;animation:spin .7s linear infinite;margin:0 auto}
+    @keyframes spin{to{transform:rotate(360deg)}}
+
+    .result-box{display:none;border:1px solid rgba(245,180,0,.35);background:rgba(245,180,0,.05);border-radius:10px;padding:18px;margin-top:18px}
+    .result-box.visible{display:block}
+    .result-label{font-size:.6rem;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:8px;font-weight:700}
+    .result-url{font-size:.8rem;color:var(--grey-2);word-break:break-all;line-height:1.6;background:var(--navy);border:1px solid rgba(245,180,0,.15);border-radius:7px;padding:10px 13px;margin-bottom:12px}
+    .result-actions{display:flex;gap:8px;flex-wrap:wrap}
+    .btn-sm{flex:1;min-width:110px;padding:11px 12px;border:1px solid rgba(245,180,0,.35);background:transparent;color:var(--gold);font-size:.62rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;cursor:pointer;border-radius:7px;transition:var(--transition);text-align:center;display:inline-block}
+    .btn-sm:hover{background:rgba(245,180,0,.1)}
+    .btn-sm.wa{background:#25D366;border-color:#25D366;color:#fff}
+    .btn-sm.wa:hover{background:#1da851}
+    .btn-sm.copied{border-color:#25D366;color:#4ade80}
+
+    .error-msg{display:none;background:rgba(220,60,60,.1);border:1px solid rgba(220,60,60,.4);border-left:4px solid #e05555;border-radius:8px;padding:11px 14px;font-size:.84rem;color:#ff9d9d;margin-top:12px;white-space:pre-line}
+    .error-msg.visible{display:block}
+
+    .toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(16px);background:rgba(4,15,38,.97);border:1px solid rgba(245,180,0,.5);color:var(--gold);font-size:.66rem;letter-spacing:2px;text-transform:uppercase;font-weight:700;padding:11px 26px;border-radius:8px;opacity:0;pointer-events:none;transition:opacity .3s,transform .3s;z-index:9998;white-space:nowrap}
+    .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+    footer{border-top:1px solid rgba(245,180,0,.15);padding:18px 28px;text-align:center;background:var(--dark)}
+    footer p{font-size:.6rem;letter-spacing:2.5px;text-transform:uppercase;color:rgba(159,176,204,.35)}
+
+    @media (max-width:560px){
+      header{padding:10px 14px}
+      main{padding:28px 12px 60px}
+      .form-row{grid-template-columns:1fr}
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <a class="logo" href="index.html">
+    <div class="logo-mark">H</div>
+    <span class="logo-txt">Horus</span>
+  </a>
+  <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">
+    <span class="header-badge">Staff Panel</span>
+    <nav class="header-nav">
+      <a href="sender.html" class="active">➕ Nueva</a>
+      <a href="crm.html">📋 CRM</a>
+      <a href="mrp.html">📦 MRP</a>
+      <a href="guia.html">📖 Guía</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <div class="page-title">
+    <span class="eyebrow">Staff · Nueva Solicitud</span>
+    <h2>Registra una<br/><em>solicitud manual</em></h2>
+    <p>Para clientes que llaman por teléfono o llegan en persona. Llena los datos y comparte el link de confirmación.</p>
+  </div>
+
+  <!-- SERVICIOS -->
+  <div class="card">
+    <div class="card-header"><span>🛠</span><span class="card-title">Servicios solicitados</span></div>
+    <div class="card-body">
+      <div class="svc-selector" id="svcSelector"></div>
+      <div class="prio-row">
+        <div class="prio-btn active" id="prio-standard" onclick="setPrio('standard')">📅 Estándar</div>
+        <div class="prio-btn emergency" id="prio-emergency" onclick="setPrio('emergency')">🚨 Emergencia 24/7</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DATOS -->
+  <div class="card">
+    <div class="card-header"><span>📋</span><span class="card-title">Datos del cliente</span></div>
+    <div class="card-body">
+      <div class="form-row">
+        <div class="field">
+          <label for="inp-nombre">Nombre del cliente *</label>
+          <input id="inp-nombre" type="text" placeholder="Ej. John Smith" autocomplete="off"/>
+        </div>
+        <div class="field">
+          <label for="inp-empresa">Empresa</label>
+          <input id="inp-empresa" type="text" placeholder="Nombre de la empresa" autocomplete="off"/>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="field">
+          <label for="inp-telefono">WhatsApp / Teléfono</label>
+          <div class="phone-group">
+            <select id="inp-pais">
+              <option value="+1">+1 🇺🇸</option>
+              <option value="+52">+52 🇲🇽</option>
+            </select>
+            <input id="inp-telefono" type="tel" placeholder="956 123 4567" autocomplete="off"/>
+          </div>
+        </div>
+        <div class="field">
+          <label for="inp-email">Email</label>
+          <input id="inp-email" type="email" placeholder="cliente@empresa.com" autocomplete="off"/>
+        </div>
+      </div>
+      <div class="field">
+        <label for="inp-direccion">Ubicación / Planta <span style="color:rgba(159,176,204,.4)">(opcional)</span></label>
+        <input id="inp-direccion" type="text" placeholder="Dirección de la planta o sitio..." autocomplete="off"/>
+      </div>
+      <div class="field">
+        <label for="inp-desc">Descripción del trabajo *</label>
+        <textarea id="inp-desc" placeholder="Ej. 20 nodos de cableado Cat6, configuración de switch, cámaras CCTV..."></textarea>
+        <div class="field-hint">Describe la red, el número de nodos, el problema o el alcance del proyecto.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PREVIEW -->
+  <div class="card">
+    <div class="card-header"><span>👁</span><span class="card-title">Vista previa</span></div>
+    <div class="card-body">
+      <div class="preview-box">
+        <span class="preview-lbl">Así verá el cliente su confirmación</span>
+        Hello <span class="pv" id="prev-nombre">__________</span>,
+        your request for <span class="pv" id="prev-servicios">__________</span>
+        has been <span class="pv">received</span>. Our team will contact you shortly. ✅
+      </div>
+    </div>
+  </div>
+
+  <!-- GENERAR -->
+  <div class="card">
+    <div class="card-header"><span>🔗</span><span class="card-title">Generar link de confirmación</span></div>
+    <div class="card-body">
+      <button class="btn-generar" id="btnGenerar" onclick="generarLink()">
+        <span id="btn-text">Registrar Solicitud</span>
+        <div class="spinner" id="btn-spinner"></div>
+      </button>
+      <div class="error-msg" id="errorMsg"></div>
+      <div class="result-box" id="resultBox">
+        <div class="result-label">✓ Solicitud registrada — comparte el link con el cliente</div>
+        <div class="result-url" id="resultUrl"></div>
+        <div class="result-actions">
+          <button class="btn-sm" id="btnCopiar" onclick="copiarLink()">Copiar Link</button>
+          <a class="btn-sm wa" id="btnCompartir" href="#" target="_blank">Enviar por WhatsApp</a>
+          <a class="btn-sm" id="btnAbrir" href="#" target="_blank">Abrir Link</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<footer><p>Horus IT Solutions · Panel Interno</p></footer>
+<div class="toast" id="toast"></div>
+
+<script>
+  // ════════════════════════════════════
+  //  CONFIGURACIÓN
+  // ════════════════════════════════════
+  if (sessionStorage.getItem('tiAdmin') !== '1') { window.location.href = 'index.html'; }
+
+  var GAS_URL      = 'PASTE_YOUR_GAS_URL_HERE';
+  var RECEIVER_URL = location.origin + location.pathname.replace(/[^\/]*$/,'') + 'receiver.html';
+  var ADMIN_KEY    = 'horus2026';
+  var DEMO         = GAS_URL.indexOf('PASTE_') === 0;
+  // ════════════════════════════════════
+
+  var SERVICIOS = [
+    { id:'SRV-1', nombre:'Structured Cabling' },
+    { id:'SRV-2', nombre:'Network Installation & Configuration' },
+    { id:'SRV-3', nombre:'Server Rooms & IT Infrastructure' },
+    { id:'SRV-4', nombre:'Security Systems & CCTV' },
+    { id:'SRV-5', nombre:'Fiber Optics & VoIP' },
+    { id:'SRV-6', nombre:'IT Support & Maintenance' }
+  ];
+
+  var seleccion = {};
+  var prioridad = 'standard';
+
+  function renderServicios() {
+    var html = '';
+    SERVICIOS.forEach(function(s) {
+      html += '<button class="svc-btn" id="sb-' + s.id + '" onclick="toggleSvc(\'' + s.id + '\')">' + s.nombre + '</button>';
+    });
+    document.getElementById('svcSelector').innerHTML = html;
+  }
+
+  function toggleSvc(id) {
+    if (seleccion[id]) delete seleccion[id]; else seleccion[id] = true;
+    document.getElementById('sb-' + id).classList.toggle('selected', !!seleccion[id]);
+    actualizarPreview();
+  }
+
+  function setPrio(p) {
+    prioridad = p;
+    document.getElementById('prio-standard').classList.toggle('active', p === 'standard');
+    document.getElementById('prio-emergency').classList.toggle('active', p === 'emergency');
+  }
+
+  function serviciosTexto() {
+    return SERVICIOS.filter(function(s){ return seleccion[s.id]; }).map(function(s){ return s.nombre; }).join(' | ');
+  }
+
+  ['inp-nombre'].forEach(function(id) {
+    document.getElementById(id).addEventListener('input', actualizarPreview);
+  });
+
+  function actualizarPreview() {
+    var n = document.getElementById('inp-nombre').value.trim();
+    var s = serviciosTexto();
+    document.getElementById('prev-nombre').textContent = n || '__________';
+    document.getElementById('prev-servicios').textContent = s || '__________';
+  }
+
+  async function generarLink() {
+    var nombre   = document.getElementById('inp-nombre').value.trim();
+    var empresa  = document.getElementById('inp-empresa').value.trim();
+    var codPais  = document.getElementById('inp-pais').value;
+    var telLocal = document.getElementById('inp-telefono').value.trim().replace(/\s+/g,'');
+    var telefono = telLocal ? (codPais + telLocal) : '';
+    var email    = document.getElementById('inp-email').value.trim();
+    var direccion= document.getElementById('inp-direccion').value.trim();
+    var desc     = document.getElementById('inp-desc').value.trim();
+    var servicios= serviciosTexto();
+
+    if (!nombre)    { mostrarError('Escribe el nombre del cliente.'); return; }
+    if (!servicios) { mostrarError('Selecciona al menos un servicio.'); return; }
+    if (!desc)      { mostrarError('Describe el trabajo solicitado.'); return; }
+
+    ocultarError(); setLoading(true);
+
+    try {
+      var data;
+      if (DEMO) {
+        var id = 'TI-' + Date.now() + '-' + Math.random().toString(36).substr(2,4).toUpperCase();
+        var db = JSON.parse(localStorage.getItem('ti_solicitudes') || '[]');
+        db.push({ id: id, cliente: nombre, empresa: empresa, telefono: telefono, email: email,
+          servicios: servicios, prioridad: prioridad, descripcion: desc, direccion: direccion,
+          timestamp: new Date().toISOString(), estado: 'recibida', notas: 'Creada desde sender' });
+        localStorage.setItem('ti_solicitudes', JSON.stringify(db));
+        data = { ok: true, id: id };
+      } else {
+        data = await callGAS({
+          action:'createSolicitud', adminKey: ADMIN_KEY,
+          cliente: nombre, empresa: empresa, telefono: telefono || 'N/A', email: email,
+          servicios: servicios, prioridad: prioridad, descripcion: desc, direccion: direccion,
+          notas: 'Creada desde sender'
+        });
+        if (!data.ok) throw new Error(data.error || 'Error al guardar');
+      }
+
+      var link = RECEIVER_URL + '?id=' + encodeURIComponent(data.id);
+      mostrarResultado(link, nombre, servicios, telefono);
+      toast('✓ Solicitud registrada');
+
+      ['inp-nombre','inp-empresa','inp-telefono','inp-email','inp-direccion','inp-desc'].forEach(function(id) {
+        document.getElementById(id).value = '';
+      });
+      seleccion = {};
+      document.querySelectorAll('.svc-btn.selected').forEach(function(b){ b.classList.remove('selected'); });
+      setPrio('standard');
+      actualizarPreview();
+    } catch(err) {
+      mostrarError('Error: ' + err.message);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  function mostrarResultado(link, nombre, servicios, telefono) {
+    document.getElementById('resultUrl').textContent = link;
+    document.getElementById('resultBox').classList.add('visible');
+    document.getElementById('btnAbrir').href = link;
+    var msg = encodeURIComponent(
+      '🌐 *Horus IT Solutions*\n\nHello ' + nombre + '! Your service request has been received:\n\n' +
+      '🛠 ' + servicios + '\n\nView your confirmation here:\n' + link +
+      '\n\nOur team will contact you shortly to coordinate the service. Thank you!'
+    );
+    var waNum = String(telefono || '').replace(/[^0-9]/g,'');
+    document.getElementById('btnCompartir').href = waNum
+      ? 'https://wa.me/' + waNum + '?text=' + msg
+      : 'https://wa.me/?text=' + msg;
+    document.getElementById('resultBox').scrollIntoView({ behavior:'smooth', block:'start' });
+  }
+
+  function copiarLink() {
+    var link = document.getElementById('resultUrl').textContent;
+    navigator.clipboard.writeText(link).then(function() {
+      var btn = document.getElementById('btnCopiar');
+      btn.textContent = '✓ Copiado'; btn.classList.add('copied');
+      toast('Link copiado');
+      setTimeout(function() { btn.textContent = 'Copiar Link'; btn.classList.remove('copied'); }, 2200);
+    });
+  }
+
+  // ── JSONP ─────────────────────────────────────────
+  function callGAS(params) {
+    return new Promise(function(resolve, reject) {
+      var cbName = 'cb_' + Date.now() + '_' + Math.floor(Math.random() * 99999);
+      var qs = Object.keys(params).map(function(k) {
+        return encodeURIComponent(k) + '=' + encodeURIComponent(String(params[k]));
+      }).join('&') + '&callback=' + encodeURIComponent(cbName);
+      var script = document.createElement('script');
+      var timer  = setTimeout(function() { cleanup(); reject(new Error('Timeout')); }, 15000);
+      window[cbName] = function(d) { cleanup(); resolve(d); };
+      function cleanup() { clearTimeout(timer); delete window[cbName]; if (script.parentNode) script.parentNode.removeChild(script); }
+      script.onerror = function() { cleanup(); reject(new Error('Sin conexión al servidor')); };
+      script.src = GAS_URL + '?' + qs;
+      document.head.appendChild(script);
+    });
+  }
+
+  function setLoading(s) {
+    document.getElementById('btnGenerar').disabled = s;
+    document.getElementById('btn-text').style.display = s ? 'none' : '';
+    document.getElementById('btn-spinner').style.display = s ? 'block' : 'none';
+  }
+  function mostrarError(msg) {
+    var el = document.getElementById('errorMsg');
+    el.textContent = msg; el.classList.add('visible');
+  }
+  function ocultarError() { document.getElementById('errorMsg').classList.remove('visible'); }
+
+  var toastT;
+  function toast(msg) {
+    var t = document.getElementById('toast');
+    t.textContent = msg; t.classList.add('show');
+    clearTimeout(toastT); toastT = setTimeout(function() { t.classList.remove('show'); }, 2500);
+  }
+
+  renderServicios();
+  actualizarPreview();
+</script>
+</body>
+</html>

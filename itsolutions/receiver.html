@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Request Received — Horus IT Solutions</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='14' fill='%23071A3D'/><text x='50' y='72' font-size='60' font-family='Arial Black' font-weight='900' fill='%23F5B400' text-anchor='middle'>H</text></svg>"/>
+  <style>
+    :root{
+      --navy:#071A3D; --navy-2:#0B2452; --navy-3:#102E66; --dark:#040F26;
+      --gold:#F5B400; --gold-2:#FFC72C;
+      --white:#FFFFFF; --grey:#9FB0CC; --grey-2:#C8D3E8;
+      --radius:14px; --transition:.3s cubic-bezier(.22,.61,.36,1);
+    }
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{font-family:'Inter',system-ui,sans-serif;background:var(--navy);color:var(--white);line-height:1.6;min-height:100vh}
+    h1,h2,h3{font-family:'Barlow Condensed',sans-serif;text-transform:uppercase;letter-spacing:.5px;line-height:1.08}
+    a{text-decoration:none;color:inherit}
+    .container{width:min(760px,94%);margin-inline:auto}
+
+    header{background:rgba(4,15,38,.96);border-bottom:1px solid rgba(245,180,0,.18);padding:12px 0}
+    .nav{display:flex;align-items:center;justify-content:space-between;gap:16px}
+    .logo{display:flex;align-items:center;gap:12px}
+    .logo-mark{width:42px;height:42px;border-radius:10px;background:var(--gold);display:grid;place-items:center;font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.5rem;color:var(--navy)}
+    .logo-text{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:1.3rem;text-transform:uppercase;line-height:1}
+    .logo-text span{display:block;font-size:.62rem;letter-spacing:3px;color:var(--gold);font-weight:700;margin-top:3px}
+    .header-tag{font-size:.7rem;letter-spacing:3px;text-transform:uppercase;color:var(--grey);font-weight:700}
+    .lang-toggle{display:flex;border:1px solid rgba(255,255,255,.25);border-radius:8px;overflow:hidden;flex-shrink:0}
+    .lang-btn{background:transparent;border:none;color:var(--grey-2);font-family:'Inter',sans-serif;font-size:.7rem;font-weight:700;letter-spacing:1px;padding:7px 11px;cursor:pointer;transition:var(--transition)}
+    .lang-btn.active{background:var(--gold);color:var(--navy)}
+    .lang-btn:not(.active):hover{color:var(--gold)}
+
+    .state-screen{display:none;flex-direction:column;align-items:center;justify-content:center;min-height:55vh;gap:16px;text-align:center;padding:40px 20px}
+    .state-screen.show{display:flex}
+    .loader{width:40px;height:40px;border:3px solid rgba(245,180,0,.15);border-top-color:var(--gold);border-radius:50%;animation:spin .8s linear infinite}
+    @keyframes spin{to{transform:rotate(360deg)}}
+    .state-screen p{color:var(--grey)}
+    .state-screen h2{font-size:1.8rem;color:#ff8a80}
+
+    .hero{background:linear-gradient(120deg,var(--dark),var(--navy-2));padding:48px 0 54px;text-align:center;position:relative;overflow:hidden}
+    .hero::before{content:"";position:absolute;inset:0;opacity:.05;background-image:repeating-linear-gradient(45deg,var(--gold) 0 2px,transparent 2px 24px)}
+    .hero-icon{width:84px;height:84px;border-radius:50%;display:grid;place-items:center;font-size:2.3rem;margin:0 auto 16px;position:relative;animation:pop .5s ease}
+    @keyframes pop{from{transform:scale(.5);opacity:0}to{transform:scale(1);opacity:1}}
+    .hero h1{font-size:clamp(2rem,6vw,3rem);font-weight:900;position:relative}
+    .hero h1 em{font-style:normal}
+    .hero p{color:var(--grey);margin-top:8px;position:relative}
+    .status-chip{display:inline-flex;align-items:center;gap:8px;font-size:.72rem;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;padding:8px 18px;border-radius:50px;margin-bottom:16px;position:relative}
+
+    /* state colors */
+    .st-recibida .hero-icon{background:rgba(245,180,0,.12);border:2px solid rgba(245,180,0,.5)}
+    .st-recibida h1 em{color:var(--gold)}
+    .st-recibida .status-chip{background:rgba(245,180,0,.12);border:1px solid rgba(245,180,0,.5);color:var(--gold)}
+    .st-proceso .hero-icon{background:rgba(74,222,128,.1);border:2px solid rgba(74,222,128,.5)}
+    .st-proceso h1 em{color:#4ade80}
+    .st-proceso .status-chip{background:rgba(74,222,128,.1);border:1px solid rgba(74,222,128,.5);color:#4ade80}
+    .st-completada .hero-icon{background:rgba(245,180,0,.15);border:2px solid var(--gold)}
+    .st-completada h1 em{color:var(--gold-2)}
+    .st-completada .status-chip{background:rgba(245,180,0,.15);border:1px solid var(--gold);color:var(--gold-2)}
+
+    main{padding:40px 0 80px}
+    .card{background:var(--navy-2);border:1px solid rgba(255,255,255,.08);border-radius:var(--radius);margin-bottom:18px;overflow:hidden;animation:fadeUp .5s ease both}
+    @keyframes fadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+    .card-header{padding:13px 22px;border-bottom:1px solid rgba(255,255,255,.07);display:flex;align-items:center;gap:9px}
+    .card-title{font-size:.68rem;letter-spacing:3px;text-transform:uppercase;color:var(--gold);font-weight:700}
+    .card-body{padding:22px}
+    .detail-row{display:flex;gap:14px;padding:9px 0;border-bottom:1px solid rgba(255,255,255,.06);font-size:.9rem}
+    .detail-row:last-child{border-bottom:none}
+    .detail-row .k{color:var(--grey);width:130px;flex-shrink:0;font-size:.72rem;letter-spacing:2px;text-transform:uppercase;font-weight:700;padding-top:2px}
+    .detail-row .v{color:var(--grey-2)}
+    .detail-row .v strong{color:var(--gold-2)}
+
+    .note{background:rgba(245,180,0,.07);border-left:4px solid var(--gold);border-radius:8px;padding:14px 18px;font-size:.88rem;color:var(--grey-2);margin-top:6px}
+    .note strong{color:var(--gold-2)}
+
+    .cta-wrap{text-align:center;margin-top:30px}
+    .cta-wrap p{color:var(--grey);font-size:.9rem;margin-bottom:18px}
+    .btn-wa{display:inline-flex;align-items:center;gap:12px;background:#25D366;color:#fff;padding:16px 38px;font-family:'Barlow Condensed',sans-serif;font-size:1.1rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;border-radius:8px;transition:var(--transition);animation:waPulse 2.5s infinite}
+    @keyframes waPulse{0%,100%{box-shadow:0 4px 22px rgba(37,211,102,.25),0 0 0 0 rgba(37,211,102,.3)}50%{box-shadow:0 4px 22px rgba(37,211,102,.25),0 0 0 12px rgba(37,211,102,0)}}
+    .btn-wa:hover{background:#1da851;transform:translateY(-2px)}
+    .btn-wa svg{width:22px;height:22px;fill:#fff}
+    .btn-home{display:inline-block;margin-top:14px;color:var(--grey);font-size:.74rem;letter-spacing:2px;text-transform:uppercase;font-weight:700;transition:color .2s}
+    .btn-home:hover{color:var(--gold)}
+
+    footer{background:var(--dark);border-top:1px solid rgba(245,180,0,.15);padding:18px 0;text-align:center}
+    footer p{font-size:.68rem;letter-spacing:2px;text-transform:uppercase;color:rgba(159,176,204,.4)}
+
+    /* ═══════ TEMA CLARO (fondo blanco) ═══════ */
+    body{background:#FFFFFF;color:#0B1F44}
+    /* Elementos sobre fondos oscuros que heredaban el color del body */
+    header .logo-text{color:#FFFFFF}
+    .hero h1{color:#FFFFFF}
+    .state-screen p{color:#5A6A85}
+    .card{background:#FFFFFF;border:1px solid rgba(7,26,61,.1);box-shadow:0 8px 24px rgba(7,26,61,.06)}
+    .card-header{border-bottom:1px solid rgba(7,26,61,.08)}
+    .card-title{color:#A87E00}
+    .detail-row{border-bottom:1px solid rgba(7,26,61,.08)}
+    .detail-row .k{color:#8A97AC}
+    .detail-row .v{color:#44536E}
+    .detail-row .v strong{color:#A87E00}
+    .note{background:rgba(245,180,0,.1);color:#6B5200}
+    .note strong{color:#523E00}
+    .cta-wrap p{color:#5A6A85}
+    .btn-home{color:#5A6A85}
+    /* ═══════ FIN TEMA CLARO ═══════ */
+
+    @media (max-width:560px){
+      .detail-row{flex-direction:column;gap:2px}
+      .detail-row .k{width:auto}
+      .header-tag{display:none}
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="container nav">
+    <a class="logo" href="index.html">
+      <div class="logo-mark">H</div>
+      <div class="logo-text">Horus<span>IT Solutions</span></div>
+    </a>
+    <div style="display:flex;align-items:center;gap:14px">
+      <div class="lang-toggle">
+        <button class="lang-btn active" data-lang="en" onclick="setLang('en')">EN</button>
+        <button class="lang-btn" data-lang="es" onclick="setLang('es')">ES</button>
+      </div>
+      <span class="header-tag" id="header-tag">Your Request</span>
+    </div>
+  </div>
+</header>
+
+<!-- LOADING -->
+<div class="state-screen show" id="screenLoading">
+  <div class="loader"></div>
+  <p>Loading your request...</p>
+</div>
+
+<!-- ERROR -->
+<div class="state-screen" id="screenError">
+  <h2>Request Not Found</h2>
+  <p style="color:var(--grey)">The link may be incorrect or expired.<br/>Please contact us directly.</p>
+  <a href="https://wa.me/19562726415" target="_blank" rel="noopener" style="margin-top:10px;background:#25D366;color:#fff;padding:13px 32px;border-radius:8px;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:1rem;letter-spacing:2px;text-transform:uppercase;">Contact on WhatsApp</a>
+</div>
+
+<!-- ══ CONFIRMACIÓN ══ -->
+<div id="vista" style="display:none">
+  <div class="hero" id="heroState">
+    <div class="container">
+      <span class="status-chip" id="statusChip"></span>
+      <div class="hero-icon" id="heroIcon">✓</div>
+      <h1 id="heroTitle">Request <em>Received!</em></h1>
+      <p id="heroSub">We have your request — our team will contact you shortly.</p>
+    </div>
+  </div>
+
+  <main>
+    <div class="container">
+      <div class="card">
+        <div class="card-header"><span>🏭</span><span class="card-title">Request Details</span></div>
+        <div class="card-body">
+          <div class="detail-row"><span class="k">Reference</span><span class="v"><strong id="d-id"></strong></span></div>
+          <div class="detail-row"><span class="k">Name</span><span class="v" id="d-cliente"></span></div>
+          <div class="detail-row" id="row-empresa" style="display:none"><span class="k">Company</span><span class="v" id="d-empresa"></span></div>
+          <div class="detail-row"><span class="k">Services</span><span class="v" id="d-servicios"></span></div>
+          <div class="detail-row"><span class="k">Priority</span><span class="v" id="d-prioridad"></span></div>
+          <div class="detail-row" id="row-direccion" style="display:none"><span class="k">Location</span><span class="v" id="d-direccion"></span></div>
+          <div class="detail-row"><span class="k">Description</span><span class="v" id="d-descripcion"></span></div>
+          <div class="detail-row"><span class="k">Submitted</span><span class="v" id="d-fecha"></span></div>
+        </div>
+      </div>
+
+      <div class="note" id="noteBox">
+        ✅ <strong>Your request has been received.</strong> One of our specialists will review the details and contact you by phone or WhatsApp to coordinate the service. No further action is needed on your part.
+      </div>
+
+      <div class="cta-wrap">
+        <p>Questions or additional details? Reach us directly:</p>
+        <a id="btnWa" href="#" target="_blank" rel="noopener" class="btn-wa">
+          <svg viewBox="0 0 24 24"><path d="M17.5 14.4l-2.1-1c-.3-.1-.5-.1-.7.1l-1 1.2c-.2.2-.4.2-.6.1a8.1 8.1 0 0 1-2.4-1.5 9 9 0 0 1-1.7-2.1c-.1-.2 0-.4.1-.6l.5-.5c.1-.2.2-.3.3-.5s0-.4 0-.5l-1-2.2c-.2-.6-.5-.5-.7-.5h-.6a1.1 1.1 0 0 0-.8.4A3.4 3.4 0 0 0 5.7 9.2a5.9 5.9 0 0 0 1.2 3.1 13.3 13.3 0 0 0 5.1 4.5 17 17 0 0 0 1.7.6 4.1 4.1 0 0 0 1.9.1 3.1 3.1 0 0 0 2-1.4 2.5 2.5 0 0 0 .2-1.4c-.1-.1-.2-.2-.3-.3zM12 0a12 12 0 0 0-10.4 18L0 24l6.2-1.6A12 12 0 1 0 12 0zm0 21.8a9.9 9.9 0 0 1-5-1.4l-.4-.2-3.7 1 1-3.6-.2-.4A9.9 9.9 0 1 1 12 21.8z"/></svg>
+          Chat on WhatsApp
+        </a>
+        <br/>
+        <a class="btn-home" href="index.html">← Back to Horus IT Solutions</a>
+      </div>
+    </div>
+  </main>
+</div>
+
+<footer><p>© Horus IT Solutions · (956) 272-6415 · 24/7 Emergency IT Support</p></footer>
+
+<script>
+  // ════════════════════════════════════════════════════
+  var GAS_URL   = 'PASTE_YOUR_GAS_URL_HERE';
+  var WA_NUMBER = '19562726415';
+  var DEMO      = GAS_URL.indexOf('PASTE_') === 0;
+  // ════════════════════════════════════════════════════
+
+  var id = new URLSearchParams(window.location.search).get('id');
+  var LANG = localStorage.getItem('ti_lang') === 'es' ? 'es' : 'en';
+  var lastData = null;
+
+  function cargar(reqId) {
+    if (DEMO) {
+      var db = JSON.parse(localStorage.getItem('ti_solicitudes') || '[]');
+      var found = db.find(function(o) { return o.id === reqId; });
+      if (found) { render(found); } else { mostrarError(); }
+      return;
+    }
+    var cbName = 'cb_' + Date.now();
+    var script = document.createElement('script');
+    var timer  = setTimeout(function() { cleanup(); mostrarError(); }, 15000);
+    window[cbName] = function(data) { cleanup(); if (data && data.ok) { render(data); } else { mostrarError(); } };
+    function cleanup() { clearTimeout(timer); delete window[cbName]; if (script.parentNode) script.parentNode.removeChild(script); }
+    script.onerror = function() { cleanup(); mostrarError(); };
+    script.src = GAS_URL + '?action=getSolicitud&id=' + encodeURIComponent(reqId) + '&callback=' + encodeURIComponent(cbName);
+    document.head.appendChild(script);
+  }
+
+  var ESTADOS_EN = {
+    recibida:   { chip:'● Received',    icon:'✓',  title:'Request <em>Received!</em>',  sub:'We have your request — our team will contact you shortly.', cls:'st-recibida',
+                  note:'✅ <strong>Your request has been received.</strong> One of our specialists will review the details and contact you by phone or WhatsApp to coordinate the service. No further action is needed on your part.' },
+    en_proceso: { chip:'● In Progress', icon:'🔧', title:'Work <em>In Progress</em>',   sub:'Our team is already working on your request.', cls:'st-proceso',
+                  note:'🔧 <strong>Your service is in progress.</strong> Our technicians are working on it. We will keep you informed of any updates.' },
+    completada: { chip:'● Completed',   icon:'🏆', title:'Service <em>Completed</em>',  sub:'Thank you for trusting Horus IT Solutions.', cls:'st-completada',
+                  note:'🏆 <strong>Your service has been completed.</strong> It was a pleasure working with you. Contact us anytime for future maintenance needs.' }
+  };
+  var ESTADOS_ES = {
+    recibida:   { chip:'● Recibida',    icon:'✓',  title:'¡Solicitud <em>Recibida!</em>', sub:'Tenemos tu solicitud — nuestro equipo te contactará pronto.', cls:'st-recibida',
+                  note:'✅ <strong>Tu solicitud ha sido recibida.</strong> Uno de nuestros especialistas revisará los detalles y te contactará por teléfono o WhatsApp para coordinar el servicio. No necesitas hacer nada más.' },
+    en_proceso: { chip:'● En Proceso',  icon:'🔧', title:'Trabajo <em>En Proceso</em>',   sub:'Nuestro equipo ya está trabajando en tu solicitud.', cls:'st-proceso',
+                  note:'🔧 <strong>Tu servicio está en proceso.</strong> Nuestros técnicos están trabajando en ello. Te mantendremos informado de cualquier novedad.' },
+    completada: { chip:'● Completado',  icon:'🏆', title:'Servicio <em>Completado</em>',  sub:'Gracias por confiar en Horus IT Solutions.', cls:'st-completada',
+                  note:'🏆 <strong>Tu servicio ha sido completado.</strong> Fue un placer trabajar contigo. Contáctanos en cualquier momento para futuras necesidades de TI.' }
+  };
+
+  function render(data) {
+    lastData = data;
+    document.getElementById('screenLoading').classList.remove('show');
+
+    var ESTADOS = LANG === 'es' ? ESTADOS_ES : ESTADOS_EN;
+    var est = ESTADOS[data.estado] || ESTADOS.recibida;
+    document.getElementById('heroState').classList.add(est.cls.replace('st-','st-'));
+    document.getElementById('heroState').className = 'hero ' + est.cls;
+    document.getElementById('statusChip').textContent = est.chip;
+    document.getElementById('heroIcon').textContent = est.icon;
+    document.getElementById('heroTitle').innerHTML = est.title;
+    document.getElementById('heroSub').textContent = est.sub;
+    document.getElementById('noteBox').innerHTML = est.note;
+    document.getElementById('header-tag').textContent = est.chip.replace('● ','');
+
+    document.getElementById('d-id').textContent = data.id;
+    document.getElementById('d-cliente').textContent = data.cliente || '—';
+    document.getElementById('d-servicios').textContent = data.servicios || '—';
+    document.getElementById('d-prioridad').textContent = data.prioridad === 'emergency'
+      ? (LANG === 'es' ? '🚨 Emergencia 24/7' : '🚨 24/7 Emergency')
+      : (LANG === 'es' ? '📅 Estándar' : '📅 Standard');
+    document.getElementById('d-descripcion').textContent = data.descripcion || '—';
+    if (data.empresa) {
+      document.getElementById('d-empresa').textContent = data.empresa;
+      document.getElementById('row-empresa').style.display = '';
+    }
+    if (data.direccion) {
+      document.getElementById('d-direccion').textContent = data.direccion;
+      document.getElementById('row-direccion').style.display = '';
+    }
+    document.getElementById('d-fecha').textContent = data.timestamp
+      ? new Date(data.timestamp).toLocaleString(LANG === 'es' ? 'es-MX' : 'en-US', { month:'short', day:'2-digit', year:'numeric', hour:'2-digit', minute:'2-digit' })
+      : '—';
+
+    var msg = encodeURIComponent(LANG === 'es'
+      ? '¡Hola Horus IT Solutions! 🌐\n\nTengo una pregunta sobre mi solicitud de servicio.\n\nReferencia: ' + data.id +
+        '\nNombre: ' + (data.cliente || '') + '\nServicios: ' + (data.servicios || '')
+      : 'Hello Horus IT Solutions! 🌐\n\nI have a question about my service request.\n\nReference: ' + data.id +
+        '\nName: ' + (data.cliente || '') + '\nServices: ' + (data.servicios || '')
+    );
+    document.getElementById('btnWa').href = 'https://wa.me/' + WA_NUMBER + '?text=' + msg;
+
+    document.getElementById('vista').style.display = '';
+  }
+
+  function mostrarError() {
+    document.getElementById('screenLoading').classList.remove('show');
+    document.getElementById('screenError').classList.add('show');
+  }
+
+  // ════════════════════════════════════
+  //  IDIOMA EN / ES
+  // ════════════════════════════════════
+  var SVG_WA = '<svg viewBox="0 0 24 24"><path d="M17.5 14.4l-2.1-1c-.3-.1-.5-.1-.7.1l-1 1.2c-.2.2-.4.2-.6.1a8.1 8.1 0 0 1-2.4-1.5 9 9 0 0 1-1.7-2.1c-.1-.2 0-.4.1-.6l.5-.5c.1-.2.2-.3.3-.5s0-.4 0-.5l-1-2.2c-.2-.6-.5-.5-.7-.5h-.6a1.1 1.1 0 0 0-.8.4A3.4 3.4 0 0 0 5.7 9.2a5.9 5.9 0 0 0 1.2 3.1 13.3 13.3 0 0 0 5.1 4.5 17 17 0 0 0 1.7.6 4.1 4.1 0 0 0 1.9.1 3.1 3.1 0 0 0 2-1.4 2.5 2.5 0 0 0 .2-1.4c-.1-.1-.2-.2-.3-.3zM12 0a12 12 0 0 0-10.4 18L0 24l6.2-1.6A12 12 0 1 0 12 0zm0 21.8a9.9 9.9 0 0 1-5-1.4l-.4-.2-3.7 1 1-3.6-.2-.4A9.9 9.9 0 1 1 12 21.8z"/></svg>';
+
+  var TRAD_ES = {
+    '#screenLoading p': 'Cargando tu solicitud...',
+    '#screenError h2': 'Solicitud No Encontrada',
+    '#screenError p': 'El link puede ser incorrecto o haber expirado.<br>Contáctanos directamente.',
+    '#screenError a': 'Contactar por WhatsApp',
+    '.card-title': 'Detalles de la Solicitud',
+    '.card-body .detail-row:nth-of-type(1) .k': 'Referencia',
+    '.card-body .detail-row:nth-of-type(2) .k': 'Nombre',
+    '.card-body .detail-row:nth-of-type(3) .k': 'Empresa',
+    '.card-body .detail-row:nth-of-type(4) .k': 'Servicios',
+    '.card-body .detail-row:nth-of-type(5) .k': 'Prioridad',
+    '.card-body .detail-row:nth-of-type(6) .k': 'Ubicación',
+    '.card-body .detail-row:nth-of-type(7) .k': 'Descripción',
+    '.card-body .detail-row:nth-of-type(8) .k': 'Enviada',
+    '.cta-wrap p': '¿Preguntas o detalles adicionales? Contáctanos directamente:',
+    '#btnWa': SVG_WA + ' Escríbenos por WhatsApp',
+    '.btn-home': '← Volver a Horus IT Solutions',
+    'footer p': '© Horus IT Solutions · (956) 272-6415 · Soporte TI de Emergencia 24/7'
+  };
+
+  var i18nCacheHtml = null;
+  function setLang(lang) {
+    var sel, el;
+    LANG = lang === 'es' ? 'es' : 'en';
+    if (LANG === 'es') {
+      if (!i18nCacheHtml) {
+        i18nCacheHtml = {};
+        for (sel in TRAD_ES) { el = document.querySelector(sel); if (el) i18nCacheHtml[sel] = el.innerHTML; }
+      }
+      for (sel in TRAD_ES) { el = document.querySelector(sel); if (el) el.innerHTML = TRAD_ES[sel]; }
+    } else if (i18nCacheHtml) {
+      for (sel in i18nCacheHtml) { el = document.querySelector(sel); if (el) el.innerHTML = i18nCacheHtml[sel]; }
+    }
+    localStorage.setItem('ti_lang', LANG);
+    document.documentElement.lang = LANG;
+    document.querySelectorAll('.lang-btn').forEach(function(b) { b.classList.toggle('active', b.dataset.lang === LANG); });
+    // Re-render del estado en el idioma activo
+    if (lastData) render(lastData);
+  }
+
+  // Init (al final para que ESTADOS ya esté definido en modo demo)
+  if (LANG === 'es') setLang('es');
+  if (!id) { mostrarError(); } else { cargar(id); }
+</script>
+</body>
+</html>
